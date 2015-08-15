@@ -38,7 +38,7 @@ class Importer < Clamp::Command
     output = File.new(File.join(destination, path).sub(/\.txt$/, ".html"), "w")
 
     output.puts('+++')
-    output.puts("# Imported from original pyblosxom .txt format at #{Time.now}")
+    output.puts("# Imported from original pyblosxom .txt format at #{Time.now.strftime("%Y-%m-%d")}")
     output.puts("date = #{metadata["#mdate"].iso8601.inspect}")
     output.puts("title = #{subject.inspect}")
     output.puts("# Marked a draft because frankly my old writing may not be worth surfacing again.")
