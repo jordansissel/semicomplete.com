@@ -1,0 +1,24 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-06-19T06:15:29-07:00"
+title = "Chasing down a bug while using strtok.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["bugs", "strtok", "oops"]
++++
+
+While coding tonight, I spent *at least* 20 minutes trying to figure out why my
+program was crashing in strtok_r. Turns out I forgot that strtok (and strtok_r)
+modify the string in-place (with null bytes), and I was passing in a string
+literal. 
+
+<p>
+
+In C, "string literals" are stored in a special read-only bit of the program,
+so if you try to modify them your program crashes. I was calling a function
+several levels up with a string literal trying to test functionality and it
+kept crashing with sigbus. Wee. Lesson relearned ;)

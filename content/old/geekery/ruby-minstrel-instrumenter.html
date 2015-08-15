@@ -1,0 +1,76 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-11-15T03:01:54-08:00"
+title = "Introducing: Ruby Minstrel - a method instrumenter\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["ruby", "minstrel", "debugging"]
++++
+
+The following tools are awesome: strace, truss, ltrace, dtrace, and systemtap.
+
+<p>
+
+Sometimes I'm trying to debug a ruby library or application, and I end up
+monkeypatching things just to see what arguments are being passed as a
+away of sanity checking configuration or correctness. Other times
+I want to profile the time spent only in a certain class, or method, etc.
+At a basic level, I'm looking for a simple ltrace equivalent in ruby.
+
+<p>
+
+Enter <a href="https://github.com/jordansissel/ruby-minstrel">minstrel</a>.
+There may be projects out there already that do this, but I don't know of one,
+so it got written tonight.
+
+<p>
+
+You can 'gem install minstrel' to get it (or <a
+href="http://rubygems.org/gems/minstrel">here (rubygems)</a> and <a
+href="https://github.com/jordansissel/ruby-minstrel">here (github)</a>)
+
+<p>
+
+My standard path of debugging (without other options) is to sanity check my
+code and then dive into the code for whatever app/library I am using. It often
+requires root access to modify ruby libs on the system, which sucks for one-off
+debugging. Writing up monkeypatches guessing at methods that I should inspect
+is error prone and sucky. Monkeypatching for debugging is common for me and is
+about as efficient/productive as using LD_PRELOAD to hack in my own method
+calls. (see <a
+href="http://www.semicomplete.com/projects/liboverride">liboverride</a>). It
+sucks.
+
+<p>
+
+Minstrel is something better than a bag of the usual hope+monkeypatch+time
+combination. For example. Let's use minstrel to debug why mcollective's
+'mc-ping' is failing:
+
+<pre>
+snack(~) % /usr/sbin/mc-ping
+connect failed: Connection refused - connect(2) will retry in 5
+</pre>
+
+Ok, connection refused. To what? Yes, I could use strace or tcpdump to debug
+this particular issue. But that's not the point, here. After looking at the
+mcollective code for a few minutes I came up with a few classes I want to
+instrument.
+
+<pre>
+snack(~) % % RUBY_INSTRUMENT="MCollective::Connector::Stomp,Stomp::Connection,TCPSocket" minstrel /usr/sbin/mc-ping
+Wrap of TCPSocket successful
+Wrap of Stomp::Connection successful
+Wrap of MCollective::Connector::Stomp successful
+enter MCollective::Connector::Stomp#connect([])
+enter Stomp::Connection#socket([])
+class_enter TCPSocket#open(["localhost", 6163])
+class_exit_exception TCPSocket#open(["localhost", 6163])
+connect failed: Connection refused - connect(2) will retry in 5
+</pre>
+
+Voila.

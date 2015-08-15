@@ -1,0 +1,52 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-11-22T04:18:43-08:00"
+title = "Playing with graphing; matplotlib\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["python", "matplotlib", "eventdb"]
++++
+
+webhits.data contains updates of this format:
+<pre>
+http.hit@1193875199000000:1
+http.hit@1193875200000000:1
+http.hit@1193875213000000:1
+http.hit@1193875214000000:5
+</pre>
+
+The values are hits seen in a single second to this website. This particular
+data set includes only the past month's worth of data.
+
+<p>
+
+Let's graph "total hits per hour" over time.
+
+<pre>
+% ./evtool.py update /tmp/webhits.db - < webhits.data
+% ./evtool.py fetchsum /tmp/webhits.db $((60 * 60)) http.hit
+</pre>
+
+60*60 is 3600, aka 1 hour. <a href="/images/hits-1hour.png">hits, 1 hour</a>. I
+also reran it with 60*60*24 aka 24 hour totals. <a
+href="/images/hits-1day.png">hits, 1 day</a>.
+
+<p>
+
+The data aggregation may be incorrect; not sure if I really got 12K hits on
+each of the first few days this month. However, using fex+awk+sort on the
+logfiles themselves shows basically the same data:
+
+<pre>
+ % cat access.* | ~/projects/fex/fex '[2 1:1' | countby 0  | sort -k2 | head -3
+ 11534 01/Nov/2007
+ 11488 02/Nov/2007
+ 11571 03/Nov/2007
+</pre>
+
+Actually looking at the logs shows 5K hits from a single IP on 01/Nov/2007, and
+it's the googlebot.

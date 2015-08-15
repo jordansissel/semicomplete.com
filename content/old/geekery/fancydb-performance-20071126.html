@@ -1,0 +1,48 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-11-27T03:45:58-08:00"
+title = "fancydb performance\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["fancydb", "logs", "data", "aggregation", "graphs", "statistics", "python", "bdb"]
++++
+
+Various trials with basically the same input set: 2.5 million row entries,
+maximum 1 entry per second. The insertion rate drops by 60% if you add rule
+evaluations, which is an unfortunate performance loss. I'll work on making
+rules less invasive. Unfortunately, python threading will never run on two
+processors at once I can't gain significant performance from sharding rule
+processing to separate threads; most unfortunate. Maybe fork+ipc is necesary
+here, but I am somewhat loathe to doing that.
+
+<p>
+
+The slowdown when rules are present are to the record keeping that is done to
+notify that a rule should be evaluated again (rule evaluations are queued).
+Basicaly the loop 'is this row being watched by a rule' is the slowdown. I'll
+try attacking this first.
+
+<pre>
+With 2 rules (unoptimized rules):
+    hits.minute => hits.mean.1hour @ 60*60
+    hits.minute => hits.mean.1day @ 60*60*24
+  insertion rate = 7600/sec
+
+With 2 rules (optimized chaining)
+    hits.minute => hits.mean.1hour @ 60*60
+    hits.mean.1hour => hits.mean.1day @ 60*60*24
+  insertion rate = 12280/sec
+
+With 9 rules (optimized chaining):
+  insertion rate: 10000/sec
+
+With 0 rules:
+  trial 1: 40000/sec
+  trial 2: 26700/sec
+</pre>
+
+

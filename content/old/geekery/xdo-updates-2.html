@@ -1,0 +1,65 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-06-22T04:12:07-07:00"
+title = "xdo updates: window operations and searching\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["xdo", "xlib", "x11"]
++++
+
+Today's efforts are summarized best by:
+<pre>
+% ./xdotool search "Mozilla Firefox"
+31457484 
+% xwininfo -id 31457484 | egrep 'Width|Height' | paste - -
+  Width: 1278     Height: 1008
+% ./xdotool windowsize `./xdotool search "Mozilla Firefox"` 500 500
+% xwininfo -id 31457484 | egrep 'Width|Height' | paste - -
+  Width: 500      Height: 500
+</pre>
+
+This new 'search' command will walk the list of windows in X and basically
+output any windows with a matching title, name, or class. In this case, I have
+1 "browser" window open under firefox that has "Mozilla Firefox" in the title.
+So I then resize it to 500x500, trivially.
+
+<p>
+
+Longer summary of today is that I added 4 new functions to xdotool:
+<ul>
+  <li>windowsize &lt;windowid&gt; &lt;width&gt; &lt;height&gt;</li>
+  <li>windowfocus &lt;windowid&gt;</li>
+  <li>windowmove &lt;windowid&gt; &lt;x&gt; &lt;y&gt;</li>
+  <li>search &lt;regexp&gt;</li>
+</ul>
+
+Thanks to valgrind, I also fixed the crashes in Linux. Was due to an off-by-one
+bug. Sweet tool: valgrind.
+
+<p>
+
+Turns out XTEST works as I'd expect, and this example will do what you think,
+and switch to the 2nd console (assuming you're running one).
+<pre>
+% ./xdotool key "ctrl+alt+F2"
+</pre>
+
+<p>
+
+Goal: Focus the first window found that is a local xterm (ie; not ssh'd anywhere). My xterms have title with 'host(pwd) - activity' in them. So if my local host is 'snack' I can do:
+
+<pre>
+# Look for xterms starting with 'snack(' and focus the first one
+./xdotool search '^snack\(' | head -1 | xargs ./xdotool windowfocus
+</pre>
+
+And magically one of the xterms running a shell locally is focused. I can see
+this being pretty useful.
+
+<p>
+
+Today's code: <a href="/files/blogposts/20070622/navmacro-20070622.tar.gz">navmacro-20070622.tar.gz</a>.

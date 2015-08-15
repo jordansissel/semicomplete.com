@@ -1,0 +1,29 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-06-02T20:35:21-07:00"
+title = "Vmware Server Console on FreeBSD\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["vmware", "freebsd"]
++++
+
+<dl>
+  <dt> Put the vmware-remotemks' program where vmware console wants it </dt>
+  <dd> Symlink vmware-remotemks to /lib/vmware-server-console/bin/vmware-remotemks </dd>
+  <dt> Mount linprocfs to /proc </dt>
+  <dd> mount -t linprocfs - /proc </dd>
+  <dt> Hack fix for vmware dep library </dt>
+  <dd> From vmware-server-console-distrib/lib/bin/: <br>
+  for i in ../lib/lib*/*; do ln -s $i `basename $i`; done
+  </dd>
+  <dt> Copy the pixmaps </dt>
+  <dd> sudo cp -R share/ /usr/lib/vmware-server-console/share </dd>
+</dl>
+
+Remote console works for consoling into freebsd guests, but for some reason it
+doesn't display console for my solaris guest. Though, I can take screenshots
+and those look fine. Weird.

@@ -1,0 +1,40 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-06-23T21:16:18-07:00"
+title = "jquerycmd+xpathtool == direction scraping on google\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["jquery", "jquerycmd", "xpathtool", "xulrunner", "shdh", "shdh18"]
++++
+
+Show the first 3 steps that google maps tells you to take.
+<pre>
+./getpath.sh "atlanta to nyc" | head -3
+Head southeast on Trinity Ave SW toward Washington St SW        0.2mi
+Slight left at Memorial Dr SW   0.3mi
+Turn left at Martin St SE       361ft
+</pre>
+
+Pipe that to lpr and you've got printed directions on under 5 seconds.
+
+<p>
+
+Why not just do this with plain page scraping? Because there's lots of javascript in google maps that presents the user with the directions. Firefox (Gecko, really) already parses it, so why bother reinventing the wheel? Let's use the wheel that already works.
+
+<p>
+
+Download 
+<a href="/files/blogposts/20070623/jquery-20070623.1828.tar.gz">jquery-20070623.1828.tar.gz</a>.
+The download of jquerycmd comes with the xul app, 'jquerycmd.sh' and 'getpath.sh'.
+
+<p>
+
+For the lazy who just want to see the scripts:
+<ul>
+  <li> <a href="/files/blogposts/20070623/jquerycmd.sh">jquerycmd.sh</a> </li>
+  <li> <a href="/files/blogposts/20070623/getpath.sh">getpath.sh</a> </li>
+</ul>

@@ -1,0 +1,63 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-10-05T00:47:12-07:00"
+title = "libc's tree functions, function pointers, and bdb.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["libc", "tsearch", "bdb", "function pointers", "c"]
++++
+
+Whoever wrote the tsearch/tfind/tdelete/twalk functions for libc clearly
+stopped thinking about how it would be used. The only way I can see to iterate
+the tree is to use twalk, which doesn't let you pass any extra arguments to
+your provided action method.
+
+<p>
+
+This sucks if, for example, you wanted to get a list of all entries in the tree in a threadsafe or multiplicity-safe way.
+
+<p>
+
+Some workarounds include:
+<ul>
+  <li> Every time you insert, add the same structure to an array. </li>
+  <li> Use something that supports sane iteration (bdb, for example). </li>
+</ul>
+
+I looked into using bdb for some things, but the tree I wanted to iterate over
+most was a structure that held, among other things, a function pointer.
+Function pointers are magical and special and are held in a place in memory you
+can't simply make a copy of. If you try to store a function pointer in an
+in-memory BDB database, the value that comes out of your query will be
+different than the function pointer.
+
+<p>
+
+<a href="http://semicomplete.googlecode.com/svn/codesamples/bdb-functionpointer-test.c">This bdb code sample</a> attempts to store a function pointer in bdb. The output is:
+
+<pre>
+stored: 607a70
+actual: 4005e8
+</pre>
+
+The value changed because copying a function pointer doesn't work.
+
+<p>
+
+There's a workaround here that might be useful - dlopen(). Any functions I want
+to store in bdb, I would store by string name and fetch the function pointer
+with dlsym().
+
+<p>
+
+<a href="http://semicomplete.googlecode.com/svn/codesamples/dlopen_self.c">This
+dlopen example</a> shows how to dlopen yourself and fetch a function by string
+name.
+
+<p>
+
+Fun with pointers.

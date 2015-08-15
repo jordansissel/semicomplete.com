@@ -1,0 +1,81 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-08-11T02:36:52-07:00"
+title = "Bypass a wifi captive portal\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["wifi", "firewall bypass", "captive portals"]
++++
+
+Too many hotspot ISPs rely on unencrypted traffic and track authorized users by
+mac address and/or ip address. Let's abuse this.
+
+<p>
+
+The simple way to abuse this is to set your ethernet and ip addresses to one
+that you know has already been authorized by the captive portal system. Poof. Internet access.
+
+<p>
+
+How do we find one? Certainly it's simple to sniff traffic and find anyone able
+to access the outside network, but it's a manual process. To automate it, I
+wrote a simple script to do the discovery and testing automatically. 
+
+<p>
+
+I figured a tmobile hotspot was the perfect place to try this. I change my mac
+address and flush my browser cookies, and now I look like a new, potential
+customer to the captive portal. After I verify I cannot get outside of the
+local network, I ran my new little script. It worked by finding another person
+on the wireless network who was authorized to go online and then set my
+ethernet and ip addresses accordingly. Yay internet.
+
+<p>
+
+This particular script will only work in FreeBSD, but can easily be fixed to
+work in Linux or another OS.
+
+<p>
+
+<a href="/files/wifipencap.sh">wifipencap.sh</a>
+
+<p>
+
+This is the output from running it on the network at my house.
+
+<pre>
+nightfall(~) 1 % sudo ./wifipencap.sh -i ath0
+DHCPREQUEST on ath0 to 255.255.255.255 port 67
+DHCPREQUEST on ath0 to 255.255.255.255 port 67
+DHCPACK from 192.168.0.3
+bound to 192.168.0.179 -- renewal in 43200 seconds.
+Restore your old mac address with:
+ifconfig ath0 down; ifconfig ath0 ether 00:de:ad:be:ef:01; ifconfig ath0 up
+
+Looking for active nodes on the network
+Trying 192.168.0.12 00:0c:29:94:3e:0b
+Waiting for associate
+Waiting for associate
+route: writing to routing socket: No such process
+delete net default: not in table
+add net default: gateway 192.168.0.254
+pinging google
+PING google.com (72.14.207.99): 56 data bytes
+64 bytes from 72.14.207.99: icmp_seq=0 ttl=237 time=109.113 ms
+64 bytes from 72.14.207.99: icmp_seq=1 ttl=237 time=108.448 ms
+64 bytes from 72.14.207.99: icmp_seq=2 ttl=237 time=107.633 ms
+64 bytes from 72.14.207.99: icmp_seq=3 ttl=237 time=107.454 ms
+64 bytes from 72.14.207.99: icmp_seq=4 ttl=237 time=107.394 ms
+
+--- google.com ping statistics ---
+5 packets transmitted, 5 packets received, 0% packet loss
+round-trip min/avg/max/stddev = 107.394/108.008/109.113/0.669 ms
+Found something that can reach the internet
+Mac: 00:0c:29:94:3e:0b
+IP: 192.168.0.12
+Exiting... You can now get online.
+</pre>

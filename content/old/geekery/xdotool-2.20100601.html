@@ -1,0 +1,46 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-06-01T03:02:37-07:00"
+title = "xdotool 2.20100601 release\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["bugfix", "xdotool", "release", "project", "C", "X11", "Xlib"]
++++
+
+Thanks to some early testing and feedback from the previous xdotool release,
+I've put together a new release that fixes a few minor problems.
+
+<p>
+
+Download: <a href="http://semicomplete.googlecode.com/files/xdotool-2.20100601.2912.tar.gz">xdotool-2.20100601.2912.tar.gz</a>
+
+<p>
+
+As usual, if you find problems or have feature requests, please file <a
+href="http://code.google.com/p/semicomplete/issues/list">bugs</a> or send an
+email to the <a href="http://groups.google.com/group/xdotool-users">list</a>.
+
+<p>
+
+Changelist since previous announcement:
+<pre>
+2.20100601.*:
+  - Add --sync and --clearmodifiers support to mousemove_relative
+  - Fix bug in mousemove_relative --polar (Reported by Paul S via mailing list)
+  - Change polar coordinates to be 'north'-oriented (0 is up, 90 is right...)
+    (Requested by Paul S via mailing list)
+  - Changed xdotool search flags. '--title' now means '--name' to match the
+    window name (shown in the window manager title bar for the window).
+    Related: http://code.google.com/p/semicomplete/issues/detail?id=33
+    --title still works, but you will get a warning about deprecation.
+  - Walked through all commands and tried to make sure the manpage reflects
+    reality and has more detail where needed.
+
+2.20100525.*:
+  - Skip certain tests when the requirements aren't met (ie; no such window manager, etc)
+    Reported by Daniel Kahn Gillmor.
+</pre>

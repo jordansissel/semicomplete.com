@@ -1,0 +1,41 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-10-24T23:51:00-07:00"
+title = "xmlrpc javascript library and pimp rewrite\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["javascript", "xmlrpc", "xml", "web", "python"]
++++
+
+Yet Another Rewrite of Pimp, my music jukebox software, has commenced. This
+time, I'm writing it in Python. This was the best excuse I could find to learn
+python. I've tinkered with it before but never written an application in it.
+<p/>
+Anyway, the interface has moved from telnet-based to web-based and uses
+XMLHTTPRequest (AJAX) to perform XMLRPC calls on the purely-python webserver.
+Python provides a wonderful standard module called 'xmlrpclib' to
+marshall/unmarshall XMLRPC requests and responses to/from python and XML.
+JavaScript, howver, lacks these marshalling features.
+<p/>
+Some quick googling found <a href="http://jsolait.net/">jsolait</a> and <a
+href="http://www.vcdn.org/Public/XMLRPC/">vcXMLRPC</a>. Both of these are huge
+frameworks and are well beyond my particular needs. BOTH of them have "the suck" and
+fail to cleanly load into Firefox without warnings. Bah! Back at square-one.
+I'm left without a way to marshall xmlrpc requests and responses between
+javascript and xml
+<p/>
+
+I spent some time learning about XMLRPC. Turns out it's a very very simple
+xml-based protocol for calling methods and getting results. JavaScript has DOM already so parsing XMLRPC messages is very easy.
+<p/>
+
+Take a look at the 'rpcparam2hash' and 'hash2rpcparam' functions in <a
+href="http://www.csh.rit.edu/~psionic/misc/pimp.js">pimp.js</a> and see how I
+convert between JavaScript hashes (dictionaries) and XMLRPC messages. If I get
+bored I may create my own xmlrpc library specifically for making xmlrpc calls
+with javascript. If you want this to get done, please let me know and give me
+encouragement ;)

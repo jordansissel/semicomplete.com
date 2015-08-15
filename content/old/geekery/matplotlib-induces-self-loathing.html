@@ -1,0 +1,103 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-12-01T05:39:05-08:00"
+title = "Matplotlib makes me hate.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["rants", "matplotlib"]
++++
+
+Let me caveat this rant with the fact that I've only been playing with
+matplotlib for approximately a week.
+
+<p>
+
+All the demos made matplotlib (a python module) look like a great tool that I
+should want to use to graph things, then I started trying to actually write
+code and it all went downhill.
+
+<p>
+
+Almost all of the functions operate on some mystical global scope, meaning they
+are by design not threadsafe. Probably not a big deal, I guess, but it
+certainly feels like an alien world especially given all the object oriented
+code in use in python.
+
+<p>
+
+If this culture shock wasn't bad enough, it went ahead and decided to use
+inches and ratios as the standard units of measure. You make a figure of a set
+width and height (in inches) and you can put stuff in that figure given ratio
+offsets. An offset of '.5' would put your left-bound in the middle. Weird and
+unexpected. Perhaps not bad. Still, I'm used to pixels, not inches.
+
+<p>
+
+Some of the arguments are just looney:
+<pre>
+  fig.add_subplot(111)
+</pre>
+
+The docs say this "subplot(211)    # 2 rows, 1 column, first (upper) plot".
+Base10 flag system? What. the. F. I'm at a loss as to why this was ever a good
+idea. Let's make it hard to add plots? Looks like you can use 'subplot(rows,
+cols, plotnum)' which is the sensible solution, but all the demos use the
+integer syntax, and it makes me sad.
+
+<p>
+
+You can't easily put the legend outside the graph.
+
+<p>
+
+Setting the default font size means you have to set at least 6 things. Make
+sure you note the excessive use of different tokens for the same freaking
+setting: labelsize, titlesize, size, and fontsize.
+<pre>
+rc("axes", labelsize=10, titlesize=10)
+rc("xtick", labelsize=10)
+rc("ytick", labelsize=10)
+rc("font", size=10)
+rc("legend", fontsize=10)
+</pre>
+
+<p>
+
+I have code that looks like this:
+<pre>
+  fig = figure()
+  p = subplot(111)
+  line = p.plot_date(dates, values)
+  line[0].set_label("foo")
+  legend()
+  fig.savefig('foo.png', format='png')
+</pre>
+
+Notice my entertaining leaps between OOP and WTF. Other cute nuances are that
+the docs/examples are littered with:
+
+<pre>
+  ax = subplot(111)
+</pre>
+
+You might think that the name 'ax' means 'axis' and that subplot returns an
+axis. No. You might ask python with type() and it would say '&lt;type
+'instance&gt;'. Helpful. If you just print ax you'll see it is
+matplotlib.axes.Subplot. I'm trying hard to not get hung up on semantics, but
+'axis' to me is very different from a plot. Plot seems like a visual
+representation, and an axis is a single dimension of a graph (aka a plot).
+
+<p>
+
+After several days of playing with this tool, I am frustrated and disheartened.
+It has such powerful features like tick rules: You can trivially specify "Put
+one major tick every 3rd week". However, the api is half OO half
+globally-scoped-procedural. Maybe this is my fault. The docs constantly mix
+'matplotlib' and 'pylab' methods. Perhaps you can use just the matplotlib
+functions by themselves and you don't need pylab? Pylab, by the way, is what
+provides these awkward global functions and in theory only exists as a pure
+wrapper on top of matplotlib.

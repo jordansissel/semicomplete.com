@@ -1,0 +1,34 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-07-26T12:09:00-07:00"
+title = "programming sanity\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["productivity", "vim"]
++++
+
+A project I'm working on at work contains piles of some of the worst-written code I've seen in a long time. Top that with three tons of commented-out source code and you've got me angry. 
+
+<p/>
+I use vim (NOT gvim). I don't use syntax highlighting. The bright colors available in the terminal are too contrasting to be useful for syntax highlighting, so I have it off at all times. However, with this new project, there are so many lines of code that are just commented out it becomes extremely difficult to read said code. 
+<p/>
+Enter vim's syntax highlighting. I hate coloring of most things, but having comments a particular color is acceptable. I would prefer these comments be dark-but-visible-on-a-black-background shade of grey, so I try this in vim:
+
+<pre>
+hi Comments ctermfg=grey
+</pre>
+
+This makes comments appear grey. However, they grey is not quite dark enough, so I'll need to fix that. The ANSI color number for grey is 7. So in my <i>~/.Xresources</i> file, I need to redefine what this color really looks like, specifically making it darker. I used xcolors(1) to show me a list of colors with names that X would recognize, and I saw that 'grey' was a decent shade of, you guessed it, grey. So I put this in my <i>.Xresources</i> file:
+
+<pre>
+XTerm*color7: grey
+</pre>
+
+Now run <i>xrdb -merge ~/.Xresources</i> and new xterms will use this color. Openning up vim and it looks just fine.
+<p/>
+
+One special mention here, is the difference between my CRT monitor and the LCD on my laptop. The default grey color (7) in X on my laptop is perfectly visible. However, on my CRT I need to darken this color to make it visible to me. Your mileage may vary - the CRT I'm currently using is a pretty crappy 19" trinitron with some contrast issues, so using another monitor may clear this up.

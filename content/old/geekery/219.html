@@ -1,0 +1,20 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-02-22T14:40:00-08:00"
+title = "precedence sorting with perl's sort()\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["oneliners", "perl"]
++++
+
+This isn't terribly complicated, but it may be useful to you. Mostly I'm putting it here for my own future reference.
+
+<pre>
+sort { $users{$b} <=> $users{$a} || $a cmp $b } keys(%users)
+</pre>
+
+This will sort first numerically by the values stored in %users and then by the keys of %users. This means that the return value of sort is the keys sorted by data values first, and then alphabetically when both data values are equal.

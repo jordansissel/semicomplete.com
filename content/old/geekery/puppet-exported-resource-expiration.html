@@ -1,0 +1,48 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-11-04T00:17:45-07:00"
+title = "Puppet Trick - Exported Resource Expiration\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["puppet", "sysadmin", "automation"]
++++
+
+I've finally taken the plunge with puppet's exported resources.
+
+<p>
+
+"Exported resources" is a feature of puppet that allows your nodes to export
+resources to other nodes. You can read more about this feature on <a
+href="http://projects.puppetlabs.com/projects/1/wiki/Exported_Resources">puppet's
+exported resources documentation</a>. Covering how to setup exported resources
+or storeconfigs is out of scope, but if you need help read the docs and come to
+#puppet on freenode IRC.
+
+<p>
+
+Exported resources are pretty cool, but they lack one important feature -
+expiration/purging. The storeconfigs database has no idea about nodes
+that you have decommissioned or repurposed, so it's very possible to leave
+exported resources orphaned in your database.
+
+<p>
+
+I worked around this by making my resources such that I can expire them. This
+is done by making a custom define that has a 'timestamp' field that defaults to
+now, when registering each time. If a node has not checked in (and updated its
+resources) recently, I will consider that resource expired and will purge it.
+
+<p>
+
+I made a demo of this and put the code on github: <a
+href="https://github.com/jordansissel/puppet-examples/tree/master/exported-expiration/">jordansissel/puppet-examples/exported-expiration</a>.
+More details (and example output of multiple runs with expiration)  are available in the <a href="https://github.com/jordansissel/puppet-examples/blob/master/exported-expiration/README.rdoc">README</a>.
+
+<p>
+
+The demo is runnable by itself (standalone, no puppet master), so you can test
+it without needing to mess with your own puppet installations.

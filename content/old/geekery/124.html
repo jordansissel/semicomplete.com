@@ -1,0 +1,19 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2004-08-12T11:48:00-07:00"
+title = "new project: solaudio\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["programming", "unix"]
++++
+
+<h4>Solaris Audio Controller</h4>
+I got tired of trying ot use Solaris' graphical audio controller, <code>sdtaudiocontrol</code>. It's slow locally, slower to xforward, etc. So I went on down to <a href="http://docs.sun.com">docs.sun.com</a> and started perusing the documentation on <code>audio(7I)</code> and <code>mixer(7I)</code>. A few hours later, BOOM, I've got a commandline audio control utility.<br>
+It's written in C and requires nothing. Compile it with: <code>cc -o solaudio solaudio.c</code>.
+<p>
+
+<a href="http://www.csh.rit.edu/~psionic/projects/solaudio/">http://www.csh.rit.edu/~psionic/projects/solaudio/</a>

@@ -1,0 +1,54 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-11-25T23:39:40-08:00"
+title = "Brute force ssh goes distributed\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
++++
+
+I was working with grok tonight when I noticed this in a randomly-selected
+machine's logs:
+
+<pre>
+Nov 26 02:12:53 scorn sshd[77981]: error: PAM: ... christmas from 124.42.124.87
+Nov 26 02:14:46 scorn sshd[77987]: error: PAM: ... christmas from 83.16.61.114
+Nov 26 02:18:49 scorn sshd[78035]: error: PAM: ... christoffer from 220.199.6.2
+Nov 26 02:20:33 scorn sshd[78047]: error: PAM: ... christoffer from 124.42.124.87
+Nov 26 02:26:21 scorn sshd[78071]: error: PAM: ... christopher from 70.46.140.187
+Nov 26 02:28:18 scorn sshd[78074]: error: PAM: ... christos from 80.32.193.169
+Nov 26 02:30:16 scorn sshd[78085]: error: PAM: ... christos from 201.161.28.9
+Nov 26 02:34:17 scorn sshd[78104]: error: PAM: ... christy from 200.181.121.26
+Nov 26 02:36:12 scorn sshd[78126]: error: PAM: ... christy from 211.154.254.89
+Nov 26 02:38:09 scorn sshd[78129]: error: PAM: ... christy from 58.39.145.213
+Nov 26 02:40:08 scorn sshd[78149]: error: PAM: ... chroma from 62.97.62.155
+Nov 26 02:42:10 scorn sshd[78164]: error: PAM: ... chroma from 83.19.224.11
+Nov 26 02:44:02 scorn sshd[78185]: error: PAM: ... chroma from 189.43.21.244
+Nov 26 02:45:57 scorn sshd[78223]: error: PAM: ... chuck from 200.248.82.130
+</pre>
+
+(I trimed the lines horizontally for content)
+
+<p>
+
+The usual pattern of dictionary-ordered username attempts and two-minute
+intervals was there, but the anomaly here was that the source host was
+changing.
+
+<p>
+
+This is new to me as it looks like the botnets that walk around trying to brute
+force ssh access have gotten distributed. Instead of a single host walking
+usernames, multiple hosts are doing it.
+
+<p>
+
+That's awesome.
+
+<p>
+
+As a side note, this probably puts the kibosh on non-collaborative IDS
+tools that bans repeated, failed ssh attempts from a single host.

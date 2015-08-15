@@ -1,0 +1,45 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-10-27T04:12:09-07:00"
+title = "keynav with xinerama support\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["keynav", "xinerama", "x11", "xlib", "projects"]
++++
+
+<i> This is <a href="http://groups.google.com/group/keynav-users/browse_thread/thread/aff60714fb1f3556">the same post</a> I made to the keynav-users mailing list</i>
+
+<p>
+
+I just finished working on the xinerama portion of multi-screen
+support for keynav.
+
+<p>
+
+If someone is interested, I could use some help testing. It's working
+for me, and there are a few odd behaviors that I'm not sure are the
+best. Let me know if you test it.
+
+<p>
+
+No new official release yet, but if you want to test, svn can be
+fetched with: <br>
+svn checkout http://semicomplete.googlecode.com/svn/keynav 
+
+<pre>
+- Include support for multiple screens.
+  * When 'start' happens, the region will be the size of the current display
+    (wherever the mouse is)
+  * Moving the region outside of the current display will move it to the next
+    display (right or left). This currently only works with Xinerama.
+  * History works as expected (move to the right display, history-back goes to
+    the previous display, etc)
+  * When multiple Screen (non-xinerama) are found, XGrabKey on all root windows.
+  * Screens are sorted, if possible, from left-to-right based on x-coordinate
+    origin. This unfortuntely means, for now, only left-to-right monitor
+    configurations are known to be supported.
+</pre>

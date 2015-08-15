@@ -1,0 +1,34 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2003-12-24T22:38:00-08:00"
+title = "bourne (sh, ksh, bash, zsh, ...) file descriptor fun\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["shell"]
++++
+
+Yeah, so having just figured this out now (I'm sure it's in a manpage somewhere) -<br>
+You can open file descriptors at will by doing:<br>
+<br>
+<pre>
+exec 3> file_output
+</pre>
+<br>
+The 3 here is the number of the file descriptor, and can be any number really. What this lets you do now is write to that file descriptor:<br>
+<br>
+<pre>
+echo "Hello there" >&3
+</pre>
+<br>
+Now, if you look at the contents of <code>file_output</code> you'll see that it contains "Hello there" - neat?<p>
+
+To close a file descriptor do this:<br>
+<pre>
+exec 3>&-
+</pre>
+<br>
+again, where 3 is the number of the file descriptor you want to close.

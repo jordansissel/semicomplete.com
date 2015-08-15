@@ -1,0 +1,28 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-11-10T00:03:11-08:00"
+title = "Upgraded to ubuntu 8.10\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["ubuntu", "upgrade"]
++++
+
+Upgraded my workstation to ubuntu 8.10 without much stress. Horray.
+
+<p>
+
+Feels like firefox is running slower now, but that might just be perceived
+slowness or network crappiness. Still, I ran top(1) and saw some new
+'chipcardd4' process waking up every few seconds and bursting cpu. It wasn't
+doing enough to cause problems, but I'd never seen it before. Checking strace
+showed it in a loop sleeping for 750ms, twice, then reading through
+/sys/devices/. Doing "sudo ./libchipcard-tools stop" made it go away.
+
+<p>
+
+Doesn't linux have inotify so programs don't have to do sleepy-loops checking
+the filesystem?

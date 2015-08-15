@@ -1,0 +1,27 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-11-08T22:08:44-08:00"
+title = "Powershell to remove dotfiles\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["powershell", "windows", "scripting"]
++++
+
+I just rsync'd all willy-nilly (not something I recommend). I copied stuff I
+was working on to a test windows box. Poking around, I realized I copied over a pile of dotfiles (.svn, vim backup files, etc).
+
+<p>
+
+In any bourne shell, this fix would be a simple find invocation (depending on how modern your find(1) is):
+
+<pre> find somepath -name '.*' -delete </pre>
+
+Back in Windows, my first reaction was to be sad because I didn't know a simple oneliner to do the same thing. Then, I remembered powershell was installed and made this kind of stuff easy.
+
+<pre> dir -recurse | where {$_.name -match "^\."} | rm </pre>
+
+Delicious.

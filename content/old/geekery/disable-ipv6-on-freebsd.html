@@ -1,0 +1,30 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-05-29T22:58:45-07:00"
+title = "Disable IPv6 on FreeBSD\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["freebsd", "pf", "hacks"]
++++
+
+I was trying to install something from ports tonight, and package fetching kept
+hanging for a long time. Turns out, for whatever reason, it was trying to
+connect to some of the servers on ipv6, which would fail and it would then try
+ipv4. This is probably due to some change I made recently but forgot about.
+
+<p>
+
+At any rate, I needed a quick way to kill ipv6 activity on the machine. Trying
+'/etc/rc.d/network_ipv6 onestop' didn't seem to have the desired effect, so I
+added this rule to my pf.conf:
+
+<pre>
+block return out inet6 all
+</pre>
+
+Everything is happy now. Probably not the most optimal solution, but I'm not
+looking for the optimal solution right now.

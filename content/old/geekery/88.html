@@ -1,0 +1,60 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2003-12-23T17:14:00-08:00"
+title = "perl's CGI module\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["perl"]
++++
+
+I have overlooked some of the coolest parts of perl's CGI module for the longest time - I've known it can generate HTML but I've always shrugged it off as thinking it can't do what i want it to, i couldn't have been more wrong.<p>
+
+What I'm specifically referring to is form generation. The rest of the HTML generating methods are useless to me (like the h1() method), but I'll focus on the cool form generating ones. <br>
+Why are they cool? They simplify your life and make code cleaner - For instance, lets say oyu have this fugly line of code:<br>
+<pre>
+$poop = "email_address";
+$default = "user@somedomain.com"
+print 'Email address: &lt;input type="text" name="' . $poop .  
+      '" value="' . $default . '"&gt;&lt;br&gt;';
+</pre>
+<br>
+This prints out happy html that looks like this:
+<div class="output">
+Email address: <input type="text" name="email_addres" value="user@somedomain.com"><br>
+</div>
+<br>
+Now, that print line is pretty damn ugly, but we can easily make it pretty once more by doing:
+
+<pre>
+use CGI qw/:standard/;
+print "Email Address: " . textfield($poop, $default) . "&lt;br&gt;";
+</pre>
+<br>
+
+And the output is:<br>
+<div class="output">
+Email Address: <input type="text" name="email_address" value="user@somedomain.com" /><br>
+</div>
+
+<p>
+
+Neat? Yeah.. What next? More neatness! You have an array you want to turn into a group of checkboxes...<p>
+
+<pre>
+use CGI qw/:standard/;
+@foo = ("check1", "foo", "bar", "baz", "poopie", "hello", "Coke!", "Pepsi?");
+@def = ("foo", "bar", "poopie");
+print 'Checkbox listing:&lt;br&gt;';
+print checkbox_group(-name => "options", -values => \@foo, 
+                     -columns => 3, -defaults => \@def);
+print '&lt;br&gt;';
+</pre>
+
+What does this look like?<p>
+<div class="output" width="50%">
+Checkbox listing:<br><table><tr><td><input type="checkbox" name="options" value="check1" />check1</td><td><input type="checkbox" name="options" value="baz" />baz</td><td><input type="checkbox" name="options" value="Coke!" />Coke!</td></tr><tr><td><input type="checkbox" name="options" value="foo" checked />foo</td><td><input type="checkbox" name="options" value="poopie" checked />poopie</td><td><input type="checkbox" name="options" value="Pepsi?" />Pepsi?</td></tr><tr><td><input type="checkbox" name="options" value="bar" checked />bar</td><td><input type="checkbox" name="options" value="hello" />hello</td></tr></table><br>
+</div>

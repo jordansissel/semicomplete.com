@@ -1,0 +1,46 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-01-08T10:14:00-08:00"
+title = "xulrunner\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["open source adventures", "web"]
++++
+
+I've been working on various touchscreen-related projects off-and-on and I've
+always wanted to use Firefox (Gecko, really) as the primary interface. HTML and
+JavaScript are quick and easy to hack together to provide a simple interface
+for touching and tapping goodness. However, the only touchscreen-based system I
+have access to has a 133mHz processor on it and Firefox takes about 15 minutes
+to start up.
+<p/>
+I knew about the GRE (Gecko Runtime Environment) but I've never bothered learning about Mozilla's Embedded API to write my own application. Someone at Mozilla decided to do just that and more. I found this project today, called XULRunner.
+
+<p/>
+<a href="http://developer.mozilla.org/en/docs/XULRunner">XULRunner</a> is a fantastic application that provides Gecko, XUL, JavaScript, et al; all without a fancy browser wrapping it. This is, in my opinion, perfect for embedded applications that may need/want web-browsing capability.
+
+<p/>
+
+Applications for XULRunner are devilishly easy to write if you know XUL or have a server to serve webpages. A <a href="http://blogs.acceleration.net/ryan/archive/2005/05/06/1073.aspx">XULRunner tutorial</a> mentions having to set a "home page" for your XULRunner application, it uses this:
+
+<pre>pref("toolkit.defaultChromeURI", 
+     "chrome://applicationName/content/startPage.xul");</pre>
+
+I didn't want to write a full XUL application. I wanted to use my existing HTML/JavaScript-based web kiosk pages. So, what do I use?
+
+<pre>pref("toolkit.defaultChromeURI",
+     "http://www.csh.rit.edu/~psionic/projects/kioskweb/demo/");</pre>
+
+Start XULRunner, and a window pops up with my webpage in it. Fantastic!
+
+<p/>
+
+I haven't had a chance to test XULRunner on the touchscreen system yet, but seeing as how it lacks much of the code that makes firefox slightly bulky I'm hoping it will startup and run much faster. We'll see soon!
+
+<p/>
+
+If you're looking to write a web-based application that uses XUL or even simply HTML+JavaScript, give XULRunner a look.

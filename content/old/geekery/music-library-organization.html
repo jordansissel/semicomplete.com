@@ -1,0 +1,35 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-09-01T07:06:35-07:00"
+title = "Music sorting\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["music", "python"]
++++
+
+My music collection was fairly randomly sorted. Until today. In the past, I had
+ripped some of my CDs to random locations which inevitably moved around over
+the years, for whatever reason. This made finding a particular song annoying
+without something that already had parsed the ID3 tags. 
+
+<p>
+
+I tried to use iTunes to 'consolidate' my library into
+/path/[artist]/[album]/[title].mp3 but for whatever reason it would get some
+percentage complete and then die. I assume it has something to do with strange
+non-alphanumeric upper-ascii characters in filenames and iTunes was using files
+over a samba share.
+
+<p>
+
+Whatever the reason, I had to fix this myself. I have two scripts now. One
+parses the ID3 tags and stores them in a file, and one uses that data to
+organize songs into the aforementioned directory structure.
+
+<p>
+
+Scripts: <a href="/scripts/findsongs.py">findsongs.py</a> and <a href="/scripts/migratemusic.py">migratemusic.py</a>

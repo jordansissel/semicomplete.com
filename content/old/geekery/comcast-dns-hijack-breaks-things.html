@@ -1,0 +1,254 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-09-22T20:28:07-07:00"
+title = "DNS Redirection and how it will break things\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["dns", "it was working before you fixed it", "comcast", "net neutrality"]
++++
+
+
+There's some hot debate around the implications and rightness of service
+providers to do things like traffic filtering, session hijacking, etc.
+
+<p>
+
+I'm not here to talk about that. The data below aims to focus on the technical
+failures induced by dns hijacking, or dns redirection. I won't bore you with
+the moral, political, or philosophical discussion around this topic.
+
+<p>
+
+Here's a summary if you don't want to read the details:
+<ul>
+<li> DNSBLs probably don't work anymore for Comcast users </li>
+<li> Owned domains (semicomplete.com, google.com, etc) are also subject to hijacking. Domain owners cannot opt-out. </li>
+<li> Down dns servers may result in full-domain hijacking by Comcast (due to dns search suffix and retry behavior) </li>
+<li> Privacy/security/cookie leak due to domain hijacking </li>
+<li> There is an <a href="http://tools.ietf.org/html/draft-livingood-dns-redirect-00">IETF draft</a> to formalize/standarize this destructive behavior that ignores consequences and impact, and neglects important points. </li>
+<li> Sometimes Domain Helper malfunctions and steals valid hostnames, like
+www.google.com: <a href="http://www.flickr.com/photos/jordansissel/3935640722/in/set-72157600173442944/">screenshot here</a> ; <a href="http://www.youtube.com/watch?v=NUDzl1Pf9Mo">or a video</a></li>
+<li> Web browsers aren't the only things using DNS. </li>
+</ul>
+
+<p>
+
+All of the samples below are real data I observed while digging into this issue. They are not faked.
+<p>
+
+Comcast recently finished rolling out their new <a
+href="http://networkmanagement.comcast.net/DomainHelperLogic.htm">Domain
+Helper</a> software. This tool intercepts responses from other DNS servers and
+replaces them with forged responses that point to comcast's search portal. It
+currently modifies responses that indicate 'no such hostname'; in DNS this
+response is called NXDOMAIN.
+
+<p>
+
+For example, if you try to visit 'http://www.someinvalidhost12345.com', it doesn't exist, and the DNS 'NXDOMAIN' response saying so is dropped and replaced with an A  record pointing to Comcast's search site:
+
+<pre>
+% host http://www.someinvalidhost12345.com
+http://www.someinvalidhost12345.com has address 208.68.139.38
+</pre>
+
+The <a href="http://networkmanagement.comcast.net/DomainHelperLogic.htm">domain
+helper</a> documentation explains how it works, but incorrectly describes
+behavior and doesn't describe the consequences of the new behavior.
+
+From the docs, it sounds something "must" (per above) include "www". This is
+false, and is likely just out-of-date documentation, as the documentation goes
+on to explain that they  "will eventually phase in the following pattern
+matches to enhance this service in the future." This probably explains why
+valid invalid.valid hostnames are bounced to comcast, and why invalid TLDs are
+bounced to comcast:
+
+<pre>
+% host -t A abcdefghijklmnopww12345678.semicomplete.com
+abcdefghijklmnopww12345678.semicomplete.com has address 208.68.139.38
+
+% host -t A www.dns.is.broken
+www.dns.is.broken has address 208.68.139.38
+</pre>
+
+Simply having 'ww' is sufficient, even for valid domains like mine or totally
+invalid TLDs like 'broken'.  Every NXDOMAIN is subject to hijacking. The IP
+address above is still comcast's search redirector.
+
+<p>
+
+So, what is the hard technical impact of this change?
+
+<h4> DNSBLs may be broken </h4>
+
+DNSBL is 'dns blacklist', check <a
+href="http://en.wikipedia.org/wiki/DNSBL">wikipedia</a> for detail. Wikipedia
+says this about how DNSBLs are used:
+
+<blockquote>
+Look up this name in the DNS as a domain name ("A" record). This will return
+either an address, indicating that the client is listed; or an "NXDOMAIN" ("No
+such domain") code, indicating that the client is not.
+</blockquote>
+
+<pre>
+% host -t A 111.0.168.192.bl.spamcannibal.org
+111.0.168.192.bl.spamcannibal.org.home has address 208.68.139.38
+% host -t A 111.111.11.11.zen.spamhaus.org
+111.111.11.11.zen.spamhaus.org.home has address 208.68.139.38
+</pre>
+
+<p>
+
+According to DNSBL de facto behavior, I should probably get NXDOMAIN given it's
+unlikely these IPs are in DNSBLs. Alternately, many DNSBLs reply with a special
+'127.0.0.xxx' address to indicate what the status of the address is if it is in
+the list. The responses above are neither, but are Comcast's search domain.
+
+<p>
+
+A Comcast employee on twitter pointed out that DNSBLs are only used by mail
+servers. Fine, we don't run mail servers on Comcast residental, but there are
+mail clients that support DNSBL for local spam filtering (thunderbird may,
+evolution appears to). The point is, DNSBL is not purely for 'mail servers',
+meaning this feature breaks DNSBL for clients.
+
+<p>
+
+I don't have data about how many people use DNSBL on mail clients. Point is,
+it's an option not limited to mail servers.
+
+<h4> Down DNS servers are fully hijacked </h4>
+
+When a DNS server is down, your DNS request generally times out and you get a
+SERVFAIL response. What happens when your local DNS client gets a SERVFAIL,
+though?
+
+<p>
+
+DNS resolvers support 'search suffixes'. In linux, you see this in
+/etc/resolv.conf as 'search some list of domains'. At my house, I have a 'home'
+dns zone managed automatically by my ddwrt router. This means I have 'search home' in my resolver.
+
+<p>
+
+If I try doing a dns query for 'some-invalid-host.something.com' and get
+NXDOMAIN or SERVFAIL, my resolver will try adding a suffix, if it's configured
+to do so. Here's an example of a dns server not responding and yielding
+SERVFAIL and the resolver's attempt to try with a suffix 'home' resulting in
+comcast NXDOMAIN hijacking me:
+
+<pre>
+% host -t A wwwdead.evilcouncil.org 68.87.76.182
+Using domain server:
+Name: 68.87.76.182
+Address: 68.87.76.182#53
+Aliases:
+
+wwwdead.evilcouncil.org.home has address 208.68.139.38
+
+Sniffing my local network traffic with tshark during this lookup:
+6.755838 192.168.0.97 -> 68.87.76.182 DNS Standard query A wwwdead.evilcouncil.org
+6.770844 68.87.76.182 -> 192.168.0.97 DNS Standard query response, Server failure
+6.771264 192.168.0.97 -> 68.87.76.182 DNS Standard query A wwwdead.evilcouncil.org.home
+6.799348 68.87.76.182 -> 192.168.0.97 DNS Standard query response A 208.68.139.38
+</pre>
+
+Interesting. Here's another data point:
+
+<pre>
+% ping hijackmyww.evilcouncil.org
+PING hijackmyww.evilcouncil.org.home (208.68.139.38) 56(84) bytes of data.
+^C
+</pre>
+
+Notice comcast's search portal IP repeated again and again...
+
+<p>
+
+If we use comcast's default search suffix for my area, hsd1.ca.comcast.net,
+what happens?; 'www.example.com' may SERVFAIL, then we retry as
+www.example.com.hsd1.ca.comcast.net, which comes back as comcast's
+search2.comcast.net, again, due to their NXDOMAIN intercept.
+
+<p>
+
+Now, any SERVFAIL may automatically direct you to through their 'dns helper'
+search redirect.
+
+<h4> Security issues </h4>
+
+The last issue is something I noticed last night while disconnecting my VPN to
+work. I had our monitoring site up in my browser - this page autorefreshes
+itself every few minutes. After disconnecting, it refreshed, and dumped me at
+search2.comcast.net. 
+
+<p>
+
+Since the redirect happens in DNS, the browser will believe that you are still
+talking to the same server (by name) and will share cookies and http
+authentication freely. What happens if you visit 'www.mail.google.com' in Firefox? Let's look at the network:
+
+<pre>
+snack(~) % sudo ngrep . 'port 80 and host 208.68.139.38'
+[sudo] password for jls:
+interface: eth0 (192.168.0.0/255.255.255.0)
+filter: (ip or ip6) and ( port 80 and host 208.68.139.38 )
+match: .
+####
+T 192.168.0.97:44422 -> 208.68.139.38:80 [AP]
+  GET / HTTP/1.1..Host: www.mail.google.com..User-Agent: Mozilla/5.0 (X11; U; Linux i686 (x86_64); en-US; rv:1.9.1.3) Gecko/20090824 Firefo
+  x/3.5.3..Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8..Accept-Language: en-us,en;q=0.5..Accept-Encoding: gzip,
+  deflate..Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7..Keep-Alive: 300..Connection: keep-alive..Cookie: PREF=ID=0cc23ef3118faec6:U=fffb...
+</pre>
+
+The above shows Firefox sending Comcast my google mail login cookie. Had I been
+visiting a page that uses <a
+href="http://en.wikipedia.org/wiki/Basic_access_authentication">basic HTTP
+authentication</a>, my username and password would've been sent, too.
+
+<p>
+
+Sure, cookies have a 'secure' attribute which tells the browser to only send
+them over SSL connections, but does everyone use them? Nope. Bank of America,
+for example, doesn't set this flag, which is a security issue itself, but is
+leaked to Comcast on typoed URLs or during 'domain helper' malfunctions.
+
+<p>
+
+Firefox has no idea that 'www.mail.google.com' isn't Google, or
+www1234.bankofamerica.com isn't Bank of America, and a normal user won't have
+any idea they just leaked their credentials, private session info, and other
+cookie data.
+
+<p>
+
+<h4> Domain Helper Malfunction </h4>
+
+Ofcourse, the worst part of this whole system is when the hijacking itself
+misbehaves, and you get 'www.google.com' hijacked, when it's a real hostname.
+
+<p>
+
+<h4> Defenses and Actions </h4>
+
+How can we prevent some or all of this? Contact your ISP, help them understand
+the impact of this behavior. Pushing at least to allow domain owners to opt-out
+of the domain redirection might be a start or to require that providers not
+hijack owned domains. Not hijacking invalid TLDs would be good too, given the
+common usage of 'corp' and others as an intranet TLD.
+
+<p>
+
+If you are a comcast user and want  to opt-out of Comcast's Domain Helper, you
+can visit <a
+href="https://dns-opt-out.comcast.net/">dns-opt-out.comcast.net</a> (requires
+login, only works when viewed from comcast). Alternately, you can point your
+local dns caches at <a
+href="http://dns.comcast.net/dns-ip-addresses2.php">comcast's non-domain-helper
+servers</a>
+

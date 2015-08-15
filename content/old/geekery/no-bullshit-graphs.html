@@ -1,0 +1,102 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-03-17T03:18:36-07:00"
+title = "Less bullshit, more graph.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["graphs", "rrdtool", "statistics"]
++++
+
+I've been working recently on dynamic, simple graphing. Systems like Cacti
+provide useful interfaces, but getting data into it is a pain in the ass.
+
+<p>
+
+You have 1500 machines you want in cacti. How do you do it? 
+
+<p>
+
+My take is that you shouldn't ever need to preregister data types or data
+sources. Have a system that you simply throw data at, and it stores it so you
+can get a graph of it later. All I need to do, to graph new data, is simply
+write a script that produces that data and sends it to the collector. 
+
+<p>
+
+The collector is a python cgi script that frontends to rrdtool. It takes all cgi paramters and stores the values with a few exceptions:
+<ul>
+  <li> machine=XX - Spoof machine to store data for. If not given, defaults to
+  REMOTE_ADDR. Useful if you need to proxy data through another machine, or are
+  reporting data about another machine you are probing.</li>
+  <li> timestamp=XX - Override default timestamp ("now"). </li>
+</ul>
+
+Everything else gets stored like this: /dataroot/&lt;machine&gt;/&lt;variable&gt;.rrd
+
+<p>
+
+Example:
+<pre>
+kenya(/mnt/rrds/129.21.60.26) % ls
+C_bytes_per_page.rrd                            C_pages_inactive.rrd
+C_cpu_context_switches.rrd                      C_rfork_calls.rrd
+... etc ...
+</pre>
+
+All of those rrds are created by simply throwing data at the python cgi script.
+The source of the data is a script that runs 'vmstat -s' and turns it into
+key-value pairs.
+
+<p>
+
+Why are the files prefixed with "C_" ? The data I am feeding in comes from counters, and therefore should be stored as counter datatypes in rrdtool. The 'C_' prefix is a hint that if the variable needs an rrd created for it, that the DS type should be COUNTER. The default without this prefix is GAUGE.
+
+<p>
+Sample update http request:
+<br>
+http://somehost/updater.py?C_fork_calls=32522875&C_system_calls.rrd=235293874987
+
+<p>
+
+Feel free to <a href="/scripts/statpoll.sh">view the vmstat -s poll script </a> to get a better idea of what this does. I also have another script that will do some <a href="/scripts/freebsd-netstat.sh">scraping on 'netstat -s' in freebsd</a> (probably works in linux too).
+
+<p>
+
+vmstat -s looks like this:
+<pre>
+456846233 cpu context switches
+3220655757 device interrupts
+ 17964606 software interrupts
+  ... etc ...
+</pre>
+
+It's trivial to turn this into key-value pairs. If this were Cacti (or similar
+system) I would have to go through every line of vmstat -s and create a new
+data type/source/thing for each one, then create one per host. Screw that. Keep
+in mind my experience with Cacti is pretty small - I saw I had to register data
+sources and graphs and such manually and left it alone after that.
+
+<p>
+
+Anyway, back at the problem. Now how do I graph it? The interface isn't the best, but we use a cgi script again:
+
+<p>
+
+Show me all the machines with 'C_system_calls' graphed over the past 15 minutes:
+<br>
+graph.py?machines=129.21.60.1,&lt;...&gt;,129.21.60.26&keys=C_system_calls&start=-15min
+
+<p>
+
+<img src="/images/c_system_calls.png">
+
+<p>
+
+This kind of system has the feature that you never need to explicitly define
+data input variables or data input sources - All you need is to hack together a
+script that can pump out key-value pairs. No documentation to read. No time
+consumed registering 500 new servers in your graph system.

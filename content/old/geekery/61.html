@@ -1,0 +1,26 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2003-08-23T17:35:00-07:00"
+title = "mserv, it's neat.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["open source adventures"]
++++
+
+In my quest to stop using xmms (it requires that whole.. mouse thing) I ran
+across a mp3 jukebox server called mserv 
+[<a href="http://www.mserv.org">mserv.org</a>]. 
+<br>
+It's pretty cool and can support just about anything I want it to since it uses
+external programs to play them. It uses a server protocol similar to that of
+Joe's <a href="http://www.csh.rit.edu/~sunday/jukebox">Moonshot
+Jukebox</a>. I don't have any oggs so his jukebox is mostly useless to me. <br>
+I quickly hacked together a script (well, it functions as several tools) to let
+me play songs more easily. It's called mq and you can see it here if you want.
+With it you can do things like: <code>mpick Cake | mq</code> to enqueue all
+tracks matching "Cake"<br>
+Put it in ~/bin/ and have it propogate its tools with symlinks by doing <code>mq -setup</code>. Look at the code to figure out what does what, it's fairly straight forward.

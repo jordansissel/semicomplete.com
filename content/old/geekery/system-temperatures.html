@@ -1,0 +1,61 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-11-30T21:18:18-08:00"
+title = "Querying temperature in Windows\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["temperature", "monitoring", "smart", "smartmontools", "windows", "wmi"]
++++
+
+It occured to me tonight that I didn't have a good way to query temperatures
+from a Windows box. I'd used GUI tools to do it before, but that doesn't really
+lend itself to automation and monitoring.
+
+<p>
+
+The default SNMP configuration in XP doesn't export temperature (at least
+nothing I saw). I knew SMART had temperature information, but that wasn't CPU
+temperature or anything else outside the harddrive.
+
+<p>
+
+SMART data is accessible through a number of tools. I've used <a
+href="http://smartmontools.sourceforge.net/">smartmontools</a> before, but
+didn't know they had a build available for Windows until just now. Same tools
+as the Linux/FreeBSD/whatever versions. The device naming is the same as on the
+non-windows versions, and the smartctl manpage details the syntax. I wanted
+temperature information, and powershell helps make this pretty easy:
+
+<pre>
+PS > .\smartctl.exe -a /dev/hda `
+     | where {$_ -match "Temperature"} `
+     | foreach { $_.split()[-1] }
+46
+</pre>
+
+<p>
+
+After a bit of randomly permuting search queries, I found that some temperature
+information is available through WMI. The temperature values are in tenths of
+kelvin. We can query this from powershell:
+
+<pre>
+PS > get-wmiobject MSAcpi_ThermalZoneTemperature -namespace "root/wmi" `
+     | select CurrentTemperature,InstanceName
+
+CurrentTemperature InstanceName
+------------------ ------------
+              3102 ACPI\ThermalZone\THRM_0
+</pre>
+
+I found this particular WMI class by doing the following after getting some hints from search results:
+
+<pre>
+PS > get-wmiobject -namespace "root/wmi" -list | findstr Temp
+MSAcpi                                    MSAcpi_ThermalZoneTemperature
+</pre>
+

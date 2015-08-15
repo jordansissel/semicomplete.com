@@ -1,0 +1,33 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-09-22T18:21:26-07:00"
+title = "Subversion 1.5 on Fedora 9\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["fedora", "svn", "subversion", "linux", "hope is not a strategy"]
++++
+
+<pre>
+jls(~) % sudo yum install subversion
+Loaded plugins: refresh-packagekit
+Setting up Install Process
+Parsing package install arguments
+Package subversion-1.4.6-7.x86_64 already installed and latest version
+</pre>
+
+I had hoped (hope is not a strategy) Fedora would have given me svn 1.5 by now. Nope.
+
+<p>
+
+To get svn 1.5, rather than ask fedora or google, I just built it myself. I
+needed to 'yum install neon-devel' and used './configure --with-neon=/usr
+--with-ssl --with-zlib=/usr/lib' to configure subversion. Otherwise the
+build/install went fine.
+
+<p>
+
+Huzzah!

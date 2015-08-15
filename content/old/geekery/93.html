@@ -1,0 +1,47 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2003-12-24T22:00:00-08:00"
+title = "poor man's netcat.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["shell"]
++++
+
+This script requires ksh. It makes use of a feature of ksh (zsh supports this too, but differently) called a co-process. A co-process is started by using the <code>|&</code> pipe at the end of a command. The file descriptor you use to write to is <code>&gt;&p</code>. To read from it, you use <code>&lt;&p</code>. Here's an example:
+<pre>
+tr 'a-z' 'A-Z' |&
+echo "hello there" >&p
+exec 3>&p; exec 3>&-
+cat <&p
+</pre>
+<br>
+The output is:
+<pre>
+HELLO THERE
+</pre>
+<br>
+WTF?! You might be confused, I was when I first started playing with these.
+What happens is it runs <code>tr 'a-z' 'A-Z'</code> in the background as a
+co-process. Then it echos "hello there" to the input of <code>tr</code>. To
+signify that we are in fact done sending input, we have to close the input file
+descriptor, this is done through 2 statements: <code>exec 3&gt;&p</code> - this
+opens file descriptor 3 and has it output to the co-process. The next
+statement, <code>exec 3&gt;&-</code>, tells ksh you want to close file
+descriptor 3, which in turn closes the input to the co-process. The last line
+should be fairly obvious: <code>cat &lt;&p</code> - it sends the output of the
+co-process through <code>cat</code>.  <br>
+Ok, so you want that script do ya? Look below.<br>
+<br>
+<pre>
+#!/bin/ksh
+[ $# -ne 2 ] && echo "Invalid parameters" && exit 1
+telnet $1 $2 |&
+cat <&0 >&p
+sed -e '1,3d' <&p
+</pre>
+<br>
+I won't get into much detail as to how things work here, should be pretty straight-forward. It takes 2 parameters, first being the host and second being the port. It reads from standard input and outputs to standard output.

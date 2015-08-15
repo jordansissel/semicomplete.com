@@ -1,0 +1,50 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-01-06T06:54:00-08:00"
+title = "Soekris net4501 GPIO on FreeBSD 7.0\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["soekris", "net4501", "gpio", "freebsd", "C"]
++++
+
+I finally picked up some small parts (leds, breadboard, leads, multimeter) from
+Fry's to start work on my universal remote project. Yes, I know you can buy
+universal remotes. I want to learn more electronics, so why not use this as a
+starter project?
+
+<p>
+
+Since my Soekris box is now free of it's router duties, I can use it for this
+project. To do this, I'll need two pieces: an infrared receiver, and an
+infrared emitter. I bought an infrared emitter led today, and I just need to
+buy a receiver online (they're like $2).
+
+<p>
+
+Before getting there, I needed to learn how to drive the GPIO ports on the net4501.
+
+<p>
+
+It was pretty simple to do, nd after hooking up a few wires I had an LED that
+blinked after a few hours of reading and hacking. The code itself was trivial
+to write, I just had to learn how to talk to the GPIO ports.
+
+<p>
+
+After writing the blinking code, I decided the next step was clearly to add
+fading to the LED. This is commonly done with PWM (pulse-width modulation).
+Apple made this technique famous with its "breathing" LED lights on the
+monitors and laptops when the devices were in sleep mode.
+
+<p>
+
+At any rate, I have successfully written code that makes both the error led and
+the PIO5 (GPIO 0) pin "breathe".
+
+<p>
+
+<a href="/files/blogposts/20080106/glow.c">Download glow.c</a>

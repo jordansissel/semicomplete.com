@@ -1,0 +1,34 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-02-08T23:28:34-08:00"
+title = "C++ Grok has working filters and exec sections now.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["c++", "grok"]
++++
+
+I finished implementing exec and filters:
+<pre>
+exec "tail -1 /var/log/auth.log" {
+  type "syslog" {
+    match = ".*";
+    reaction = "echo %=MATCH|shellescape%";
+  };
+};
+</pre>
+
+I've made a point of having perl-grok's config format work, because I think it
+was a reasonable format (you're free to disagree!). At any rate, filters are
+now working, and the result of the above code is:
+
+<pre>
+Reaction: echo Feb  8 23:25:01 snack CRON\[21596\]: pam_unix\(cron:session\): session closed for user root
+Checking for input: tail -1 /var/log/auth.log(0x74b100)
+Reading from: tail -1 /var/log/auth.log
+
+Feb 8 23:25:01 snack CRON[21596]: pam_unix(cron:session): session closed for user root
+</pre>

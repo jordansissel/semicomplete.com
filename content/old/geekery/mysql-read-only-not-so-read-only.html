@@ -1,0 +1,178 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-09-28T00:41:40-07:00"
+title = "MySQL 5.0 'read-only' permits uncommitted writes\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["mysql", "database", "replication"]
++++
+
+I recently had to do a master failover in mysql to bring up a new mysql master
+to replace an older one.
+
+<p>
+
+The switchover went awry shortly after we told the old master to start slaving
+off of the new master. The output of 'show slave status' indicated a halt of
+replication due to foreign key constraints: an auto_increment primary key had a
+duplicate insert attempt. How did this happen? I'm not sure yet, still digging.
+
+<p>
+
+This puzzle made me wonder how we got into that state given that I put the old
+master in 'read only' mode before doing the switch. Turns out, there are some
+edge cases that are permitted even in read-only mode. The docs have this to
+say:
+
+<blockquote>
+When it is enabled, the server allows no updates except from users that have
+the SUPER privilege or (on a slave server) from updates performed by slave
+threads.
+</blockquote>
+
+<p>
+
+The above exceptions sound pretty reasonable, but I found an undocumented
+exception: uncommitted transactions can be committed even in read-only mode.
+
+<p>
+
+This breaks my expectation that setting read_only means that as soon as this
+setting goes 'true' all writes will fail. This means your backups aren't
+consistent when using read_only unless you lock all your tables during the
+backup. Additionally, commits made after read_only is set will bump the binlog
+position, meaning if your backups do "set readonly, copy master status,
+mysqldump", then you may break things because your mysqldump may have data that
+includes things in the future of the master status you recorded.
+
+<p>
+
+It looks like this is fixed in MySQL >=5.1.15. The docs say that later versions
+will cause setting read_only to block while there's a pending  transactions.
+
+<p>
+
+Related to the original problem (replication failover), I think we should've
+just locked all the tables then restart the old master in read_only mode rather
+than simply setting read_only.
+
+<p>
+
+Below is an example of 'read_only' being set and a transaction commit as
+non-superuser resulting in a data write. I have aligned the actions
+side-by-side as they were executed chronologically.
+
+<p>
+
+Note the master status binary log position had changed after the commit. This
+is expected after a normal database write. You can also see the table was
+actually updated. I wasn't expecting any writes to succeed when read_only is
+set:
+
+<p>
+
+<table>
+<tr>
+<th width="50%"> mysql as user 'test' </th>
+<th width="50%"> mysql as user 'root' </th>
+</tr>
+<tr>
+<td>
+<pre>
+# As a user I created 'test':
+mysql&gt; SET AUTOCOMMIT=0;
+mysql&gt; CREATE TABLE foo.foo (a int) ENGINE INNODB;
+mysql&gt; START TRANSACTION;
+mysql&gt; SELECT * FROM foo.foo;
+Empty set (0.00 sec)
+
+# So far so good, let's insert.
+mysql&gt; INSERT INTO foo.foo (a) VALUES (2);
+mysql&gt; SELECT * FROM foo.foo;
++------+
+| a    |
++------+
+|    2 | 
++------+
+1 row in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+mysql&gt; INSERT INTO foo.foo (a) VALUES (12345);
+ERROR 1290 (HY000): The MySQL server is running 
+with the --read-only option so it cannot execute 
+this statement
+
+# We expected the above error, but can we commit
+# our previous insert before read_only was set?
+mysql&gt; COMMIT;
+Query OK, 0 rows affected (0.01 sec)
+</pre>
+</td>
+<td>
+
+<pre>
+
+
+
+
+
+
+
+# This is an empty result, since we haven't 
+# yet committed.
+root@mysql&gt; SELECT * FROM foo.foo; 
+Empty set (0.00 sec)
+
+
+
+
+
+root@mysql&gt; SET GLOBAL READ_ONLY = TRUE;
+root@mysql&gt; SHOW MASTER STATUS \G
+*************************** 1. row ********
+            File: mysql-bin.000001
+        Position: 644
+    Binlog_Do_DB: 
+Binlog_Ignore_DB: 
+1 row in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+root@mysql&gt; SHOW MASTER STATUS \G
+*************************** 1. row ********
+            File: mysql-bin.000001
+        Position: 834
+    Binlog_Do_DB: 
+Binlog_Ignore_DB: 
+1 row in set (0.00 sec)
+
+root@mysql&gt; SELECT * from foo.foo;
++------+
+| a    |
++------+
+|    2 | 
++------+
+1 row in set (0.00 sec)
+
+</pre>
+</td>
+</tr>
+</table>
+

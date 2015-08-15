@@ -1,0 +1,91 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-05-24T03:04:01-07:00"
+title = "Grok plans and ideas\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok", "ideas", "sysadmin", "logs"]
++++
+
+I'm almost done and graduated from RIT, which is why I haven't posted about
+anything recently. Finally done with this school. Wee!
+
+<p>
+
+Some noise woke me up from my pleasant slumber, and I can't seem to get back to
+sleep, so I might aswell do some thinking.
+
+<p>
+
+I think grok's config syntax is far too cluttered. I would much rather make it
+more simplified, somehow. Something like:
+
+<pre>
+file /var/log/auth.log: syslog
+{blockuser, t=3, i=60} Invalid user %USER% from %IP%
+
+file /var/log/messages: syslog
+{tracksudo, prog=su} BAD SU %USER:F% to %USER:T% on %TTY%
+
+reaction blockuser "pfctl -t naughty -T add %IP%"
+reaction tracksudo "echo '%USER:F% failed su. (to %USER:T%)' &gt;&gt; /var/log/su.log"
+</pre>
+
+Seems like it's less writing than the existing version. Less writing is good. A
+more relaxed syntax would be nicer aswell -such as not requiring quotes around
+filenames.
+
+<p>
+
+This new syntax also splits reaction definitions from pattern matches, allowing
+you to call reactions from different files and other matches. I'll be keepin
+the perlblock and other features that reactions have, becuase they are quite
+useful.
+
+<p>
+
+I've also come up with a simple solution to reactions that execute shell
+commands. The current version of grok will run <code>system("your
+command")</code> every time a shell reaction is run. This is tragicaly
+suboptimal due to startup overhead. The simple solution is to run 
+<code>"/bin/sh -"</code> so that there is already a shell accepting standard
+input and waiting for my commands. Simply write the shell command to that
+program.
+
+<p>
+
+I wrote a short program to test the speed of using <code>system()</code> vs
+printing to the input of a shell. You can view the <a
+href="http://www.semicomplete.com/scripts/testsh.pl">testsh.pl script</a> and
+the <a href="http://www.semicomplete.com/scripts/testsh.prof.out">profiled
+output</a>.
+
+<p>
+
+An abbreviated form of the profiled output follows:
+
+<pre>
+%Time    Sec.     #calls   sec/call  F  name
+92.24    1.5127     1000   0.001513     main::sys
+ 2.04    0.0335     1000   0.000033     main::sh
+</pre>
+
+sys() calls system(), where sh() simply sends data to an existing shell
+process. The results speak for themselves, even though this example is only
+running "echo" - the startup time of the shell is obviously a huge factor in
+runtime. The difference is incredible. I am definitely implementing this in the
+next version of grok. I've already run into many cases where I am processing
+extremely large logs post-hoc and I end up using perl block reactions to speed
+up execution. This shell execution speed-up will help make grok even faster,
+and it can always use more speed.
+
+<p>
+
+Still no time to work on projects right now, perhaps soon! I'm moving to
+California in less than a week, so this will have to wait until after the move.
+
+

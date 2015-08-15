@@ -1,0 +1,29 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-07-14T00:42:09-07:00"
+title = "Python's dict objects can be merged\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["python"]
++++
+
+Much to my surprise, python dict objects can be merged. I've needed this a few
+times but never knew about it mostly due to 'pydoc dict' not mentioning 'merge'
+anywhere.
+
+<pre>
+>>> a = { 1: 2, 3: 4 }
+>>> b = { 1: 100, 5: 6 }
+>>> b.update(a)
+>>> print b
+{1: 2, 3: 4, 5: 6}
+</pre>
+
+dict.update() takes any number of arguments, all of which must be dict objects.
+This lets you merge serveral dicts into one. Conflict resolution, it seems, is "last one
+in wins."
+

@@ -1,0 +1,127 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-02-18T05:52:14-08:00"
+title = "grok - now with more steroids\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok"]
++++
+
+I added a new filter to grok: strftime. Same format strings as strftime(3)
+provides but you need to use & instead of %. Ie; strftime("&D"). This is useful
+when combined with parsedate. I also added a new default pattern, APACHELOG,
+which will match a standard apache log entry.
+
+<p>
+
+Along with that little addition comes another way cooler addition which lets
+you use grok entirely from the command line in a way resembling grep on crack.
+For this we needed 2 new command line flags: new flags -m and -r.
+
+<ul>
+  <li> -m : specify a match string </li>
+  <li> -r : specify a reaction string. Defaults to "%=LINE%" if omitted.  </li>
+</ul>
+
+<p>
+
+The reaction string specifies what is printed on a match. There is no support
+(yet?) for specifying reactions other than printing out data. If you want a
+command to be executed, you could use a clever combination of the shdq filter
+and have grok output shell commands. More on that later on.
+
+<p>
+
+The implementation of this is somewhat klunky, but it works. Under the hood,
+here's what happens:
+
+<pre>
+% grok -m FOO -r BAR
+</pre>
+
+grok takes this and generates the following config in memory:
+
+<pre>
+  exec "cat" {
+    type "all" {
+      match = "FOO";
+      reaction = { print meta2string("BAR", \$v); };
+    };
+  };
+</pre>
+
+The data source being read from is output from cat, which is just a lame hack
+to trick grok into reading a file from stdin. This is really useful. Let's try
+a few examples:
+
+<p>
+
+<h4>Grep a file for anything looking like an IP:</h4>
+
+We have a log file with IPs in it. Writing a regex to grab any line with an IP on it is annoying. Let's use grok:
+
+<pre>
+% perl grok -m "%IP%" < /var/log/messages | head -5
+Feb  7 19:50:52 kenya dhcpd: Forward map from D962WZ71.home to 192.168.10.189 FAILED: Has an A record but no DHCID, not mine.
+Feb  7 19:50:52 kenya dhcpd: Forward map from D962WZ71.home to 192.168.10.189 FAILED: Has an A record but no DHCID, not mine.
+Feb  7 22:17:16 kenya named[17044]: stopping command channel on 127.0.0.1#953
+Feb  7 22:17:18 kenya named[16239]: command channel listening on 127.0.0.1#953
+Feb  9 05:11:17 kenya sshd[22002]: error: PAM: authentication error for root from 211.147.17.110
+</pre>
+
+At this point, grok is behaving much like grep, but you get all of the easy
+matching power of grok.
+
+<h4> Syslog messages with IPs + extra text processing </h4>
+
+How about if we want any syslog message with an IP in it, and we want to know what date and program logged it?
+
+<pre>
+% perl grok -m "%SYSLOGBASE% .* %IP%" -r "%SYSLOGDATE|parsedate|strftime('&D')% %PROG% %IP%\n" < /var/log/messages | head -5
+02/07/07 dhcpd 192.168.10.189
+02/07/07 dhcpd 192.168.10.189
+02/07/07 named 127.0.0.1
+02/07/07 named 127.0.0.1
+02/09/07 sshd 211.147.17.110
+</pre>
+
+<h4> Process apache logs </h4>
+
+What about the new APACHELOG pattern? Here's a sample usage of it:
+
+<pre>
+% tail -5 access | perl grok -m "%APACHELOG%" -r "%HTTPDATE|parsedate% %QUOTEDSTRING:URL|httpfilter%\n"
+1171799519 /blog/geekery/grok-like-grep.html?source=rss20
+1171799581 /projects/solaudio
+1171799624 /projects/solaudio/
+1171799651 /~psionic/seminars/vi/viseminar.html
+1171799652 /seminars/vi/viseminar.html
+</pre>
+
+
+<h4> Break a file into parts grouped by IP </h4>
+
+What if you want to find out what IP causes the most log chatter? Use the shdq
+filter and have grok output shell commands which you then pipe to /bin/sh.
+
+<pre>
+% cat /var/log/messages | perl grok -m '%IP%' -r 'echo "%=LINE|shdq%" >> /tmp/log.%IP%'  | sh
+% ls /tmp/log.*
+/tmp/log.127.0.0.1              /tmp/log.211.147.17.110
+/tmp/log.192.168.0.254          /tmp/log.71.70.243.218
+% wc -l /tmp/log.*
+       4 /tmp/log.127.0.0.1
+       1 /tmp/log.192.168.0.254
+      70 /tmp/log.211.147.17.110
+       1 /tmp/log.71.70.243.218
+</pre>
+
+<h4> Latest version (potentially unstable, but the above examples work): </h4>
+
+Download and enjoy: <a href="/projects/grok/grok-20070218.tar.gz">grok-20070218.tar.gz</a>
+
+

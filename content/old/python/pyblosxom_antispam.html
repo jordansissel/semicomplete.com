@@ -1,0 +1,46 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-07-22T22:11:24-07:00"
+title = "Pyblosxom comment antispam plugin\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["python", "pyblosxom", "site", "plugins"]
++++
+
+Ever since I added comments to this site, I've started getting comment spam. To
+combat this, I hacked together a comment management system using jquery and
+python. It lets me search comments and delete them via web interface.
+
+<p>
+
+I'm bored of deleting comments by hand. So, I wrote a little antispam plugin.
+This plugin creates a token that expires after a given period of time. This
+token is used as a hidden item in the comment form. If this token is expired
+when the form is submitted, the comment is rejected.
+
+<p>
+
+Spam seems to come entirely from solo-connection POST requests. This means that
+the bots don't bother viewing the page first. In theory, the bots will be using
+a cached idea of the form, which will be expired. We'll see how well this works.
+
+<p>
+
+Right now it just uses a timestamp. If that fails, I'll add other tokens such
+as source IP, etc. Perhaps cookies too? This should be simple to filter out,
+becuase the spam bots don't act anything like humans with regards to browsing
+behavior.
+
+<p>
+
+I have enabled the plugin on this site. I'll post the source when I see it
+actually working correctly.
+
+<p>
+
+Waiting for spam bots to come by is boring :(
+

@@ -1,0 +1,101 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2011-03-01T17:41:18-08:00"
+title = "Introducing FPM - Effing Package Management\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["fpm", "ruby", "github", "packaging", "sysadmin", "rpm", "deb"]
++++
+
+Having become fed up with dealing with rpmbuild, spec files, debian control
+files, dh_make, debuild, and the whole lot, I automated my way back to sanity.
+
+<p>
+
+The result is a tool I call "fpm" which aims to help you make and mangle
+packages however you choose, all (ideally) without having to care about the
+internals of your particular native package format.
+
+<p>
+
+The goal of this project is not to undermine upstream packaging but to grant
+everyone the ability to trivially build and edit packages. Why? Not all software
+is packaged. Not all software of the version you want is packaged. And further, 
+not all users are willing or able to take the time to learn all the ins and
+outs of their package build tools.
+
+<p>
+
+For example, you can package up your /etc/init.d directory as an RPM by doing
+simply this:
+
+<pre>
+% fpm -s dir -t rpm -n myinitfiles -v 1.0 /etc/init.d
+...
+Created /home/jls/rpm/myinitfiles-1.0.x86_64.rpm
+</pre>
+
+fpm will create a simple package for you and put it in your current directory.
+The result: 
+
+<pre>
+% rpm -qp myinitfiles-1.0.x86_64.rpm -l
+/etc/init.d
+/etc/init.d/.legacy-bootordering
+/etc/init.d/NetworkManager.dpkg-backup
+...
+
+% rpm -qp myinitfiles-1.0.x86_64.rpm --provides
+myinitfiles = 1.0-1
+% rpm -qp myinitfiles-1.0.x86_64.rpm --requires
+rpmlib(PayloadFilesHavePrefix) <= 4.0-1
+rpmlib(CompressedFileNames) <= 3.0.4-1
+</pre>
+
+You can package up any directory. But there's more.
+
+<p>
+
+Above, I didn't specify a package summary, so how about fixing the rpm to
+include the description? You can use RPMs as the source (-s flag) in fpm.
+There's also a helpful '-e' (--edit) flag that'll let you edit the rpm spec (or
+debian control) file before building.
+
+<pre>
+% rpm -qp myinitfiles-1.0.x86_64.rpm --info | grep Summary
+Summary     : no summary given
+
+% fpm -s rpm -t rpm -e myinitfiles-1.0.x86_64.rpm
+... this opens up $EDITOR so you can edit the spec file it generated ...
+... make some changes to the spec, including adding a proper 'Summary' ...
+Created /home/jls/rpm/myinitfiles-1.0-1.x86_64.rpm
+
+% rpm -qp myinitfiles-1.0-1.x86_64.rpm --info | grep Summary
+Summary     : my /etc/init.d directory
+</pre>
+
+The '-s dir' flag says the source of the package is a directory. There's also
+support for other package sources like rubygems, other rpms, debs, and more on
+the way.
+
+<p>
+
+With FPM, you can specify dependencies, architecture, maintainer, etc. All from
+a simple command line, and never forcing you to learn the pain and suffering
+that can come with rpm spec files or debian package building.
+
+<p>
+
+You can install fpm with: gem install fpm
+
+<p>
+
+The project page is here: <a href="https://github.com/jordansissel/fpm">https://github.com/jordansissel/fpm</a>
+
+<p>
+
+The wiki is here (has more examples): <a href="https://github.com/jordansissel/fpm/wiki">https://github.com/jordansissel/fpm/wiki</a>

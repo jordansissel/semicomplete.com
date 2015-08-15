@@ -1,0 +1,65 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-07-13T00:43:04-07:00"
+title = "Grok to be rewritten in python\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok", "python"]
++++
+
+I spent a few hours tonight working on new features for grok and kept running
+into problems keeping track of data structures in my head. Grok currently makes
+heavy use of hash-of-hash-of-hash-of-ha...-type datastructures in perl.
+Remembering context is annoying and slows development.
+
+<p>
+
+I decided that grok could use some serious refactoring. So much refactoring,
+that I could probably get away with rewriting it faster than redesigning
+portions of it. Since I need to know Python better, and I am more familiar with
+OO in Python than I am in Perl, I figure I should rewrite grok in Python.
+Python already has one critical feature that I need in grok, named captures.
+The hack for this in perl is unwieldy and potentially unmaintainable if future
+perl versions change the format or deprecate it. It is listed in 'perldoc
+perlre' as experimental.
+
+<p>
+
+At any rate, I made a little prototype that tries to be very OO. My experience
+with Good(tm) object oriented programming is still limited. The CS curriculum
+at RIT sucked for teaching proper OO, too many professors taught wildly
+different styles or were unclear about what Good(tm) OOP should look like.
+
+<p>
+
+Therefore, rewriting grok is a good opportunity to explore test-driven
+development and maintainable object-orientation. Oh, and synergism too. *shifty eyes*
+
+<p>
+
+I've got a bit of code up and running already, and writing "for tests" seems to
+be a very cool way to think about programming. If I force myself to write
+easily-testable code, then writing tests is easy. Furthermore, initial
+experience seems to show that adding new features is much easier when all of
+the code is compartmentalized.
+
+<p>
+
+If nothing else, I wrote a somewhat cool debug method that accesses the call
+stack for function, class, module, etc. Check out the 'debuglib.py' file. The output looks something like this:
+
+<pre>
+grok/groklib.py:52] RegexGenerator.saveRegex: happy message here
+</pre>
+
+The file, line number, class and function name are all discovered magically in
+debug(). I like this.
+
+<p>
+
+If you get bored, you can look at the original stuff here:
+<a href="http://www.semicomplete.com/scripts/grok-py-test/">scripts/grok-py-test</a>

@@ -1,0 +1,44 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-04-17T02:42:39-07:00"
+title = "XML Presenter now supports printable slides\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["projects", "xmlpresenter", "presentations"]
++++
+
+I haven't updated the codebase available from the xmlpresenter project page in
+a while, but development still continues on it as I do more presentations.
+
+<p/>
+
+Today's update was to add printability to the slides. This is done by using the <code>media="print"</code> part of the &lt;link&gt; tag.
+
+<pre>
+&lt;link rel="stylesheet" type="text/css" media="screen,projection" href="presenter.css"/&gt;
+
+&lt;link rel="stylesheet" type="text/css" media="print" href="printview.css"/&gt;
+</pre>
+
+When you print, a different css will be applied than 'presenter.css' - very cool.
+
+<p/>
+
+Specific changes are:
+<ul>
+	<li>all slides are shown</li>
+	<li>slide titles use a smaller font, and lack borders</li>
+	<li>slides with no titles are not printed </li>
+</ul>
+
+Useful, I suppose, if you want to print out your slides in "outline" form.
+
+<p/>
+
+Check out the Unix Basics slides and look at it with "print preview" -
+<a href="http://www.semicomplete.com/presentations/unix-basics/">Unix Basics slides</a>
+

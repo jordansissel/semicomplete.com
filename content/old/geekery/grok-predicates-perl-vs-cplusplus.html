@@ -1,0 +1,53 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-01-15T02:31:04-08:00"
+title = "Grok predicates - Perl vs C++\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok", "perl", "c++", "benchmark", "performance"]
++++
+
+I just finished implementing predicates in c++grok (tentative name) and wanted
+to compare the performance against perl grok.
+
+<p>
+
+An input of 50000 lines of apache logfile amounting to 9.7megs of data.
+
+<p>
+
+I initially attempted this using the regex predicate %IP~/^129% but I realized
+that perl grok compiles the predicate regex every time it is executed, and
+wasn't a fair test. So I switched to %IP>=129% instead, which converts the
+match to an integer first (so 129.21.60.9 turns into 129, for example), which seems like more equal ground based on the implementations in both perl and C++.
+
+<pre>
+# C++ Grok
+% /usr/bin/time ./test_patterns "%IP>=129%" < /tmp/access.50klines > /dev/null
+2.56user 0.14system <b>0:02.92</b>elapsed 92%CPU (0avgtext+0avgdata 0maxresident)k
+0inputs+0outputs (0major+408minor)pagefaults 0swaps
+
+# Perl Grok
+% /usr/bin/time perl grok -m "%IP>=129/%" -r "%IP%" < /tmp/access.50klines > /dev/null
+8.87user 1.24system <b>0:25.94</b>elapsed 39%CPU (0avgtext+0avgdata 0maxresident)k
+0inputs+0outputs (0major+17721minor)pagefaults 0swaps
+</pre>
+
+What still remains consistent is the trend that the more complexity I add in C++ equates to a greater margin of speed from the perl version.
+
+<ul>
+  <li> Using strict %FOO% patterns with no predicates, the C++ version is 6 to 7 times faster than the perl equivalent in grok. </li>
+  <li> Using predicates shows the C++ version running 10 times faster. </li>
+</ul>
+
+I still need to write test cases for the C++ version in addition to porting the
+<a href="/blog/geekery/grok-pattern-autodiscovery.html">pattern discovery</a>
+portion from perl.
+
+<p>
+
+Exciting :)

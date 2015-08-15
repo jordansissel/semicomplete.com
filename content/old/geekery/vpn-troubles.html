@@ -1,0 +1,55 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-09-11T23:14:20-07:00"
+title = "Routing all traffic through VPN\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["security", "vpn", "pptp", "ipcp", "networking", "tunneling"]
++++
+
+So, I have a pptp vpn server running in my apartment. I desire this setup:
+<blockquote>
+I VPN to my apartment. *All* traffic will go through this vpn
+</blockquote>
+
+PPP has features to negotiate IP-level information such as DNS and "Here's your
+IP" using IPCP. However, it doesn't seem to be able to share routes. However,
+my local ppp.conf can say <code>add default HISADDR</code> and suddenly all my
+traffic wants to go through the vpn. However, once I do this, I lose all
+connectivity to the vpn because it is off-subnet - my machine forgets how to route data to the vpn, oops!
+
+<p>
+
+Is there a way to have ppp add an additional route that I want? Specifically, I
+want to take the existing known gateway (say, my wifi gateway) and do:
+<code>add [vpnhostname] [currentroute]</code> and then add a default route for
+the tunnel. This will allow all traffic to want to go through the tunnel, but
+still allow the OS to know how to *get* to that tunnel.
+
+<p>
+
+A hacky solution involves some pre-vpn discovery. I need to figure out what my
+default route is. Once I know that, I can simply add a single line in my
+ppp.conf and I have all traffic routing through my apartment.
+
+<pre>
+ add myvpnhostname mycurrentdefaultroute
+ add default HISADDR
+</pre>
+
+These two lines create 2 routes. The first keeps the system aware of how to
+reach the vpn server. The second ensure a default route to the vpn gateway.
+
+<p>
+
+While this is suboptimal, it is easy to automate. My vpn script can simply
+generate a new ppp.conf and grab the default route with:
+
+<pre>
+nightfall# netstat -rn -finet | awk '/^default/ { print $2 }'
+192.168.55.254
+</pre>

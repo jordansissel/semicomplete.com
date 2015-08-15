@@ -1,0 +1,45 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-08-29T22:54:59-07:00"
+title = "Random thoughts on wifi and vpn.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["security"]
++++
+
+Being that we can't really control all of the hops between ourselves and every
+end point on the internet, can we really be sure our traffic is secure?
+
+<p>
+
+Food for thought: My home vpn is a very simple poptop setup. It does not use
+certificates. How do I verify that my vpn connection is untainted? How difficult would it be to intercept my vpn connection request with a rogue vpn?
+
+<p>
+
+Let's say I'm on Google's free wifi here in Mountain View, and someone's being
+naughty by putting up the following rogue services: dhcp, dns, and vpn. It is
+trivial to advertise a route on the network and redirect vpn connections to a
+rogue vpn service. This vpn service could use the intended vpn as an
+authentication service. In doing so, the "bad guy" can quite easily join the
+two vpn tunnels such that the victim has no idea he has been victimized.
+
+<p>
+
+Put simply, how hard would it be for me, personally, to do this? Tools that
+come to mind, are: FreeRadius, Poptop server, isc-dhcp server, BIND 9, pf. Tack
+on a trivial script to interrupt the normal network services such as DHCP and
+DNS, and you've got something that can easily be deployed on a laptop.
+
+<p>
+
+I'm sure there are technologies to prevent this kind of MITM attack on vpns,
+right? IPSec, perhaps? I don't know. More research is required.
+
+<p>
+
+How secure are you on your favorite wifi hotspot? How secure are the "secure" services we rely on?

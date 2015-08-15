@@ -1,0 +1,118 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-04-01T02:54:18-07:00"
+title = "Grok, smarter predicates, and outrageous perl regex fu.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok", "regex"]
++++
+
+The past two days have been a frustrating exercise in working around a perl bug
+coupled with putting strong pressure on the limits of perl's regex system. The
+battle was won, but perl left some scarring..
+
+<p>
+
+In the last batch of updates in grok, you are now able to specify additional
+match predicates to the patterns. For example, if you have: "%IP~/^192/%" it
+will match an IP, but only IPs starting with 192.
+
+<p>
+
+This works great if it's the only IP on the line, but what if you want to grep
+for an IP starting with 192 on a line with multiple IP addresses? The current
+implementation works something like this:
+
+<ol>
+  <li> Perform the match for %IP% </li>
+  <li> Assert that the matched IP also matches the predicate /^192/ </li>
+  <li> If the previous assertion succeeded, continue as normal (react) </li>
+  <li> If the assertion failed, drop this line and keep going </li>
+</ol>
+
+Let's consider a simple example:
+
+<p>
+
+I want to use %WORD% to match a word. However, I only want a word that has
+'foo' in it. Under the current implementation, I might consider using
+"%WORD~/foo/%" but this would not work, becuase it would match the first word
+only, which may not match 'foo' as well, and fail. Regex predicates should
+ideally be involved during the match process, not after. Perl has some crazy
+code eval features that let you do this. The following code should work:
+
+
+<pre>
+echo "foo foobar foobaz" \
+| perl -nle 'm/(\b\w+\b)(??{ ($^N =~ m@bar@ ? "" : "(?=.\\A)") })/'
+</pre>
+
+Basically, the (??{ }) part checks if the captured group also matches 'bar'. If
+it doesn't match 'bar' it will inject a regular expression that cannot ever
+match (guaranteed negative match). The negative match is accomplished with a
+forward-lookahead looking for any character followed by the beginning of the
+string (\A), which clearly isn't possible (Neat hack!). The end result is that
+$1 should be 'foobar'.
+
+<p>
+
+However, if you try to run this code:
+<pre>
+$ echo "foo foobar foobaz" \
+  | perl -nle 'm/(\b\w+\b)(??{ ($^N =~ m@bar@ ? "" : "(?=.\\A)") })/'
+> Segmentation fault (core dumped)
+</pre>
+
+Perl crashes. It crashes on linux, freebsd, and solaris in various versions and
+various permutations of code. It must have to do something with doing other
+regular expressions inside code evals running from another regex. It seems like
+it smashes the stack in some unpleasant way.
+
+<p>
+
+Frustrating! I spent a few hours trying to fix this without solving the
+problem. No luck. Shortly after, an outrageous idea hit me - if it is unsafe to
+do regex within regex, why not fork and do the inner regex in another process?
+
+<p>
+
+Sounds crazy, and stupid, and silly? That's because it is. What bug
+work-arounds aren't? :)
+
+<p>
+
+That's exactly what I did. I wrote a <a
+href="http://www.semicomplete.com/scripts/regexp-fu.pl">short prototype
+script</a>
+to test this new subprocess theory. It seems to work! Despite it's outrageous
+complexity, it gets the job done and skirts around the perl bug.
+
+<p>
+
+The script matches an IP, and ensure that that IP contains a '5'. Here's an example run:
+
+<pre>
+scorn(~) % perl regexp-fu.pl "1.2.3.4 8.1.1.4 1.2.3.5"
+1.2.3.4 / (?-xism:5)
+8.1.1.4 / (?-xism:5)
+1.2.3.5 / (?-xism:5)
+Match: 1
+Group: 1.2.3.5
+</pre>
+
+You can see that it matched 3 IPs, but only the 3rd one had a '5' in it. The
+result of the 1 regular expression is that it matched the one I wanted. Finally!
+
+<p>
+
+I used perlbug(1) in an attempt to report this bug, but I have no idea if it
+actually sent any email.
+
+<p>
+
+This solution is totally suboptimal, but it works. Given the alternative, perl
+crashing, I'll take this solution.

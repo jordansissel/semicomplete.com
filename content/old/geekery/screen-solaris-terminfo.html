@@ -1,0 +1,43 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-09-01T01:23:35-07:00"
+title = "Get a screen terminfo entry on Solaris.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["screen", "solaris"]
++++
+
+Solaris doesn't have a 'screen' terminfo entry by default, so you might notice
+that if you set TERM to 'screen' things don't work right.
+
+<p>
+
+Screen itself comes with a termcap entry. If you install using the sunfreeware package, the termcap file will be: /usr/local/doc/screen/terminfo/screencap
+
+<p>
+
+We need to convert this to a terminfo file and compile it. All tools used below come standard with Solaris.
+
+<pre>
+# captoinfo screencap > screen.ti
+"screencap", line 2, col 24, terminal 'screen': unknown capability 'G0'
+"screencap", line 18, col 58, terminal 'screen': unknown capability 'AX'
+# tic screen.ti
+# ls -d /usr/share/lib/terminfo/s/screen* 
+/usr/share/lib/terminfo/s/screen     /usr/share/lib/terminfo/s/screen-w
+</pre>
+
+<b>Note:</b> Make sure you're running /usr/bin/tic, not /usr/local/bin/tic
+(comes with some sunfreeware package). The /usr/local/bin/tic will write it's
+terminfo file to /usr/local/share/terminfo which isn't used by any shell I've
+tried, not by default anyway. Something to keep in mind.
+
+<p>
+
+Now you've got a screen terminfo entry. Setting your TERM to 'screen' should
+work now, which is the default inside new screen sessions.
+

@@ -1,0 +1,23 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2003-08-08T22:50:00-07:00"
+title = "more mh coolness\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["mail"]
++++
+
+I got annoyed at html mail being displayed as.. well, plain text. So I
+stopped being a lazy fool and wrote a script to it right.<p>
+
+The product isn't quite finish at the time of posting, because I want to add lots of more features to it.
+
+This will run w3m on your mail if it matches one of the following conditions:<br>
+<b>*</b> The <code>Content-Type</code> of the mail is <code>text/html</code><br>
+<b>*</b> The <code>Content-Type</code> is <code>multipart/alternative</code> and the first part is <code>text/html</code><br>
+
+<b>*</b> The <code>Content-Type</code> is <code>multipart/alternative</code> and the second part is <code>text/html</code> (Useful when mail is transmitted in both <code>text/plain</code> and text/html<br>   </p>

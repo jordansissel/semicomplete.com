@@ -1,0 +1,97 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-12-06T03:59:21-08:00"
+title = "C vs Python with Berkeley DB\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["c", "python", "bdb", "performance"]
++++
+
+I've got a stable, threaded version of this fancydb tool I've been working on.
+However, the performance of insertions is less than optimal.
+
+<p>
+
+Then again, how much should insert performance matter on a monitoring tool? For
+data that comes into it gradually, speed doesn't matter much. For bulk inserts,
+speed matters if you want to get your work done quickly. I haven't decided if
+bulk insertions are necessary use case for this tool. Despite that, I'm still
+interested in what the limits are.
+
+<p>
+
+I have experimented with many different implementations of parallelism,
+buffering, caching, etc in the name of making insertion to a fancydb with 10
+rules fast. The fastest I've gotten it was 10000/sec, but that was on an
+implementation that wasn't threadsafe (and used threads). 
+
+<p>
+
+My most-recent implementation (which should be threadsafe) can do reads and
+writes at 30000/sec. With evaluation rules the write rate drops to about
+10000/sec.
+
+<p>
+
+The next task was to figure out what I was doing wrong. For comparison, I wrote
+two vanilla bdb accessing programs. One in C and one in Python. The output of
+these two follows:
+
+<pre>
+# The args for each program is: insertions page_size cache_size
+% sh runtest.sh
+Running: ./test 2000000 8192 10485760
+  =&gt; 2000000 inserts + 1 fullread: 209205.020921/sec
+Running: ./py-bsddb.py 2000000 8192 10485760
+  =&gt; 2000000 inserts + 1 fullread: 123304.562269/sec
+</pre>
+
+As expected, C clearly outperforms Python here, but the margin is pretty small
+(C is 69% faster for this test). Given the 120000/sec rate from Python, the
+poor input rate of my tool seems to be blamed on me. Is my additional code here
+really the reason that I can only write at 30000 per second? I may need to
+revisit how I'm implementing things in python. I'm not clear right now where
+I'm losing so much throughput.
+
+<p>
+
+So I use hotshot (python standard profiler) and I find that most of the time is
+spent in my iterator method. This method is a generator method which uses yield
+and loops over a cursor.
+
+<p>
+
+It's important to note that my python bdb 'speed test' above did not use
+generators, it used a plain while loop over the cursor. So, I wrote another
+test that uses generators. First, let's try just inserts, no reading of data:
+
+<pre>
+Running: ./test 1000000 8192 10485760
+  => 1000000 inserts: 261096.605744/sec
+Running: ./py-bsddb.py 1000000 8192 10485760
+  => 1000000 inserts: 166389.351082/sec
+</pre>
+
+Now let's try with 3 different python reading methods: while loop across a cursor, generator function (using yield), and an iterator class (implementing __iter__):
+
+<pre>
+Running: ./py-bsddb.py 4000000 8192 10485760
+  => 1 fullread of 4000000 entries: 8.660000
+Running: ./py-bsddb_generator.py 4000000 8192 10485760
+  => 1 fullread of 4000000 entries: 9.124000
+Running: ./py-bsddb_iterable_class.py 4000000 8192 10485760
+  => 1 fullread of 4000000 entries: 13.130000
+</pre>
+
+I'm not sure why implementing an iterator is so much slower (in general) than a
+yield-generator is. Seems strange, perhaps my testing code is busted. Either
+way, I'm not really closer to finding the slowness.
+
+<p>
+
+<a href="/files/20071206/speed_test.tar.gz">get this code here</a>
+

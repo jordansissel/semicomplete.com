@@ -1,0 +1,46 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-06-05T23:31:00-07:00"
+title = "qemu, an open source emulator\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["open source adventures"]
++++
+
+I'm always skeptical of open source software doing it's job correctly, and but
+sometimes I'm surprised by them. I recently installed a platform emulator
+called <a href="http://fabrice.bellard.free.fr/qemu/">qemu</a>. It can emulate
+x86, SPARC, PPC, and a few others supposedly. I recently installed windows
+using it, and it runs surprisingly well. It's fast enough to let me play
+starcraft, for instance ;)
+
+<p/>
+I've previously used vmware 3 in freebsd with much success but not after lots
+of irritating kludges to get it to work properly. Qemu was a joy to get
+working, just two commands and you can be off and running.
+
+<pre>
+nightfall$ qemu-img create windaz 5G
+nightfall$ qemu -cdrom /dev/acd0t0 -boot d windaz
+</pre>
+
+'-boot d' tells it to boot off the D: drive, which is the cdrom. I was now ready to install windows to my 5 gig "drive"
+
+<p/>
+
+For the x86 platform, it has a kernel module for linux and freebsd you can use to accelerate emulation by getting rid of a few layers of translation (Why translate for x86 when you're ON x86?). FreeBSD's port of it allowed me to build the kqemu kernel module,  and off I went installing Windows XP. The install went flawlessly - and it blew my mind that everything worked out of the box. By default, it uses it's own "user net" internal nat/firewall nonsense that I didn't bother futzing with. It can use Linux's tun or FreeBSD's tap interfaces to get a real ip assuming you setup bridging and whatnot properly.
+<p/>
+To get TAP running for qemu under freebsd, you're going to have to have tap in your kernel, or kldload if_tap. Once done, you'll probably want to setup bridging or setup local nat and dhcp. At any rate, I used bridging. You'll need BRIDGE in your kernel or kldload bridge. To turn bridging on use
+<pre>
+# sysctl net.link.ether.bridge.enable=1
+# sysctl net.link.ether.bridge.config=em0,tap0
+</pre>
+If you get an error with either of those commands, you don't have bridge loaded or in the kernel. Anyway, em0 and tap0 are the two interfaces you are bridging. em0 is my wired interface to the world.
+
+<p/>
+
+You definately don't want to put your new install of windows on the net before getting SP2 and some antivirus software, so don't use the tap stuff until after that. If you don't specify the -n option to qemu, it will use user-net (assuming you haven't created a /etc/qemu-ifup script).

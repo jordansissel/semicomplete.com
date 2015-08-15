@@ -1,0 +1,102 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-11-04T23:32:40-08:00"
+title = "Breaking efnet's silly figlet captcha\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
++++
+
+This was all done as a fun experiment to see if automating the efnet captcha
+was doable.
+
+<p>
+
+A few (one?) efnet servers use a figlet captcha on irc clients connecting
+from hosts that aren't running identd. While this blends happily with the same
+kind of captcha I put into pam_captcha, it's too easy to break.
+
+<p>
+
+Specifically, it uses 6 characters, A-Z. Generating a lookup table is as easy
+as <a href="/files/blogposts/20081105/figletcha.rb">a few lines of code</a>.
+Generating the lookup table for all combinations using the previous script
+would be almost 11 gigs. It stores MD5 values of figlet output instead of the
+figlet output to save space and make for simpler lookups (40 bytes per entry,
+including newline, uncompressed).
+
+<p>
+
+However, if you don't respond answer correctly within a short period, you get
+disconnected. Timing it shows you have 30ish seconds. It's probably not
+feasible to grep through 11 gigs of data in 30 seconds, is it? That's reading
+through almost 400 mbytes per second. Then again, that's if you store it as a
+flat, unsorted structure.
+
+<p>
+
+If you sort the data by MD5, you get the benefits of a binary search, which
+finds you a result in 19 iterations. Doing binary search in ruby (like most languages) is very simple. <a href="http://semicomplete.googlecode.com/svn/codesamples/bsearch.rb">Here's bsearch.rb</a>
+
+<p>
+
+The output is 'token md5' and on 11 gigs of data, and GNU sort is smart enough to use disk for merge sorting on large files. However, I did this first, instead, since I assumed sort would be dumb and try to sort all in memory:
+
+<pre>
+choplog -x -p /b/split -b $((50 &lt;&lt; 20)) /c/captchas \
+| xargs -n1 -tP2  sh -c 'sort -k2 $1 &gt; sort.$(basename $1)' -
+sort --merge /b/sort.* &gt; /b/sortedcaptchas
+</pre>
+
+<a href="http://semicomplete.googlecode.com/svn/choplog/">choplog</a> is a
+project I <a
+href="http://www.semicomplete.com/blog/geekery/splitting-large-logs.html">did
+last year</a> when I needed a fast way to split large logfiles (GNU split is
+slower and less-featured for this task). I split the output into 50 meg chunks,
+sort each chunk, then use sort's merge feature to merge all the data back
+together quickly.
+
+<p>
+
+As it turns out, I don't need to do any of the above splitting and sorting
+because gnu sort is smart enough to properly merge sort on-disk for really
+large files. You can tweak the memory buffer size with the -S flag and the temp
+directory with -T. The manpage says you can specify buffer sizes with unit
+notations (M, G, etc) and they go all the way up through E, Z, and Y... just in
+case you have a yotabyte of memory? ;)
+
+<p>
+
+While I was waiting for the table to generate, I started poking fetching a few
+captchas for testing. It seems like the server I'm connecting to is using a
+different version of figlet or a different version of the fonts or that figlet
+is being invoked differently. The spacing between only some letters is off.
+
+<p>
+
+I can reliably get results if I figlet each letter and paste them together like:
+
+<pre>
+# This matches efnet's captcha output
+paste -d "" &lt;(figlet -fbig W) &lt;(figlet -fbig S)
+</pre>
+
+instead of
+
+<pre>
+# This doesn't match efnet's captcha output
+figlet -fbig WS
+</pre>
+
+Playing with the kerning options (using -k or -W) doesn't produce the right
+output either, only pasting together does.
+
+<p>
+
+Pretty close to automatically passing the captcha, but I stopped caring about
+it. I've run out of energy working on this. I did learn a few edge case bits
+though about gnu sort and had a reasonable excuse to dork around with ruby that
+didn't involve $work. It also reminded me how much muscle memory I still have for using xargs.

@@ -1,0 +1,74 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-12-21T04:03:00-08:00"
+title = "ajax, json, and python, Oh my!\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["ajax", "python"]
++++
+
+Whew! I don't think I've ever spent more hours on dead-end ideas on a project
+in a very long time. Most of the ideas I tried failed miserably due to either
+problems with design or problems with the underlying application. For instance, I found I couldn't return HTML from an XMLHTTPRequest call and append it to my document properly, ugh!
+
+<p>
+I've been doing a lot of brainstorming on how to spiff up the interface Pimp
+4.0 is going to sport. I wanted to have a useful interface from the web that
+also looked cool in the process - something many interface programmers desire
+to achieve but almost always fall short.
+
+<p>
+There are a number of very good JavaScript library projects such as Prototype,
+Scriptaculous, and others, so I figured I'd try them out and see what I could
+do. Turns out, scriptaculous would be the most useful, but it doesn't work
+under XHTML with content-type application/xhtml+xml.
+
+<p>
+Having hit a number of brick walls, I decided to scrap using other people's
+code and write my own. I always learned more that way anyway.
+
+<p>
+
+The first step was to write a few small visual effects. The only two I've
+needed so far have been fading in an out. It makes use of Accelimation, a
+movement/acceleration library by Aaron Boodman over at <a
+href="http://www.youngpup.net">youngpup.net</a>.
+
+<p>
+
+After that, I wanted to reengineer the javascript bits for Pimp. So, I did
+that. Instead of lots of loosly-glued-together functions, I have one javascript
+"object" thing called 'Pimp' that has a number of functions. I was going to go
+all Object Oriented and such, but doing OO in JavaScript with timers and such
+is a pain in the ass. I gave up OO and went with a simpler approach, a
+static-class-like objecty thing ... JavaScript is an interesting beast.
+
+<p>
+
+I also moved to using JSON for server-to-client communication. Clients still
+send data using XMLRPC, but the responses are in JSON becuase there's no added
+processing time for the client to handle it. Thankfully, it was easy to replace
+the XMLRPC stuffs with JSON where necessary. I only had to update one function
+on pimp's python stuffs and add an 'eval' line to the javascript.
+
+<p>
+
+Putting all of this together, Pimp's "Stream list" now updates smoothly in
+realtime: New streams fade into the list and song changes are faded between on
+the screen. I think it looks very cool, and doesn't detract from the usefulness
+of the page. Another addition included fading between the "stream list" view
+and the viewing an individual stream. The stream list will fade out while the
+individual stream data loads (efficient waste of time, no?) followed by the
+individual stream's page fading in.
+
+<p>
+
+If you want to see what I've done so far, let me know. It may not work when you ask due to active development, though! Anyhoo. If you're intrested, I'll be happy to show you.
+
+<p>
+
+My JavaScript brain-cells were rusty yesterday. I suppose they aren't anymore ;)

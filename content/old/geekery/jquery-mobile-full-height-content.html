@@ -1,0 +1,55 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-12-09T02:10:40-08:00"
+title = "jQuery Mobile - Full Height content area\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["javascript", "jquery mobile", "jquery"]
++++
+
+I was working on integrating jQuery Mobile stuff into <a
+href="https://github.com/jordansissel/fingerpoken">fingerpoken</a> and needed a
+way to make the content area of pages full-screen. By 'full screen' I mean
+still showing the header and footer, but otherwise the content needs to fill
+the rest.
+
+<p>
+
+I couldn't find an easy way to do this while googling, and even the jQuery
+Mobile demos didn't do it.
+
+<p>
+
+So here's a demo of what I came up with here: <a
+href="http://semicomplete.com/files/blogposts/20101209/fullheight.html">fullheight
+jQuery Mobile demo</a>
+
+Javascript:
+
+<pre>
+  var fixgeometry = function() {
+    /* Some orientation changes leave the scroll position at something
+     * that isn't 0,0. This is annoying for user experience. */
+    scroll(0, 0);
+
+    /* Calculate the geometry that our content area should take */
+    var header = $(".header:visible");
+    var footer = $(".footer:visible");
+    var content = $(".content:visible");
+    var viewport_height = $(window).height();
+    
+    var content_height = viewport_height - header.outerHeight() - footer.outerHeight();
+    
+    /* Trim margin/border/padding height */
+    content_height -= (content.outerHeight() - content.height());
+    content.height(content_height);
+  }; /* fixgeometry */
+
+  $(document).ready(function() {
+    $(window).bind("orientationchange resize pageshow", fixgeometry);
+  });
+</pre>

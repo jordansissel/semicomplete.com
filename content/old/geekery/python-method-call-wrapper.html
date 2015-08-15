@@ -1,0 +1,90 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-07-10T21:06:20-07:00"
+title = "Wrap method calls in python\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["python", "programming"]
++++
+
+Function wrapping is quite useful, especially when you need to make code
+threadsafe by wrapping with a mutex locker or adding debug entry/exit traces.
+We can easily wrap methods in python using lambda.
+
+<p>
+
+A standalone module for wrapping can be found here: 
+<a href="http://www.semicomplete.com/scripts/python/wrap/wrap.py">wrap.py</a>
+
+If you don't understand what the * and ** stuff means, that's fine. I'll post
+about those shortly.
+
+<p>
+
+A fun, crappy example can be found here:
+<a href="http://www.semicomplete.com/scripts/python/wrap/wrapexample.py">wrapexample.py</a>
+
+<p>
+
+That example shows how to wrap a simple method (X.Foo) with pre- and
+post-execution function calls. Notice how we can access the parameters passed
+to the original function (Foo) in both the pre and post functions. That's all
+good and pretty, but how about a better example?
+
+<p>
+
+A better example would be to wrap a function call with a mutex locker.
+
+<p>
+
+Let's take an example class 
+<a href="http://www.semicomplete.com/scripts/python/wrap/happyfoo.py">happyfoo</a>.
+
+A sample script that uses happyfoo can be found here: <a href="http://www.semicomplete.com/scripts/python/wrap/main.py">main.py</a>.
+
+However, time passes and now I require the happyfoo.makenoise method to be
+locked while we are inside it. If you look at the code, it doesn't lock and is
+not threadsafe (for our purposes).
+
+<p>
+
+In an ideal situation, you might add locking to the 'happyfoo.py' module itself. What if you can't do that (no access) or don't have time to hack through the code? There's an easier way.
+
+<p>
+
+Python lets you modify classes at runtime. The new locking code can be found
+here: 
+<a href="http://www.semicomplete.com/scripts/python/wrap/main-locking.py">main-locking.py</a>
+
+<p>
+
+The coolest part about this is I do not have to modify the 'happyfoo.py'
+module. Perhaps this is a dangerous feature, but I think it's neat. Anyway, the
+bulk of the new code should be self explanatory, with the possible exception of
+this:
+
+<pre>
+happyfoo.makenoise = wrap.wrapmethod(happyfoo.makenoise, do_lock, do_unlock)
+</pre>
+
+This is where I override the 'happyfoo.makenoise' method with a generated one
+that calls the original 'happyfoo.makenoise' function wrapped in 'do_lock' and
+'do_unlock' functions. If you run the script, you'll see it locking aswell as
+the threads waiting for the lock.
+
+<p>
+
+If you want to download all of the code from the post, try this tarball: 
+<a href="http://www.semicomplete.com/scripts/python/wrap/python-method-wrapper.tar.gz">python-method-wrapper.tar.gz</a>
+
+<p>
+
+The wrap module needs a lot of work, potentially. It would be nice to be able
+to wrap and also pass other arguments to both pre and post functions. I've got
+a hack that adds a reference to the function being called to the keyword (kwds)
+list, which lets you figure out which function is actually being called. Useful
+if you use the same pre/post functions to wrap more than one function.

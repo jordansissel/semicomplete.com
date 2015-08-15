@@ -1,0 +1,42 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-10-24T03:29:00-07:00"
+title = "My beloved Voodoo 3\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["old hardware", "retirement"]
++++
+
+Tonight, in preparation for getting a second monitor at home, I swapped out my
+trusty Voodoo 3 2000 video card for a newer Geforce 6200 (stolen from a
+workstation I wasn't using anymore) which has dual outputs. While doing this,
+it occurred to me that this video card was the only piece of pre-college
+computer hardware I still had.
+
+<p>
+
+Part of me is sad to see it go.
+
+<p>
+
+My ensuing battle with ubuntu to get the @#%$ing nvidia drivers to work
+definitely ranks in my top 10 linux battles. I think I eventually resolved the
+problem by applying the monte carlo method (*) to apt-get invocations and
+downloaded the latest driver from nvidia myself, which failed compile many
+times until I again applied the monte carlo method to make targets in the
+kernel source (make oldconfig prepare scripts something something?). I remember
+something about the apt mirrors no longer having anything resembling my kernel
+version so installing the 'restricted' modules wasn't an option until I randomly updated 'linux-image'. "Image" obviously means "kernel and initrd friends" :(
+
+<p>
+
+I'll miss you, Voodoo 3.
+
+<p>
+
+(*) Turns out 1000 monkeys with 1000 typewriters will eventually get nvidia
+drivers working in ubuntu.

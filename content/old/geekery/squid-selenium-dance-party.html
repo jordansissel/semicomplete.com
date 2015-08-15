@@ -1,0 +1,57 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-09-02T00:39:15-07:00"
+title = "Squid + Selenium == Win\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["selenium", "squid", "web", "testing"]
++++
+
+Selenium cannot be used to test remote sites becuase browsers have cross-site
+scripting protection which prevents you from modifying the content from other
+domains. What happens when we fool the browser into believing content comes from a given domain? An extremely simple squid configuration can do just this.
+
+<p>
+
+I wrote one test. This test visits technorati's homepage, searches for
+'barcamp' and verifies that a text string exists on the search results.
+
+<p>
+
+Steps:
+<ol>
+  <li> Tell Firefox to use my squid proxy as an HTTP proxy </li>
+  <li> Visit http://www.technorati.com/_selenium/ </li>
+  <li> Run the tests </li>
+</ol>
+
+Simple, right?
+
+<p>
+
+The squid proxy intercepts any requests for '/_selenium' and redirects them
+internally to my selenium web server. This has been tested in IE, Firefox, and
+Safari with 100% success over vanilla http. HTTPS probably doesn't work for
+obvious "Duh, it's encrypted" reasons. Squid can fix this aswell with ssl
+reverse proxying.
+
+<p>
+
+If I run my single test, the result is something that looks like the following
+(Firefox and IE, respectively):
+
+<p>
+
+<a href="http://www.semicomplete.com/images/selenium-squid-hack_firefox.png">
+<img src="http://www.semicomplete.com/images/selenium-squid-hack_firefox.thumb.png">
+</a>
+
+<a href="http://www.semicomplete.com/images/selenium-squid-hack_iexplore.png">
+<img src="http://www.semicomplete.com/images/selenium-squid-hack_iexplore.thumb.png">
+</a>
+
+

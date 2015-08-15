@@ -1,0 +1,50 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-12-29T02:44:53-08:00"
+title = "Getting public-key auth working in Solaris 10\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["solaris", "ssh"]
++++
+
+Once upon a time, there was a Solaris 10 box where I wasn't able to use ssh
+keys to login.
+
+<p>
+
+Thankfully, that time has now passed. The problem was because PAM was denying
+access with public keys.
+
+<p>
+
+Running sshd in debug mode (-ddd) I would see this:
+
+<pre>
+Found matching DSA key: 80:aa:32:03:ef:51:9c:7b:0f:1d:ac:37:17:d5:fd:2b
+debug1: restore_uid: 0/0
+debug1: ssh_dss_verify: signature correct
+debug2: Starting PAM service sshd-pubkey for method publickey
+debug3: Trying to reverse map address 69.181.132.53.
+debug2: userauth_pubkey: authenticated 0 pkalg ssh-dss
+Failed publickey for psionic from 69.181.132.53 port 55957 ssh2
+</pre>
+
+Clearly indicated here, is the fact that it accepted my ssh-dss key, but I
+failed for some other reason. Listed here, is: <code>Starting PAM service
+sshd-pubkey for method publickey</code>. Solaris 10's manpage for sshd shows
+that it uses different PAM service names for each type of authentication.
+
+<p>
+
+The solution involved adding a simple service entry in /etc/pam.conf:
+
+<pre>
+sshd-pubkey    auth required           pam_unix_cred.so.1
+</pre>
+
+It works now. This takes effect immediately as the pam config is invoked any
+time sshd uses pam, so you don't have to restart sshd.

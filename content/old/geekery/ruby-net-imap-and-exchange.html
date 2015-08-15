@@ -1,0 +1,84 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-05-26T01:03:35-07:00"
+title = "Ruby Net::IMAP and Exchange\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["exchange", "rfc failure", "ruby", "imap", "hacks"]
++++
+
+Exchange's server-side filters are pretty weak, so I decided to work around
+them by writing a tool that will fix my inbox and filter mail appropriately so
+that any client I use to view mail with (OWA, whatever) has the same view with
+no client-local filters. It's likely/possible there's already a tool that does this; let's ignore that possibility for now.
+
+<p>
+
+Ruby comes with Net::IMAP, but it doesn't come with an authenticator that
+supports 'PLAIN' auth, so we have to provide one:
+
+<pre>
+# Learned the 'PLAIN' expected format from imapsync.
+class PlainAuthenticator
+  def process(data)
+    # Net::IMAP takes care of base64 encoding the result of this...
+    return "#{@user}\0#{@user}\0#{@password}"
+  end
+  
+  def initialize(user, password)
+    @user = user
+    @password = password
+  end
+end
+
+Net::IMAP::add_authenticator('PLAIN', PlainAuthenticator)
+</pre>
+
+Now that we have that, let's try connecting.
+<pre>
+imap = Net::IMAP.new("exchange.example.com", "imaps", usessl=true)
+imap.authenticate("PLAIN", user, passwd)
+</pre>
+
+This fails, because Exchange's IMAP server ignores the RFC:
+
+<pre>
+/usr/lib/ruby/1.8/net/imap.rb:3122:in `parse_error': <b>unexpected token CRLF (expected SPACE)</b> (Net::IMAP::ResponseParseError)
+        from /usr/lib/ruby/1.8/net/imap.rb:2974:in `match'
+        from /usr/lib/ruby/1.8/net/imap.rb:1959:in `continue_req'
+        from /usr/lib/ruby/1.8/net/imap.rb:1946:in `response'
+...
+</pre>
+
+Expected a space, not a crlf. The failure is in continue_req, which expects what the RFC says:
+
+<pre>
+continue_req    ::= "+" SPACE (resp_text / base64)
+</pre>
+
+However, Exchange's IMAP server doesn't send a space after the plus. Great,
+let's fix that by overriding the continue_req method:
+
+<pre>
+# Copied/modified from net/imap.rb, don't modify that file, put this
+# in your own code to override the continue_req method
+module Net
+  class IMAP
+    class ResponseParser
+      def continue_req
+        match(T_PLUS)
+        #match(T_SPACE)   # Comment this line out to not expect a space.
+        return ContinuationRequest.new(resp_text, @str)
+      end
+    end
+  end
+end
+</pre>
+
+Once you've done that, everything else seems to work normally. I have only
+tested listing mail folders thus far, but the hacks above allow you to get this
+far.

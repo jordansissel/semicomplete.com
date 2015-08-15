@@ -1,0 +1,92 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-04-28T03:05:31-07:00"
+title = "FreeBSD 6.1 sparc64 as a desktop\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["freebsd", "mouse", "xorg"]
++++
+
+I have an ultra10 here that was, until today, running Solaris 10 and was my
+desktop. Now, I have opted to install FreeBSD on it to see how it runs. I now
+have X running happily. Documentation on the specific pieces of information I
+wanted was sparse, so here's what I know now:
+
+<p/>
+<ul>
+<li> If your sparc64 is old and lacks USB, the mouse will show up as a serial
+device. The mouse device is the uart device immediately following the keyboard
+one:
+
+<pre>
+uart0: <SAB 82532 v3.2, channel A> on puc0
+uart0: CTS oflow
+uart1: <SAB 82532 v3.2, channel B> on puc0
+uart1: CTS oflow
+uart2: <16550 or compatible> addr 0x14003083f8-0x14003083ff irq 41 on ebus0
+uart2: keyboard (1200,n,8,1)
+uart3: <16550 or compatible> addr 0x14003062f8-0x14003062ff irq 42 on ebus0
+</pre>
+
+Here, uart3 is my mouse.
+
+<br>
+
+This means that /dev/cuau3 is my mouse. So I add this in rc.conf:
+<pre>
+moused_type="mousesystems"
+moused_port="/dev/cuau3"
+</pre>
+
+Run /etc/rc.d/moused start, and the mouse works.
+</li>
+
+<li>
+X needs to be told what keyboard map you are using. I used <i>X -configure</i>
+to generate my xorg.conf. A few changes are necessary:
+
+<p/>
+I have a Sun type5 keyboard, so, in my xorg.conf:
+
+<pre>
+Section "InputDevice"
+   Identifier  "Keyboard0"
+   Driver      "kbd"
+   Option  "AutoRepeat" "400 30"
+   Option "XkbRules" "sun"
+   Option "XkbModel" "type5"
+   Option "XkbLayout" "us"
+   Option "XkbKeycodes" "sun(type5)"
+EndSection
+</pre>
+</li>
+<li>
+
+X needs to be told about the monitor and what proper resolution:
+<pre>
+Section "Monitor"
+        Identifier   "Monitor0"
+        VendorName   "Monitor Vendor"
+        ModelName    "Monitor Model"
+        HorizSync 31.5-110
+        VertRefresh 75
+EndSection
+
+Section "Screen"
+        Identifier "Screen0"
+        Device     "Card0"
+        Monitor    "Monitor0"
+        DefaultDepth 16
+        SubSection "Display"
+                Depth     16
+                Modes "1024x768"
+        EndSubSection
+EndSection
+
+</pre>
+</li>
+</ul>

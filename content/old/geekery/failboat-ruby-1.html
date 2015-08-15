@@ -1,0 +1,51 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-05-06T16:00:01-07:00"
+title = "Riding on the failboat: Ruby, episode 1.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["ruby", "new languages", "caveats"]
++++
+
+I'm quickly learning ruby at my new job. Today's POLA (principle of least
+astonishment) violation is blamed on my expectations of 'if' behavior in Ruby
+from what I know from Python, C, and other languages.
+
+<p>
+
+Non-nil values are considered true:
+
+<pre>
+["0", [], {}, "", 0, true, false, nil].each { |x|
+  bool = (x) ? true : false
+  puts "#{x.inspect}: #{bool}"
+}
+
+"0": true
+[]: true
+{}: true
+"": true
+0: true
+true: true
+false: false
+nil: false
+</pre>
+
+I mostly expected every one of the outputs here except for the literal 0 value
+being true. Noted for future reference.
+
+<p>
+
+Additionally confusing, is that Integer() will barf on most non-number inputs, but for some reason "nil" means 0.
+
+<pre>
+irb(main):002:0> Integer(nil)
+=> 0
+</pre>
+
+Unexpected.
+

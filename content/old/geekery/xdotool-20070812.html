@@ -1,0 +1,34 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-08-12T19:29:20-07:00"
+title = "new xdotool version available (20070812)\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["xdotool", "xlib"]
++++
+
+Hop on over to the <a href="/projects/xdotool">xdotool project page</a> and
+download the new version.
+
+<p/>
+
+The changelist from the previous announced release is as follows:
+
+<pre>
+20070812:
+  * Magnus Boman contributed keysequence_{up,down} adding new commands to
+    xdotool: keyup and keydown. These take the same arguments as 'key' but only
+    send keyup or keydown events.
+  * Lee Pumphret contributed getwindowfocus, which tells you the window id of the window
+    currently holding focus.
+  * Removed 'Makefile.no-pkg-config' because the original Makefile now knows
+    how to build for both cases: with and without pkg-config.
+
+20070722:
+  * Compiles without warnings when using gcc -Wall now
+  * Fixed false error reporting due to some functions missing return statements
+</pre>

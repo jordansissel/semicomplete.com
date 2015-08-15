@@ -1,0 +1,25 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-01-03T04:10:21-08:00"
+title = "Networking upgrade - WRT54GL\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["wrt54gl", "dd-wrt", "networking", "soekris"]
++++
+
+A few days ago, I noticed that for whatever reason my net4501 box was seemingly incapable of routing packets from comcast to the local lan at faster than 800KB/sec. If I removed some PF rules (such as scrubbing) I could get 900KB/sec, but even still 100% of the cpu was consumed by interrupts (as reported by top(1)).
+
+<p>
+
+So, I went to Fry's and picked up a WRT54GL. Got it home, installed dd-wrt on
+it, and am now happy. PowerBoost (Comcast's "here's lots of bandwidth for the
+first few seconds of your packet stream") works, and I can download at full
+8mbit (1MB/sec) as I am supposed to. Sweet.
+
+<p>
+
+This frees up my Soekris net4501 box for new projects. Bonus :)

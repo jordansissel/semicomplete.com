@@ -1,0 +1,42 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2003-08-07T11:35:31-07:00"
+title = "Neat vim/screen trick.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["vim"]
++++
+
+For some time I've been wanting to be able to pop open a small
+split-pane in vim to run simple commands like, oh.. I don't know.. javac
+and such. Just for temporary, quick shell access.<br>
+Tonight, as I was browsing through the screen manpage, I saw that screen
+allowed you to split the window into different regions. Using this and a
+quick vim key mapping, I was able to do it without much trouble!<p>
+
+The vim keymapping:<br>
+<pre>
+map \s :silent !screener.sh&lt;CR&gt;
+</pre>
+
+Contents of screener.sh
+<pre>
+screen -X split
+screen -X focus down
+screen -X screen sh -c "cd $PWD; $SHELL; screen -X remove"
+</pre>
+<br>
+
+Thanks to screen being smart, you don't have to specify what screen
+session to send these commands to, which made it 10000% easier, as we
+don't have to bother trying to figure out which screen session is
+running vim. You could optionally add a <code>:!screen -X resize
+&lt;whatever&gt;</code> before to resize the lower frame to a specific size.
+See the screen manpage for more information on how to use <code>screen
+-X</code> and the <code>resize</code> command.<p>
+
+The results of hitting <code>\s</code> in vim can be found in the screenshot on the right. After logging out of that shell, the newly-split screen disappears and returns you to your original, full-screen vim.

@@ -1,0 +1,70 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2012-11-05T00:11:32-08:00"
+title = "TF2 performance on wine+linux\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["wine", "linux", "tf2"]
++++
+
+
+I recently gave up windows 8 (which is horrible, by the way) to install Fedora
+on my workstation at home.
+
+<p>
+
+I wanted to still play TF2, so while I wait for the steam linux/tf2 beta, I
+figured wine would work.
+
+<p>
+
+I used the fedora wine packages as well as 'winetricks' to install steam
+(winetricks is awesomesauce.). Basically, with winetricks, you just do
+'winetricks steam' to install steam. Bam! Done.
+
+<p>
+
+To run steam after winetricks installs it, you'll want to do this crazy business, because winetricks installs steam to it's own "wine prefix":
+
+<pre>
+WINEPREFIX=$HOME/.local/share/wineprefixes/steam/ wine "C:\\Program Files (x86)\\Steam\\Steam.exe"
+</pre>
+
+<p>
+
+When running TF2, I noticed framerates were pretty crappy. Most googling I did
+found practically no useful information except for one or two forum posts that
+indicate CPU affinity being the most likely cause. This made sense given frame
+rates were completely the same regardless of graphical settings used
+(resolution or features like model quality, etc).
+
+<p>
+
+First step is to enable 'multicore rendering'
+
+<p>
+
+Then, when tf2 is up, run this script below. It looks for the most cpu-hungry
+threads in hl2.exe (tf2) as well as for the steam/wine/xorg processes. It then
+pins them to specific CPUs.
+
+<pre>
+(
+  # Get the top cpu-using threads for the 'hl2.exe' process (tf2)
+  # then pin each to a separate CPUs and give them elevated scheduling priority
+  top -bn1 -Hp $(pgrep hl2.exe) \
+  | awk '$NF == "hl2.exe" { split($(NF - 1), t, ":"); cputime = t[1] * 60.0 + t[2]; print cputime, $1 }'  \
+  | sort -n | tail -3 | awk '{print $2}'
+
+  pgrep 'Steam|wineserver|Xorg'
+) \
+| awk '{print NR, $1}' \
+| sudo xargs -tn2 sh -c 'taskset -p $((1 << ($1 - 1))) $2; renice -n -2 $2' -
+</pre>
+
+Once I run this command while tf2 is up, frame rate doubles (to around 60) and
+is much more consistent (bursty drops in framerates)

@@ -1,0 +1,64 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-06-30T01:52:01-07:00"
+title = "jQuery+cookies = trivially simple form autofill\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["jquery", "javascript", "site", "user experience"]
++++
+
+It's always nice when websites you commonly visit remember things about you, or
+atleast give the perception that they remember things about you.
+
+<p>
+
+The Pyblosxom comment plugin doesn't autofill the form. That's too bad. I don't
+really want to dig into the python code to do any cookie-setting on submission,
+becuase I have never looked at the code and thusly am unfamiliar with the
+effort required for such a change. Luckily, we can use javascript to store data
+in cookies too!
+
+<p>
+
+I love jQuery, so that's what I'll use for this little hack. On the comments page, I add the following javascript:
+
+<pre>
+   var uname = "u.name";
+   var uemail = "u.email";
+   var usite = "u.site";
+
+   function saveCommentInformation() {
+      // Save user information from the form!
+      createCookie(uname, $("input[@name='author']").val());
+      createCookie(uemail, $("input[@name='email']").val());
+      createCookie(usite, $("input[@name='url']").val());
+   }
+
+   function initCommentForm() {
+      // Autofill user information if available
+      $("input[@name='author']").val(readCookie(uname));
+      $("input[@name='email']").val(readCookie(uemail));
+      $("input[@name='url']").val(readCookie(usite));
+
+      // Save comment information when form is submitted
+      $("form[@name='comments_form']").submit(saveCommentInformation);
+   }
+
+   $(document).ready(initCommentForm);
+</pre>
+
+That's all we need. Whenever someone submits, we will store useful information in a cookie. Whenever that person comes back, we'll pull the data out of the cookie and put it back in the form. User Experience is happier, atleast as far as I am concerned (as a user).
+
+<p>
+
+If you are wondering about the 'readCookie' and 'createCookie' functions, you
+can find them on quirksmode.org: <p>
+<a href="http://www.quirksmode.org/js/cookies.html">http://www.quirksmode.org/js/cookies.html</a>
+
+<p>
+
+<b>Update:</b> Check out this <a href="/blog/geekery/jquery-formfill-v2.html">followup post</a> that implements this in a more jquery-like way.

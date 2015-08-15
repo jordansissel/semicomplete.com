@@ -1,0 +1,17 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2003-10-05T14:00:00-07:00"
+title = "Terminal fun?\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["terminals"]
++++
+
+
+While perusing manpages (col, specifically) I found that terminals respond to <i>^N</i> by switching to an alternate character set (a drawing set, perhaps) while <i>^O</i> will switch back to normal.<p>
+
+I often <code>cat</code> things I should not, and end up borking my terminal display, typing <code>echo "<i>^V^O</i>"</code> where <i>^V</i> is CTRL+V and <i>^O</i> is CTRL+O. This will echo <i>^O</i> to your terminal and reset your character set.

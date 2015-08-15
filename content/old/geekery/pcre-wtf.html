@@ -1,0 +1,37 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-06-03T23:11:53-07:00"
+title = "PCRE, and how to not write an API.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["pcre", "awkward decisions"]
++++
+
+From the pcreapi(3) manpage:
+
+<pre>
+The first two-thirds of the vector is used  to  pass  back  captured  sub-
+strings,  each  substring using a pair of integers. <b>The remaining third of
+the vector is used as workspace by pcre_exec()  while  matching  capturing
+subpatterns, and is not available for passing back information.</b> The length
+passed in ovecsize should always be a multiple of three. If it is not,  it
+is rounded down.
+</pre>
+
+The 'vector' in question is used by pcre to store offset information for
+captured groups. It's a good and simple way to figure out where each capture
+starts and ends.
+
+<p>
+
+What doesn't make sense is the portion I put in bold. Why wouldn't pcre_exec
+simply allocate that scratch space itself? This does not make sense to me. In
+the mean time, I'm left wondering why I am allocating parts of an array I am
+told are unusable. I hope there's a good reason. Perhaps some unknown
+efficiency is gained from doing it this way.
+
+

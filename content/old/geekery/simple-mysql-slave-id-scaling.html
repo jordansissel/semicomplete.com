@@ -1,0 +1,98 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-02-06T02:58:35-08:00"
+title = "Mysql slave server-id selection\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["mysql", "scaling", "dynamic scaling"]
++++
+
+For a current project, I need the ability to dynamically grow and shrink a pool
+of mysql slaves. In order for replication to work properly, every slave must
+have a unique server id. When you want to grow another slave, how do you choose
+the server id?
+
+<p>
+
+Two slaves with the same server id will replicate successfully, but when they
+reach the end of the master's binary log, something freaks out and forces them
+to disconnect. This causes both slaves to reconnect, sync (no data needed), and
+have the connection die off quickly again. The result of this is rapid
+connection/disconnection by both slaves driving the load to 1+ on both slaves,
+and to around .3 on the master even in a completely idle system. This is bad.
+Therefore, server id collisions are bad.
+
+<p>
+
+A simple approach might be to pick a random number. However, depending on your range, collisions may still occur. If there's even a slight chance of collision, you have to detect that collision and try a new number. Collision detection is expensive  and can be done one of a few ways:
+
+<ul>
+  <li> query all slaves asking "show global variable like 'server-id'" and
+  comparing it against the chosen one. This has O(n) runtime, and doesn't scale.  </li>
+  <li> Set the server id to whatever you picked at random, have a heuristic tool that can detect the behavior that happens when two server ids collide. This is obviously a horrible idea. </li>
+</ul>
+
+Random choice doesn't seem to be very good. Scanning all slaves and picking an
+id that isn't in the set of known ids is also bad, as mentioned above. So what now?
+
+<p>
+
+We need a number that will never repeat. You might think about using a small
+table in the master with an auto_increment column and always get a new id that
+way, but why? Time is always increasing. Bonus that mysql's server-id is an
+unsigned 32bit value, so unix epoch values will be fine until the distant
+future.
+
+<p>
+A trivial script can generate your my.cnf whenever you bring up a new
+slave with the current time as a server id and you're pretty much guaranteed
+never to have a collision unless you grow two slaves up at the same second (how
+likely is that?).
+
+<p>
+
+Simple mysql config:
+<pre>
+# my.cnf.in
+server-id=SERVERID
+</pre>
+
+
+Simple script to generate a config with a proper serverid:
+<pre>
+#!/bin/sh
+
+m4 -DSERVERID=`date +%s` my.cnf.in > /etc/my.cnf
+</pre>
+
+Make this part of your "add a new mysql slave" setup and you'll a scalable
+server-id selection system.
+
+<p>
+
+Alternatively, since mysql server-id values are, again, 32 bit, you can simply
+use the IP address of the machine itself. Something like this:
+
+<pre>
+#!/usr/bin/perl
+# Turn an IP into an integer for use with mysql server IDs (or whatever)
+
+$exp = 3;
+map { $x += $_ * (2 ** (8 * $exp--)) } split(/\./, $ARGV[1]);
+print $x
+</pre>
+
+I named it ip2int.pl. You can use Socket's inet_aton and unpack to achieve the
+same result here.
+<pre>
+./ip2int.pl 129.21.60.5
+2165652485
+</pre>
+
+Since IPs are in theory unique, you can use use the IP of the mysql server for
+its own server ID.
+

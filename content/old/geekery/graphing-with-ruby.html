@@ -1,0 +1,76 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-05-19T00:11:22-07:00"
+title = "Graphs in Ruby with RMagick\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["ruby", "graphs", "plotting", "rmagick", "imagemagick"]
++++
+
+I'm always finding myself wanting to graph random data. Gnuplot is nice, but
+not enjoyably scriptable. Matplotlib in python is too matlab-ish, or was when I
+looked at it last (though it looks much improved now). Some ruby options exist
+(even ruby+gnuplot), but none were much to my tastes.
+
+<p>
+
+I started fiddling around with <a
+href="http://rmagick.rubyforge.org/">RMagick</a> and stumbled across what it
+calls "RVG" (ruby vector graphics). From the site:
+
+<blockquote>
+RVG (Ruby Vector Graphics) is a facade for RMagick's Draw class that supplies a
+drawing API based on the Scalable Vector Graphics W3C recommendation.
+</blockquote>
+
+The API is pretty reasonable and hasn't hindered me yet and feels good after
+having hacked with it for a few hours: Simple operations like point
+translation, scaling, rotating, flipping, etc are simple in code; the api is
+well documented; images can be embedded easily into another which allows for
+easily writing modular code.
+
+<p>
+
+Anyway, the goal of this adventure was to come up with something that would
+produce non-crappy plots. Main emphasis on having a means to apply axis labels
+and ticks that wasn't painful. The result is below: (x-axis ticks are
+hour-aligned and have 12 hour steps, y-axis ticks are single-value aligned)
+
+<p>
+
+<img src="/files/blogposts/20090519/testgraph.gif">
+
+<p>
+
+Here's the code that generates the above graph (using <a
+href="http://semicomplete.googlecode.com/svn/rplot/rplot.rb">rplot.rb</a>). A
+lot of things (like axis label tick alignment and stepping) are hardcoded right
+now, but that will obviously change if I decide this project needs attention
+(and I don't find something that does the same thing but better).
+
+<pre>
+# graph some random stuff, like log(x) and sin(x)
+# use time for the 'x' to demo time formatting
+# each point is an hour (i * 3600)
+graph = RPlot.new(400, 200, "Happy Graph")
+
+points = 60
+axis = GraphAxis.new
+(1..points).each do |i|
+  axis.points << [Time.now.to_f + i*3600, Math.log(i)]
+end
+
+axis2 = GraphAxis.new
+(1..points).each do |i|
+  axis2.points << [Time.now.to_f + i*3600, Math.sin((i / 2.0).to_f) + 1]
+end
+
+graph.axes << axis
+graph.axes << axis2
+
+graph.render("/home/jls/public_html/test.gif")
+</pre>

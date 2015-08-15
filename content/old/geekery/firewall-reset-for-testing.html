@@ -1,0 +1,88 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-01-21T22:59:22-08:00"
+title = "Resetting your firewall (iptables) during testing\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["iptables", "clever", "trick"]
++++
+
+Ever configured a firewall remotely? Ever blocked yourself and had to get physical hands to fix it?
+
+<p>
+
+Kind of sucks.
+
+<p>
+
+So you're going to start playing with some new firewall rules, but you learned
+from the past and now you have a cron(8) or at(8) job that will reset the
+firewall rules to permissive every so often, just in case you lock yourself out.
+
+<p>
+
+I used to do that. Until I realized today that I'm frankly too lazy to wait the
+N minutes I'll have to wait for my at(8) job to kick in.
+
+<p>
+
+Now I sniff packets and have a script trigger from that.
+
+<p>
+
+On the remote server, I'll use ngrep to watch for a specific payload in an icmp
+echo packet. This works because bpf(4) gets packets before the firewall has a
+chance to filter them, meaning even if you deny all packets, bpf(4) (libpcap,
+tcpdump, ngrep, etc) will still see those packets.  Here's the script I use on
+the remote server:
+
+<p>
+
+<pre>
+# Look for any icmp echo packets containing the string 'reset-iptables'
+ngrep -l -Wnone -d any 'reset-iptables' 'icmp and icmp[icmptype] = icmp-echo' \
+| grep --line-buffered '^I ' \
+| while read line ; do 
+  iptables -F
+  iptables -P INPUT ACCEPT
+  iptables -P OUTPUT ACCEPT
+  iptables -P FORWARD ACCEPT
+done
+</pre>
+
+<p>
+
+The ngrep line will output this whenever it sees a matching packet:
+<pre>
+remotehost% ngrep -l -Wnone -d any 'reset-iptables' 'icmp and icmp[icmptype] = icmp-echo'
+interface: any
+filter: (ip) and ( icmp and icmp[icmptype] = icmp-echo )
+match: reset-iptables
+##
+I XX.XX.XX.XX -> XX.XX.XX.XX 8:0
+....reset-iptablesipta
+</pre>
+
+We'll grep for just the 'I' line, then trigger a full firewall reset.
+
+<p>
+
+I couldn't figure out how to use ping(8) and set a specific payload, so I'll
+use scapy.
+
+<pre>
+workstation% echo 'sr1(IP(dst="remotehost.example.com")/ICMP(type="echo-request")/"reset-iptables")' | sudo scapy
+</pre>
+
+Now, if I accidentally lock myself out through firewall rule changes, I can
+trivially reset them using that 'echo | scapy' onliner.
+
+<p>
+
+Obviously, I don't keep the reset script running after the firewall rules are
+tested and known-good, but it's a great instant-gratification means to solving
+the locked-out problem you may face when testing new firewall rules.

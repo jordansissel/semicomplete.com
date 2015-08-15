@@ -1,0 +1,42 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-10-22T23:40:00-07:00"
+title = "python, unicode, and pysqlite2\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["python", "sqlite"]
++++
+
+I have filenames I'm putting into an sqlite database. These filenames are ASCII encoded and may have upper-range characters in them. The problem, in python, is that the default encoding is UTF-8 and these ASCII upper-range characters, for whatever reason, cannot be converted. pysqlite2 provides a mechanism for fixing this problem with adapters and converters.
+
+<p/>
+
+If you get this error:
+<pre>
+UnicodeDecodeError: 'utf8' codec can't decode bytes in position [whatever]
+</pre>
+
+Here's how I fix it (this may not be the proper solution):
+
+<pre>
+from pysqlite2 import dbapi2 as sqlite
+
+# ... several lines of code later ...
+
+def decode_string(val):
+	return val
+
+def adapt_string(val):
+	return unicode(val).encode("US-ASCII")
+
+# ... somewhere ...
+
+sqlite.register_adapter(str, adapt_string)
+sqlite.register_converter('VARCHAR', decode_string)
+</pre>
+
+I'm not certain the converter/decode is necessary, however the encoding is absolutely necessary.

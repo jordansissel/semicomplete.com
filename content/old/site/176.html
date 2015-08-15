@@ -1,0 +1,31 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-06-21T22:48:00-07:00"
+title = "Search engine referrer urls and your website.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["site"]
++++
+
+
+Lots of websites are similar to mine: A front page containing recent entries. i've noticed that quite a few search engine requests actually direct people to the main page long after the content has disappared into the archive. Personally, when I go searching on the net for "things" and I find some guy's blog whose entry of interest to me has been gone to his archive for months, I get mad.
+
+<p/>
+
+So what can we do? Surely there are plenty of solutions, right? I mean, with wonderful things like RDF there's got to be a way to tell search engines where the data is going to be living on a permanent basis? If not, there's still a few things left we can do. Firstly, I think it is crucial that websites provide a means of which to search their content. Secondly, and sometimes this bothers me, somtimes I like it, some websites will take the referrer url into account and use that in helping display the webpage. This is most often seen by websites highlighting search terms that it sees from your google referrer url. 
+
+<p/>
+
+While this is helpful, it's not always useful. Blogware ought to recognize that the front page is dynamic and be able to understand search engine referrers. Using this knowledge it should display (in some meaningful and useful way) a localized search result to the user. This means if I search for "ppp over ssh" and google points me to http://www.csh.rit.edu/~psionic/, my front page needs to realize that my post about 'ppp over ssh' probably isn't there anymore, and it should ideally point me at the pppp over ssh article.
+
+<p/>
+
+Certain features such as text highlighting are quite useful, but giving the user a way to turn them off to ease readability is necessary, in my mind. There are other features I imagine could be incorporated here, aswell, but I haven't actually put much thought into it right now, perhaps later ;)
+
+<p/>
+
+A website's goal is to convey information. If this information cannot be found quickly and easily, users will go elsewhere. For this reason, I believe it is crucial for website maintainers to periodically look at things like webserver logs for search engine referrers. If google is sending your users to the wrong page you have two options: Make the correct page more visible (difficult with current search engine algorithms which aren't very intelligent), or make your website smarter.

@@ -1,0 +1,21 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2003-09-23T07:36:00-07:00"
+title = "sharity+solaris9\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["open source adventures"]
++++
+
+Since my laptop likes to have sound issues that I can't fix due to hdd issues, I decided that my Ultra1 would be my new speshul mp3 player. Since my desktop is still at home I don't have any mp3s myself, so I just mount a friend's directory using smbfs under FreeBSD - Solaris 9 doesn't have this feature in it's base and requires 3rd party shenanigans to do it. <br>
+Samba's smbmount is linux-specific, so that was out of the question. I found a project called <a href="http://www.obdev.at/products/sharity/">Sharity</a> which allows not only the root-user to mount samba shares, but users aswell. They had a Sol9/sparc package already available to me so I downloaded and installed that. It uses a daemon (run as root) to manage mounted file shares and such. What is neat and mention-worthy is a default mount of <code>/CIFS</code> which is browseable and works the same way the "my network neighborhood" thing does in Windows. You can also set an external program to prompt for passwords, for instance if you try to <code>cd</code> to a password-protected machine/share it will pop up a password dialog in a gui of your choice. Neat.
+
+<pre>cifsmount -u [user] //machine/share /mountpoint</pre>
+
+Passwords are saved by default so once you enter the password for a share it never asks you for it again.<p>
+
+As far as speed goes, it seems as fast as smbfs under FreeBSD or faster (I can't tell at this time: 2mbps/366mHz laptop vs 10mbit/143mHz ultra1). But as far as finding a viable solution for mounting CIFS shares under non-linux (and non-freebsd), Sharity is what you want. I'm sure it has more cool tools that I can play with, but I haven't really explored anything yet.

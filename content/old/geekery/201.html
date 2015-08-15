@@ -1,0 +1,37 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-12-24T04:20:00-08:00"
+title = "FreeBSD new psm and moused ready for testing\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["freebsd"]
++++
+
+I posted this to freebsd-current@, so I might aswell post it here too.
+
+<p/>
+
+I've been working on a userland-ification of psm(4) and a complete
+rewrite of moused(8). The new psm(4) driver lacks protocol understanding
+and expects to be controlled through ioctls only. The new moused(8) is
+designed such that mouse drivers are in the userland.
+<p/>
+I have implemented 3 driver modules thus far:
+<ul>
+<li>Synaptics Touchpad (ps/2 only, not usb)</li>
+<li>Generic PS/2</li>
+<li>sysmouse (for ums(4) and mse(4))</li>
+</ul>
+
+Development has been done in 6.x (I don't have a -current machine handy)
+but this will probably work fine in -current.
+<p/>
+Directions on what to do can be found on the project's site:<br/>
+<a href="http://www.csh.rit.edu/~psionic/projects/newpsm">projects/newpsm</a>
+
+<p/>
+Comments/suggestions welcome :)

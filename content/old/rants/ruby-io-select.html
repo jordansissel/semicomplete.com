@@ -1,0 +1,54 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-01-06T21:00:03-08:00"
+title = "How not to write documentation.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["ruby", "documentation", "antipattern"]
++++
+
+I've grown accustomed to ruby having poorly accessible documentation. What I
+mean by 'poorly accessible' is the fact that <code>ri Array</code> gives me a
+list of things Array can do (which is nice), but to actually find out about
+<code>Array.delete</code> I have to run <code>ri Array.delete</code>. Further,
+the online ruby documentation is better, but not great, but is somehow
+strangely different from simply the rdoc itself. I got used to Python's
+often-helpful ways of pydoc showing you what appears to be "as much as
+possible" when you pydoc a class, module, or method.
+
+<p>
+
+Maybe I'm doing it wrong. Either way, the following is annoying and unhelpful.
+While it tells me the arguments that should be passed, and what is returned, it
+doesn't help me really know more about the function. Luckly, I'm already
+familiar with select from other languages.
+
+<pre>
+snack(~) % ri IO.select
+------------------------------------------------------------- IO::select
+     IO.select(read_array 
+     [, write_array 
+     [, error_array 
+     [, timeout]]] ) =>  array  or  nil
+------------------------------------------------------------------------
+     See +Kernel#select+.
+</pre>
+
+Ok, fine... Let's look at Kernel#select.
+
+<pre>
+snack(~) % ri Kernel#select
+---------------------------------------------------------- Kernel#select
+     IO.select(read_array 
+     [, write_array 
+     [, error_array 
+     [, timeout]]] ) =>  array  or  nil
+------------------------------------------------------------------------
+     <b>See +Kernel#select+.</b>
+</pre>
+
+*sigh*

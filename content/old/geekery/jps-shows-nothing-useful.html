@@ -1,0 +1,92 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-05-16T20:46:56-07:00"
+title = "jps output not correct\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["centos", "java", "tmpwatch", "nagios", "alert", "badconfiguration"]
++++
+
+A nagios alert checking for some java processes started firing because it
+couldn't find those processes. This check used 'jps' to look for those
+processes.
+
+<pre>
+% sudo /usr/java/jdk1.6.0_04/bin/jps
+15071 Jps
+% ps -u root | grep -c java
+15
+</pre>
+
+I espected lots of output from jps, but there was only the jps process itself.
+Confusing. What does jps use to track java processes?
+
+<p>
+
+Your old strace (truss, whatever) friend will help you here:
+
+<pre>
+# Always use 'strace -f' on java processes as they spawn new processes/threads
+% sudo strace -f /usr/java/jdk1.6.0_04/bin/jps |& grep -F '("/' \
+  | fex '"2/{1:2}' | sort | uniq -c | sort -n | tail -5
+      5 proc/self 
+      5 proc/stat 
+     12 usr 
+     17 tmp/hsperfdata_root 
+    283 usr/java 
+</pre>
+
+It referenced /tmp/hsperfdata_root multiple times. Weird, checking it out:
+<pre>
+% ls /tmp/hsperfdata_root | wc -l
+0
+</pre>
+
+This directory is empty. Looking further around the strace and confirming by
+looking at the classes jps invokes
+(<a href="http://openjdk.java.net/groups/serviceability/jvmstat/sun/jvmstat/perfdata/monitor/protocol/local/MonitoredHostProvider.html">sun.jvmstat.perfdata.monitor.protocol.local.MonitoredHostProvider</a>)
+shows that /tmp/hsperfdata_&lt;user&gt; is used by each jvm instance. It stores a file named by processes' pid.
+
+<p>
+
+So the question is, why is this directory empty?
+
+<p>
+
+Of the hosts I know run java, it only seems like long-running instances of
+java are disappearing from jps, making me think we have a cron job removing
+files from /tmp. I found this while looking through cron jobs:
+
+<pre>
+% cat /etc/cron.daily/tmpwatch 
+/usr/sbin/tmpwatch -x /tmp/.X11-unix -x /tmp/.XIM-unix -x /tmp/.font-unix \
+        -x /tmp/.ICE-unix -x /tmp/.Test-unix 240 /tmp
+/usr/sbin/tmpwatch 720 /var/tmp
+for d in /var/{cache/man,catman}/{cat?,X11R6/cat?,local/cat?}; do
+    if [ -d "$d" ]; then
+        /usr/sbin/tmpwatch -f 720 "$d"
+    fi
+done
+</pre>
+
+This file comes from the tmpwatch rpm, which appears to come base installed on
+CentOS.  This means that for every file in /tmp (except those specified by '-x
+dir') are being deleted if they are older than 240 hours (10 days). As an FYI,
+the default time value inspected is the file's atime, so if you mount noatime,
+the accesstime is not reliable.
+
+<p>
+
+Ultimately, we need to add a new set of flags to the cronjob that excludes
+/tmp/hsperfdata_*. This should keep me from being paged when a java process
+lives for more than 10 days ;)
+
+<p>
+
+Additionally, it makes me think that the people who use CentOS don't use Java
+or don't monitor their java processes with jps.
+

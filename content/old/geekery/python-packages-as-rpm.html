@@ -1,0 +1,96 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-09-11T00:25:30-07:00"
+title = "Getting your python as rpms\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["egg2rpm", "python", "egg", "rpm", "centos", "packaging", "tools"]
++++
+
+I was working on a new python 2.6 rpm to push at work and started wondering
+about how to get python eggs to become rpms. Ruby has a gem package called
+gem2rpm that aids in generating rpms from ruby gems, but there's not really an
+egg2rpm project.
+
+<p>
+
+We're in luck, though. Python's setuptools supports generating rpms by default,
+it seems. Those 'python setup.py' invocations you may be accustomed to can
+trivially generate rpms.
+
+<p>
+
+The secret sauce is the 'bdist_rpm' command given to setup.py:
+
+<pre>
+% wget -q http://boto.googlecode.com/files/boto-1.8d.tar.gz
+% tar -zxf boto-1.8d.tar.gz
+% cd cd boto-1.8d
+% python setup.py bdist_rpm
+% find ./ -name '*.rpm'
+./dist/boto-1.8d-1.noarch.rpm
+./dist/boto-1.8d-1.src.rpm
+</pre>
+
+Piece of cake. I've tried this on a handful of python packages (boto, simplejson, etc), and they all seem to produce happy rpms.
+
+<p>
+
+However, if you have multiple versions of python available, you'll want to explicitly hardcode the path to python:
+
+<pre>
+% python setup.py bdist_rpm --python /usr/bin/python2.6
+% rpm2cpio dist/boto-1.8d-1.noarch.rpm | cpio -it | grep lib | head -3
+2745 blocks
+./usr/lib/python2.6/site-packages/boto-1.8d-py2.6.egg-info
+./usr/lib/python2.6/site-packages/boto/__init__.py
+./usr/lib/python2.6/site-packages/boto/__init__.pyc
+</pre>
+
+The default python on this system is python 2.4. Doing the above forces a build
+against python2.6 - excellent, but maybe we're not quite there yet. What if you
+need this package for both python 2.4 and 2.6? For this, you'll need separate
+package names.
+
+However, the bdist_rpm command doesn't have a way of setting the rpm package
+name. One way is to hack setup.py with the new name:
+
+<pre>
+% grep name setup.py
+setup(name = "boto",
+% sed -re 's/name *= *"([^"]+)"/name = "python24-\1"/'  setup.py &gt; setup24.py
+% grep name setup24.py
+setup(name = "python24-boto",
+
+# Now build the new rpm with the new package name, python24-boto
+% python setup24.py bdist_rpm --python /usr/bin/python2.4
+</pre>
+
+For our boto package, this creates an rpm with a new name: python24-boto. This
+method is good (hack the setup.py script) because the command to build the rpm
+stays basically the same. The alternative would be to use 'python setup.py
+bdist_rpm --spec-only' and edit the spec file, then craft whatever rpmbuild
+command was necessary. The method above is less effort and trivially
+automatable with no knowledge of rpmbuild or specfiles. :)
+
+<p>
+
+Repeat this process for python26, and now we have two boto rpms for both pythons.
+
+<pre>
+% rpm -Uvh python2?-boto-*noarch.rpm
+Preparing...                ########################################### [100%]
+   1:python26-boto          ########################################### [ 50%]
+   2:python24-boto          ########################################### [100%]
+
+% python2.4 -c 'import boto; print True'
+True
+% python2.6 -c 'import boto; print True'
+True
+</pre>
+
+Excellent.

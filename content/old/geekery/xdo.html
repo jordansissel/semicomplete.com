@@ -1,0 +1,79 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-06-18T02:18:38-07:00"
+title = "xdo - do (keyboard or mouse) things in X\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["xdo", "C", "xlib", "x11", "macros", "hacks", "productivity"]
++++
+
+<div class="update">
+<b>Update:</b> xdotool is now a full project, see <a
+href="/projects/xdotool">this page</a>. It supports much more than just mouse
+and keyboard things.
+</div>
+
+<p>
+
+Yesterday, I  <a href="/blog/geekery/macro-navigation">talked about macros</a>. I spent some time coding today and I now have a tool that will let you execute raw keyboard and mouse input into X using the XTEST extension.
+
+<p>
+
+The primary example I used was focusing firefox's URL bar without the mouse.
+The sequence was this: Switch to Desktop 2 (I press Alt+2), focus firefox's URL
+bar (using control+l) and clear it.
+
+<p>
+
+The result is a simple tool I'm tentatively calling 'xdo'. You can download the
+source <a href="/files/blogposts/20070618/xdo.c">here</a>. Compile instructions
+are at the top of the file.
+
+<p>
+
+The top of xdo.c details the implemented commands, so let's cut to an example:
+
+<pre>
+% echo 'key alt+2; sleep 1; key ctrl+l; key BackSpace' | ./xdo
+</pre>
+
+It does exactly what you think. The 'sleep' command has values in milliseconds,
+and is only necessary to slow down so that events can propgate fast enough
+(window focus changes, etc).
+
+<p>
+
+Another reasonable example would be to say "firefox, open a new tab and load the URL in my clipboard":
+
+<pre>
+# My clipboard contains a valid url, say, "http://www.google.com/"
+(echo "key alt+2; sleep 1; key ctrl+l; key BackSpace;"
+ echo "move 55 55; sleep 1; click 2; key Return") | ./xdo
+</pre>
+
+Seems complex, but look at what's really happening: Go to desktop 2, focus
+urlbar, hit backspace (clearing it), move the mouse cursor to 55,55 (a point
+inside the urlbar for me), hit middle mouse button to paste.
+
+<p>
+
+Change "ctrl+l" to ctrl+k (unix firefox) to focus the "Search" box instead, and
+change the 'move' command to cursor over the search box to paste instead, and
+suddenly you can bind a simple keystroke to search for whatever is in your X
+clipboard. Useful.
+
+<p>
+
+One of the neater features is that you can 'type' text:
+
+<pre>
+% echo 'type echo hello there; key Return' | ./xdo
+echo hello there
+% echo hello there
+hello there
+</pre>
+

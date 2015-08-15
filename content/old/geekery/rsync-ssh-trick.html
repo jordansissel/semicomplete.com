@@ -1,0 +1,27 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-08-05T22:06:53-07:00"
+title = "rsync through an ssh server\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["rsync", "firewall bypass", "ssh"]
++++
+
+I have a host (let's call it filer) that is only accessible through a bastion
+server. Here's how to rsync directly do that host:
+
+<pre>
+rsync -e 'ssh bastion ssh' somefile.tar.gz filer:
+</pre>
+
+I haven't posted much recently due to my wedding coming soon and being
+extremely busy with work. I've been learning a great deal of new tools recently, so expect some brain dumps about some of the following:
+<ul>
+<li> lvm </li>
+<li> qemu </li>
+<li> windows hackery </li>
+</ul>

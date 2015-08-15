@@ -1,0 +1,57 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-03-18T18:04:00-08:00"
+title = "Grok and other plans\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok"]
++++
+
+As a sysadmin, I get the privilege of sifting through piles of logs to find
+anomalies. Logs are great. However, I don't have time to sift through every log
+looking for data worth reading. I'd much prefer having only the data I want to
+see displayed to me. Most of the time log audits are an all-or-nothing activity
+- either you look at all of the data, or you look at none of the data. Looking
+at all the data takes more time than it should, and ignoring data can be
+hazardous (especially when tracking problems down).
+
+<p>
+
+Some time ago, I began a very long process of taking the massive quantities
+of data and having a machine process them for me. Spend a bit of time up-front
+to determine what data is definitely meaningful and let the computer handle the
+rest. The computer needs to process the raw data and display the data to me in a
+meaningful and readable format. Such formats include trend graphs, log
+summaries, and anomaly detection. Trend graphs are simple to do, assuming you
+have numeric data. Log summaries are easy if you know how and what you want to
+summarize. Anomalies are easy to detect if you know what you're looking for, or
+declare "anything unknown is badwrong... or <i>badong</i>."
+
+<p>
+
+Grok is the first step in having raw data turned into something easily readable.
+The next step is writing some magic software piece that lets me store arbitrary
+data (log entries, counters, key->value pairs, etc), possibly by date. This way,
+you can take grok's parsing ability and turn it into stored content. Now that
+you'll have super megatastic parsed log data, you'll want to turn it into
+something more human-meaningful - graphs or summaries. That's the 3rd piece.
+
+<p>
+
+So anyway, I got bored and started playing with Visio (generously provided by
+RIT's CS dept, ofcourse), and I came up with a little diagram of what I want
+grok and it's sister tools to do. The yellowish items are things I'll be
+writing. The rest aren't really software so much as stuff that happens. Here's a pretty diagram complete with a useful description of a "brick thing" -
+
+<center>
+<img src="/images/grokplan.png">
+</center>
+
+In summary. Data (logs, etc) are extremely noisy. Use grok and other tools to
+turn raw data into useful data for you. This will keep you reading your logs
+aswell as keeping you sane. See how happy the sysadmins are? The smiley faces
+indicate happiness... I promise.

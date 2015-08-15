@@ -1,0 +1,72 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-04-07T01:50:01-07:00"
+title = "Vim hack for Pyblosxom entry backdating\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["hacks", "vim", "pyblosxom", "boredom-induced-research"]
++++
+
+Hurray! I finally got around to hacking a little script for vim that will
+automatically track posting dates for pyblosxom entries. It does the following:
+
+<ol>
+	<li> For new entries, add '#mdate {currentdate}' on the 2nd line. </li>
+	<li> For existing entries without '#mdate' metadata, it will look up the
+	mdate of the current entry and append it in the form, '#mdate {mdate of file}'</li>
+	<li> After you write (:w, :wq, etc), vim will look for #mdate metadata and
+	turn the date into something touch(1) can use, then set the modification
+	date of the file.</li>
+</ol>
+
+This seems to work pretty well, and is quite transparent to pyblosxom, since it
+sees lines beginning with #foo as "metadata" - so far so good. However, it does jump to the 2nd line of the file when you save, which is annoying (but fixable). I'll fix that later.
+
+<p>
+
+My "vim scripting"-fu is not strong, so there's probably a cleaner/fancier way to do this. Anyhoo, you'll need the following in your .vimrc:
+
+<pre>
+" PyBlosxom stuff
+augroup pyblosxom
+	autocmd BufReadPost /home/jls/public_html/entries/*/*.txt call Pyblosxom_checkdate()
+	autocmd BufNewFile /home/jls/public_html/entries/*/*.txt call Pyblosxom_putdate()
+	autocmd BufWritePost /home/jls/public_html/entries/*/*.txt call Pyblosxom_fudgedate()
+augroup end
+
+function Pyblosxom_checkdate() 
+	" Look in the file for '#mdate foo' metadata
+	normal 1G
+	let dateline = search("^#mdate")
+
+	" If not found, append the mdate of the file to line 2
+	if dateline < 1
+		let dateline = 1
+		let date = system("stat -f '#mdate %Sm' " . expand("%"))
+
+		" Add the date to the file on line 1
+		1put=date
+	endif
+endfunction
+
+function Pyblosxom_putdate()
+	let date=strftime("#mdate %b %e %H:%M:%S %Y")
+	1put=date
+	goto 1
+endfunction
+
+function Pyblosxom_fudgedate() 
+	let l=search("^#mdate")
+	let l=strpart(getline(l), 7)
+	let cmd="date -j -f '%b %e %H:%M:%S %Y' '" . l . "' +%y%m%d%H%M"
+	let touchtime=system(cmd)
+	let touchcmd="touch -t '" . strpart(touchtime,0,strlen(touchtime)-1) . "' '" . expand("%") . "'"
+	call system(touchcmd)
+	e
+endfunction
+
+</pre>

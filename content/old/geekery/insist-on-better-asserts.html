@@ -1,0 +1,63 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2011-10-08T22:25:17-07:00"
+title = "Insist on better asserts\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["C", "assert", "debugging"]
++++
+
+I never really liked C's assert() feature. If an assertion is violated, it'll
+tell you what assertion failed but completely lacks any context:
+
+<pre>
+example: example.c:9: main: Assertion `i == 3' failed.
+</pre>
+
+This is better:
+
+<pre>
+Assertion failed insist.c:7 in main(), insist(i == 3): Something went wrong, wanted i == 3, got 4
+</pre>
+
+The main difference here is that there's context about what failed. A message
+for humans looking to debug this. This is especially important on Linux these
+days because every distro I've used recently hates sysadmins and hates
+debugging - all libraries are stripped of debug symbols and coredumps are
+disabled by default.
+
+<p>
+
+What's the usage look like?
+
+<pre>
+#include <stdio.h>
+#include <stdlib.h>
+#include "insist.h"
+
+int main() {
+  int i = 4;
+  //assert(i == 3);
+  insist(i == 3, "Something went wrong, wanted i == 3, got %d", i);
+  return 0;
+} 
+</pre>
+
+I also added a special 'return' version of this, 'insist_return' that lets you
+do error checking and early aborting like this:
+
+<pre>
+insist_return(fd >= 0, START_FAILURE,
+              "socket() returned %d, an error: %s", fd, strerror(errno));
+</pre>
+
+Works just like insist() except returns START_FAILURE if 'fd > 0' is false and
+additionally logs the error formatted above.
+
+<p>
+
+Code here: <a href="https://github.com/jordansissel/experiments/tree/master/c/better-assert/insist.h">insist.h</a>

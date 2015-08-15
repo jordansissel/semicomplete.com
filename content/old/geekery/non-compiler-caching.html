@@ -1,0 +1,76 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-04-23T01:49:55-07:00"
+title = "Non-compiler caching\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["freebsd", "caching", "build", "make", "awk"]
++++
+
+I setup ccache again (trivial) to help me with building freebsd repeatedly. I
+noticed that much of the time spent in the kernel build process was in building
+dependency lists using awk.
+
+<p>
+
+Why couldn't we apply the ccache idea to everything else? If the same input
+always means the same output, then we could cache it if it is computationally
+expensive to compute that output.
+
+<p>
+
+Script: <a href="/files/blogposts/20080423/dcache.sh">dcache.sh</a>
+
+<p>
+
+Above is a hack that runs like ccache, but tracks all files created by the
+process (and its subprocesses). Here's a sample run, of counting the number of
+lines in a file with awk and outputing the result (within awk) to another file.
+
+<pre>
+% /usr/bin/time ./dcache.sh awk '{x++} END { print "Total records: " x > "/tmp/hello"}' bigdata
+Running original...
+        1.60 real         0.05 user         0.74 sys
+% cat /tmp/hello
+Total records: 1000000
+
+# Remove the old output file
+% rm /tmp/hello
+
+# Rerun it again, unmodified, and it will use the cached output.
+% /usr/bin/time ./dcache.sh awk '{x++} END { print "Total records: " x > "/tmp/hello"}' bigdata
+Using cache...
+        0.06 real         0.00 user         0.06 sys
+% cat /tmp/hello
+Total records: 1000000
+</pre>
+
+It doesn't work with everything just yet, but the problems seem to be with
+truss's behavior and not the script's fault, like sometimes truss hangs, or it
+doesn't follow a fork like it should. 
+
+Beyond truss problems, the scripts doesn't track file renames. It also doesn't
+understand how to figure out what the input files for each command is. Ideally
+it would checksum any inputs and use that as the cache key; currently it only
+checksums the commandline arguments and not the external files being used (such
+as 'bigfile'). 
+
+<p>
+
+I started initially without using truss, but awk doesn't call open(2) via libc
+when it opens files, for some reason, and I can't figure out a clean way to
+capture specific function calls from a process (even a child process).
+
+<p>
+
+Dtrace would be sexy here, but it is unavailable in the main freebsd trunk.
+
+<p>
+
+The speedup is pretty obvious for cpu-intensive things, but the real test is to
+see how it performs when working properly and hooked into the freebsd kernel
+build.

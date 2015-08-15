@@ -1,0 +1,98 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-02-07T03:27:18-08:00"
+title = "Mini-FreeBSD script\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["automation", "freebsd", "jails", "embedded systems"]
++++
+
+I wrote a script a while ago to build a very tiny freebsd world. It's extremely
+fast and only builds a freebsd image in approximately 10 megs of space. It lets you quickly create new jail enviroments or system images for small embedded platforms.
+
+<p>
+
+If you look at the script itself, you'll get an idea of what it installs. I
+used a variant of this script to build the system I run on my Soekris net4501
+which runs FreeBSD and is under 20 megs.
+
+<p>
+
+There are lots of "make a small freebsd system" scripts, but most of the ones
+I've found rely heavily on 'buildworld' and what not. This takes a live system
+and copies the binaries you need, then uses ldd(1) to track down required
+libraries.
+
+<p>
+
+<a href="/scripts/minibsd.sh">view minibsd.sh</a>
+
+<p>
+
+Example usage:
+<pre>
+kenya(~/t) % rm -rf ./soekris/
+kenya(~/t) % time sudo ./minibsd.sh
+sudo ./minibsd.sh   0.16s user 0.65s system 61% cpu 1.326 total
+kenya(~/t) % sudo chroot ./soekris /bin/sh
+# pwd
+/
+# exit
+</pre>
+
+Simple jail config (rc.conf):
+<pre>
+jail_enable="YES"
+jail_list="test"
+jail_test_rootdir="/home/jls/t/soekris"
+jail_test_hostname="test"
+jail_test_ip="10.1.1.1"
+jail_test_interface="tl1"
+</pre>
+
+Put something simple in this jail's rc.conf (/home/jls/t/soekris/etc/rc.conf):
+
+<pre>
+sshd_enable="YES"
+sendmail_enable="NONE"
+</pre>
+
+Let's test the jail now:
+<pre>
+kenya(~/t) % sudo /etc/rc.d/jail start
+Configuring jails:.
+Starting jails: 
+</pre>
+
+At this point, it's probably hung (assuming you enabled sshd). If you hit
+CTRL+T you'll see what command  has the foreground and what it's doing.* This is
+because it's prompting you (output is directed to JAILROOT/var/log/console.log)
+for entropy for the ssh-keygen. Smash a few keys then hit enter. It'll finish
+eventually.
+
+<pre>
+kenya(~/t) % sockstat -4 | grep 10.1.1.1:22 
+root     sshd       2258  3  tcp4   10.1.1.1:22           *:*
+</pre>
+
+Our sshd is running happily inside that jail we made. This whole process took
+about 5 minutes.
+
+<p>
+
+* FreeBSD's CTRL+T terminal handler feature has to be the best thing ever
+invented. I wish Linux had something like this. Here's what hitting CTRL+T when
+running cat looks like:
+
+<pre>
+kenya(~) % cat
+load: 0.45  cmd: cat 2324 [ttyin] 0.00u 0.00s 0% 600k
+load: 0.42  cmd: cat 2324 [ttyin] 0.00u 0.00s 0% 600k
+</pre>
+
+It clearly shows you the command name, the pid, and the syscall-type-thing it's
+doing. Clearly cat is waiting for input from the tty. <3 FreeBSD.

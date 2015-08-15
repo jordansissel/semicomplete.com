@@ -1,0 +1,38 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-12-25T04:35:00-08:00"
+title = "Shoutcast stream 'lame' proxy\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["python", "networking"]
++++
+
+Many of my mp3s are of such a high bitrate that they saturate my crappy 30k/s
+DSL connection. To solve that problem, I wrote a proxy that connects to the
+real shoutcast server and essentially pipes the output through lame before
+sending it to you. Doing this, I was able to easily down encode any mp3 output
+to something more reasonable for streaming, such as 64kbit.
+<p/>
+
+If you want to take a look at it, it's only 38 lines of python.
+<p/>
+<a href="http://www.csh.rit.edu/~psionic/projects/scripts/lameproxy.py">lameproxy.py</a>
+
+<p/>
+
+This is probably going to become a part of Pimp itself. Instead of accessing the normal '/stream/happystream' you could do '/stream/happy?bitrate=128' and it will lame-it up for you. I've *always* wanted this feature in Pimp since version 2 (version 1 wasn't networked).
+
+<p/>
+
+On a funnier note, it seems like the other media guys are catching on to
+"networked is good" - XMMS2 is being written from scratch so I hear. It's going
+to sport a client/server model. So far there's MPD2, XMMS2, and Gstreamer that
+are well known. Whatever, as far as I can tell they all have the library and
+player in the same place. Pimp abstracts it one more level: a control client, a
+server, and a media client. In this case, the control client is Firefox and
+media client is your favorite mp3 player. Those other projects will eventually
+catch up to me I suppose ;)

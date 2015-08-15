@@ -1,0 +1,39 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-09-23T05:39:55-07:00"
+title = "Google webmaster tools tip\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["google", "webmaster", "sed", "awk", "statistics"]
++++
+
+Google knows a lot about the web. The <a
+href="http://www.google.com/webmasters">webmaster tools</a> allows me to
+find out how much google knows about my site, in addition to some other cool
+features..
+
+<p>
+
+One of these pieces of data is "what sites are linking to me" which google webmaster tools gives you. It offers this data in a CSV format for offline consumption. I downloaded this, and wanted to see who was linking to me sorted by source url:
+
+<pre>
+sed -re 's@([^,]+),([^,]+),(.*$)@\3,\2,\1@' \
+| awk '
+  $2 ~ /^[0-9],$/ { $2 = "0"$2 } 
+  { 
+    split($0, a, ","); 
+    split($3, b, ","); 
+    $3 = b[1]; ref=a[3]; url=a[4]; 
+    printf("%s %-130s %s\n", $1" "$2" "$3, ref, url)
+  }' \
+| sort | sort -k4 | less
+</pre>
+
+Yes, the above code could probably be better, but I'm not interested in
+elegance: I want data. This lets me get a good overview of who is linking to me
+and to what specific url they are linking.
+

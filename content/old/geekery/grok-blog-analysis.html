@@ -1,0 +1,45 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-02-19T22:19:07-08:00"
+title = "grok for apache log analysis\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok", "apache logs", "logs", "blogging"]
++++
+
+I recently made a small change to my rss and atom feeds. I add a tracker image in the content. It looks like this:
+
+<pre>
+&lt;img src="/images/spacer.gif?<b>path_of_a_blog_entry</b>"&gt;
+</pre>
+
+Any time someone views a post in an RSS feed, that image is loaded and the client browser happily reports the referrer url and I get to track you! Wee.
+
+<p>
+
+This is in an effort to find out how many people actually read my blog. Now that I can track viewship of the rss/atom feeds, how do I go about analyzing it? grok to the rescue:
+
+<p>
+
+<pre>
+% grep 'spacer.gif\?' accesslog \
+   | perl grok -m '%APACHELOG%' -r '%IP% %QUOTEDSTRING:REFERRER%' \
+   | sort | uniq -c | sort -n
+&lt;IP addresses blotted out, only a few entries shown&gt;
+  1 XX.XX.XX.XX "http://www.google.com/reader/view/"
+  9 XX.XX.XX.XX "http://whack.livejournal.com/friends"
+  10 XX.XX.XXX.XXX "http://www.bloglines.com/myblogs_display?sub=44737984&site=6302113"
+  10 XX.XXX.XXX.XX "http://www.semicomplete.com/?flav=rss20"
+  27 XX.XXX.XXX.XX "http://whack.livejournal.com/friends"
+</pre>
+
+Each line represents a unique viewer, and tells me what the reader was using to
+view the feed.
+
+<p>
+
+Yay grok.

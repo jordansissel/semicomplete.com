@@ -1,0 +1,32 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-06-08T03:19:21-07:00"
+title = "Adventures in RPC.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["rpc", "thrift", "ice"]
++++
+
+I wanted to play with Facebook's Thrift RPC tool tonight, but it doesn't seem
+happy on freebsd. It fails somewhere in ./configure and I have no patience to
+go swimming through automake/autoconf code to solve it. I'll just assume Thrift
+was designed in a linux-centric manner and that it's a waste of my time trying
+to fix something I may not even need.
+
+<p>
+
+So, I moved on and am going to play with 
+<a href="http://www.zeroc.com/ice.html">ice</a>. The manual isn't too scary,
+and I'd already be playing with it but the compile is taking ages. Maybe it
+won't suck ;)
+
+<p>
+
+I do enough ad-hoc data analysis with grok, it seems like a fun adventure to
+write some tool that accepts patterns and data input and gives you the results.
+Rather than reinvent the rpc wheel, it's probably worth learning a
+cross-platform rpc library.

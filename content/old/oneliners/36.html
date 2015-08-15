@@ -1,0 +1,18 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2003-08-06T23:14:00-07:00"
+title = "xapply rocks me\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["open source adventures", "oneliners"]
++++
+
+I have a lot of mail boxes that need sorting from the various lists I subscribe too, and sorting by hand or on "viewing" is annoying, so I got bored and made use of xapply and the 6 processors on fury.csh to sort all of my mailboes.<p>
+
+<code>find ./ -type d | xapply -f -P6 'echo "Sorting %1" && mhthread -fast -lock %1 && echo "Done sorting %1"' -</code><p>
+
+The cwd was ~/mail/ and directories under here are all mailboxes. So, xapply uses 6 parallel processes to call mhthread on each mailbox that was found.

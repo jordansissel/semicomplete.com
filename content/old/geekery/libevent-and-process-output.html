@@ -1,0 +1,23 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-10-11T01:51:03-07:00"
+title = "Watching process output with libevent\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["libevent", "c"]
++++
+
+I started really learning libevent today. The API docs for libevent are pretty
+good, but I'm having trouble finding good examples that use it. To that end,
+I'll provide my own. This one uses a bufferevent to watch stdout on a child
+process.
+
+<p>
+
+Code: <a href="http://semicomplete.googlecode.com/svn/codesamples/libevent-execwatch.c">libevent-execwatch.c</a>
+
+

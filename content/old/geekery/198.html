@@ -1,0 +1,44 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-12-13T00:35:00-08:00"
+title = "templating with xhtml, xpath, and python\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["xml", "web", "python"]
++++
+
+I've been gradually researching interesting ways to go about templating pages for Pimp 4.0 (rewrite in python). I've come to the conclusion that regexp replacement is hackish. Using a big templating toolkit is too much effort for now. However, I've come up with a solution I've yet to test thorougly, but the gist of it is:
+<p/>
+
+Use an XML DOM parser to get a DOM-ified version of the webpage. Use XPath to find elements I want to modify and do so as necessary. Poof, templating.
+
+A sample template is <a href="http://www.csh.rit.edu/~psionic/misc/layout.html">layout.html</a>
+<p/>
+
+The following python will parse it and insert "Testing" into the content div.
+<br/>
+<pre>
+#!/usr/local/bin/python
+
+import sys
+from xml.dom import minidom
+from xml import xpath
+
+if __name__ == '__main__':
+        foo = minidom.parse("layout.html")
+
+        # Append a text node to the element with 'id="content"'
+        div = xpath.Evaluate("//*[@id='content']", foo.documentElement)
+        div[0].appendChild(foo.createTextNode("Testing"))
+        foo.writexml(sys.stdout)
+</pre>
+
+It seems pretty simple. I'm probably going to come up with a simple-ish xml/xpath way of doing templating. We'll see how well it actually works later on, but for now it seems like a pretty simple way of doing templating. Move the complicated parts (complex xpath notions) to a templating class with an "insert text" or somesuch method and poof, simple templating. Even for complex situations where I may need to produce a table it is easy to provide a default node-tree for replicating. The particular DOM implementation I am using provides me a wonderful cloneNode() method with which to do this.
+
+<p/>
+
+Ofcourse, if you know of any other simpler ways of doing templating in python (or in general) definitely let me know :)

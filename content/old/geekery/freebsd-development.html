@@ -1,0 +1,57 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-03-09T23:24:10-07:00"
+title = "FreeBSD development\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["freebsd"]
++++
+
+I've had a src commit bit in freebsd for a while, and I haven't done much with it.
+Yes, I suck. I'm working on getting my mouse code into the tree, finally, after
+almost 2 years of its life and almost 2 years of my slacking off on getting it
+ready for submission.
+
+<p>
+
+I think one of the main reasons I've directed energy elsewhere is because
+there's a (from my perception) thick metawork process to get real work done.
+Culture shock, mostly. Almost all of the tools and methods are different from
+my own. My experience at Google has given me good practice in dealing with
+systems foreign to me, so why do I hesitate to work on FreeBSD stuff?
+
+<p>
+
+Outside of the processes involved in getting code into the FreeBSD source tree,
+one of the main problems I've had working on specifically kernel changes in
+FreeBSD are that I haven't come up with a good solution for separating
+workspaces other than simply creating a new virtual machine for each logical
+workspace. In Perforce, you can create multiple clients and work on independent
+changes in each client. In userland code, you can simply just build a new
+binary in a different directory, and you can test both binaries independently.
+
+<p>
+
+With kernels, I have a hard time multitasking. Not specifically multitasking
+different kernels, but if I'm making kernel and userland changes which are
+unrelated to eachother, I can't safely test a new kernel on the same system as
+a userland change. Isolating these as easy as making a new virtual machine, but
+copying virtual machines is not as fast and easy as, say, making a new perforce
+client.
+
+<p>
+
+I haven't come up with a good solution yet, but I'm sure someone else has and
+perhaps I'll build on that. Maybe some kind of hack where I would use a
+pristine, read only system image and all changes would be written to a memory
+filesystem on top of that pristine image? But this basically means all systems
+have to have the same pristine image (copying the image is nontrivial in
+time)...
+
+<p>
+
+Hopefully some of this makes sense. I'm open to suggestions :)

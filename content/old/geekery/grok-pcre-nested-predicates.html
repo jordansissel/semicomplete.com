@@ -1,0 +1,50 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-10-09T02:51:24-07:00"
+title = "Grok (pcre grok) nested predicates\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok", "pcre", "cgrok", "pcregrok", "regexp"]
++++
+
+I've spent the past few days refactoring and redesigning some of grok (the C
+version). Some of the methodology was using lazy test-driven design (writing
+tests in parallel, rather than before), which seemed to help me get the code
+working quicker.
+
+<p>
+
+We can now nest predicates, so you could ask to match an ip or host which has a
+word in it that matches 'google'. This example is a little silly, but it does
+show nested expressions.
+
+<pre>
+% echo "www.cnn.com something google.com" \
+  | ./main '%{IPORHOST=~/%{WORD=~,google,}/}' IPORHOST
+google.com
+</pre>
+
+I switched away from using tsearch(3) and over to using in-memory bdb; I've
+been happy ever since. Predicates can now live in an external library in
+preparation for allowing you to write predicates in a scripting language like
+Python or Ruby.
+
+<p>
+
+I'm using CUnit plus a few script hacks to do the testing. It's working pretty
+well. I have a few hacks (check svn for these), but the results look like this:
+
+<pre>
+% make test
+  Test: grok_capture.test.c:test_grok_capture_encode_and_decode ... passed
+  Test: grok_capture.test.c:test_grok_capture_encode_and_decode_large ... passed
+  Test: grok_capture.test.c:test_grok_capture_get_db ... passed
+  Test: grok_capture.test.c:test_grok_capture_get_by_id ... passed
+  Test: grok_capture.test.c:test_grok_capture_get_by_name ... passed
+  Test: grok_pattern.test.c:test_grok_pattern_add_and_find_work ... passed
+...
+</pre>

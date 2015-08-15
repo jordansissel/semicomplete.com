@@ -1,0 +1,47 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-04-24T16:28:00-07:00"
+title = "log-watching expert system\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok", "programming", "productivity"]
++++
+
+I got bored and wrote an expert system for doing log analysis and
+reaction. It's original intention was to watch auth.log for brute-force
+login attempts and block them on the firewall. It has turned into a far
+more flexible system for doing generic log-based matching and reaction.
+Reactions are based on a threshold of hits over time. The 'reaction'
+section of the config file specifies what command is run (this could be
+a simple shell script you call, for example).
+<p>
+
+There are a few features I'll probably be adding soon such as multiple
+threshold/reactions per match type, but that's somewhat down the road
+for when I have more boredom to throw at the project. I also want to 
+allow users to add their own meta globs (like %USERNAME%) into the
+config file so the program is even more flexible.
+<p>
+
+Currently it runs on my mirror server and blocks excess (brute force)
+ssh attempts, seems to be going good. The development process of this
+took me into learning a very slick perl module called Parse::RecDescent
+which parses documents based on a given grammar. I used this for the
+config file, it was pleasantly easy to use.
+
+Check out logwatch, <a
+href="http://www.csh.rit.edu/~psionic/projects/logwatch.tar.gz">download
+it</a>
+
+<p>
+
+It requires the following perl modules:
+<ul>
+<li>File::Tail</li>
+<li>Regexp::Common</li>
+<li>Parse::RecDescent</li>
+</ul>

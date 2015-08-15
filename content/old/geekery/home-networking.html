@@ -1,0 +1,65 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-07-19T00:38:24-07:00"
+title = "Apartment networking, v1\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["networking", "wireless"]
++++
+
+I've finally got non-free internet access. Prior to that, I was using 
+<a href="http://www.mercurynews.com/mld/mercurynews/business/15037109.htm">Google's free wifi</a>. 
+Turns out there's a wireless node quite close to my apartment. To get online, I
+used my soekris net4501 w/ wireless card to associate to google's wifi. Google
+wifi rocks, it's so nice.  Internally, I ran used dhcp and nat to provide
+multiple machines with network access through the soekris box, and thus google
+wifi. This worked quite well.
+
+<p>
+
+Now that I have Comcast, I can use the wireless card in the soekris as an access point, rather than a client. The setup is as follows:
+
+<ul>
+  <li> wired subnet: 192.168.0.0/24 (gateway on soekris) </li>
+  <li> wireless subnet: 192.168.10.0/24 (gateway on soekris) </li>
+  <li> vpn subnet: 192.168.1.0/24 (gateway is vpn server)</li>
+  <li> vpn/dhcp/dns server running in FreeBSD on vmware on Windows </li>
+  <li> dhcprelay on soekris relaying dhcp requests from wifi to wired. </li>
+  <li> nat everything through the soekris box, which connects to Comcast </li>
+  <li> dhcp with ddns so I don't have to remember IP addresses </li>
+</ul>
+
+So far, everything's working well. My new Dell (2.8gHz/1gig) runs vmware well.
+With <a href="http://www.egobsd.org/">Candice's</a> help, I was able to get a
+poptop server going quite easily. Now I can vpn into my apartment from Windows
+and FreeBSD, which is good if I want an easy, secure connection while I'm on
+wifi. I'll post a howto about poptop+freebsd later.
+
+<p>
+
+The next step is to "secure" wireless. I don't care to block people, because
+someone will just get arond it. I plan on filtering unauthorized wireless
+access, limiting it so only ssh/http/https/icmp/dns and little else.
+Bandwidth-limited, ofcourse. My traffic is more important than yours!
+
+<p>
+
+After that, I'd like to automate network maintenance. That is, have a single
+script that will push changes to wherever is necessary: firewall, dhcp, dns,
+vpn, whatever. Then, perhaps some network optimizations such as a transparent
+squid proxy, etc. 
+
+<p>
+
+I'm hoping that I can work on my pam_captcha research soon, too, now that I
+have a machine with a real IP online.
+
+<p>
+
+Doing this network setup has been quite the refresher on DNS, DHCP, et al. I'd
+prefer having this kind of crap documented, so I'll hopefully get around to
+writing an article about it.

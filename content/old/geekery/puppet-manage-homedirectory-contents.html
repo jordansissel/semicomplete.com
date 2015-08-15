@@ -1,0 +1,66 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-07-21T20:43:58-07:00"
+title = "Puppet to manage $HOME dotfiles\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["puppet", "automation"]
++++
+
+On <a
+href="http://sysadvent.blogspot.com/2008/12/day-11-home-away-from-home.html">SysAdvent
+Day 11</a> I covered the importance of having your own personal environment
+carry with you. This includes your rc files like .vimrc, etc.
+
+<p>
+
+If you manage users with puppet, here's how to manage it with puppet while
+falling back to a default skeleton (similar to /etc/skel) directory for users
+who don't have individual ones:
+
+<pre>
+class user::people {
+  # ...
+
+  define localuser($uid, ...) {
+    user {
+      "$name":
+        uid => $uid,
+        ...;
+    }
+
+    file {
+      "/home/$name":                                                              
+        ensure => directory,                                                      
+        owner => $name,                                                           
+        group => $gid,                                                            
+        source => [ "puppet:///user/home/$name/",                                 
+                    "puppet:///user/skel/" ];                                     
+    }
+  }
+
+
+  localuser {
+    "jls": uid => 10000;
+  }
+}
+</pre>
+
+Puppet will first search for 'user/home/$name' on it's file server, and sync it
+if it exists. If it does not exist, it falls back to 'user/skel'. The benefit
+here is that whenever you update the default 'skel' directory, all users who
+depend on it will be automatically updated by puppet.
+
+<p>
+
+<b>Update</b>: I've since stopped using this method to sync homedirectories.
+Puppet (at time of writing, 0.25.1) is not smart about how it scans for files
+to update when recursion is on - puppet walks all files in each homedir, even
+if they aren't part of the file list to be pushed by puppet. I use the <a
+href="http://semicomplete.googlecode.com/svn/sysadvent/2008/day11/synchome.sh">synchome.sh</a>
+script mentioned in sysadvent 2008 day 11 with a cron job. This cron job is
+deployed with puppet.

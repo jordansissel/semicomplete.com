@@ -1,0 +1,42 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-05-03T00:15:08-07:00"
+title = "Python is getting on my nerves\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["rants", "python"]
++++
+
+Add lacking dynamic assignment ability to my "I wish Python had Foo" list.
+<p>
+
+Python does not appear to have dynamically assignable arrays. Where are we, C? Assembly? When I assign past the end of the array, I mean resize the god damned array. Thanks.
+
+<p>
+
+<pre>
+nightfall(~) % python -c "foo = []; foo[3] = 234"
+Traceback (most recent call last):
+  File "&lt;string&gt;", line 1, in ?
+  IndexError: list assignment index out of range
+</pre>
+
+This is completely unacceptable.
+
+Sure, I can use list comprehensions to make an N element array that's empty:
+<pre>
+foo = [None for x in range(100)]
+foo[44] = "Hi"
+</pre>
+
+That only gets me an array with 100 empty elements. Uh.. Not what I want. If I
+did this on an array with data in it I didn't want to lose, I'd lose all the
+data.
+
+<p>
+
+Sigh...

@@ -1,0 +1,37 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-08-17T02:10:30-07:00"
+title = "javascript: the 'top' object.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["javascript", "ie"]
++++
+
+My jquery puffer demo wasn't working in IE. This was the error:
+
+<p>
+
+<img src="/images/puffer.png">
+
+<p>
+
+Line 25 is:
+<pre>
+  top = pos[1];
+</pre>
+
+<p>
+
+Turns out 'top' is one of those magically populated objects. In Firefox, you are allowed to assign to top and hence the demo works. In IE, it tells you that assignment is not implemented for that particular object.
+
+<p>
+
+In IE, alerting 'top' will show '[object]'. In Firefox, alerting 'top' will show '[object Window]'
+
+<p>
+
+If I change my code to use 'top_pos' instead of 'top', the demo works now.

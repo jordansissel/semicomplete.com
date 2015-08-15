@@ -1,0 +1,84 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-09-12T01:48:54-07:00"
+title = "Ruby's DateTime::strptime vs libc strptime\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["strptime", "c", "ruby", "speed", "profiling"]
++++
+
+A project I'm working on has some odd slowness about it. Using ruby-prof, I
+found that String#scan was consuming most of the time, but ruby-prof didn't
+tell me where it was coming from. A quick hack that replaced String#scan with
+my own method showed who was calling it, DateTime.strptime -
+
+<pre>
+class String
+  def scan(*args)
+    raise
+  end
+end
+</pre>
+
+I tried using the ruby debugger to break on String#scan, but it didn't seem to
+work. PEBCAK, probably, which is why I used the solution above to just toss an
+exception when that function was called.
+
+<p>
+
+Back at the point, DateTime.strptime is slow. Looking at the underlying code
+shows you why: <a
+href="http://google.com/codesearch/p?hl=en&sa=N&cd=3&ct=rc#fKFrbe9QqQ4/lib/ruby/1.9/date/format.rb&q=date/format.rb%20lang:ruby&l=393">date/format.rb
+- the _strptime_i method</a>.
+
+<p>
+
+Lots of string shuffling, regular expressions to match field specifiers (%d,
+etc), string modification with more regexps, etc. The code is pretty easy to
+read, but it's still doing a lot of work it doesn't need to be doing. Luckily,
+libc comes with a method for parsing times in the same way: strptime.
+
+<p>
+
+So, I started working on an extension to the Time class that invokes libc's
+strptime and returns a Time instance: <a
+href="http://code.google.com/p/semicomplete/source/browse/ruby-ctime">ruby-ctime</a>. The usage is simple once you have the module:
+
+<pre>
+require "CTime"
+
+puts Time.strptime("%Y", "2009")
+# outputs 'Wed Jan 00 00:00:00 +0000 2009'
+</pre>
+
+The one major holdback from strptime is that there's no wide support for
+timezones. Format strings like %Z and %z work with strftime, but generally are
+unsupported by strptime; exceptions that do support %z are glibc, and freebsd
+appears to support both %Z and %z. Nothing reliably cross-platform.  This is a
+historical problem due to the fact that the 'struct tm' structure has no
+timezone field (glibc and the bsds add 'long tm_gmtoff' to support timezones).
+
+<p>
+
+This means we'll have to correct for this by extending strptime to support it,
+but I'm not there yet.
+
+<p>
+
+Anyway, short benchmarking for features supported by both libc strptime and
+DateTime strptime shows libc a massive winner:
+
+<pre>
+snack(~/projects/ruby-ctime) % ruby test.rb
+Iterations: 10000
+datetime: 7.680928 (1301.92601727291/sec)
+my_strptime: 0.126583 (78999.5497025667/sec)
+</pre>
+
+A 60x speedup using the new C code vs DateTime.strptime. This is a great start,
+but we still need timezone support. I need to hack timezone support into this,
+which probably means I'll start with glibc's strptime implementation.

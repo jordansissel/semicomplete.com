@@ -1,0 +1,39 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-05-28T14:52:42-07:00"
+title = "Rhapsody on Linux\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["music", "rhapsody", "virtualization", "qemu"]
++++
+
+On a friend's recommendation, I signed up for Rhapsody's music service.
+
+<p>
+
+I wasn't able to get it working in Linux. The web interface uses flash, but in
+Windows it requires the installation of some kind of small piece of software,
+probably to allow playing of whatever audio format (real? windows media?).
+
+<p>
+
+I gave up for a week trying to get it to work. Then, it hit me:
+
+<ol>
+  <li> Every box I've got came with a windows license. </li>
+  <li> rdesktop supports passing sound remotely (<i>-r sound:remote</i>) </li>
+</ol>
+
+This means I can listen to rhapsody on any platform. Using the license on my
+laptop, I installed Windows XP in a qemu instance on Linux and enabled remote
+desktop access. Then, simply doing 'rdesktop -r sound:remote' to login to the
+virtual machine allowed me to play music. Excellent!
+
+<p>
+
+Rhapsody's got a good selection and just about everything I've searched for has
+been available. 

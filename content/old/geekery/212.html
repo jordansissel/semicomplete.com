@@ -1,0 +1,36 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-01-23T01:21:00-08:00"
+title = "pam_captcha, round 3\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["pam_captcha"]
++++
+
+I finally got around to adding math support and reworking the innards of pam_captcha to work better. In the process I fixed a few serious bugs (the crashy type).
+
+<p/>
+
+This update adds a new feature I call, "Dance Dance Authentication." This
+entails having a user perform a given physical task. This task is read from a
+list of tasks I provide. These tasks include such things as singing "I'm a
+little teapot" loudly, defining terms on the whiteboard, and other annoying and
+entertaining tasks.
+
+<p/>
+
+I wholely realize that the physical task captcha has absolutely NO real-world
+uses or purposes. I wrote this part for the SPARSA competition, however.
+However, I think it was worth it if you compare the time spent writing code 
+(a few hours) versus how hilarious it is going to be to watch fellow
+competitors singing songs just to attempt logins to my ssh service or just see
+the "wtf"-type faces.
+
+<p/>
+
+Here's a screenshot:<br/>
+<img src="http://www.csh.rit.edu/~psionic/images/pam_captcha-dda.png">

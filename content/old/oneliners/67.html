@@ -1,0 +1,33 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2003-09-29T10:22:00-07:00"
+title = "<3 xapply.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["oneliners", "shell"]
++++
+
+
+<code>xapply 'ping -t 1 -c 1 %1 > /dev/null 2>&1; A=$?; echo -n "%1 - "; [ $A -eq 0 ] && echo "ONLINE" || echo "***DOWN***"' `cat hostlist`</code>
+
+<p>Outputs:
+<pre>
+project1 - ONLINE
+mokey - ***DOWN***
+boober - ONLINE
+wimbley - ONLINE
+doozer - ONLINE
+felix - ONLINE
+red - ***DOWN***
+sprocket - ONLINE
+henchy - ONLINE
+falcon - ONLINE
+talon - ONLINE
+junior - ONLINE
+doc - ONLINE
+eagle - ***DOWN***
+</pre>

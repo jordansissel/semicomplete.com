@@ -1,0 +1,69 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-06-05T23:34:22-07:00"
+title = "Find that lost screen session, episode 2.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["screen", "hacks", "tools", "automation", "screen ninja"]
++++
+
+Like 
+<a href="/blog/geekery/find-that-lost-screen-session.html">I said</a>, I run
+screen in all of my xterms...
+
+<p>
+
+xterm sets an environment variable in child processes: WINDOWID. This is the X
+window id of the xterm window. Using this, we can extend upon my last post and
+come up with a much neater solution. Knowing what screen session you want to
+bring forward (assuming it's running in an xterm), we can run a command inside
+that session that grabs the $WINDOWID variable in the shell and uses 
+<a href="/projects/xdotool">xdotool</a> to activate the window.
+
+<pre>
+session=$(sh screen-find.sh "#freebsdhelp")
+STY=$session screen -X screen sh -c 'xdotool windowactivate $WINDOWID'
+</pre>
+
+Running this causes my IRC window to be activated by xdotool, which means it is
+now active, focused, and on top.
+
+<p>
+
+This isn't entirely optimal, because it assumes the xterm attached to that
+screen session is the xterm that launched it. If you run 'xterm -e screen -RR'
+and close the xterm (don't log out of the shell), then rerun 'xterm -e screen
+-RR' it will attach to that previous screen session, but the WINDOWID will
+understandably not be correct any longer.
+
+<p>
+
+So what do we do? Using the screen session given, we create a new window in
+that session and set the title of that window to a generated string. We then
+use xdotool to search for that string and activate the window. Once we get
+there, we can kill that new screen window we created and we are left with the
+terminal holding our screen session sitting in front of us.
+
+<p>
+
+I wrote a script to do just that tonight: 
+<a href="http://semicomplete.googlecode.com/svn/tools/screen-activate.sh">screen-activate.sh</a>. Example usage: <i>screen-activate.sh 24072.pts-25.snack</i>
+
+<p>
+
+This has a great benefit of supporting every terminal program that understands
+how to set the terminal window title when screen changes it's title. I have
+tested my .screenrc in Eterm, Konsole, gnome-terminal, and xterm - all know
+when screen changes it's title if you put this in your .screenrc:
+
+<pre>
+hardstatus string "[%n] %h - %t"
+termcapinfo xterm 'hs:ts=\E]2;:fs=\007:ds=\E]2;screen (not title yet)\007'
+
+# Might need this:
+termcapinfo  * '' 'hs:ts=\E_:fs=\E\\:ds=\E_\E\\'
+</pre>

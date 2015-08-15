@@ -1,0 +1,33 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-01-26T03:15:15-08:00"
+title = "xdotool 20090126 available\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["xdotool", "release", "project", "X11"]
++++
+
+A new release of xdotool is available. It fixes <a href="http://code.google.com/p/semicomplete/issues/list?can=1&q=label%3Axdotool-20090126">two bugs</a> that were moderately annoying.
+
+<pre>
+20090126:
+  * Change the default behavior of 'getwindowfocus' to get the first
+    ancestor-or-self window that has WM_CLASS set. WM_CLASS will be set on
+    (all?) top-level windows and it's possible that the currently focused window
+    according to X is not a top-level window. To use the previous behavior, use
+    'getwindowfocus -f'
+  * Make 'xdotool key at' work correctly. 'at' is usually Shift+2, for example.
+    Now all shifted characters should work, but I've only tested on a US
+    keyboard.
+  * Minor Makefile fixes for package maintainers.
+</pre>
+
+I've tested it in GNOME and Ion-3 with success.
+
+<p>
+
+Download: <a href="http://semicomplete.googlecode.com/files/xdotool-20090126.tar.gz">xdotool-20090126.tar.gz</a>

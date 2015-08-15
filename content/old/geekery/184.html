@@ -1,0 +1,45 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-08-15T22:35:00-07:00"
+title = "new moused progress\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["freebsd"]
++++
+
+I spent the last two days working out the prototyping ideas for the new moused.
+So far I've got a decent plugin framework with two plugins written currently.
+I've been using this new moused since yesterday with much success.
+<p/>
+
+moused.c is 280 lines (will likely be less when finished)<br>
+the sysmouse module is 160 lines and supports ums(4) and psm(4) mice<br/>
+<br/>
+
+The old moused.c was over 3000 lines long. The existing psm(4) is well over 3000
+lines. I don't anticipate my moused ever being over 300 lines of code. The
+plugins will be doing the meat of the work. I'm hoping to make the plugin
+api good enough so that plugins will only have to know how to talk to their
+specific hardware and let moused worry about talking to sysmouse(4).
+<p/>
+
+Right now there is a potential for writing some filter modules becuase of the
+way the plugin api is designed. Filters would be used for such things as
+emulate-3-button and virtual scrolling (-3 and -V respectively). I already have
+a filter written for virtual scrolling. Compared to the hackery I had to throw
+into the old moused to get virtual scrolling working, this was an absolute
+breeze to write. It is simply a function called 'filter' that understands what
+virtual scrolling is and when to do it. Filter is called before any updates are
+pushed to sysmouse.
+<p/>
+
+The next big job is going to be stripping psm(4) of it's bloat and making it an
+almost a pass-through device. The non-standard mice it supports currently
+(synaptics, etc) will be supported through plugins in the new moused.
+<p/>
+
+If you're interested in helping me test this, let me know.

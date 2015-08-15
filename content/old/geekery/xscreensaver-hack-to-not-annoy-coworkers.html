@@ -1,0 +1,35 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-04-18T15:17:04-07:00"
+title = "How to annoy your coworkers a little less\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["hacks", "productivity"]
++++
+
+I'm almost guaranteed to be wearing headphones while at work. I like music.
+However, when I leave my desk, I rarely pause mplayer. This leaves my
+headphones leaking out some barely audible nois that may annoy coworkers.
+
+<p>
+
+I always lock my workstation when I'm not at my desk. How do I automate a solution here?
+
+<p>
+
+xscreensaver lets you watch the state of the screensaver. Let's use this to pause mplayer when I leave, and unpause it when I return.
+
+<pre>
+xscreensaver-command -watch \
+  | while read a; do
+    echo "$a" | grep '^LOCK' &amp;&amp; pkill -STOP mplayer
+    echo "$a" | grep '^UNBLANK' &amp;&amp; pkill -CONT mplayer
+  done
+</pre>
+
+Running the above, mplayer gets suspended when I lock my workstation, and
+resumed when I unlock it.

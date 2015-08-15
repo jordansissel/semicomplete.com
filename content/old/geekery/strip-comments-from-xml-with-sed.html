@@ -1,0 +1,20 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-01-14T19:18:52-08:00"
+title = "Strip XML comments with sed\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["oneliners", "sed", "xml"]
++++
+
+<pre>
+sed -ne '/&lt;!--/ { :c; /-->/! { N; b c; }; /-->/s/&lt;!--.*-->//g }; /^  *$/!p;'
+</pre>
+
+
+You might consider stripping blanklines and/or filtering through <code>xmllint
+--format</code> to make the xml pretty printed.

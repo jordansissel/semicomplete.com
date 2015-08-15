@@ -1,0 +1,44 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-07-11T00:12:14-07:00"
+title = "Pyblosxom single-entry page title plugin\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["pyblosxom", "hacks", "late-night-hacking", "python", "web", "site"]
++++
+
+The page titles pyblosxom provides are usually great. However, when there is
+only one entry displayed, I feel it would be better to rely on that entry's
+title.
+
+<p>
+
+I wrote a very short plugin to do just that. Turns out the plugin api for
+pyblosxom is quite easy to understand, and this hack was only about 10 lines.
+
+<p>
+
+pagetitle.py adds a new variable which will contain the standard
+page title, unless there is only one entry in view. If there is only one entry
+in view, the page title is augmented with the story title aswell. This makes
+search engine results and browsers happier, as they can recognize what your
+page is about by the title. User experience good, also good for search engines.
+
+<p>
+
+The new variable you want to use is:
+
+$blog_title_or_entry_title
+
+<p>
+
+If you want to get a better idea of what this plugin does, you can click the
+permalink below to view only this entry. The page title (in the url bar) should
+now reflect this entry's title.
+
+<p>
+<a href="http://www.semicomplete.com/scripts/pagetitle.py">download pagetitle.py</a>

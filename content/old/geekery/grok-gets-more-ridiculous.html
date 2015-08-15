@@ -1,0 +1,83 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-04-03T01:05:10-07:00"
+title = "Grok gets more ridiculous\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok", "perl", "hacks"]
++++
+
+In my <a href="/blog/geekery/grok-and-advanced-regex.html">last post</a>, I
+discussed a way to perform additional assertions on a given captured group
+while still inside of the regex state machine.
+
+<p>
+
+I spent some time today and implemented it in grok and it works like a charm!
+This kind of functionality gives you extreme power in the kind of matches you
+can specify.
+
+<p>
+
+Here's an example: How can we find the first number on a line that's greater
+than 20?
+
+<pre>
+% jot 50 | xargs -n15
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+16 17 18 19 20 21 22 23 24 25 26 27 28 29 30
+31 32 33 34 35 36 37 38 39 40 41 42 43 44 45
+46 47 48 49 50
+</pre>
+
+Using the above as our sample input:
+
+<pre>
+% jot 50 | xargs -n15 | perl grok -m "%NUMBER>20%" -r "%NUMBER%"
+21
+31
+46
+</pre>
+
+The assertion '>20' is applied during the regular expression match. This is
+sweet!
+
+<p>
+
+Another example would be to 'grep' the output of 'ls -l' for any lines
+containing a number greater than 5000:
+
+<pre>
+% ls -l | perl grok -m "%INT>5000%"
+-rw-r--r--  1 jls  jls   21590 Apr  2 20:17 foo
+-rw-r--r--  1 jls  jls   22451 Apr  2 23:52 grok
+-rw-r--r--  1 jls  jls  129536 Apr  2 23:47 grok-20070402.tar.gz
+-rw-r--r--  1 jls  jls   13539 Mar 22 14:22 grok.1
+</pre>
+
+<p>
+
+The equivalent awk statement would look like this:
+
+<pre>
+% ls -l | awk '$5 > 5000'
+</pre>
+
+But if you look at the awk statement, you have to count columns. With grok's
+solution, all you need to know is you want any line with an integer greater
+than 5000. You are able to specify the specifics of your match without having
+to know the precise layout of the data you are matching.
+
+<p>
+
+What do you get if you can chain predicates? I haven't added that functionality
+yet, but it would be trivial to add, so expect it soon.
+
+<p>
+
+If you're interested, please try the <a
+href="/files/grok/grok-20070402.tar.gz">latest version</a>.

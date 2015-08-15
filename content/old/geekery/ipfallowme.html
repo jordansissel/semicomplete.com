@@ -1,0 +1,26 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2004-12-21T11:16:00-08:00"
+title = "ipfallowme - Me vs Annoying IPF Rules\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["shell", "firewalls", "security"]
++++
+
+The dev box at work has a new, more strict set of ipf rules now. In an effort not to have to change the global rule set, I wrote a little script to pick out your ip from an ssh session and add a few rules based on that ip.<p>
+
+There are probably already scripts that do this out there, but I didn't bother looking.<p>
+
+How it works: <br>
+- Create a rule file<br>
+- Make sure none of these rules are in the existing ipf rule set<br>
+- Apply the generated ruleset (won't overwrite or delete any existing rules)<br>
+- Wait until you kill the process or logout if you've backgrounded it, then remove
+  the new rules you added.<br>
+
+  <p/>
+<a href="http://www.semicomplete.com/scripts/ipfallowme">Click here to view ipfallowme</a>

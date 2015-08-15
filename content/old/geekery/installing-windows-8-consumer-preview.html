@@ -1,0 +1,46 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2012-05-10T02:50:44-07:00"
+title = "Installing Windows 8 Consumer Preview\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["windows", "installer failure"]
++++
+
+I have a fresh workstation and am running through the windows 8 installer on USB.
+
+When choosing the drive to install to, I get an error:
+
+<blockquote>
+We couldn't create a new partition or locate an existing one
+</blockquote>
+
+Lots of googling and I didn't find any hints for windows 8, but windows 7 has a
+similar error and folks pointed at diskpart nonsense to fix it. So let's do that -
+
+<ul>
+<li> At the installer, choose "Repair your computer"</li>
+<li> Choose "troubleshoot" </li>
+<li> Choose "advanced options" </li>
+<li> Choose "command prompt"</li>
+<li> Run diskpart.
+</ul>
+
+In diskpart, you'll want to make sure your target drive is formatted and active.
+
+<pre>
+list disk
+
+# now pick your disk
+select disk 0
+clear
+create partition
+format fs=ntfs compress quick
+active
+</pre>
+
+Now reboot and try the installer again, it worked for me.

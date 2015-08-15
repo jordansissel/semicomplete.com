@@ -1,0 +1,80 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-09-02T00:50:41-07:00"
+title = "RAID is not Redundant.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["raid", "operations", "experiences", "expectations-not-met"]
++++
+
+My year at Rocket Fuel has seen many unique system failures. One specific kind
+of failure I want to highlight is those of full RAID failures. I've talked
+before about how <a href="/blog/geekery/raid-is-not-backup.html">RAID is not a
+backup technology</a>.
+
+<p>
+
+Tonight, we rebooted a machine that hung (presumably due to OOM or other
+funkiness) and it came back in the bios saying:
+
+<pre>
+Foreign configuration(s) found on adapter
+</pre>
+
+Our managed hosting support weren't sure what to make of this, so we decided to
+make a new home (from backups) for the services on this now-dead machine. Dell
+won't helping debug on this until tomorrow.
+
+<p>
+
+This is one of many total data losses I've observed on RAID sets in recent
+months - all due to RAID failures. Thankfully, We have backups that get shipped
+to HDFS. We monitor those backups. We also have puppet and other automation to
+help move and rebuild services on a new host. We're equipped to handle this
+kind of failure.
+
+<p>
+
+This leads me to a new conclusion: The 'R' in RAID is a lie. It is not
+redundant. Treating it that way can lead you to the raid-is-backup fallacy.
+
+<p>
+
+Wikipedia has this to say about Redundancy (engineering): 
+<quote>"In engineering, redundancy is the duplication of critical components of
+a system with the intention of increasing reliability of the system, usually in
+the case of a backup or fail-safe."</quote>
+
+<p>
+
+Adding more parts (complexity) to a system doesn't often increase its
+reliability. Even taking into account the disk redundancy you might get with
+mirror or parity, you're still hedging that the RAID card doesn't die, which it
+will.  Everything will fail (see <a
+href="http://en.wikipedia.org/wiki/Mean_time_between_failures">MTBF</a>)
+eventually, and <a
+href="http://en.wikipedia.org/wiki/Mean_time_to_recovery">MTTR</a> on RAID
+failures is usually quite high, so weigh your risk.
+
+<p>
+
+Back to my conclusion that RAID is not redundant. RAID is not dead, 
+I'm just done viewing RAID as a continuity-through-drive-failure technology.
+RAID has other benefits, though. It achieves more than just redundancy (when
+your card doesn't die). 
+
+<p>
+
+RAID makes multiple drives present as a single drive device to the OS, right?
+Right. RAID allows you to aggregate disk IO performance to achive higher
+read/write rates than with a single disk alone. You can also aggregate disk
+space this way, too, if you didn't know.
+
+<p>
+
+It's almost 0100 now, I'd much rather be sleeping or playing TF2 than helping
+rebuild from backups.

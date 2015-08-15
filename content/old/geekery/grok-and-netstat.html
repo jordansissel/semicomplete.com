@@ -1,0 +1,32 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-02-20T01:13:32-08:00"
+title = "grok + netstat\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok"]
++++
+
+What hosts is this machine connected to:
+<pre>
+% netstat -anfinet | perl grok -m "%IP:S%.*?%IP:D%" -r "%IP:D|ip2host%" | sort | uniq
+fury.csh.rit.edu
+mc-in-f104.google.com
+mc-in-f147.google.com
+scorn.csh.rit.edu
+</pre>
+
+I have no idea the mc-in-f104 stuff is, but firefox is open to 'www.google.com' right now. Let's find out what 'www.google.com' points at:
+
+<pre>
+% host www.google.com | perl grok -m "%IP%" -r "%IP|ip2host%"
+mc-in-f147.google.com
+mc-in-f99.google.com
+mc-in-f104.google.com
+</pre>
+
+I keep finding more uses for grok now that you can use it on the commandline easily.

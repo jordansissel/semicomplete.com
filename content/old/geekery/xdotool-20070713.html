@@ -1,0 +1,42 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-07-13T04:00:34-07:00"
+title = "new xdotool version available (20070713)\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["xdotool", "xlib"]
++++
+
+Hop on over to the <a href="/projects/xdotool">xdotool project page</a> and
+download the new version.
+
+<p/>
+
+The changelist from the previous announced release is as follows:
+
+<pre>
+20070713:
+  * Add flag SIZE_USEHINTS to xdo_window_setsize
+  * Add flag --usehints to xdotool windowsize
+
+  Increments are used often in terminals that say "my font is 5 by 7 pixels, so
+  resize by that increment". So, you can use this to set a terminal to be 80x24
+  characters instead of pixels. Verified by resizing xterm and gnome-terminal.
+
+20070712:
+  Added new search options to 'xdotool search'
+    --onlyvisible shows only visible windows in the results
+    --title causes only the window title to be matched
+    --name causes the window name to be matched
+    --class causes the window class to be matched
+
+  For information on names and classes, check out the xprop tool.
+    For example, for an xterm you will see this in the xprop output:
+    WM_CLASS(STRING) = "xterm", "XTerm"
+  "xterm" is the name, "XTerm" is the class. Don't ask me what the differences
+  are supposed to be. ;)
+</pre>

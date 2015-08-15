@@ -1,0 +1,77 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-01-21T21:23:27-08:00"
+title = "Python's sad xml business and modules vs packages.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["rants", "python", "xml"]
++++
+
+So, I've been reading docs on python's xml stuff, hoping there's something
+simple or comes-default-with-python that'll let me do xpath. Everyone
+overcomplicates xml processing. I have no idea why. Python seems to have enough
+alternatives to make dealing with xml less painful. 
+
+<p>
+
+Standard python docs will lead you astray:
+
+<pre>
+kenya(...ojects/pimp/pimp/controllers) % pydoc xml.dom | wc -l
+643
+</pre>
+
+Clearly, the pydoc for "xml.dom" has some nice things, right? I mean, documentation is clearly an indication that THE THING THAT IS DOCUMENTED BEING AVAILABLE. Right?
+
+<p>
+
+Sounds great. Let's try to use this 'xml.dom' module!
+
+<pre>
+kenya(...ojects/pimp/pimp/controllers) % python -c 'import xml; xml.dom'
+Traceback (most recent call last):
+  File "<string>", line 1, in ?
+AttributeError: 'module' object has no attribute 'dom'
+</pre>
+
+<b> WHAT. THE. HELL. </b>
+
+<p>
+
+Googling around, it turns out that 'xml' is a fake module that only actually works if you have it the 4Suite modules installed? Maybe?
+
+<p>
+
+Why include fake modules that provide complete documentation to modules that <b>do not exist</b> in the standard distribution?
+
+<p>
+
+Who's running this ship? I want off. I'll swim if necessary.
+
+<p>
+
+As it turns out, I made too-strong of an assumption about python's affinity
+towards java-isms. I roughly equated 'import foo' in python as 'import foo.*'
+in java. That was incorrect. Importing foo doesn't get you access to things in
+it's directory, they have to be imported explicity.
+
+<p>
+
+In summary, 'import xml' gets you nothing. 'import xml.dom' gets you nothing.
+If you really want minidom's parser, you'll need 'import xml.dom.minidom' or a
+'from import' variant.
+
+<p>
+
+On another note, the following surprised me. I had a module, foo/bar.py. I
+figured 'from foo import *' would grab it. This means 'from xml.dom import *'
+doesn't get you minidom and friends. 
+
+<p>
+Perhaps I was hoping for too much, but maybe it's better to import explicitly.
+If that's the case ,then why push exceptions that allow '*' to be imported only
+from modules, not packages?

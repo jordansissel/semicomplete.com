@@ -1,0 +1,40 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-11-30T23:26:00-08:00"
+title = "migrating from nis to ldap, round 1\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["unix", "networking", "productivity", "ldap"]
++++
+
+We at CSH need to move from nis and the many other user information datastores we use to using LDAP instead. To that effort, I have started working on merging our data informations. The first step is importing NIS (passwd/group) information into ldap.
+
+<p/>
+
+I wrote a script, <a href="http://www.csh.rit.edu/~psionic/projects/scripts/passwd2ldif">passwd2ldif</a>, to use NIS passwd information and put it in ldap.
+
+<pre>
+ypcat passwd | ./passwd2ldif > cshusers.ldif
+ldapadd -D "cn=happyrootuserthinghere,dc=csh,dc=rit,dc=edu" -f cshusers.ldif
+</pre>
+
+Wait a while, and all users from NIS show up in ldap. I have my laptop looking at ldap for user informatin using nss_ldap:
+
+<pre>
+nightfall(~) [690] % finger -m psionic
+Login: psionic                          Name: Jordan Sissel
+Directory: /u9/psionic                  Shell: /usr/bin/tcsh
+Never logged in.
+No Mail.
+No Plan.
+</pre>
+
+Pretty simple stuff, so far. Next step is going to involve creating a new
+schema to support all of the information we currently store in "member
+profiles." Member profiles is a huge mess of a single mysql table with lots of
+columns such as "rit_phone," "csh_year," "aol_im," and others. All of that can go to ldap.
+I'll post more on this later when I figure out what kind of schema we want.

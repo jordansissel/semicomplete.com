@@ -1,0 +1,21 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-03-28T16:15:57-07:00"
+title = "Make vim's hlsearch behave like less(1)\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["vim"]
++++
+
+Put this in your vimrc.
+
+<pre>
+" Make hlsearch work like less(1)
+set hlsearch
+nnoremap &lt;ESC&gt;u :nohlsearch&lt;CR&gt;
+hi Search ctermfg=black ctermbg=white
+</pre>

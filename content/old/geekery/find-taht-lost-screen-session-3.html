@@ -1,0 +1,82 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-07-07T02:51:47-07:00"
+title = "Find that lost screen session: Episode 3.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["screen", "hacks", "tools", "automation", "screen ninja"]
++++
+
+<a href="/geekery/find-that-lost-screen-session.html">Previous</a>
+<a href="/geekery/find-that-lost-screen-session-2.html">posts</a> about screen
+have shown a few new tools for searching your list of open screen sessions.o
+
+<p>
+
+Today, I finally sat down and worked on the next installment: Being able to
+query any screen window and the window list. The difference between <a
+href="http://code.google.com/p/semicomplete/source/browse/tools/screen-find.sh">
+the previous script </a> is that we can now grep screen windows other than the
+0th one. Additionally, we can now grep the screen window list (which, by the
+way, has some excellent information).
+
+<p>
+
+To that end, I present now two scripts:
+<ul>
+<li><a href="http://code.google.com/p/semicomplete/source/browse/tools/screen-session-hardcopy.sh">screen-session-hardcopy.sh</a></li>
+<li><a href="http://code.google.com/p/semicomplete/source/browse/tools/screen-session-search.sh">screen-session-search.sh</a></li>
+</ul>
+
+You need both for this to work optimally, but they exist separately because the
+functionality is somewhat distinct.
+
+<p>
+
+The 'hardcopy' script takes a single argument, a screen session. It will
+hardcopy all windows in that screen session including the window list. If you
+specify OUTDIR in your environment, the screen hardcopies will be put in that
+directory; otherwise, the output directory is printed to stdout for consumption
+by another script.
+
+<p>
+
+The 'search' script runs the hardcopy script on all active screen sessions (in
+parallel, yay xargs). Once it has all of the copies, it will grep through the
+output for your query string (regular expression). It supports 3 flags:
+<ul>
+<li> -t - only search 'window titles' (ie; only window list output) </li>
+<li> -w - only search window contents (ie; exclude window list output) </li>
+<li> -l - only search the 'location' field of the window list </li>
+</ul>
+
+Now, with a single command, I can find out where that ssh session to 'foo'
+disappeared to. Here's an example screen window list capture (accessed with
+Ctrl+A " (doublequote))
+
+<pre>
+Num Name                                                              Location Flags
+
+  0 zsh                                                                        syn $
+  1 zsh                                                                      scorn $
+</pre>
+
+Now, I want to find all sessions open to 'scorn':
+<pre>
+% screen-session-search.sh -t 'scorn'
+sty 18210.pts-8.snack window 1
+sty 18556.pts-0.snack window 0
+</pre>
+
+It found 2 sessions. I can attach to the first one with:
+<pre>
+screen -x 18210.pts-8.snack -p 1
+          ^ screen session     ^ window
+</pre>
+
+caveat: I've been hacking on things all night, so the code may or may not be
+very readable. Apologies if you go blind while trying to read it ;)

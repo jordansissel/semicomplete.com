@@ -1,0 +1,60 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-10-23T02:40:21-07:00"
+title = "Net-SNMP and tcp-wrappers verbosity\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["net-snmp", "logging", "verbosity", "tcp-wrappers"]
++++
+
+I see this in my server logs quiet often:
+
+<pre>
+Oct 23 05:37:48 pww-5 snmpd[23946]: Connection from UDP: [XX.XX.XX.XX]:34650 
+Oct 23 05:37:48 pww-5 last message repeated 16 times
+Oct 23 05:37:48 pww-5 snmpd[23946]: Connection from UDP: [XX.XX.XX.XX]:34652 
+Oct 23 05:37:48 pww-5 last message repeated 24 times
+</pre>
+
+Googling points out that in snmpd.conf we should use
+"dontLogTCPWrappersConnects" - but thet top search results claim that it
+doesn't work (syntax errors, etc).
+
+I tried this:
+<pre>
+dontLogTCPWrappersConnects
+</pre>
+
+This makes an error of:
+<pre>
+/etc/snmp/snmpd.conf: line 29: Error: Blank line following dontLogTCPWrappersConnects token.
+</pre>
+
+So I took a guess and changed it to:
+
+<pre>
+dontLogTCPWrappersConnects 1
+</pre>
+
+This works to quiet the 'Connection from UDP: ...' messages. However, it still logs things like:
+<pre>
+Oct 22 23:17:35 pww-4 snmpd[29383]: Received SNMP packet(s) from UDP: [XX.XX.XX.XX]:42926
+</pre>
+
+Fixing this requires telling snmpd to log less stuff to syslog. The '-L'
+logging options support upper-case versions which set the level at which it
+will log. Fixing syslog to not log the snmp packet info means setting this flag
+"-LSnd". This means we'll log at 'notice' levels and above to syslog with the
+daemon facility. Setting this flag seems to make snmpd less chatty in logs
+about packets it gets. Setting the log level to '-LSid' (info level) will make
+it once again log the packet receipts.
+
+<p>
+
+In CentOS (and other redhat variants) you'll edit this file to make this change
+permanent: /etc/sysconfig/snmpd.options - just change "-Lsd" (default in my
+version of net-snmp) to "-LSnd" and make sure the OPTIONS line is uncommented.

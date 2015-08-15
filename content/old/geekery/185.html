@@ -1,0 +1,48 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-09-16T01:34:00-07:00"
+title = "logwatcher in action\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok"]
++++
+
+Kenya, one of my machines, sends me security reports daily (Thanks FreeBSD!). 
+
+<pre>
+kenya.csh.rit.edu login failures:
+Sep 15 11:15:24 kenya sshd[32882]: Failed password for illegal user a from 218.44.208.162 port 2946 ssh2
+Sep 15 11:58:55 kenya sshd[32986]: Failed password for illegal user root from 212.0.132.27 port 40961 ssh2
+Sep 15 21:59:03 kenya sshd[34537]: Failed password for illegal user test from 218.44.208.162 port 3614 ssh2
+</pre>
+
+Notice how there was only one root-user attempt and only 2 illegal-user
+attempts? My logwatcher is configured to instantly block any root login attempts
+aswell as anyone who tries to login with an invalid user more than once. Keeps
+the brute-force attempts out of my logs.
+<p>
+
+Doing this is certainly not a catch-all solution by any means, but definately
+it keeps my security logs clear of idiots. 
+<p>
+
+Anyone who gets blocked by being naughty on ssh goes into the <i>whores</i>
+table in pf. That table has been growing steadily for a few weeks now...
+
+<pre>
+kenya(~) [1000] % sudo pfctl -t whores -T show | wc -l
+     129
+</pre>
+
+Logwatcher most definately isn't just for security, but the only thing I use it
+for is to watch auth.log for brute-force bot activity. I'm hoping to have some
+spare time to spend on developing more neat features into logwatcher as time
+progresses. Right now, though, it's pretty slick. If you want more information
+about logwatcher, feel free to visit the <a
+href="http://www.csh.rit.edu/~psionic/projects/logwatch">logwatcher project
+page</a> or find me online (aim or email) and bug me with questions or feature
+requests.

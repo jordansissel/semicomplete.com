@@ -15,9 +15,6 @@ class Importer < Clamp::Command
   def import(path, destination)
     puts path
     input = File.new(path, "r")
-    output_dir = File.join(destination, File.dirname(path))
-    output = File.new(File.join(destination, path).sub(/\.txt$/, ".html"), "w")
-    output_dir.tap { |x| FileUtils.mkdir(x) unless File.directory?(x) }
 
     subject = input.readline
     metadata = {}
@@ -35,6 +32,10 @@ class Importer < Clamp::Command
 
     # If no #mdate found, use file timestamp
     metadata["#mdate"] = input.stat.mtime if metadata["#mdate"].nil?
+
+    output_dir = File.join(destination, File.dirname(path))
+    output_dir.tap { |x| FileUtils.mkdir_p(x) unless File.directory?(x) }
+    output = File.new(File.join(destination, path).sub(/\.txt$/, ".html"), "w")
 
     output.puts('+++')
     output.puts("# Imported from original pyblosxom .txt format at #{Time.now}")
@@ -56,7 +57,7 @@ class Importer < Clamp::Command
     output.puts(input.read)
   rescue EOFError
     puts "Failed to parse entry, got EOF early: #{path}"
-    File.unlink(output.path)
+    File.unlink(output.path) if output
   ensure
     input.close
     output.close unless output.nil?

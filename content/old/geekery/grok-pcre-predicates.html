@@ -1,0 +1,33 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-06-09T01:23:56-07:00"
+title = "PCRE, Grok, and match predicates\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["pcre", "grok"]
++++
+
+I finished the first function in pcre-grok's predicate feature.
+
+<pre>
+% ifconfig | ./grokre '%{IP}' IP
+Entry: IP => 192.168.0.5
+Entry: IP => 127.0.0.1
+
+# Now, with a predicate:
+% ifconfig | ./grokre '%{IP =~ /^192/}' IP
+Entry: IP => 192.168.0.5
+</pre>
+
+The eventual plan is to allow users to register their own predicates. The first
+target of this will be a python module wrapping grok allowing you to use grok
+and additionally write predicate functions in python, executed inside the
+regular expression.
+
+<p>
+
+So far, PCRE has not let me down.

@@ -1,0 +1,55 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-07-15T23:21:13-07:00"
+title = "Mounting partitions within a disk image in Linux\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["linux", "losetup", "mount", "loop", "dd"]
++++
+
+When you create a loop device from a disk image with losetup, it doesn't bother
+reading the partition table from the disk image so you don't get the nice and
+easy access to, for example, /dev/loop0p1 for partition 1.
+
+<p>
+
+FreeBSD seems to get this right, as I recall, but Linux does not.
+
+<p>
+
+fdisk outputs these devices, but they don't exist:
+
+<pre>
+% sudo fdisk -l /dev/loop0 | grep '^/'
+/dev/loop0p1   *           1        1043     8377866    7  HPFS/NTFS
+/dev/loop0p2            1044        2088     8393962+   7  HPFS/NTFS
+</pre>
+
+Linux's mount(8) command gives you the '-o offset=XXX' option. The offset is a
+byte offset, and lets you decide how far into your disk image you want to
+start. However, fdisk doesn't output in bytes, it outputs in cylinders or sectors.
+
+<p>
+
+Not to worry, it helpfully outputs the conversion between the units and bytes:
+<pre>
+% sudo fdisk -l /dev/loop0 | grep Units
+Units = cylinders of 16065 * 512 = 8225280 bytes
+</pre>
+
+Knowing this, let's use awk to generate the offsets for us:
+
+<pre>
+% sudo fdisk -l /dev/loop0 
+  | awk '/^Units/ { bytes=$(NF-1) } /^\// { print $1 "[" $NF "]: mount -o offset=" $3 * bytes }'
+/dev/loop0p1[HPFS/NTFS]: mount -o offset=8225280
+/dev/loop0p2[HPFS/NTFS]: mount -o offset=17174384640
+</pre>
+
+Now simply mount them with 'mount -t ntfs -o loop,offset=XXXX mydiskimage /mnt' or whatever you want :)
+
+

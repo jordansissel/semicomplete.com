@@ -1,0 +1,33 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2004-06-20T16:19:00-07:00"
+title = "Removing duplicates from arrays in Perl\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["perl", "oneliners"]
++++
+
+
+After needing to do this in a project of mine, I went googling and found, as expected, a wide variety of solutions.
+
+Solutions ranged from using map, foreach, grep, etc.. All using things like a temporary hash to count instances and ensure uniqueness - but I remembered that hashes have unique keys and that hashes are often treated the same way as arrays in perl, so my solution is as follows:
+<p>
+<pre>
+my %foo;  #Temp var
+my @a = qw (hello there hello how are you today there what now hello hello hello);
+
+%foo = @a;
+@a = keys(%foo);
+</pre>
+<p>
+I also have a one-liner version:
+<p>
+<pre>
+# Assumedly, @a is already defined and has stuff in it, perhaps...
+
+@a = do { my %foo = @a; keys(%foo) };
+</pre>

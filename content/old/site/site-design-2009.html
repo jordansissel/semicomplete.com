@@ -1,0 +1,106 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-01-04T23:59:00-08:00"
+title = "Site design refresher / CSS overflow property on IE 7\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["site", ":(", "ie", "css", "web"]
++++
+
+I updated some of this site's design. The most obvious changes are cosmetic
+(new banner logo at the top, slight color/layout differences). The least
+obvious change (hopefully) is that this site is now layed out purely with CSS,
+not tables.
+
+<p>
+
+After refreshing my rotting CSS braincells, I got a layout working properly and
+was quite happy. Then I tested in IE, and saw my &lt;pre&gt; tags being
+displayed incorrectly (according to my desire, not necessarily the code, which
+don't always align):
+
+<p>
+
+<img src="/files/blogposts/20090105/ieoverflow.png">
+
+<p>
+
+The above should have been two lines of text with a horizontal scroll bar. I
+want to say use scroll-bar for text that's too wide but expand vertically
+without a scroll bar: Never a vertical scroll bar, only ever a horizontal one.
+
+<p>
+
+I've spent a bit today scouring the web with not much help. I've randomly
+permuted css values for overflow, overflow-x, overflow-y, min-height, etc.
+Having failed that, I read everything I could find from randomly permuted
+search queries, one of which lead me to a depressingly long detail <a
+href="http://www.positioniseverything.net/explorer/expandingboxbug.html">about
+IE6's expanding box problems</a>. The page claims (and several others do, also)
+that IE7 fixes several box expansion problems.
+
+<p>
+
+I created a very small demo with minimal CSS to show the problem here: <a
+href="http://www.semicomplete.com/files/blogposts/20090105/pre-overflow.html">
+Click here to view the demo</a>. It includes the solution I found, detailed
+below.
+
+<p>
+
+After some other random permutation, I gave up and tried wrapping the pre in a
+div and applying the overflow properties to the div. It worked. It's 2009 and I
+still have to deal with weird and obscure browser rendering inconsistencies. I came up with this:
+
+<pre>&lt;style&gt;
+  .scroll-wide {
+    height: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-width: 500px;
+  }
+
+  /* On firefox, pre tags have a top and bottom margin > 0, which makes your 
+   * scrolling div have a blank top line, which isn't what
+   * we want. Fix one weirdness to find another? I didn't fully investigate.
+   * Here's the fix: */
+  div pre {
+    margin-top: 0;
+    margin-bottom: auto;
+  }
+&lt;/style&gt;
+
+...
+
+&lt;div class="scroll-wide"&gt;
+  &lt;pre&gt;
+    stuff
+  &lt;/pre&gt;
+&lt;/div&gt;</pre>
+
+<p>
+
+Solving this with wrap-pre-in-a-div can be automated with jQuery and a CSS
+definition:
+<pre>
+// javascript
+$("pre").wrap("&lt;div class='pre-wrap'&gt;&lt;/div&gt;");
+
+// In CSS
+div.pre-wrap {
+  /* overflow/height/whatever options */
+}
+</pre>
+
+It's still possible I was doing something wrong and that this hack isn't
+necessary, but I don't know. I'm just glad to have it working now.
+
+<p>
+
+PS: If you use Meyer's reset.css, you'll want to include <code> pre {
+margin-bottom: auto; } </code>, or IE will again clip the bottom of the pre
+contents with the scrollbar.

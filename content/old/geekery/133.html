@@ -1,0 +1,210 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2004-10-20T12:01:00-07:00"
+title = "Regular expressions and word boundaries\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["perl"]
++++
+
+I needed a better way to find word boundaries for Term::Shelly, so I
+turned to perl's rediculously powerful regular expressions. The previous
+implementation went something like this:<p>
+
+The following is passed to <code>find_word_bound</code>:<br>
+- $self ..... the Term::Shelly instance<br>
+- $line ..... the line of text that we're doing a bound search on<br>
+- $pos ...... the position in the line that we are in<br>
+- $opts ..... A bit string (bitwise-AND'd integers) containing what
+way to search<br>
+- $regex .... An optional argument containing a regular expression on
+which to match word characters.<br>
+<br>
+
+<pre>
+sub find_word_bound ($$$;$) {
+   my $self = shift;
+   my $line = shift;
+   my $pos = shift;
+   my $opts = shift || 0;
+   my $regex = "[A-Za-z0-9]";
+   my $bword;
+
+   $regex = shift if ($opts & WORD_REGEX);
+
+   # Mod? This is either -1 or +1 depending on if we're looking behind or
+   # if we're looking ahead.
+   my $mod = -1;
+   $mod = 1 if ($opts & WORD_END);
+
+   # What are we doing?
+   # If we're in a word, go to the beginning of the word
+   # If we're on a space, go to end of previous word.
+   # If we're on a nonspace/nonword, go to beginning of nonword chars
+
+   $bword = $pos;
+
+   # Back up if we're past the end of the string (cursor at end of line)
+   $bword-- if ($pos == $self->{"input_position"});
+
+   # Ignore trailing whitespace.
+   #$bword += $mod while (substr($line,$bword,1) =~ m/^\s/);
+
+   # If we're not on an ALPHANUM, then we want to reverse the match.
+   # that is, if we are:
+   # "testing here hello .......there"
+   #                           ^-- here
+   # Then we want to delete (match) all the periods (nonalphanums)
+   substr($regex, 1, 0) = "^" if (substr($line,$bword,1) !~ m/$regex/ &&
+                                  $opts & WORD_ONLY);
+
+   # Keep going while there's whitespace...
+   $bword += $mod while (substr($line,$bword,1) =~ m/\s/ && $bword >= 0);
+
+   # Back up until we hit the bound of our "word"
+   $bword += $mod while (substr($line,$bword,1) =~ m/$regex/ && $bword >= 0);
+
+   # Whoops, one too far...
+   $bword -= $mod;
+
+   return $bword;
+}
+</pre>
+
+<br>
+
+Frankly, this is a terrible implementation of word boundary location,
+but it worked and that's all I was realling looking for at the time. <p>
+
+Enter perl regular expressions. The simple fact was that I was trying to
+do all kinds of bound searches all throughout that function, and it got
+messy. There are only three kinds of bounds I actually cared about.
+These are word beginning, word end, and beginning of next word. I knew I
+could craft three regex's to match each of those cases, but I more or
+less shrugged the idea off because I forgot about backreferences.<p>
+
+The new version of <code>find_word_bound</code> is *much* shorter:<p>
+
+<pre>
+sub find_word_bound ($$$$;$) {
+   my ($self, $line, $pos, $opts, $regex) = @_;
+   $regex = '\w' if (!($opts & WORD_REGEX));
+   my $notregex = qr/[^$regex]/;
+   my $regex = qr/[$regex]/;
+
+   # Mod? This is either -1 or +1 depending on if we're looking behind or
+   # if we're looking ahead.
+   my $mod = ($opts & WORD_BEGINNING) ? -1 : 1;
+
+   if ($opts & WORD_NEXT) {
+      $regex = qr/^.{$pos}(.+?)(?&lt;!$regex)$regex/;
+   } elsif ($opts & WORD_BEGINNING) {
+      $regex = qr/($regex+$notregex*)(?<=^.{$pos})/;
+   } elsif ($opts & WORD_END) {
+      $regex = qr/^.{$pos}(.+?)$regex(?:$notregex|$)/;
+   }
+
+   if ($line =~ $regex) {
+      $pos += length($1) * $mod;
+   } else {
+      $pos = ($mod == 1 ? length($line) : 0);
+   }
+
+   return $pos;
+}
+</pre>
+
+<br>
+
+You'll notice this version has a greatly reduced number of lines of code
+and works much better (the previous implementation was buggy, not that
+I'll imply that regular expressions fix bugs). A breakdown of the
+regex's perhap?<p>
+
+- Find the beginning of the next word
+<pre>$regex = qr/^.{$pos}(.+?)(?&lt;!$regex)$regex/;</pre>
+<br>
+This one matches the beginning of the next word after the cursor. It
+makes use of negative look-behinds. First it makes sure that we are
+<code>$pos</code> characters into the string. Then it makes a non-greedy
+grab for any characters past that. Then looks backwards until it finds
+the first (nearest the end of the last match) non <code>$regex</code>
+match. Once it finds that, it then looks for the first
+<code>$regex</code> match after that, and we've found our next word.<br>
+A visual example may help explain:<p>
+<pre>
+# The cursor is at position 12, so $pos = 12
+# The line is "The quick brown fox jumps over the lazy dog."
+# For this example, let's have $regex = qr/\w/;
+
+The quick brown fox jumps over the lazy dog
+           ^                         <-- the cursor position
+---------->^                         <-- .{$pos}
+            ---->^                   <-- (.+?) (nongreedy match)
+               ^<-                   <-- (?&lt;!$regex)
+               -^                    <-- $regex
+
+$1, grouped by the (.+?) here is 'own ', thus length($1) + $pos = (4 + 12) =16
+We now position ourselves 16 characters in, landing us on the 'f' of
+'fox'
+</pre>
+
+<p>
+
+- Find the beginning of the current word
+<pre>$regex = qr/($regex+[^$regex]*)(?<=^.{$pos})/;</pre>
+
+<br>
+
+This one finds the beginning of words. It looks for one or more
+<code>$regex</code> matches followed by any number of nonmatches to
+<code>$regex</code>. It then uses a positive look-behind to ensure that
+there are atleast <code>$pos</code> characters before our current
+position in the match.
+<br>
+Again, a visual example (It is difficult to briefly show exactly what
+happens when you do this particular kind of match):<p>
+<pre>
+# The cursor is at position 14, so $pos = 14
+# The line is "The quick brown fox jumps over the lazy dog."
+# For this example, let's have $regex = qr/\w/;
+
+The quick brown fox jumps over the lazy dog
+              ^                      <-- the cursor position
+----------......                     <-- ($regex+[^$regex]*), the '..... '
+                                         indicates the $1 group
+---------------                      <-- positive look-behind succeeds
+                                         due to current match position
+                                         being greater than $pos
+                                         characters
+</pre>
+
+<br>
+
+- Find the end of the current word
+<pre>$regex = qr/^.{$pos}(.+?)$regex(?:$notregex|$)/;</pre>
+Let us go forth and search for the end of a word. This one is pretty
+straight forward and doesn't need much explanation. It looks for any
+characters past the cursor up to the first <code>$regex</code> match
+followed by the end of the line or <code>[^$regex]</code>. 
+Perhaps yet another visual example?<p>
+<pre>
+# The cursor is at position 9, so $pos = 9
+# The line is "The quick brown fox jumps over the lazy dog."
+# For this example, let's have $regex = qr/\w/;
+
+Cheese burgers are most tastey
+        ^                         <-- cursor position
+         ---|                     <-- (.+?) nongreedy match
+             |                    <-- one $regex plz
+              |                   <-- $notregex or EOL
+</pre>
+
+<br>
+
+There you have it. This article ended up being WAAAY longer than I
+intended, so I apologize :)

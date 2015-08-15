@@ -1,0 +1,54 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-04-19T00:31:48-07:00"
+title = "Project Updates\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["projects"]
++++
+
+I spent this weekend working on implementing <a
+href="/blog/geekery/grok-pattern-autodiscovery.html">automatic pattern
+discovery</a> in the C version of grok. I updated the C and Ruby API to be able
+to use this discovery:
+
+<pre>
+% irb -rrubygems -rgrok
+&gt;&gt; grok = Grok.new
+&gt;&gt; grok.add_patterns_from_file("/usr/local/share/grok/patterns/base")
+&gt;&gt; pattern = grok.discover("There's no place like 127.0.0.1")
+=&gt; "\\QThere's no place like \\E%{IP}\\Q\\E"
+&gt;&gt; grok.compile(pattern)
+&gt;&gt; grok.match("There's no place like 24.55.33.55").captures
+=&gt; {"IP"=&gt;["24.55.33.55"]}
+&gt;&gt; grok.match("There's no place like 234.345.12.4")
+=&gt; false
+</pre>
+
+This will most likely get used in <a
+href="http://logstash.googlecode.com">logstash</a> to provide a helping hand in
+building log patterns. It could also be used on events that have no pre-defined
+pattern so we can at least attempt to parse the log line.
+
+<p>
+
+On a more important note, this was one of the few remaining features the perl
+grok implementation had that the C version did not.
+
+<p>
+
+You can download the latest version of grok 
+<a
+href="http://semicomplete.googlecode.com/files/grok-1.20100419.2840.tar.gz">here</a>.
+You can also install the ruby grok gem with <code>gem install jls-grok</code>.
+
+
+<p>
+
+On another project node, I pushed a new <a href="/projects/fex">fex</a> <a
+href="http://semicomplete.googlecode.com/files/fex-1.20100416.2814.tar.gz">release
+</a> that includes some small fixes and also an rpm spec.

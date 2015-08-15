@@ -1,0 +1,35 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-11-25T17:53:23-08:00"
+title = "gphoto2 with Nikon Coolpix 5200\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["gphoto", "camera"]
++++
+
+My version of gphoto2 doesn't include support for Wendy's digital camera. Googling shows that this camera supports two transfer modes: mass storage and PTP. Mass storage is where the camera shows up as a removable drive. PTP is a protocol developed by Kodak(?) for transferring data from cameras.
+
+<p>
+
+Gphoto2 supports PTP on other Nikon Coolpix cameras, just not the 5200 model. In freebsd, I use usbdevs(8) to show me the usb vendor and product id.
+
+<pre>
+% sudo usbdevs -v | grep NIKON
+ port 1 addr 2: full speed, power 2 mA, config 1, NIKON DSC E5200(0x0205), NIKON(0x04b0), rev 1.00
+</pre>
+
+The vendor id is 0x04b0 and the product is 0x0205. Looking around online finds
+the Nikon Coolpix 5400 with a product id of 0x0119. gphoto2 allows you to force
+a given usb vendor:product key to be treated as another. Super useful.
+
+<p>
+
+The following will download all media files from the camera, masquerading the 5200 model as 5400.
+
+<pre>
+gphoto2 --usbid 0x04b0:0x0206=0x04b0:0x0119 -P
+</pre>

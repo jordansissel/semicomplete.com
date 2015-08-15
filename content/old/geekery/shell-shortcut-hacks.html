@@ -1,0 +1,45 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-03-28T14:08:25-07:00"
+title = "Shortcuts in your shell\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["shell", "hacks", "efficiency"]
++++
+
+I always run across commands I want to run more than once, but don't
+necessarily merit an alias in my zshrc file. For these commands, I abuse
+environment variables and use them as prefixes.
+
+<p>
+
+For instance, I have one command that runs mplayer in a loop, in case the
+connection drops:
+
+<pre>
+while true; do mplayer -cache 48 -prefer-ipv4 http://foo.com/streamthing; done
+</pre>
+
+Normally, I might use <code>!while</code> to re-invoke this command. However, I
+have lots of oneliners in my shell history that start with <code>while</code>.
+So, let's hack around it:
+
+<pre>
+MPLAYER= while true; do mplayer -cache 48 -prefer-ipv4 http://foo.com/streamthing; done
+</pre>
+
+This will set the environment variable 'MPLAYER' to an empty string and pass it
+to the while subshell (and thus mplayer), but since MPLAYER isn't used as an
+environment variable in mplayer, we won't break anything.
+
+<p>
+
+Now, any time I want to rerun this specific command, I can just do
+<code>!MPLAYER</code> and we're all set. Doing this is *extremely* useful and
+allows you to define alias-like procedures in real-time, assuming you have a
+persistent shell history. If you don't have a persistent shell history, set it
+up, as it's useful for more things than the above hack.

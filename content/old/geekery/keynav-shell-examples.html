@@ -1,0 +1,49 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-06-14T03:23:22-07:00"
+title = "keynav shell command examples\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["keynav", "xdotool", "shell", "keybindings"]
++++
+
+<dl>
+<dt> Press 'f' when keynav is active and instantly jump to my firefox window. </dt>
+<dd>
+<pre>
+# in .keynavrc
+f sh "activate-firefox.sh", end
+</pre>
+
+Now, in activate-firefox.sh:
+<pre>
+#!/bin/sh
+# activate-firefox.sh
+xdotool windowactivate $(xdotool search -title -- '- Mozilla Firefox')
+</pre>
+</dd>
+
+<dt> Extend that and press 'g' to jump to gmail, assuming that tab is open. (Requires 
+<a href="/projects/firefox-tabsearch">my firefox tabsearch plugin</a>) </dt>
+<dd>
+<pre>
+# in .keynavrc
+g sh "activate-gmail.sh"
+</pre>
+
+Now, in activate-gmail.sh:
+<pre>
+#!/bin/sh
+# activate-gmail.sh
+
+./activate-firefox.sh
+xdotool key ctrl+apostrophe
+xdotool type gmail
+xdotool key Return
+</pre>
+</dd>
+</dl>

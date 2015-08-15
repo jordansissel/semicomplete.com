@@ -1,0 +1,46 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2003-08-07T09:07:00-07:00"
+title = "ion-devel rocks me sideways\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["ion"]
++++
+
+I finally got off my lazy ass and learned to do kludge and lua stuff for ion-devel. I'm *so* glad I did.<br>
+With the new lua5 usage in ion-devel, you can basically script anything in key bindings. Using different means, I wrote two keybindings that let me view and rename frame region names (the physical frames themselves, not the deskspace name or the program name).<br>
+<pre>kpress(DEFAULT_MOD.."F10", function(reg) 
+	    query_query(reg, "rename: ", nil, function(msg)
+	       query_message(reg,"Set current region name to: "..msg)
+	       region_set_name(reg,msg)
+	       end,nil)
+	  end),
+press("F10", function(reg)
+             query_message(reg, "name: " .. region_name(reg))
+             end),
+	     </pre>
+
+These bindings were added to <code>mplex_bindings</code>.<br>
+Using nested, anonymous functions, we acheive our goals. Hitting "F10" in ion will now print the name of the currently-focused frame. ALT+F10 will prompt you to change it's name. Neat, eh?<p>
+
+I also did a bunch of kludge stuff for gaim, mozilla (firebird, really, but it'll work for mozilla), and gimp. Gimp required a bit of work telling what windows to go where since there are quite a few windows that can pop up.<p>
+
+<span class="topic">So how do I do this kludge nonsense?</span><br>
+You'll need a tool that comes standard with XFree86, <code>xprop</code> This tool allows you to identify the <code>class</code> and <code>instance</code> of a given window. Simply type this command in a shell:<br>
+<code>   xprop WM_CLASS</code><br>
+The cursor will now turn into a crosshairs and you will need to click on the window you want to discover. For instance, clicking on one of my xterms produces this output:<br>
+<code>WM_CLASS(STRING) = "xterm", "XTerm"</code><br>
+Now, the first word "xterm" is the <code>instance</code>. "XTerm" is the <code>class</code>. Now to make this a working kludge that'll send any programs matching this to a specific frame, you need to write a valid winprop entry.<br>
+<pre>winprop {
+   class = "XTerm" 
+   instance = "xterm"
+   target = "target_frame"
+}</pre>
+<br>
+We'll need a frame called 'target_frame' for this to work, so using the ALT+F10 keybinding from above, we can name a given frame. Restart ion with the F11 key (unless you've rebound that) and your kludge will now work. Run an xterm from anywhere in ion, and it'll be placed inside that frame.<p>
+
+In the screenshot on the right, you can see gimp in the works. All of those windows were placed in their own frames automatically, without me having to move a single one of them!

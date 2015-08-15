@@ -1,0 +1,68 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-12-31T05:50:41-08:00"
+title = "Vim indentation\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["vim", "indentation"]
++++
+
+More than a year ago, I <a
+href="http://www.semicomplete.com/blog/productivity/vim-indent.html">expressed
+some frustration</a> about cindent in vim. My main complaints about it were
+that it made bad decisions about indentation on some languages that were not
+strictly C-syntax (perl, python, javascript).
+
+<p>
+
+Tonight I decided that I wanted to automate indenting to the closest '(' as in:
+<pre>
+if (foo() and bar()
+    and baz):
+    ^ Want to indent to here, somehow, on command.
+</pre>
+
+The 'cindent' feature of vim lets you configure this to happen automatically,
+but in some cases it won't indent properly: ie; a comment with a ( at the end
+of the line, for example, will screw it up.
+
+<p>
+
+I got tired of dealing with it, so I went back to autoindent, and I've been
+happier ever after. Fooling around tonight, I started working on a vim function
+to basically do exactly what I needed. An hour later, it was done. In the
+process, I wanted to confirm the default actions of ctrl+f in insert mode,
+which lead me to the cinkeys docs, which clued me that 'cindent' only
+autoindents on certain occaisions. 
+
+<p>
+
+All of my time was wasted, it seems, after I figured out setting this option:
+<pre>
+set cinkeys=!^F
+</pre>
+
+Now cindent only activates when I hit ctrl+f. If I have both autoindent and
+cindent enabled, with this cinkeys setting, the default indentation behavior is
+exactly autoindent, and I can invoke cindent at will.
+
+<p>
+
+The following is now set in my .vimrc:
+<pre>
+set autoindent
+set cindent                     " Use c-style indentation
+set cinkeys=!^F                 " Only indent when requested
+set cinoptions=(0t0c1           " :help cinoptions-values
+</pre>
+
+<p>
+
+If you're interested in the vim script I wrote, which I no longer need, you can
+download it here:
+<a href="/files/blogposts/20071231/paren_indent.vim">paren_indent.vim</a>
+

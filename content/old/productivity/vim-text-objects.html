@@ -1,0 +1,42 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-04-15T03:08:25-07:00"
+title = "Sexy vim \"text objects\" feature\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["vim"]
++++
+
+Read about text objects in vim with <code>:help text-objects</code>
+
+<p/>
+
+Text objects are basically direction macros for simple deletion/copy/changing. For instance, 
+
+<code> diB </code>
+
+This will delete everything between the nearest { and closing }. That is:
+
+<pre>
+static int update() {
+	if (u) {
+		printf("Update\n");
+	} else {
+		printf("No update\n";
+	}
+}
+</pre>
+
+Paste the above code in vim. Put the cursor on the first printf (line 3) and,
+in command mode, do <code>diB</code> - undo that and try <code>ciB</code>. The
+<code>d</code> command will delete the code block, where as <code>c</code> will
+do the obvious and delete the code block and leave you in insert mode.
+
+<p/>
+
+These text object direction things are quite neat. Again, check out the help
+page on it (<code>:help text-objects</code>). Neat little shortcuts.

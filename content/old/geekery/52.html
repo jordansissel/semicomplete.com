@@ -1,0 +1,39 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2003-08-09T03:36:00-07:00"
+title = "Slight update.. ksh prompt\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["shell"]
++++
+
+
+Found a few issues with the latest changes I made to my ksh prompt...<p>
+
+<pre>
+[ -w "/" ] && Z="#" || Z=">"; export Z
+PROMPT='$(A=$?; /bin/echo -n $HOST"("`/bin/pwd | /usr/bin/sed -Ee "s,(/usr)?$HOME,~,"`") [!] "$([ $A -ne 0 ] && /bin/echo -n "!!${A}!! ")$Z" " )'
+XTERM=
+case $TERM in
+  aterm|xterm|dtterm)
+    XTERM='$(echo -n "\033]2;'${PROMPT%%$Z*}')\007" 1>&2)'
+    ;;
+esac 
+export PS1=$XTERM$PROMPT
+</pre>
+
+<p>
+
+Keep in mind that <code>PROMPT</code> is very long...<br>
+Previously, it didn't report exit codes due to kludges that made <code>$?</code> change to <code>0</code> due to the exit status of some of the crap that runs inside the prompt.<p>
+
+Huzzah.
+However, on a sad note I'll point out the obnoxious length of <code>PS1</code> now...<br>
+<pre>
+nightfall(~) [569] > echo "${#PS1}"
+257
+</pre>

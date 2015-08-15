@@ -1,0 +1,35 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-09-16T00:38:38-07:00"
+title = "Ruby/Oniguruma code block patches\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["ruby", "regular expressions", "regexp", "patches", "hacking"]
++++
+
+I love perl's <code>(?{ <i>code</i> })</code> feature. I want it in 
+<a href="http://www.ruby-lang.org/en/">other</a> 
+<a href="http://www.python.org/">languages</a>.
+
+<p>
+
+I spent some time on hacking this into ruby <a
+href="/blog/geekery/ruby-regexp-hacking.html">a few weeks ago</a>. I finally got around to making patches.
+
+<p>
+
+In FreeBSD ports, I select to build Ruby 1.8.6 with oniguruma for the regex engine. After doing 'make configure' you can apply these patches:
+
+<ul>
+<li><a href="/files/blogposts/20070915/patch-ruby1.8.6-regcomp.c">patch-ruby1.8.6-regcomp.c</a></li>
+<li><a href="/files/blogposts/20070915/patch-ruby1.8.6-regexec.c">patch-ruby1.8.6-regexec.c</a></li>
+<li><a href="/files/blogposts/20070915/patch-ruby1.8.6-regparse.c">patch-ruby1.8.6-regparse.c</a></li>
+</ul>
+
+I haven't tested this on other platforms, and it's not feature complete, but
+it's close.
+

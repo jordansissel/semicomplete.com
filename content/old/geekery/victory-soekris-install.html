@@ -1,0 +1,41 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-01-05T06:49:28-08:00"
+title = "Soekris net4501 upgrade to FreeBSD 7.0\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["soekris", "net4501", "freebsd"]
++++
+
+I've definitely spent 10+ hours in the past 2 days trying to get this system upgraded from 6.0 to 7.0...
+
+<p>
+
+Why? First, I was using the wrong power supply, so it would randomly reboot during startup (4 hours, after before I figured that one out, after compiling zillions of kernels, even trying GENERIC from 6.2, 6.3, and 7.0). Then, I couldn't get a stable system image that would boot successfully. It would halt trying to run /sbin/init. Not sure why.
+
+<p>
+
+I was initially making my own image with mdconfig, and rsyncing the entire system into a file-backed fs. Then I dd'd this image to my compactflash and put it in the net4501. I gave up on that after several hours, and did this instead:
+
+<ol>
+  <li> Bring up a new vmware instance with 2 disks. 1 800mb disk and 1 5gb disk. </li>
+  <li> Install 7.0-RC1, only install kernel and base. </li>
+  <li> Mount the 5gb disk (newfs /dev/sd1, mount /dev/sd1 /usr/src) and unpack
+  the kernel sources there. Build kernel (For the soekris box). </li>
+  <li> Make any necessary config changes (serial console, etc) </li>
+  <li> Shutdown machine </li>
+  <li> Use qemu-img to convert the vmware disk into a raw disk image </li>
+  <li> dd the new image to compact flash. </li>
+  <li> Rejoice. I have a working net4501 now. </li>
+</ol>
+
+In testing in qemu, I get random timeouts talking to ad0. On the soekris board,
+I get random timeouts to ad0. wtf :(
+
+<p>
+
+Boot into safe-mode, and everything seems find. (Safe mode turns off DMA, iirc)

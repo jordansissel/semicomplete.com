@@ -1,0 +1,31 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-09-21T21:21:04-07:00"
+title = "Reason #2252 part C, why Firefox is crappy.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["firefox"]
++++
+
+I use firefox as my primary web browser. I have for a number of years. Lots of things about it irritate me. Today's irritation is it's startup sequence.
+
+<p>
+
+You kids can play at home too! Do this:
+
+<pre>tcpdump -np 'port 53'</pre>
+
+Now, start firefox fresh. Watch it do a dns lookup. Now do something to disable
+dns, such as pointing dns at an invalid server, or adding a search suffix to
+your dns client such that your hostname.suffix does not exist. Start firefox
+again. Watch it do a dns lookup on yourhostname.suffix and FAIL MISERABLY. What
+do we do in case of dns failure? Let's wait on DNS!!! WOOT. Except, dns never
+comes back. So, let's never start.
+
+<p>
+
+God damnit this is annoying.

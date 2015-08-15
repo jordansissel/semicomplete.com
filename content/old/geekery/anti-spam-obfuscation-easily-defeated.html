@@ -1,0 +1,39 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-01-26T22:55:56-08:00"
+title = "One anti-spam effort too easily defeated.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["spam", "mail", "google", "rants"]
++++
+
+I see lots of times where people put their mailing addresses as "foo at bar dot
+org" in a hopeful effort to keep spammers from scraping your mailing address.
+Heck, mail archive systems often have (and are deployed with) options to
+obfuscate email addresses systematically, using the same pattern: foo at bar dot com.
+
+<p>
+
+All it does is hurt usability.
+
+<p>
+
+<a href="http://www.google.com/search?hl=en&client=firefox-a&rls=org.mozilla%3Aen-US%3Aofficial&hs=HRy&q=%22*+at+*+dot+*%22&btnG=Search">Googlng for "* at * dot *"</a> clearly shows lots of matches. It also matches all of the following variants, due to google searches ignoring brackets and such in words:
+
+<ul>
+  <li> foo at bar dot com </li>
+  <li> foo [at] bar [dot] com </li>
+  <li> foo (at) bar (dot) com </li>
+  <li> ... etc ... </li>
+</ul>
+
+Query, scrape, replace 'at' and 'dot' as desired. I now have 54 million email addresses. What now?
+
+<p>
+
+Seems like this effort only serves to have people fool themselves as well as to
+impede usability. It certainly won't protect you from spam. Why is this method used?

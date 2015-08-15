@@ -1,0 +1,30 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2003-10-24T06:56:00-07:00"
+title = "vim - indenting\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["vim"]
++++
+
+So rather than start writing my own indent function, I decided to read more
+about <code>cindent</code>. The option, <code>cinoptions</code>, lets you tell
+vim how to react to things. What I was looking for was:<br>
+When I am typing a function call, and break the line because it's too long, I'd
+like the new line to start aligned with the open parenthesis, like this:<p>
+<pre>
+System.out.println("Hello there, how are you? kthx." + 
+                   "Java is fun");
+		   <b>^</b>
+</pre>
+<br>
+I want vim to automatically indent to the column position marked by the caret, <b>^</b> - 
+Turns out vim has this functionality already (duh, it has almost evrything).<p>
+<pre>:set cinoptions=(0</pre>
+<br>
+This, when <code>cindent</code> is enabled, will cause vim to auto indent to
+match your parentheses usage.

@@ -1,0 +1,30 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-07-23T23:12:25-07:00"
+title = "Antispam pyblosxom plugin, followup!\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["pyblosxom", "python", "spam", "antispam", "blog"]
++++
+
+<pre>
+REJECT: Comment attempt by 210.113.83.6 rejected. Reason: Invalid secret token: 'pleaseDontSpam'
+REJECT: Comment attempt by 210.120.79.179 rejected. Reason: Invalid secret token: 'pleaseDontSpam'
+REJECT: Comment attempt by 200.156.25.4 rejected. Reason: Invalid secret token: 'pleaseDontSpam'
+REJECT: Comment attempt by 220.125.164.243 rejected. Reason: Invalid secret token: 'pleaseDontSpam'
+REJECT: Comment attempt by 69.57.136.39 rejected. Reason: Invalid secret token: 'pleaseDontSpam'
+...
+</pre>
+
+The list goes on. Well over 50 invalid tokens were found. The 'pleaseDontSpam'
+was the original secret token I used. Just goes to show that, for the moment,
+most spam bots don't review the page before submitting.
+
+<p>
+
+Admittedly, 2 spams got through, I have not investigated why, yet.
+

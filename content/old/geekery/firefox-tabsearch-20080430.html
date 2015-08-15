@@ -1,0 +1,36 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-04-30T23:48:10-07:00"
+title = "tabsearch extension now works with Firefox 3.0\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["firefox", "tabsearch", "firefox-tabsearch", "extensions", "mozilla"]
++++
+
+I noticed that my tabsearch extension wasn't working properly after installing Firefox 3.0b5. A quick read of 
+<a href="http://developer.mozilla.org/en/docs/Updating_extensions_for_Firefox_3">
+this document</a> helped me figure out what was wrong. I also wasn't specifying the
+right content location in my chrome.manifest, which somehow worked fine in
+firefox 2 despite not being correct. Maybe the previous extension release was a
+custom built one that didn't use the make system I have now, either way, it's
+all fixed.
+
+<p>
+
+Head on over to the <a href="/projects/firefox-tabsearch">firefox tabsearch project page</a> and download it.
+
+<p>
+
+Download: <a href="/files/firefox-tabsearch/tabsearch-20080430.xpi">tabsearch-20080430.xpi</a>
+
+<p>
+
+Additionally, I've noticed that Firefox 3.0b5 doesn't seem to render this site
+correctly. Seems like it's ignoring my CSS of "pre { overflow: auto; }" which
+makes pre tags scroll if they become too wide. I'm willing to accept that I may
+be doing something incorrect (that has historically worked fine) - I'd much
+rather have the site render as intended. I'll look into it later.

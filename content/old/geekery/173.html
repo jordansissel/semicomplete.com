@@ -1,0 +1,22 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-06-04T01:42:00-07:00"
+title = "soekris shenanigans\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["soekris"]
++++
+
+Nothing quite like killing free time with more projects! I've finally managed to get this net4501 thing working again. My plan of attack this time was to use an nfs root instead of mfs root - this means I was able to build a larger system and netboot off of that rather than having to tweak a bootable image every time I wanted to make a system change. Once the system was bootable I used /stand/sysinstall to partition it and install a bootloader, then quit out. I have a script that puts pretty much all the binaries and libraries I'll need onto the main drive, but it was missing a few crucial libraries and such. 
+<p/>
+A brief list of some of the things I forgot: /usr/lib/pam_*, login(1), /libexec/ld-elf.so.1, and a few other things. After a few hours of tweaking with crap, I've got it booting off of the cf drive instead of network. Using my laptop to make packages care of FreeBSD's ports, i've got isc-dhcpd and bind9 installed. I haven't spent the time getting a ddns+dhcp configuration yet, but dhcp works. Turning ip forwarding on aswell as adding a nat rule to pf.conf and poof I have a working firewall/router.
+<p/>
+With an excessive number of userland tools (things that make using the shell possible), the drive has 18 megs of data on it. Some libraries/binaries are not stripped, some of them, like tcsh, aren't even going to be needed when the final product is done.
+<p/>
+A few considerations need to be made for running things on this hardware. The drive is Compact Flash  which has a limited number of writes. There are a few places I needed to look at for drive writing issues: /tmp, /var, and access time changes. The latter is the easiest, simply mount / with noatime. I couldn't have /tmp being mounted from the disk, because the random access that goes on there would shorten the lifetime of the CF card. So I used mdconfig to create an 8 meg ramdisk (mdconfig -a -t malloc -s 8m) and mounted that as /tmp. As for /var, the only program I knew that wrote, often, to places in /var was syslogd, so I turned that off for the time being.
+<p/>
+So far so good, more updates on this later as I work on it further.

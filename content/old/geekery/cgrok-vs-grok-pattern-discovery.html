@@ -1,0 +1,41 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-01-21T16:07:45-08:00"
+title = "c++ grok vs perl grok on pattern discovery\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok", "c++grok", "c++", "perl", "performance"]
++++
+
+I finished up work on the pattern discovery feature for the C++ port of grok. As
+soon as it was finished, I wanted to see the dpeed differences between the perl
+and C++ versions.
+
+<p>
+
+<ul>
+<li> Perl grok: 6 lines analyzed per second </li>
+<li> C++ grok: 130 lines analyzed per second </li>
+</ul>
+
+The feature tested here was the one detailed <a
+href="/blog/geekery/grok-pattern-autodiscovery.html">in this post</a>.
+
+<p>
+
+130 lines per second isn't fantastic, but it's 21.66 times faster than the perl
+version, and that's huge.
+
+<p>
+
+I still have to implement a few other features to make the C++ version
+equivalent to the perl version:
+
+<ul>
+  <li> config file (same format, ideally, as the perl version) </li>
+  <li> filters, like %SYSLOGDATE|parsedate% </li>
+</li>

@@ -1,0 +1,19 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2004-06-23T20:56:00-07:00"
+title = "Yet another random number generator\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["oneliners", "shell"]
++++
+
+I was bored...<p>
+
+<pre>
+dd if=/dev/urandom bs=1 count=30 2> /dev/null | \
+perl -e 'read(STDIN,$foo,5); print unpack("J",$foo) % 6 . "\n";'
+</pre>

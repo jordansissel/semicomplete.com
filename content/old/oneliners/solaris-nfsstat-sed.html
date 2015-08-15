@@ -1,0 +1,62 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-04-06T01:07:47-07:00"
+title = "Parsing nfsstat(1) for only version X information\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["unix", "solaris", "nfs", "sysadmin", "statistics", "sed", "tricks", "boredom-induced-research"]
++++
+
+<pre>
+nfsstat | sed -ne '/Version 3/,/^$/p'
+</pre>
+
+sed++
+
+<p>
+
+When I was bored (at 4 am, no-less), I kept trying to parse this information
+out using some crazy tricks with 'x' (swap pattern/hold) and other stuff, but I
+forgot the fact that regexps are valid addresses. So, we can print anything
+between 'Version 3' and blank lines, anywhere in our output.
+
+<p>
+
+The next thing I want to try with this is to automagically parse nfsstat output
+into a format that is more machine readable, this will probably be using awk or
+perl, seeing as how doing it with sed may hurt my brain a bit. Furthermore,
+trying to read the sed that did said operations would be somewhat intense ;)
+
+<p>
+
+The output looks something like this, on Solaris 9:
+<pre>
+Version 3: (535958 calls)
+null        getattr     setattr     lookup      access      readlink    
+0 0%        242223 45%  20606 3%    52504 9%    20025 3%    41 0%       
+read        write       create      mkdir       symlink     mknod       
+14138 2%    146618 27%  5525 1%     145 0%      337 0%      0 0%        
+remove      rmdir       rename      link        readdir     readdirplus 
+6279 1%     7 0%        1539 0%     1518 0%     1606 0%     6587 1%     
+</pre>
+
+Parsing this would mean generating a tree-like dictionary.
+In perl, it may look like:
+
+<pre>
+%foo = (
+	'Version 3' => {
+		null => 0,
+		getattr => 242223,
+		setattr => 20606,
+		lookup => 52504,
+		# .... etc ...
+		}
+	)
+</pre>
+
+Should be simple enough, we'll see what happens next time I get bored.

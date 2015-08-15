@@ -1,0 +1,47 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2004-10-07T11:14:00-07:00"
+title = "zsh's preexec() and tcsh's postcmd\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["shell"]
++++
+
+These are definately two of the most useful things I've ever run across in
+shelllyland. What they do is execute a function or alias (zsh or tcsh,
+respectively) just after you type something in at the command prompt.<p>
+
+This wonderful feature lets you change the xterm title just before execution of
+a potentially "long" process. This is most helpful for glancing at xterm titles
+and figuring out what is going on in the terminal.
+
+I don't have this setup for tcsh, however it is quite simple and is mentioned
+in tcsh's manpage. Search for 'alias postcmd'<p>
+
+Here is my zsh setup particular to this topic:<p>
+
+<pre>
+HOST=`hostname`
+HOST=${HOST%%.*}
+
+preexec() {
+	xterm_title $1
+}
+
+xterm_title() {
+	case $TERM in
+			(x|dt|a|E)term|screen|rxvt)
+				echo -n "^[]0;$* @ $HOST^G"
+			;;
+	esac
+}
+</pre>
+
+<br>
+
+Now every time you execute a command (vim Foo.html, for instance), the xterm
+title will be updated with whatever command @ hostname.

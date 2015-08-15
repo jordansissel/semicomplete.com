@@ -1,0 +1,31 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-07-13T01:44:14-07:00"
+title = "Wakeup call using /bin/sh and at(8)\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["hacks", "life hacks", "unix", "tools"]
++++
+
+Using at(8), I can schedule jobs to occur, say, when I need to wake up.
+
+<pre>
+nightfall(~) % atq
+Date                            Owner           Queue   Job#
+Thu Jul 13 07:30:00 PDT 2006    jls             c       14
+Thu Jul 13 08:00:00 PDT 2006    jls             c       15
+Thu Jul 13 08:20:00 PDT 2006    jls             c       16
+</pre>
+
+All of those jobs run my 'wakeup.sh' script which is somewhat primitive, but it
+does the job.
+
+<p>
+
+Using this script: 
+<a href="http://www.semicomplete.com/scripts/wakeup.sh">scripts/wakeup.sh</a>
+

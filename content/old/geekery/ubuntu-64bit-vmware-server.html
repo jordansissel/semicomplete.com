@@ -1,0 +1,35 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-06-02T07:57:18-07:00"
+title = "Ubuntu 64bit / vmware server\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["linux", "vmware"]
++++
+
+Now that I have all the hardware/bios problems fixed on this system, I've
+started installing vitrual machines. However, getting vmware to go was no small
+task.
+
+<p>
+
+<ul>
+  <li> The install script failed to build the vmmon kernel module, so I hacked the script to not do it. </li>
+  <li> Ubuntu has packages for vmmon and vmnet, but installs them in
+  /lib/modules/.../vmware-server/ instead of /lib/modules/.../misc/ where the
+  vmware init.d script expects them. Hacked that with a symlink. The init
+  script looks for 'foo.o' and the ubuntu package provides 'foo.ko'.
+  </li>
+  <li> I couldn't verify my license key because vmware-vmx would fail to run
+  with an error of "No such file or directory". Turns out this really means
+  "You are running a 32 bit binary and I can't find the libraries it needs".
+  The solution is to apt-get install ia32-libs and possibly others. </li>
+</ul>
+
+There are probably other hacks I had to do, but it's 5am and I don't remember
+them right now.
+

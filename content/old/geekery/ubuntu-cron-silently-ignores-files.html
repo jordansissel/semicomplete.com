@@ -1,0 +1,124 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-09-07T18:58:17-07:00"
+title = "Ubuntu's cron package silently ignores files\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["cron", "downstreamfail", "toomanypatches"]
++++
+
+I was trying to debug why my cronjobs weren't running in ubuntu.  It should've
+been simple, right? Put a file in /etc/cron.d, and cron goes to town.
+
+<p>
+
+Except on Ubuntu (and probably Debian). Ubuntu and Debian have a horrible
+habit of patching upstream sources, excessively, to the point where they are no
+longer quite the upstream package. It's practices like this that caused the
+great <a
+href="http://www.google.com/search?q=debian+ssh+key+vulnerability">Debian
+SSL/SSH key vulnerability</a> and cause projects like Ion and Firefox (I
+think?) to have license clauses that prevent downstream packagers from calling
+megapatched version by the same name as the upstream project.
+
+<p>
+
+Vixie cron is not protected from the megapatching practice.
+
+<p>
+
+I did the normal debugging. You know, strace, etc. I saw cron stat my cron
+file, which was reduced to "* * * * * root logger HELLO WORLD" just to try
+anything. Nothing.
+
+<p>
+
+So, I download the source package with "apt-get source cron" and see the following:
+
+<pre>
+% gzip -dc cron_3.0pl1-106ubuntu5.diff.gz | wc -l            
+7228
+</pre>
+
+7228 lines of patches. How big is cron?
+
+<pre>
+nightfall(~/cron-3.0pl1) % wc -l *.c |tail -1
+  4869 total
+</pre>
+
+There are more lines of patches than there are lines of code. Pretty sure the
+README file says "Vixie Cron," but this kind of megapatching kind of takes the
+"Vixie" out of it.
+
+<p>
+
+The offending portion of the patch looks like this:
+<pre>
++static int valid_name (char *filename);
+
+...
+
++               /* skipfile names with letters outside the set
++                * [A-Za-z0-9_-], like run-parts.
++                */
++               if (!valid_name(dp->d_name))
++                 continue;
++
+
+...
+</pre>
+
+Now I know why my cron jobs were being ignored: I typically name my cron files
+as 'something.cron' because it makes them more identifable in puppet and in
+svn.
+
+<p>
+
+I'm not sure what silly policy felt the need to mandate filenames in
+/etc/cron.d, but it needs to go. If it stays, it needs to actually be
+documented much more clearly.  And no, I don't mean documenting it in some
+obscure manpage (like 'run-parts') that nobody reads or documenting it
+confusingly by saying "If using LSB, then this naming policy applies, if not
+using LSB, then this other naming policy applies"; I mean documenting it by
+having cron log "Ignoring &lt;filename&gt; due to &lt;some policy&gt;" - that's
+right, if you can't tell from the patch above, ubuntu's cron will silently
+ignore some files.
+
+<p>
+
+Explicit is better than implicit. Documentation doesn't always sync with code.
+Code is truth.
+
+<p>
+
+Further confusing the issue is the inconsistency in documenting this change.
+The crontab(1) manpage has a "DEBIAN SPECIFIC" section detailing this kind of
+thing (though I imagine it is quite incomplete). <i>Update:</i> There is no
+such section ('debian specific') in cron(8), though as commenters point out,
+this naming policy is documented in cron(8) but not clearly, in my opinion.
+
+<p>
+
+Sigh, what a waste of my time... Speaking of unexpected changes to decades-old system tools - <a href="http://www.freebsd.org/doc/handbook/freebsd-glossary.html#POLA-GLOSSARY">FreeBSD knows what's up.</a>
+
+<p>
+
+Finally, you'd think that out of all the 7228 lines of patches, one of them
+would fix this trivial bug still listed in crontab(1):
+
+<pre>
+BUGS
+       Although cron requires that each entry in a crontab end  in  a  newline  character,
+       neither  the  crontab  command nor the cron daemon will detect this error. Instead,
+       the crontab will appear to load normally. However, the command will never run.  The
+       best choice is to ensure that your crontab has a blank line at the end.
+</pre>
+
+Nope. I guess megapatching isn't for fixing bugs but instead for applying major
+changes and random, poorly documented and poorly thought-out policy changes to
+upstream code without forking the projects.

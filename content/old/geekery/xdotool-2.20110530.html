@@ -1,0 +1,81 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2011-05-30T01:34:27-07:00"
+title = "xdotool 2.20110530release\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["xdotool", "release", "project", "C", "X11", "Xlib"]
++++
+
+It's been about 8 months since the last xdotool release, and I think it's long
+overdue! This release has a ton of new feature and fixes.
+
+
+<p>
+
+Download: <a href="http://semicomplete.googlecode.com/files/xdotool-2.20110530.1.tar.gz">xdotool-2.20110530.1.tar.gz</a>
+
+<p>
+
+As usual, if you find problems or have feature requests, please file <a
+href="http://code.google.com/p/semicomplete/issues/list">bugs</a> or send an
+email to the <a href="http://groups.google.com/group/xdotool-users">list</a>.
+
+<p>
+
+Changelist since previous announcement:
+<pre>
+2.20110530.*
+  - New set_window feature: --urgency. This lets you set the urgency flag on a
+    window Window managers will interpret this as something about your window
+    needing attention. It might flash in the taskbar, pop up, or other.
+    Original patch and suggestion by ervandew.
+    Issue: http://code.google.com/p/semicomplete/issues/detail?id=39
+  - New function: xdo_window_seturgency (see above)
+  - Hack in OS X support as it is missing a proper clock_gettime.
+    Should fix http://code.google.com/p/semicomplete/issues/detail?id=37
+    Reported by ryandesign.com
+  - Add support for typing UTF-8 characters. Patch from Joseph Krahn.
+  - Make all output call fflush to send data immediately (for pipes). Reported
+    by Andreas Wagner on the mailing list.
+  - Make 'get_desktop_viewport' output usable with 'set_desktop_viewport'
+    http://code.google.com/p/semicomplete/issues/detail?id=47
+  - You can now make 'libxdo.a' for embedding libxdo into your binary
+    (Requested by psc on the mailing list).
+  - Fixed a typing bug where the keymap changes unnecessarily 
+  - Should now build cleanly in C++ environments (Reported by psc on the
+    mailing list)
+  - bugfix: xdotool should use command names first before trying file scripts. 
+    See https://bbs.archlinux.org/viewtopic.php?pid=938309 for original report.
+  - Add a 'sleep' command. (Requested by Joseph Krahn via mailing list)
+  - Add --relative flag to windowmve. (Requested by Anthony Thyssen via mailing
+  - Add --desktop flag to the search command. This lets you search for windows
+    on specific desktop. Requires a window manager that supports multiple
+    desktops in a way that EWMH supports.
+    Fixes http://code.google.com/p/semicomplete/issues/detail?id=38
+  - Add --limit flag to search. This allows you to break the search early after
+    a certain number of matches. (Requested by Anthony Thyssen)
+  - New command 'getwindowgeometry' for fetching window position and size
+    (Requested by Anthony Thyssen via mailing list)
+  - Add --sync flag to search command; blocks until results are found.
+    xdotool will search every 0.5 seconds for results.
+    http://code.google.com/p/semicomplete/issues/detail?id=42
+  - windowmove can now move windows along an axis. Give literal 'x' or 'y'
+    instead of a coordinate and it uses the current position. (Requested by
+    etnlIcarus via mailing list)
+  - Add '--args N' and '--terminator TERMINATOR' to the 'exec' command.
+    Default terminator unless specified (or --args is) is ':' (Requested by
+    Joseph Krahn and Henning Bekel via mailing list)
+  - set_desktop now supports --relative flag (+N or -N to move relative)
+    (Requested by Anthony Thyssen)
+  - The mouse cursor now changes during 'xdotool selectwindow' (Requested by
+    Anthony Thyssen via mailing list)
+  - Added '--args N' and '--terminator TERMINATOR' to the 'type' command.
+  - Add 'getdisplaygeometry' command for querying the size of your screen.
+    (Requested by @rrwo via twitter)
+  - Add xdo_get_viewport_dimensions function.
+</pre>

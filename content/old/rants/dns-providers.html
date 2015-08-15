@@ -1,0 +1,157 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-10-31T18:59:35-08:00"
+title = "DNS providers suck.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["dns", "rants", "service providers"]
++++
+
+Happy Halloween, folks. It's been 20 days since my last post. I've been
+incredibly busy with work and haven't had a chance to write. As a gift, I give
+you a rant.
+
+<p>
+
+I've been through no less than 3 DNS service providers in the past week, and
+all of them suck. They suck hard. 
+
+<p>
+
+The first one I looked at was no-ip. No-IP claims they support 'dynamic dns' -
+they don't. The first thing you must realize about almost all dns providers is
+that while they claim they support "dynamic dns" and/or "round robin," what
+they really mean is their support of 'dynamic dns' is based solely around one
+single use case. One. 
+
+<p>
+
+What is that use case? The following picture comes from dynu.com:
+
+<center><img src="/images/howbasicworks.gif"></center>
+
+<p>
+
+What is this? This use case of one computer updating it's own hostname with
+whatever IP it happens to have at that moment. Businesses can't possibly find
+this useful. It doesn't scale. If you have more than one server you want to put
+on a single hostname, this use case fails you miserably.
+
+<p>
+
+I've looked at no-ip, dyndns, dnspark, and several others. Trash.
+
+<p>
+
+Keep in mind, this rant is becuase both free AND pay-for dns providers suck.
+Both kinds. Free services actually have an excuse - you get what you pay for.
+
+<p>
+
+As a precursor, let me explain what I need from a dns provider:
+
+<ol>
+  <li> The ability to add and remove dns entries of any record type, at any time. </li>
+  <li> The ability to add multiple entries for the same record </li>
+</ol>
+
+Many claim these features. Those I tried fail miserably.
+
+<p>
+
+If you are in the market for a real dns provider, as I am, you'll find many dns
+providers claiming what I listed above. "Sure! We support round robin!" they
+advertise, "We support dynamic dns!" 
+
+<p>
+
+What they don't tell you in the same paragraph is that you have to use their
+own HTTP-based means of pushing dns changes. They absolutely don't tell you
+that their pathetic attempt at providing this "dynamic" service via a cgi-like
+interface is absolutely crippled.
+
+<p>
+
+Several providers allowed you to mutate records dynamically. However, none of
+them I tried let me add multiple entries for a single record using the dynamic
+interface.
+
+<p>
+
+<b>An important realization</b> is that my definition of dynamic is not the
+same as these dns providers' notion of dynamic. This so-called dynamic dns
+ability hinges on customers who want to be able to host crap out of their
+dynamic-ip-giving ISP. As such, most of the interface is just "Hey DNS
+provider! Please update www.foo.com with whatever IP this packet is coming
+from! Thanks!" This is intolerable!
+
+<p>
+
+What is my definition of "dynamic dns," exactly? Let's call it <a href="http://www.ietf.org/rfc/rfc2136.txt">RFC 2136</a>. Heck, I don't care if it's not RFC 2136, just that I'm able to do most things that update specification provides.
+
+<p>
+
+To quote ZoneEdit customer support regarding my issues with their service and
+in particular how to properly use their crippled dynamic update interface:
+
+<blockquote>
+"You can atleast update hourly .
+<p>
+Updating too often with the same IP address gets your account locked up."
+</blockquote>
+
+WHAT?! Once hourly? Shit. DNS is hard. Let's go shopping instead.
+<p>
+
+Doing this right <b>is not hard</b>. For example, I recently posted 
+<a href="http://www.semicomplete.com/articles/dynamic-dns-with-dhcp/">an article</a>
+on how to setup dynamic dns and make your dhcp server talk sweetly to dns. I
+use this same configuration in my apartment. MY APARTMENT. My apartment is
+considerably smaller than, say, a multidatacenter dns provider. Why doesn't
+anyone at any of these dns providers have a freaking clue about running a dns
+server? Let me put it plainly:
+
+<blockquote> 
+<b>I will give you <font color="green">money</font> and you will give me a
+dnssec key and a server on which to use it. That shall be the extent of our
+relationship</b>
+</blockquote>
+
+That's all I want. The worst part is that it doesn't matter who you go with.
+There are plenty of free dns providers who provide you the same crappy service
+as give-us-your-money providers.
+
+<p>
+
+Really. Come on kids.
+
+<p>
+
+Look at it this way - To enable dynamic dns updates, you don't need to write
+any code. A few tiny named.conf changes. To provide a pathetic http interface
+you label as "dynamic dns" requires lots of lines of code, lots of testing, and
+$$$ invested in this kind of product. 
+
+<p>
+
+To further show how stupid this is. Microsoft supports this properly.
+Microsoft. You know, that company everyone hates-on for proprietary protocols
+and ignorance of standards? Microsoft DNS will send updates using BIND's update
+protocol. How do I know this? I've had a primary dns server running BIND and
+Microsoft DNS running as a secondary. I told Active Directory that it's primary
+dns was the BIND server. Guess what happened? Active Directory happily
+submitted updates to my BIND server. Correctly.
+
+<p>
+
+You might be thinking to yourself, "Why don't you just host dns yourself?"
+Because I dont' have any servers on a static IP address. And no, this isn't
+running out of my apartment.
+
+<p>
+
+Am I the only one who can't find a dns provider that doesn't suck?

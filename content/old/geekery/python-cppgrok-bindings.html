@@ -1,0 +1,74 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-03-27T21:35:22-07:00"
+title = "C++Grok bindings working in Python\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["c++", "grok", "c++grok", "python", "embedding", "modules"]
++++
+
+<pre>
+% python example.py "%SYSLOGDATE%" < /var/log/messages | head -1
+{'MONTH': 'Mar', '=LINE': 'Mar 23 06:47:03 snack syslogd 1.4.1#21ubuntu3: restart.', '=MATCH': 'Mar 23 06:47:03', 'TIME': '06:47:03', 'SYSLOGDATE': 'Mar 23 06:47:03', 'MONTHDAY': '23'}
+</pre>
+
+That's right. I can now use C++Grok from python.
+
+<p>
+
+After I saw it work, I immediately ran a time check against the perl version:
+
+<pre>
+% seq 20000 > /tmp/x
+% time python example.py "%NUMBER>5000%" < /tmp/x > /tmp/x.python
+0.59s user 0.00s system 99% cpu 0.595 total
+% time perl grok -m "%NUMBER>5000%" -r "%NUMBER%" < /tmp/x  > /tmp/x.perl
+4.86s user 0.94s system 18% cpu 31.647 total
+</pre>
+
+The same basic operation is 50x faster in python with c++grok bindings than the
+pure perl version. Excellent.
+
+Sample python code:
+
+<pre>
+g = pygrok.GrokRegex()
+g.add_patterns( &lt;dictionary of patterns&gt; )
+g.set_regex("%NUMBER>5000%")
+match = g.search("hello there 123 456 7890 pants")
+if match:
+  print match["NUMBER"]
+# prints '7890'
+</pre>
+
+I knew I wasn't doing reference counting properly, so to test that I ran the
+python code against an input set of 1000000 lines and watched the memory usage,
+which clearly showed leaking. I quickly read up on ref counting in Python and
+what functions return new or borrowed references. A few keystrokes later my
+memory leaks were gone. After that I put python in the test suite and am read
+to push a new version of c++grok.
+
+<p>
+
+Download: <a href="/files/cgrok/cgrok-20080327.tar.gz">cgrok-20080327.tar.gz</a>
+
+<p>
+
+Python Build instructions:
+<pre>
+% cd pygrok
+% python setup.py install
+
+# make sure it's working properly
+% python -c 'import pygrok'
+</pre>
+
+There is an example and some docs in the pygrok directory.
+
+<p>
+
+Let me know what you think :)

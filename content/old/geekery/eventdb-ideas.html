@@ -1,0 +1,103 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-05-02T04:11:19-07:00"
+title = "Event DB - temporal event storage\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["eventdb", "oh-my-god-it's-4am", "ideas"]
++++
+
+Travelling always gives me lots of time to think about new ideas.
+Today's 12 hours of flight gave me some some to spend brainstorming
+some ideas for my "sysadmin time machine" project.
+
+<p>
+
+I've come up with the following so far:
+
+<ul>
+	<li>
+		The concept of an event is something which has "when, where, and
+		what"-ness. Other properties of events such as significance and
+		who-reported-it are trivial. The key bits are when the event
+		occurred, where it occurred, and what the event was.
+	</li>
+	<li>
+		Software logs happen to have these three key properties. Put
+		simply: store it in a database that lets you search over a range
+		of times and you have yourself a time machine.
+	</li>
+	<li>
+		Couple this with visualizations and statistical analysis.
+		Trends are important. Automatic novelty detection is important.
+	</li>
+	<li>
+		Trends can be seen by viewing data over time - whether visual or
+		formulaic (though the former is easier for Joe Average to see). An
+		example trend would be showing a gradual increase in disk usage
+		over a period of time.
+	</li>
+	<li>
+		Novelty detection can occur a number of ways. Something as simple
+		as a homoskedasticity test could show if data were "normal" -
+		though homoskedasticity only works well for linear models, iirc. I
+		am not a statistician.
+	</li>
+	<li>
+		Trend calculation can provide useful models predicting resource
+		exhaustion, MTBNF, and other important data.
+	</li>
+	<li>
+		Novelty detection aids in fire fighting and post-hoc "Oops it's
+		broken" forensics.
+	</li>
+</ul>
+
+I'm hoping to find time to get an event storage prototype working soon.
+The following step would be to leverage RRDtool as a numeric storage
+medium and perform novelty/trend detection/analysis from its data.
+
+<p>
+
+The overall goal of this is to somewhat automate problem detection and
+significantly aid in problem cause/effect searching.
+
+<p>
+
+The eventdb system will likely support many interfaces:
+<ul>
+	<li> syslog - hosts can log directly to eventdb </li>
+	<li> command line - scriptably/manually push data to the eventdb </li>
+	<li> generic numeric data input - a lame frontend to rrdtool, perhaps </li>
+</ul>
+
+Thus, all data would be pushed through eventdb which would figure out
+which on-disk data medium to store it in. Queries could be done asking
+eventdb about things such as "show me yesterday's mysql activity around
+3am" or "compare average syscall usage across this week and last week"
+
+<p>
+
+This sort of trend and novelty mapping would be extremely useful in a
+production software environment to compare configuration or software
+changes. That is, last month's syscall averages might be much lower than
+this months - and perhaps the only change was a configuration file
+change or new software being pushed to production. You would be able to
+track the problem back to when it first showed up - hopefully
+correllating to some change that was known about. After all, the first
+step in solving a problem is knowing of its existence.
+
+<p>
+
+My experience with data analysis techniques is not extensive. So I
+wouldn't expect the data analysis tools in the prototype to sport
+anything fancy.
+
+<p>
+
+I need more hours in a day! Oh well, back to doing homework. Hopefully
+I'll have some time to prototype something soon.

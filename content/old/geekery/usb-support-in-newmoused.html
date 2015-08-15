@@ -1,0 +1,32 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-08-13T23:52:53-07:00"
+title = "USB Mouse support in-progress for newmoused/newpsm\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["freebsd", "mouse", "usb", "code", "C"]
++++
+
+I started working on usb (usbhid) mouse support for my newpsm/newmoused project. So far so good, I can probe /dev/uhidX devices and figure out if it's a mouse or not. Thankfully, usb hid is very easy. Unfortunately, FreeBSD (NetBSD's) implementation is somewhat crazy with the voodoo.
+
+<p>
+
+To see what I mean, look at: <a href="http://www.freebsd.org/cgi/cvsweb.cgi/src/usr.bin/usbhidctl/usbhid.c">src/usr.sbin/usbhidct/usbhid.c</a>.
+
+<p>
+
+Look near line 230 (the only read() call in the file). Notice the read()
+call, but 'dbuf' is NEVER used meaningfully. More specifically, the read is
+mostly ignored and a loop is done over the 'hids' list. Looks like read()s on
+usbhid devices pushes data to special places in memory which can be found by
+using hid_start_parse(). A read() shouldn't be doing this. This is the job for
+an ioctl() or something.  read(), to me, says "give me data so I can use it" -
+not "update some magic places in memory, thanks"
+
+<p>
+
+Eek.

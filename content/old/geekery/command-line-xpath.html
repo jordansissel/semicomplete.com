@@ -1,0 +1,67 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-05-14T04:51:12-07:00"
+title = "Command line xpath tool\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["xml", "xpath", "productivity", "scraping", "xpathtool"]
++++
+
+I've recently found myself needing to do one-off scrapers to pull information
+from various services. However, using 'w3m -dump' doesn't always suffice when I
+need to parse html and maybe throw it at awk.
+
+<p>
+
+I know XSLT and XPath, but I don't know of a good xpath tool for the
+commandline. XML::XPath in perl comes with one, but it's not up to my demands.
+
+<p>
+
+So, like most problems I come across, I solved it myself. A simple query of
+"Show all external links" is very cumbersome to do in a one-off manner unless
+you've got the right tools. Here's how you do basically do it with xpath:
+
+<pre>
+//a[not(contains(@href,"semicomplete.com")) and starts-with(@href, "http://")]/@href
+</pre>
+
+It's a bit complicated, but whatever, I can express what I want, right? Toss
+this along with my new <a
+href="http://www.semicomplete.com/svnweb/xpathtool/">xpathtool project</a>, and
+I can find out where the urls are going:
+
+<pre>
+% GET www.semicomplete.com \
+| ./xpathtool.sh --ihtml \
+  '//a[not(contains(@href,"semicomplete.com")) and starts-with(@href, "http://")]'
+
+http://www.viewvc.org/
+http://www.oreillynet.com/sysadmin/
+... etc ...
+</pre>
+
+You can specify that the input is html with '--ihtml'. The output can be chosen
+as text, html, or xml. If you specify html or xml output, it will use
+&lt;xsl:copy-of&gt; instead of &lt;xsl:value-of&gt; for each node matched.
+
+<pre>
+# output in xml, every anchor tag not obviously pointing locally
+GET www.semicomplete.com \
+| ./xpathtool.sh --ihtml --oxml \
+  '//a[not(contains(@href,"semicomplete.com")) and starts-with(@href, "http://")]' \
+| head -4
+
+&lt;?xml version="1.0"?&gt;
+&lt;toplevel&gt;
+  &lt;a href="http://www.viewvc.org/"&gt;ViewVC&lt;/a&gt;
+  &lt;a href="http://www.oreillynet.com/sysadmin/"&gt;http://www.oreillynet.com/sysadmin/&lt;/a&gt;
+
+  ... etc ...
+</pre>
+
+Interested? <a href="http://www.semicomplete.com/svnweb/xpathtool/">Try xpathtool.</a>

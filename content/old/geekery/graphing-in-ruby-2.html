@@ -1,0 +1,69 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-05-20T02:27:14-07:00"
+title = "More rmagick/rvg playtime\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["rmagick", "rvg", "imagemagick", "ruby", "graphing"]
++++
+
+While working on graphs tonight, I found that calculation and labelling of
+ticks should be provided by special 'tick' classes. The iterator (the 'each'
+method) takes a min and max value and yields ticks in that range. This allows
+you to:
+
+<ul>
+<li> A 'tick' provider should just be an iterable class (foo.each, etc) which provides the tick position and optional label.</li>
+<li> A graph can have multiple ticks per axis, allowing you to have 'major'
+ticks labeled while 'minor' ticks are not labeled, and even more than two
+layers of ticks on each axis. </li>
+<li> The same tick classes can easily be used to draw both the graph ticks and
+the grid.</li>
+<li> Trivially have 'time format' tickers </li>
+<li> Have a 'smart time ticker' that looks at the min/max and determines the
+correct set of time ticks to display (display format, tick distance, tick
+alignment, etc). Can use multiple 'time ticker' instances internally (code reuse!)</li>
+</ul>
+
+I'm sure this has all been though of before, but it's a research experience for me :)
+
+<p>
+
+At any rate, I'm finding myself wondering if RMagick/rvg is really the right
+tool. It certainly makes doing graphics trivial, but even for what I see as a
+simple graph it takes a little over a second to render, which would hurt
+usability if multiple graphs needed rendering simultaneously.
+
+<p>
+
+The bottleneck seems to be with text rendering. If I disable text display in
+the graph (tick labels, etc), graph rendering drops by 0.5 seconds (from 1.1).
+Switching from 'gif' to 'png' output shaved 0.2 seconds on average of
+rendering, which is interesting.
+
+<p>
+
+Today's results, with real data:
+
+<p>
+<img src="/files/blogposts/20090520/test.png">
+
+<p>
+
+<pre>
+graph = RPlot::Graph.new(400, 200, "Ping results for www.google.com")
+pingsource = RPlot::ArrayDataSource.new
+File.open("/b/pingdata").each do |line|
+  time,latency = line.split
+  pingsource.points << [time.to_f, latency.to_f]
+end
+pingsource.points = pingsource.points[-300..-1]
+graph.sources << pingsource
+graph.xtickers << RPlot::SmartTimeTicker.new
+graph.ytickers << RPlot::LabeledTicker.new(alignment=0, step=25)
+graph.render("test.png")
+</pre>

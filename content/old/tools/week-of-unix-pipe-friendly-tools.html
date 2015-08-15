@@ -1,0 +1,65 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-05-18T02:07:13-07:00"
+title = "Week of unix tools!\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["week-of", "documentation", "unix"]
++++
+
+This past week of work had me stretching my piping-ninja skills to the limits.
+In the past 4 days, I have created a oneliner that invoked xargs 3 times in a
+series of piped expressions, a oneliner that had xargs calling xargs, a
+oneliner that was well over 1000 characters and invoked sed, xargs, grep, perl,
+awk, xpathtool and others, sometimes twice, and several other ninja-like uses
+of filter-fu involving unix pipes. It's been a fun week for oneliners.
+
+<p>
+
+So, I thought I might spend the next 7 days covering some of the tools I find
+myself working with almost every day. I hope to cover all the ways I use a
+given tool, when it should be used over any alternatives, things to look up in
+the manpage, etc.
+
+<p>
+
+I'll try to cover more than one tool per day, because some tools can be batched
+together because there isn't much to day other than "this is useful for foo,
+bar, anz baz".
+
+<p>
+
+Tentative, incomplete list:
+<dl>
+  <dt> data sources </dt>
+  <dd> cat, GET, echo, nc (netcat), shell command substitution </dd>
+  <dt> filters </dt>
+  <dd> cut, grep, paste, sed, sort, tr, uniq, wc </dd>
+  <dt> magical </dt>
+  <dd> xargs, sh, awk, perl (for oneliners) </dd>
+</dl>
+
+Here's a sneak peek at what you might learn:
+
+<p>
+
+'sort' can sort lines, right? But how do you sort words on the same line?
+
+<pre>
+% echo "one two three four five" \
+  | xargs -n1 | sort | xargs
+five four one three two
+</pre>
+
+Some of you might notice that the xargs(1) invocations can be replaced with
+tr(1).  Yes. I use xargs(1) because it's less typing and handles many case
+tr(1) won't. This is not to say tr(1) doesn't have it's wonderful uses. More on
+that later this week ;)
+
+<p>
+
+If you have suggestions, let me know.

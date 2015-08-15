@@ -1,0 +1,46 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-01-07T04:41:08-08:00"
+title = "Oniguruma - named capture example\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["oniguruma", "regex", "regexp", "C", "examples"]
++++
+
+For whatever reason, I decided to play with oniguruma tonight (a newish regular
+expression library). I'm considering an effort to port some of grok's
+functionality to C or C++ for speed reasons. Doing it in C++ would require me
+to re-learn C++.
+
+<p>
+
+The docs are pretty complete, but not very helpful with respect to examples. I
+wasn't able to find very many useful examples on google, but the API docs are
+quite good. What wasn't answered by the docs  was answered by reading header
+files. Excellent.
+
+<p>
+
+The result of this adventure is this:
+
+<pre>
+# regex: ^(?&lt;test&gt;.*?)( (?&lt;word2&gt;.*))?$
+# input: "hello there"
+
+% gcc -I/usr/local/include -L/usr/local/lib -lonig oniguruma_named_captures.c
+% ./a.out "hello there"
+word2 = there
+test = hello
+% ./a.out "foobarbazfizz"
+word2 = 
+test = foobarbazfizz
+</pre>
+
+<p>
+
+<a href="/files/blogposts/20080107/oniguruma_named_captures.c">Download the code</a>
+

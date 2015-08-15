@@ -1,0 +1,133 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-09-02T02:23:57-07:00"
+title = "Grok and automatic log pattern discovery\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok", "perl", "regexp ninja"]
++++
+
+My todo list has had "grok - magical 'pattern finder' thing" since May of this
+year. I added it after I wrote up some thoughts on <a href="http://www.semicomplete.com/blog/geekery/sequencing-and-searching-strings">pattern matching, string
+sequencing, and automation</a>.
+
+<p>
+
+I spent many hours on that problem tonight.
+
+<p>
+
+Initially, I wrote a python script which would compare each line in a file
+against every other line in the file. Using difflib and string split, I could
+figure out what words were changed between two lines. If the lines were
+similar, I could compute the difference and replace the differences with a
+token placeholder, such as "WORD".
+
+<p>
+<a href="/files/blogposts/20070901/distance_sort.py">Download this python script</a>
+
+<p>
+
+Here's a sample output of the tool where it compares one line against another, computes the difference and makes a new string that will match both lines:
+<pre>
+0.91: error: PAM: authentication error for illegal user karinebeers
+    : error: PAM: authentication error for illegal user leshana
+  ==> error: PAM: authentication error for illegal user %WORD%
+</pre>
+
+This script is fairly primitive in execution. It only compares whole tokens,
+which are delimited by space. This was good, but not enough. It doesn't know
+about compound patterns such as quoted strings, or complex patterns such as
+those matching an IP address or a file path.
+
+<p>
+
+How do we consider complex patterns like hostnames and quoted strings? Turns
+out, most of the pattern matching wizardry is in grok. Grok knows about named
+patterns, and we can abuse this to use grok in a different way - instead of
+parsing text, we're going to use it to turn input text into a grok pattern.
+
+<p>
+
+Example:
+<pre>
+% echo '/foo/bar/baz "foo bar baz" hello ther 1234 www.google.com' \
+| perl grok -F 
+%UNIXPATH% %QS% hello ther 1234 %IPORHOST%
+</pre>
+
+What did it do?
+<pre>
+input:  /foo/bar/baz "foo bar baz" hello ther 1234 www.google.com
+output: %UNIXPATH%   %QS%          hello ther 1234 %IPORHOST%
+</pre>
+
+Using a new hack on top of grok, we can now turn an unknown plaintext input
+into a pattern that is reusable and human-meaningful. This is totally awesome.
+
+<p>
+
+This hack only considers complex tokens for simplicity's sake; that is, tokens
+only containing letters and numbers are ignored. Why? Is 'foo1234' a word or a
+hostname?  Is 1997 a number or a year? Grok allows you to make these
+distinctions, but I skip simple tokens so I don't have to programatically
+weight random patterns. Note the above example, where '1234' was not replaced
+with '%NUMBER%' or something similar.
+
+<p>
+
+So, I run this new grok hack on my /var/log/messages file. Here's a sampling of
+output from grok:
+
+<pre>
+# grok -F < /var/log/messages
+%SYSLOGBASE% logfile turned over due to size>100K
+%SYSLOGBASE% kernel time sync enabled 6001
+%SYSLOGBASE% error: PAM: authentication error for testuser from %IPORHOST%
+%SYSLOGBASE% Limiting closed port RST response from 380 to 200 packets/sec
+%SYSLOGBASE% error: PAM: authentication error for admin from %IPORHOST%
+%SYSLOGBASE% error: PAM: authentication error for pants from %IPORHOST%
+%SYSLOGBASE% kernel time sync enabled 6001
+%SYSLOGBASE% kernel time sync enabled 2001
+</pre>
+
+This is pretty close to a reusable pattern that captures all the changing data.
+You'll notice there are commonalities among certain lines such as the
+'authentication error' lines where only the username is different. Let's run
+the 'authentication error' lines only through the python script and see what
+happens:
+
+<pre>
+# messages.patterns contains the output of 'grok -F'
+% grep 'authentication error' messages.patterns > testinput
+% python distance_sort.py  testinput | sort | uniq
+%SYSLOGBASE% error: PAM: authentication error for %WORD% from %IPORHOST%
+%SYSLOGBASE% error: PAM: authentication error for illegal user %WORD% from %IPORHOST%
+</pre>
+
+Wow, that's <i>exactly</i> what I wanted out of this process. Now we have some
+useful patterns, generated with almost zero effort. Let's apply this to our log
+file and see what we can get. How about counting, by user, failed login
+attempts?
+
+<pre>
+pattern="%SYSLOGBASE% error: PAM: authentication error for %WORD% from %IPORHOST%"
+./grok -m "$pattern" -r "%WORD%" < messages \
+| sort | uniq -c | sort -n | tail -5
+   5 backup
+   9 angel
+  10 pgsql
+  12 mail
+  17 ident
+</pre>
+
+<h4> So what have we really accomplished? </h4>
+
+You can take any log file and run it through this process. The output of this
+process is a set of patterns you can use to query data in that log file (and
+others like it). The real power here is not that patterns are generated, it's
+that named, queryable patterns are generated. That's awesome.

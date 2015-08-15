@@ -1,0 +1,18 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2003-08-13T05:00:00-07:00"
+title = "nmh mail reader, v1.1\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["mail"]
++++
+
+mailfilter (my new mailreader for nmh) got a fairly important upgrade today. I added in both screen support and better pgp handling.<br>
+Screen is supported if you want to use it, see SCREEN_POLICY in the script.<br>
+Mail starting with <code>-----BEGIN PGP SIGNED MESSAGE-----</code> will now be sent through <code>pgp_verify_command</code> much in the same way that <code>multipart/signed</code> (pgp signature attachment) mail is.<br>
+<br>
+So that was how I spent 4 hours this morning (among other projects...)

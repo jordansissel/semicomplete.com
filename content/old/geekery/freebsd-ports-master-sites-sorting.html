@@ -1,0 +1,55 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-03-10T21:37:55-07:00"
+title = "Sorting MASTER_SITES_* values by ping time in FreeBSD\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["freebsd", "freebsd ports", "ports"]
++++
+
+I wrote a script that will go through every variable named
+MASTER_SITE_[something] in bsd.sites.mk and basically sort each variable's
+contents by ping time.
+
+<p>
+
+The implementation uses asyncore in python, and uses tcp connections instead of pinging (pinging is not guaranteed to work). The output is sorted by fastest response time and in a format suitable for Makefile (and thus /etc/make.conf).
+
+<p>
+
+<pre>
+% python fastest_site.py
+ =&gt; Checking servers for MASTER_SITE_GENTOO (77 servers)
+MASTER_SITE_GENTOO=\
+        ftp://ftp.ecc.u-tokyo.ac.jp/GENTOO/%SUBDIR%/ \
+        ftp://gentoo.kems.net/pub/mirrors/gentoo/%SUBDIR%/ \
+        ftp://files.gentoo.gr/%SUBDIR%/ \
+... &lt;output cut&gt; ...
+</pre>
+
+<p>
+
+I recommend that you send the output to a separate file, such as
+/usr/local/etc/ports_sites.conf, and add the following line to /etc/make.conf:
+
+<pre>
+.include "/usr/local/etc/ports_sites.conf"
+</pre>
+
+Now generate the file:
+
+<pre>
+% python fastest_site.py > /usr/local/etc/ports_sites.conf
+ => Checking servers for MASTER_SITE_GENTOO (77 servers)
+ => Checking servers for MASTER_SITE_TCLTK (11 servers)
+ => Checking servers for MASTER_SITE_GET_E (11 servers)
+ => Checking servers for MASTER_SITE_BERLIOS (4 servers)
+...
+</pre>
+
+Download: <a href="/files/blogposts/20080310/fastest_sites.py">fastest_sites.py</a>
+

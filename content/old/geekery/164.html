@@ -1,0 +1,41 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-05-07T01:50:00-07:00"
+title = "More updates to logwatch\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok"]
++++
+
+<p>
+Logwatch is gradually getting sexier as I throw more ideas and time into it. This recent batch of updates added, primarily, the following:
+</p>
+
+<p>
+Users can define their own patterns in logwatch.conf:
+<pre>
+patterns {
+	clientandip = "\[client %IP%\]";
+	hostname = "(\[wd-\]+.)*(\[w-\])";
+};
+</pre>
+Defines your own patterns in addition to the default ones. These new patterns are used the same way that default patterns are, as <code>%clientandip%</code> and <code>%hostname%</code>. A sample use of this would be:
+<pre>
+file "/var/log/auth.log" {
+	type "failed hostname lookup" {
+		match = "reverse mapping checking getaddrinfo for %hostname% failed";
+		threshold = 2;
+		interval = 60;
+		reaction = "echo 'Someone (%hostname%) is trying to ssh with broken dns... maybe they are being naughty?'";
+	};
+};
+</pre>
+</p>
+
+<p>
+Patterns can be pretty much any regular expression perl will support. Also, as you can see with the <code>clientandip</code> pattern, you can embed existing patterns in new patterns. This includes your own patterns. Recursion is limited to 10 levels by default, this may change in the future.
+</p>

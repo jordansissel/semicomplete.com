@@ -1,0 +1,70 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-03-11T01:23:49-07:00"
+title = "Adventures in SWIG and Boost::Python\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["swig", "boost", "python", "grr"]
++++
+
+I spent much of tonight trying to do the least amount of work and get some kind
+of python bindings available from the C++ version of Grok.
+
+<p>
+
+Fail.
+
+<p>
+
+I ran into problem after problem with SWIG, all likely becuase I chose to write
+c++grok with templates. After failing on that repeatedly, I decided to try out
+Boost::Python. Also failure. I wasn't able to find docs explaining how to use
+boost::python without Boost's retarded bjam build system! Fine, so I try to use
+bjam. After more repeated failing of simply trying to get a hello world example
+working with bjam, I think I'm giving up for tonight.
+
+<p>
+
+Here's a request: Don't make me use your retarded build system.
+
+<p>
+
+I fully admit I haven't spent half a lifetime pouring over the Boost::Python
+documentation, but should I really have to learn an entirely new make(1)-like
+system just to compile things? With SWIG, atleast the errors were readable and
+I was able to get things to compile without issue - I just couldn't figure out
+quickly how to expose the few templated classes c++grok has.
+
+<p>
+
+I'm closer to a working python module with SWIG, but the Boost::Python syntax
+is quite nice and is in pure C++ from what I can tell.
+
+<p>
+
+Ugh! Maybe I'll have better luck next time.
+
+<p>
+
+I found template instantiation in SWIG:
+
+<pre>
+%template(SGrokRegex) GrokRegex&lt;sregex&gt;;
+%template(SGrokMatch) GrokMatch&lt;sregex&gt;;
+...
+</pre>
+
+But compiling this breaks because mark_tag in xpressive seems to lack a default
+constructor, and the swig-generated code wants to use it?
+
+<pre>
+grok_wrap.cpp:3987: error: no matching function for call to 'boost::xpressive::detail::mark_tag::mark_tag()'
+/usr/include/boost/xpressive/regex_primitives.hpp:41: note: candidates are: boost::xpressive::detail::mark_tag::mark_tag(int)
+/usr/include/boost/xpressive/regex_primitives.hpp:40: note:                 boost::xpressive::detail::mark_tag::mark_tag(const boost::xpressive::detail::mark_tag&)
+</pre>
+
+Several of the above errors are emitted when compiling... I'll try more tomorrow.

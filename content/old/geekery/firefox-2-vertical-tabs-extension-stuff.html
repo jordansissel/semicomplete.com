@@ -1,0 +1,121 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-02-14T04:13:43-08:00"
+title = "Vertical tabs in Firefox 2\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["firefox", "late-night-hacking", "oh-my-god-it's-4am"]
++++
+
+<b> Update: </b> <a href="https://addons.mozilla.org/en-US/firefox/addon/1343">Vertigo</a> has been released for Firefox 2! Yay :)
+
+<p>
+
+The 'Vertigo' extension doesn't work in Firefox 2. Some googling finds a few
+solutions, all of which suck. That said, I think I'm going to dive back into
+playing with firefox and make an extension.
+
+<p>
+
+So far I've managed to get vertical tabs with a scrollbar that pops up when
+there are more-than-displayable tabs open. However, much of tonight left me
+extremely frustrated.
+
+<p>
+
+Development with Firefox seems to be exceedingly dependent on trial-and-error.
+Save whatever files, restart firefox. Repeat. Repeat. Repeat. Firefox is not
+lightning quick to startup, and I'm not sure how to edit extensions that are
+currently running without a restart. Maybe there's a debugger I don't know
+about. Mostly I'd just like to explore the DOM while it's running (Firefox's
+XUL DOM, not the current web page).
+
+<p>
+
+All I wanted to add (tonight) was the ability to choose what side of the
+browser the tab bar went on. 
+
+<p>
+
+The following CSS will move the bar to the right (with my extension):
+<pre>
+#appcontent tabbox {
+  -moz-box-direction: reverse;
+}
+</pre>
+
+Also doing <code>&lt;tabbox dir="reverse"</code> in the XUL works too. I need
+to set this in javascript.
+
+<p>
+
+This means <code>tabbox.style.MozBoxDirection = "reverse"</code> should work, right?
+Here's everything I tried:
+
+<pre>
+var tabbox = document.getElementsByTagName("tabbox")[0];
+
+// Doesn't work (trying either 'reverse' or 'rtl'):
+tabbox.style.MozBoxDirection = "reverse";
+tabbox.style.direction = "reverse";
+tabbox.dir = "reverse";
+tabbox.direction = "reverse";
+
+//Try to tell the vbox  (tab list) to order after/before the browser pane:
+tabbox.childNodes[0].ordinal = 0;
+tabbox.childNodes[0].ordinal = 2;
+</pre>
+
+I'm at a total loss. My lack of familiarity with XUL is hurting me here. What's
+confusing, is the following code outputs "ltr" (left to right), meaning
+<code>tabbox.style.direction = "rtl"</code> should work:
+
+<pre>
+  var x = window.getComputedStyle(tabbox, ""):
+  alert(x.getPropertyValue("direction")):
+</pre>
+
+Googling for 'tabbox dir' and other variants doesn't show much promise.
+Wrapping the contents of the tabbox in an hbox and attempting to tweak the
+direction of the hbox fails, too.
+
+<p>
+
+The following code produces something interesting:
+<pre>
+alert(tabbox.childNodes[0].nodeName + " / " + tabbox.childNodes[1].nodeName);
+</pre>
+
+The output is "tabs / tabpanel". It should be "vbox / splitter" or something
+close to that.
+
+<p>
+
+Further investigation lands me at <code>gBrowser.mTabBox</code> which has the
+correct children (has the full xul dom within the real tabbox. where
+tabbox.childNodes[0] should be a vbox, and it is only when I access mTabBox,
+not through the tag lookup.
+
+<pre>
+gBrowser.mTabBox.dir = "reverse";
+</pre>
+
+And voila, the tab bar is on the right.
+
+<p>
+
+I'm not sure why the following statements yield different values:
+
+<pre>
+ document.getElementsByTagName("tabbox")[0] != gBrowser.mTabBox
+</pre>
+
+Very strange... These should point to the same objects, and while they both are 'tabbox' elements, their children are quite different (the former is an element-trimmed version containing only tabs and tabpanel).
+
+<p>
+
+Anybody? ;)

@@ -1,0 +1,77 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-06-10T17:02:10-07:00"
+title = "Apache httpd config to cache the main maven repo\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["apache", "httpd", "maven"]
++++
+
+At work, I'm experimenting with Maven as a way to manage java package builds
+and dependencies.
+
+<p>
+
+The maven mirror documentation says pretty explicitly "Do not rsync the entire
+repo" - it recommends the use of caching proxies. We can do this trivially with
+apache httpd.
+
+<p>
+
+<pre>
+# httpd.conf:
+ProxyPass /maven/proxy http://repo1.maven.org/maven2
+
+# What http path to cache for
+CacheEnable disk /maven/proxy
+# Where on disk to store the cached data
+CacheRoot   /srv/repo/maven/proxy
+
+CacheDirLength 2
+CacheDirLevels 3 
+
+# Override default cache expiration and control
+CacheDefaultExpire 2419200
+CacheMaxExpire 2419200
+
+# Ignore requests to not serve from cache. Maven data never changes.
+CacheIgnoreCacheControl On
+
+# Default max file size is 64K. Set to 1GB.
+CacheMaxFileSize 1073741824
+</pre>
+
+The above config will take requests to http://yourserver/maven/main/... and
+proxy them through to the main maven repo and also cache the fetch local to
+your webserver so future fetches will be local.
+
+<p>
+
+You tell maven to use your local repo in ~/m2/settings.xml:
+
+<pre>
+  &lt;settings&gt;
+    &lt;mirrors&gt;
+      &lt;mirror&gt;
+        &lt;id&gt;local-mirror&lt;/id&gt;
+        &lt;name&gt;Local maven mirror&lt;/name&gt;
+        &lt;-- Replace 'repo.local' with whatever your webserver's name is --&gt;
+        &lt;url&gt;http://repo.local/maven/proxy&lt;/url&gt;
+        &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;
+      &lt;/mirror&gt;
+    &lt;/mirrors&gt;
+  &lt;/settings&gt;
+</pre>
+
+Now all my maven dependency fetches are going through a local repo and files
+get cached to disk for future requests.
+
+<p>
+
+Since I already had a repo server for local rpm and rubygems, pushing this 5
+line httpd config change with puppet was practically a no-op in terms of
+implementation.

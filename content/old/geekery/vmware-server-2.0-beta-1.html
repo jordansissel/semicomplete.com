@@ -1,0 +1,73 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-12-20T13:44:45-08:00"
+title = "VMware Server 2.0 Beta\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["vmware", "linux", "virtualization", "upgrades"]
++++
+
+I upgraded my vmware machine from vmware 1.3 to vmware 2.0 beta. The install
+process was great by comparison to the last two releases. This install was much
+nicer than the previous one for simple reasons that I didn't have to hack the
+perl script to not misbehave, and I didn't have to mess around compiling or
+finding my own vmware kernel modules. Everything Just Worked during the
+install.
+
+<p>
+
+On the downside, vmware-server-console is deprecated. Vmware Server 2.0 uses
+Vmware Infrastructure, which appears to be tomcat+xmlrpc and other things. The
+New Order seems to be that you manage your vms with the webbrowser, which isn't
+a bad idea. However, we must remember that Good Ideas do not always translate
+into Good Implementations.
+
+<p>
+
+The web interface looks fancy, but the code looks like it's from 1998. The
+login window consists of layers and layers of nested tables and a pile of
+javascript all in the name of getting the login window centered in the browser.
+You can see the page align itself upon rendering even on my 2gHz workstation
+with Firefox. Horrible.
+
+<p>
+
+Once you log in, you're presented with a
+visually-useful-but-still-runs-like-shit interface. The interface itself
+appears useful and nice, but again fails to respond quickly presumably due to
+the piles of poorly written javascript involved.
+
+<p>
+
+Since VMware thought this was a fresh install, it didn't know about any of my
+old virtual machines. Adding them using the web interface causes vmware to
+crash. Oops. So, I found a vmware infrastructure client executable randomly in
+the package; "find ./ -name '*.exe'" will find it for you. Copied this to my
+windows box and installed it. I used this tool to re-add my old vmware machines.
+
+<p>
+
+Unfortunately, "raw disks" are disabled in this free version of vmware server.
+I'm not sure why. My Solaris VM uses raw disks for its zfs pool, so this was a
+problem. Luckily, this is purely a gui limitation and not a vmware limitation.
+To repair my Solaris VM, I created a new virtual machine with the same features
+and told it where it's first disk lived (the first disk was a normal
+file-backed vmware disk image). After that, I looked at the old vm's .vmx file
+and copied in the lines detailing the raw drives to the new .vmx file:
+
+<pre>
+scsi0:1.present = "true"
+scsi0:1.filename = "zfs-sdb.vmdk"
+scsi0:1.deviceType = "rawDisk"
+scsi0:2.present = "true"
+scsi0:2.filename = "zfs-sdc.vmdk"
+scsi0:2.deviceType = "rawDisk"
+</pre>
+
+<p>
+
+Everything's backup and running sanely now in vmware. Hurray :)

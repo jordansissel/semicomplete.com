@@ -1,0 +1,52 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-08-06T23:50:00-07:00"
+title = "Munin doesn't scale by default.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["monitoring", "graphing", "munin", "scale"]
++++
+
+Just started playing with Munin as a potentially better option than <a
+href="http://sysadvent.blogspot.com/2008/12/day-13-accessible-automation.html">Cacti
+(hard to automate)</a> for trending. I have about 30 hosts being watched by
+munin. The munin update job (which fetches and regenerates graphs, etc), by
+default, runs every 5 minutes.  It takes almost 4 minutes to run on a 2.5gHz
+host. If we add any more things to monitor it's likely that we'll soon overrun
+the 5 minute interval.
+
+<p>
+
+Examining the process, it looks like most of the time is spent generating
+graphs. Every graph displayed on the munin webpages is regenerated every 5
+minutes whether or not anyone looks at the graphs. This can't scale.
+
+<p>
+
+There is an option you can give in your munin.conf:
+
+<pre>
+graph_strategy cgi
+</pre>
+
+This, and a few other changes, will make munin skip the graph prerendering. If
+I set the graph_strategy to cgi, the runtime drops to 28 seconds, most of which
+is spent generating the static HTML for the munin web interface - even if no
+one looks at it.
+
+<p>
+
+Really, though, this is 2009: static html, really? Sarcasm aside, dynamic
+generate-on-the-fly webpages are basically the standard these days. Munin needs
+a better frontend that isn't static HTML.
+
+<p>
+
+Among other oddities, it doesn't seem like you can time travel. Your default
+graph options are today, this week, this month, this year. Sometimes yesterday,
+last week, last month, etc, are useful, not to mention the other odd views like
+36 hour, 6 hour, etc.

@@ -1,0 +1,24 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2004-05-02T00:27:00-07:00"
+title = "Pimp, topkeys, etc...\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["shell", "pimp"]
++++
+
+Did a bit of coding this weekend. PiMP got some pretty major feature upgrades including stream support (think shoutcast). I still need to work on the server<->player protocol aswell as the client<->server protocol. I've got a list of hot features I'm going to add to it as soon as I get more time including iTunes shares support, non-mp3 multimedia support, a graphical frontend, a curses frontend, etc.<p>
+
+I also made some neat changes to topkeys.sh. Topkeys.sh is a handy script I wrote so I could control XMMS with my media/internet buttons on my microsoft keyboard. I no longer use this keyboard and instead use the number pad (which is generally useless to me normally). With this update I added support for multiple interfaces. The two I have written so far are for xmms and <a href="http://freshmeat.net/projects/bottlerocket/">bottlerocket</a>. You can toggle between the two (and a dynamic list of others that I may write.
+<br>
+If you want to give it a shot, you'll need atleast topkeys.sh and xmms.cf, over there on the right. xmms.cf and other moduley things should go in <code>~/.topkeys/</code><br>
+xmms.cf requires xmms, obviously.<br>
+x10.cf requires bottlerocket to be installed, get it from freshmeat.
+
+
+<p>
+I also wrote a new perl module this weekend called <a href="http://search.cpan.org/~psionic/http-handle-0.1/">HTTP::Handle</a>. I needed this to make connecting to shoutcast and other mp3 streams less painful, I think it's a good start. I'll update it with some new features sometime soon.

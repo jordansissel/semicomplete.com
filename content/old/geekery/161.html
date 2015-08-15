@@ -1,0 +1,36 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-04-30T18:48:00-07:00"
+title = "better screen session completion in zsh\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["shell"]
++++
+
+<pre>
+function screen-sessions {
+   typeset -a sessions
+   for i in /tmp/screens/S-${USER}/*(p:t);  do
+      sessions+=(${i#*.})
+   done
+
+   reply=($sessions)
+}
+
+compctl -K screen-sessions screen
+</pre>
+
+Completion chops off the PID of the screen session, so i can do:
+
+<pre>
+screen -x log<b>[TAB]</b>
+</pre>
+ and it will complete to 'screen -x logwatch'
+
+<p>
+
+Hurray.

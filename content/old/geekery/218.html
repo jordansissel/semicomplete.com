@@ -1,0 +1,73 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-02-21T00:31:00-08:00"
+title = "Logwatcher + lwrecord\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok"]
++++
+
+It's time logwatcher takes a step towards log summarization in addition to it's already (hopefully) good match-and-react system. This step is with a script I'm working on that will be distributed with logwatcher called <code>lwrecord</code>. lwrecord will let you record arbitrary data in a tree-like structure for later retrieval.
+<p>
+
+My logwatch.conf is as follows:
+<pre>
+file "/var/log/auth.log" {
+   type "bad username" {
+      match = "pam for invalid user %USERNAME% from %IP%";
+      match = "Invalid user %USERNAME% from %IP%";
+      reaction = "./lwrecord 'ssh-illegal-user/%IP%' '%USERNAME%'";
+   };
+};
+</pre>
+
+lwrecord splits the first argument (the key) by the '/' token and ends up storing the username attempted into:
+<pre>
+$db->{"ssh-illegal-user"}->{"%IP%"} = "%USERNAME%";
+</pre>
+
+This gets stored onto disk in to a database file.
+
+<p>
+
+After several ssh attempts, I can view the database and see that we are happily recording information:
+
+<pre>
+nightfall(~/projects/logwatch) !130! % ./lwfetch
+$VAR1 = {
+          'ssh-illegal-user' => {
+                                  '129.21.60.5' => [
+                                                     {
+                                                       'time' => 1140510435,
+                                                       'data' => 'foo'
+                                                     },
+                                                     {
+                                                       'time' => 1140510439,
+                                                       'data' => 'testing'
+                                                     },
+                                                     {
+                                                       'time' => 1140510444,
+                                                       'data' => 'happytaps'
+                                                     },
+                                                     {
+                                                       'time' => 1140510446,
+                                                       'data' => 'happytaps'
+                                                     },
+                                                     {
+                                                       'time' => 1140510447,
+                                                       'data' => 'happytaps'
+                                                     }
+                                                   ]
+                                }
+        };
+</pre>
+
+With lwrecord, we have the ability to store any arbitrary kind of data (hopefully) from simple data like who's ssh'ing in to entire log entries. Soon, I'll write up lwsummarize which will let you summarize database entries over a given time period for human parsing.
+
+<p>
+
+One step closer to simple log summarization. With lwrecord (and eventually lwsummarize) you will be able to easily show log summaries such as "Show me all of the IPs who attempted ssh logins with invalid users N times in the last day" - more on this as I work on it.

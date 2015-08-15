@@ -1,0 +1,46 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-06-14T03:18:02-07:00"
+title = "new keynav version available (20080614.01)\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["keynav", "xlib", "release"]
++++
+
+Hop on over to the <a href="/projects/keynav">keynav project page</a> and
+download the new version.
+
+<p/>
+
+The changelist from the previous announced release is as follows:
+
+<pre>
+20080614.01:
+  - Several bug fixes and feature additions suggested by Yuri D'Elia.
+  - Sync xdotool library to 20080606
+  - Added default key binding Ctrl+[ as 'end' (requested by Luke Macken)
+  - New command: 'sh' - Executes shell commands.
+    Example keynavrc: ctrl+x sh "xterm -bg black -fg white"
+  - New command: 'history-back' - Undo a window change operation
+    Example keynavrc: a history-back
+    + Such operations include: cut-*, grid, cell-select, move-*
+    + The history size is currently hard-coded at 100 entries.
+    + If you exceed 100 moves, the oldest entry will be removed.
+    + Every time keynav is activated, the history is wiped.
+  - Fix: Any command starting with "start" is now bound globally.
+  - Fix: All rendering is delayed until after the end of the current command
+    sequence. This fixes (in order of annoyance, worst first):
+    1) Crash when a 'start' and 'end' exist in the same command sequence.
+    2) Visible 2x2 grid first, before a 3x3 grid when the start command is
+       'start, grid 3x3'
+    3) Rendering blinking a full white window on the screen before clipping to
+       the grid.
+    4) Visible blink when "cut-left,cut-up" and such are run simultaneously.
+  - Fix: If the 'start' command is invoked again while keynav is active, then
+    the default arrangement is set (full screen and 2x2 grid). Previously, the
+    'start' command was a no-op if keynav was active.
+</pre>

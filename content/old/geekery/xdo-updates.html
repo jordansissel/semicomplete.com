@@ -1,0 +1,56 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-06-20T05:08:47-07:00"
+title = "xdo \"beta\" release\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["xdo", "interfaces", "releases", "code", "x11", "xlib", "gtk"]
++++
+
+I've been working furiously on xdo the past few days. Good times :)
+
+<p>
+
+The result so far is as follows:
+
+<ul>
+  <li> xdo is now a library, so you can simply call xdo_click(...) and it will
+  handle all the hard stuff for you for the case that you want to use this in
+  your own code. </li>
+  <li> xdotool is the commandline interface to the xdo api.</li>
+  <li> navmacro (bad name) is a very small gtk launcher. Basically it's an input box that runs the contents when you hit enter </li>
+</ul>
+
+I include a sample script 'ffsp' which is short for 'firefox searchbar paste'.
+It works on my system, but obviously on other systems you'll need to tweak it.
+The basics are there.
+
+<p>
+
+So right now, I can do this:
+
+<ol>
+  <li> Select a piece of text in an xterm </li>
+  <li> Activate navmacro and type 'ffsp' and hit enter </li>
+  <li> Enjoy the fact that firefox has been told to search for the contents of
+  my clipboard </li>
+</ol>
+
+'ffsp' is located in my $HOME/bin/ so I execute it like any other shell script
+or program.
+
+<p>
+
+Interested in the code?
+<a href="/files/blogposts/20070620/navmacro-20070620.tar.gz">Download
+navmacro-20070620.tar.gz</a>.
+
+<p>
+
+Note: navmacro works on my ubuntu and freebsd systems just fine. However,
+xdotool crashes at the end when I do free(xdo->charcodes) only on my Ubuntu
+system. Uncertain why, I'm way too tired to debug.

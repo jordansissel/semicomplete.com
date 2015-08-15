@@ -1,0 +1,38 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-02-09T14:08:43-08:00"
+title = "Looks scary, actually simple: grammar parsing.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok", "c++", "grammars"]
++++
+
+I hit a mental roadblock a few days ago; I was afraid to write a grammar parser
+for c++grok that supported the same basic format as the perl grok config
+format.
+
+<p>
+
+Perl grok's config grammar was super easy to write thanks to Parse::RecDescent.
+In the C++ version, I wanted similar ease. However, the tools I had available
+didn't appear to be expressive enough to support what I wanted. The config
+object in C++ was going to be a class, so you were free to have multiple config
+objects, and which meant I couldn't have any global variables. Both Boost
+Xpressive and Boost Spirit support grammar parsing almost trivially, but they
+require awkward wrapping and basically make it very hard to use when you want
+to update values in a class instance instead of some global variables.
+
+<p>
+
+Eventually, I gave up and wrote my own recursive descent bits using Xpressive
+to do the pattern matching and some trivial in-object state management to keep
+track of what was going on. It was really simple, despite my fears.
+
+<p>
+
+I'm not really sure what made me afraid of doing it, but the fear was totally
+unfounded.

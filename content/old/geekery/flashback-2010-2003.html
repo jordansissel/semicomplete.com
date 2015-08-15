@@ -1,0 +1,53 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-03-02T00:51:12-08:00"
+title = "Flashback 2003: vim + screen trick\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["vim", "screen", "flashback2010"]
++++
+
+<a href="http://www.standalone-sysadmin.com/blog/">Matt Simmons</a> suggested
+that this week be a flashback
+week. That's easy enough to do, so I'm doing one per year starting in 2003.
+
+<p>
+
+A common feature request of vim is to be able to split window and have a shell
+be there. Well, as it turns out, that's easy to do if you run vim inside screen
+(gvim not applicable here).
+
+<p>
+The original post details a simple vim keybinding that will split the screen
+and attach a shell and close the split when the shell exits.
+
+<p>
+
+<a href="http://www.semicomplete.com/blog/productivity/39.html">August 2003:
+Neat vim/screen trick</a>
+
+<p>
+
+However, I've got a better version now.
+
+You'll want this script, "screener.sh":
+<pre>
+#!/bin/sh
+
+screen -X split
+screen -X focus down
+screen -X screen sh -c "cd $PWD; $SHELL; screen -X remove"
+</pre>
+
+Then in your .vimrc:
+<pre>
+:map \s :silent !screener.sh&lt;CR&gt;
+</pre>
+
+The new version mostly puts the screen invocations into a shell script. Another
+improvement is to change to $PWD so the new shell will be in the same working
+directory as vim started in.

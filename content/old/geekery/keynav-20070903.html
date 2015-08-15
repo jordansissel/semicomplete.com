@@ -1,0 +1,33 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-09-03T18:28:06-07:00"
+title = "new keynav version available (20070903)\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["keynav", "xlib"]
++++
+
+Hop on over to the <a href="/projects/keynav">keynav project page</a> and
+download the new version.
+
+<p/>
+
+The changelist from the previous announced release is as follows:
+
+<pre>
+20070903:
+  - Drag is now working. Problem was KeyEvent.state contains masks such as
+    | Button1Mask which is set when mouse button 1 is held, so keybindings stopped
+    | working. Ignoring Button[1-5]Mask in this value fixes the problem.
+  - Drag takes two optional arguments: a button followed by a keysequence to fire.
+    | 'drag 1 alt' will do an alt+leftclick drag.
+    | 'drag 2' will do a middleclick drag.
+  - sync to xdotool@20070903
+  - Fix a bug in parse_mods and parse_keysym where it was destructively changing the string.
+  - Fix a bug where I was using the loop iterator 'i' inside another for loop. Oops.
+  - Add to defaults my nethack-vi-style diagonal keybindings
+</pre>

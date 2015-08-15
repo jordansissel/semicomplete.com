@@ -1,0 +1,70 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-01-18T00:51:50-08:00"
+title = "Random thoughts: Log analytics with open source\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["ideas", "logs", "data", "sysadmin"]
++++
+
+Over the past few years, I've tinkered on and off with various projects to help
+me do log analysis, data aggregation, graphing, etc. Recently, I had a discussion
+with a coworker about alternatives to Splunk (specifically, free ones). Turns
+out there aren't any projects, as far as I can tell, that provide most of what
+Splunk does.
+
+<p>
+
+With all the awesome open source projects available to date that focus on tight
+features and perform well, how much work would it be to tie them together and
+produce a tool that's able to compete with Splunk?
+
+<p>
+
+I hooked grok and Lucene together last night to parse and index logs, and the
+results were pretty slick. I could query for any keyword I wanted, etc. If I
+wanted logs involving specific fields like IP address, apache response code,
+etc, I could do it. Grok does the hard part of eating a log line and outputting
+key:value pairs while Lucene does the hard part of indexing field values and
+such.
+
+<p>
+
+Indexing logs in Lucene required using it in a somewhat strange way: We treat
+every log entry as a unique document. This way, each log line can have several
+key:value pairs (fields) associated with it, and searching becomes easy.
+
+<p>
+
+<ul>
+  <li> Log parsing: grok and other tools have this done. </li>
+  <li> Log indexing: lucene </li>
+  <li> On-demand graph tools: python matlotlib, javascript flot, etc </li>
+  <li> Alerting: nagios </li>
+  <li> Fancy web interface: Ruby on Rails, or whatever </li>
+</ul>
+
+Indexing non-log data, such as SNMP queries, only requires you feed Lucene with
+the right data.
+
+<p>
+
+The hard part, from an implementation perspective, is only as hard as taking
+output (logs, data, whatever) and feeding your indexer with the fields you want
+to store.
+
+<p>
+
+Parsing all kinds of log formats isn't a trivial task, since different log
+formats will require new pattern matching. However, grok's <a
+href="http://www.semicomplete.com/blog/geekery/grok-pattern-autodiscovery.html">automatic
+pattern discovery</a> could be used to help fill in gaps where you may not yet
+have defined patterns.
+
+<p>
+
+Pending time and energy, I might have time to pursue this project.

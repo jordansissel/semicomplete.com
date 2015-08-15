@@ -1,0 +1,75 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-11-27T01:14:37-08:00"
+title = "Puppet \"pure fact-driven\" nodeless configuration\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["puppet", "nodeless", "nodes", "classifier", "truth"]
++++
+
+Truth should guide your configuration management tools.
+
+<p>
+
+Truth in this case is: what machines you have, properties of those machines,
+roles for those machines, etc. For example "foo-1.a.example.com is a webserver"
+is a piece of truth. Where and how you store truth is up to you and out of
+scope for this post.
+
+<p>
+
+My goal is to have truth steer everything about my infrastructure. Roles, jobs,
+and even long-term one-offs get put into the truth source (like a machine role,
+etc). That way, if the machine with a one-off dies, I can just add that
+machine role to another system and puppet will configure it - no pain and no
+fire to fight.
+
+<p>
+
+A simple example of truth in puppet is puppet's "node" type. A simple example:
+
+<pre>
+node "foo-1.a.example.com" {
+  include apache
+}
+</pre>
+
+Specifying each node in puppet doesn't scale very well for many people.
+Further, you may already have your node information in another tool (ldap,
+mysql, etc).  To allow this, puppet lets you feed 'node' information from an
+external tool (called an <a
+href="http://docs.puppetlabs.com/guides/external_nodes.html">external node
+classifier</a>). However, I found that using an external node classifier also
+has its drawbacks (also out of scope for this post).
+
+<p>
+
+To avoid complex logic in a node classifier, I've got with a pure fact-based
+puppet configuration which I call "nodeless."
+
+<p>
+
+My puppet site.pp looks basically like this:
+
+<pre>
+node default {
+  include truth::enforcer
+}
+</pre>
+
+That's it. No extra nodes, no 'include' or conditionals randomly sprayed around.
+
+<p>
+
+From there, I have the truth::enforcer class include other classes, do sanity
+checking, etc, all based on facts (and properties if you use external node
+classifier)
+
+<p>
+
+Fully standalone example with code can be found here:
+<a href="https://github.com/jordansissel/puppet-examples/tree/master/nodeless-puppet/">https://github.com/jordansissel/puppet-examples/tree/master/nodeless-puppet/</a>

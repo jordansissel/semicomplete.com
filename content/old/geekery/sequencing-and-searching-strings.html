@@ -1,0 +1,175 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-05-16T02:01:39-07:00"
+title = "Thoughts on strings,  patterns, and friends.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["algorithms", "strings", "computer science"]
++++
+
+I've come to the realization that systems administration has big need of data
+mining. Heck, there are even huge conferences dedicated to log analysis. I do
+it almost every day at work. None of the tools I have output exactly the data I
+want exactly when I want it. Some tools output lots of data I don't need, and
+some of the data I do need. I want only the data I need, so I have to pipe it
+to grep, awk, sed, perl, cut, etc, just to get the data I want. Then I sort it,
+run uniq, or perhaps awk again, trying to find an anomaly. 
+
+<p>
+
+I like pattern matching and data mining. It's the reason I wrote grok. Grok
+lets you tag data and extract it with less brainwork and effort. I'd like to
+see what other kinds of things I can do with patterns and sequences. To that
+end, I've come up with a few random ideas about finding patterns in logs.
+
+<p>
+
+There are lots of algorithms for finding the "longest common substring" and
+such, but I don't want the "longest common substring" for finding patterns. The
+key factor here is plural "patterns" not "pattern". There are <a
+href="http://www.amazon.com/Algorithms-Strings-Trees-Sequences-Computational/dp/0521585198">books</a>
+dedicated to string and sequence algorithms. Unfortunately, my background has
+not had me do much statistics or fancy algorithms. What better time than now to
+start? ;)
+
+<p>
+
+Standard algorithms for subsequence/substring discovery seems to take K strings
+as input and output a single string as a result. I don't want that. I want to
+input K strings, and output N "common" substrings. Seems like a simple subset
+of the problem, right? If you know the longest, why can't you find the second
+longest? And why does "common" have to mean "common among 100% of the strings"?
+And, why can't I find any tools to do this for me, already! (Granted, I haven't
+looked for that long)
+
+<p>
+
+Basically, the input will be a log file, and the output should be a set of
+substrings that appear often. This output will then be used to generate
+patterns that grok can use to match your log data.
+
+<p>
+
+What do I mean? Here's an example of something from /var/log/auth.log we would
+use as input:
+
+<pre>
+May 14 13:26:13 kenya sshd[41244]: Invalid user louis from 85.21.206.18
+May 14 13:26:16 kenya sshd[41246]: Invalid user louis from 85.21.206.18
+May 15 04:00:58 kenya sshd[50672]: Did not receive identification string from 61.152.157.166
+May 15 04:04:04 kenya sshd[50699]: Invalid user test from 61.152.157.166
+May 15 04:04:06 kenya sshd[50701]: Invalid user test from 61.152.157.166
+May 15 04:04:08 kenya sshd[50705]: Invalid user test from 61.152.157.166
+</pre>
+
+LCS (In my test I used Tree::Suffix which uses libstree) finds 'kenya sshd[' as
+the longest common subsequence. A human will say that that is not the most
+obvious pattern in the data. The useful "common" patterns would be (the bold
+parts):
+
+<p>
+
+<pre>
+May 14 13:26:16 kenya sshd[41246]: <strong>Invalid user</strong> louis <strong>from</strong> 85.21.206.18 
+</pre>
+
+<p>
+
+If you were to have a reasonably clued human try to generate a "pattern" that
+would match any derivative of this string, he or she would come up with
+something like this:
+
+<p>
+
+<code>&lt;date&gt; &lt;hostname&gt; &lt;program&gt;[&lt;pid&gt;] Invalid user &lt;some user&gt; from &lt;some ip&gt;</code>
+
+<p>
+
+I see no reason why we can't make a program generate this pattern simply by
+analyzing a few logs. It seems like these "simple" *cough* steps.:
+
+<ol>
+  <li> Look for common token sequences, such as "Invalid user".<br>
+    Clearly something is worth checking out if it appears several times in a logfile, right?
+  </li>
+  <li> Find lines matching a subset of the "common token sequence" set. <br>
+    Uncommon token sequences will analyzed for the kind of pattern they
+    most-often match. An example of an uncommon token sequence (or a field?) is
+    the IP from the above log. The IP in the log entry above will match grok's
+    %IP% pattern as well as other regex patterns, right? We can map an "unknown
+    token sequence" to a set of patterns we know will match.
+
+    <p>
+
+    The correct pattern might be chosen automatically with help of priorities. Example:
+    %IP% should rank higher than %DATA% (aka /.*?/), because it's a more
+    specific match.
+  </li>
+  <li> Output a list of most-specific patterns that will match one element in
+  the log, where one element is a single type of log entry, such as the
+  'invalid user' log entries above. Anomalous (uncommon) lines will
+  be noted separately.  </li>
+</ol>
+
+The end goal is to have a system which takes a log, or any line-delimited data,
+and outputs a series of patterns that will match future instances of similar
+data.
+
+<p>
+
+The worst case is that the tool provides you a list of "probably good"
+patterns. You turn a billion lines of logs into a few "probably good" patterns
+using a tool and then use your human smarts to make small corrections producing
+a set of very good patterns. Once that happens, your previously hard-to-query
+log data becomes easy to query, because you'll have a way to parse it.
+
+<p>
+
+You might ask, why? Querying. If you can tokenize a given piece of generally
+unknown data into a dictionary of accessible tokens, then you can query it.
+Awk, XPath, Perl, SQL, and other things all exist somewhat to give you extended
+power in searching and processing text. XPath is a great example of a system
+that aids in querying and processing. Since XML often consists of content and
+semantics, you can easily query for the "kind" of data you want with a simple
+XPath expression. Logs and other data are not so simple.
+
+<p>
+
+When you know a token is a date, you turn it translate it into other formats
+and use it in other tools. When you know an token is an IP, you can track it
+in your apache logs, block it on your firewall, etc. When you know a number is
+an error code, you can cross reference the error code from the source code or
+documentation describing that error code. Once you map a token sequence to a
+namable pattern, you can apply it all sorts of places.
+
+<p>
+
+It's not exactly simple to use grep or awk to pull out any IP address from a
+log generated by sshd, is it? Grok lets you do it, but what if you don't have
+the time to generate a pattern? What if you wanted to bucket logs by type? What
+if you wanted to mark certain log patterns as normal but email you for others?
+
+<p>
+
+My day-to-day work is increasingly slanted towards "rapid creation" over "rapid
+execution". Software engineers often focus on speed of execution. Optimize this
+loop, etc. I need tools that let me query and process data with less typing and
+less thinking. You make yourself think less by having tools are powerful enough
+to let you express what you need easily.
+
+<p>
+
+Generating patterns would let me preemptively find things about my data that I
+didn't know, and when shit hits the fan, and your shoe is on fire, I'd like to
+have the power to query the data easily rather than having to visually pour
+over thousands of lines of logs trying to correlate events and find patterns.
+
+<p>
+
+One less step can be solved atleast partially through data mining, and you'll
+find patterns you didn't even know existed.
+

@@ -1,0 +1,31 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-02-04T01:32:00-08:00"
+title = "logwatcher update\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok"]
++++
+
+Logwatcher got a few significant updates today.
+
+<p>
+
+You can now give subnames to patterns in the form of %PATTERN:NAME%. It'll
+match against the named PATTERN but be referrable as %PATTERN:NAME% instead of just %PATTERN%. This is extremely useful if you have two instances of the same pattern in one match. Perl exec works again too.
+
+<p>
+
+I added debug levels too so it won't output anything less you want it to. Specify debug with -d, repeat for higher debug levels. You can also specify a nonstandard config file with -f path/to/file.
+
+<p>
+
+If you use logwatcher, let me know. I'm always up for adding new features.
+
+<p>
+
+Project page: <a href="http://www.semicomplete.com/projects/grok">projects/logwatch</a>

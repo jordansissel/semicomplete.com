@@ -1,0 +1,69 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-10-25T01:24:46-07:00"
+title = "Partials in HAML with Sinatra\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["haml", "sinatra", "ruby"]
++++
+
+HAML documentation mentions "partials" twice, in passing only. Doesn't actually
+say how to use them, best as I can tell. Lots of the documentation seems
+to be heavily Rails-focused (mentions of link_to and other methods). Frankly, if 
+I didn't already have lots of Rails experience, I think some of the haml docs
+would be pretty confusing.
+
+<p>
+
+In Sinatra, you invoke haml by simply calling 'haml' with your template name.
+
+<pre>
+  get "/" do
+    haml :index
+  end
+</pre>
+
+On that note, Sinatra (or HAML, I haven't checked) will let you use layouts,
+too, something I found hardly documented. Layouts are a way to basically wrap
+your entire template in another template called 'layout.haml' by default
+- useful if you want every page to have the same structure. You can also
+define different layouts.
+
+<p>
+
+What I wanted was a simple layout with a header in a separate template. Here's
+what I did:
+
+<p>
+
+layout.haml:
+<pre>
+%html
+  %head
+    %title Hello!
+  %body
+    #header
+      =haml :header, :layout => false
+    #content
+      =yield
+</pre>
+
+Thie 'yield' will invoke the original template called as 'haml :index', helping
+keep each page using the same layout. Additionally, I render the header by calling
+a separate haml template; calling haml with ':layout => false' tells it to
+ignore any layout files. This lets us invoke another haml template.
+
+<p>
+
+Also, since the 'haml' method only takes symbols, if you want to put your haml
+templates in different directories, you'll have to use this awkward syntax:
+
+<pre>
+  haml :"some/path/to/template"
+    #  ^ Note the ':' before the string. You can also probably the
+    #  String#to_sym method.
+</pre>

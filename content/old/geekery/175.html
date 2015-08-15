@@ -1,0 +1,38 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-06-13T22:45:00-07:00"
+title = "Adventures in Kernel-land\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["freebsd", "open source adventures"]
++++
+
+Having found myself with a lack of energy for working on my current projects, I
+decided to start a new one. This one aims to be a flexible input-device
+framework for FreeBSD.
+<p/>
+
+I know next to nothing about the kernel and it's implementation, but
+fiddling around so far I've done somewhat well-ish. The first thing I'm
+going to do is make a new psm driver that can be loaded as a kernel
+module instead of having to be built into the kernel. My first target is
+going to be a driver that supports generic PS/2 mouse devices. 
+
+<p/>
+Once that's working, I'm hoping I'll be well versed enough in kernel
+development to actually start working on a framework for input devices
+(keyboards, joysticks, and mice). I'd prefer that things like special
+mouse drivers for things like Synaptics touchpads are off in their own
+little sub drivers. I also want sysctl tunables for options that are
+reasonable to have changed.
+
+<p/>
+Right now, I'm not sure how I'm going to implement this framework,
+becuase I simply don't know enough about the kernel to know how to do it
+properly. More on this as things develop. This should be a fun project
+for me seeing as how I've never really dealt with hardware before, nor
+have I ever written anything on the kernel level.

@@ -1,0 +1,118 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-06-17T07:57:36-07:00"
+title = "Key macro navigation\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["gtk", "x11", "xlib", "gdk", "productivity"]
++++
+
+Today was a learning day. A few months ago, I 
+<a href="/blog/productivity/keynav-1.0.html">released</a>
+<a href="/projects/keynav">keynav</a>, a tool to make large-area mouse
+navigation very quick. However, I found myself using keynav to do the same
+things over and over again. Select certain windows, clicking on certain UI
+widgets, etc; things that are annoying to do repeatedly.
+
+<p>
+
+What if we had a way to describe input actions? What if you could say "Focus
+the firefox URL bar" with a simple keystroke, without having firefox focused?
+This premise is fairly simple - Focus firefox, then "click" on a certain part
+of the window. The URL bar's location is pretty reliable (a few pixels from the
+top).
+
+<p>
+
+If you're like me, firefox is on another virtual desktop. What if firefox isn't
+shown right now because you're on "Desktop 1" and firefox lives on "Desktop 2"?
+Well we can find out if it's hidden, then send the keystrokes (via XTEST) to
+switch to "Desktop 2" and then do whatever we would normally do to focus on
+Firefox's URL bar. The basic pseudocode of the script would look like:
+
+<pre>
+if firefox is not shown:
+  go to desktop 2 ("fake send alt+2")
+
+focus firefox (via fake click?)
+fake send "Control+L" (Firefox's shortcut for focusing the urlbar)
+</pre>
+
+Seems pretty simple. "Fake" above refers to events sent using the XTest, an extension to X11 (Xorg/XFree86) that lets you send keystrokes and mouse events as if they had been typed.
+
+
+<p>
+
+So, tonight I started work on a project that would let you script actions.
+Generally, I'm aiming at scripting UI interaction to make common tasks such as
+"take me to firefox" simpler.
+
+<p>
+
+I revisited some man pages for Xlib I hadn't seen in many months, and now I can
+traverse the list of all open windows in X and show their status. Here's what
+<a href="/files/blogposts/20070617/querytool.c">this tool</a> outputs; notice
+how I can tell if the window is visible ("shown" by the window manager):
+<pre>
++ 8388621 (1x16@424,324) [Visible]
+  teabag(.../home/jls/projects/navmacro)
+  "xterm" "XTerm" 
++ 44040205 (1x16@424,324) [Hidden]
+  snack(~) % @ snack
+  "xterm" "XTerm" 
++ 29360192 (1x15@1278,1008) [Hidden]
+  HMUG: man XWindowAttributes (3) - Mozilla Firefox
+  "firefox-bin" "Firefox-bin"
+</pre>
+
+<p>
+
+The other piece of learning I did tonight was to learn GTK2. Enough fiddling
+around and I was able to get a input field that pops up over everything and is
+as wide as the screen to input your macros in. GTK's not that bad. Its API
+design is fairly intuitive and I didn't have much trouble getting things
+working. I even figured out how to ask GTK what it's X window ID is. Most of
+this knowledge comes from the
+<a href="http://developer.gnome.org/doc/API/2.0/gdk/gdk-X-Window-System-Interaction.html">GDK X Windows Interaction</a>
+documentation.
+
+<pre>
+#include &lt;gtk/gtk.h&gt;
+#include &lt;gdk/gdkx.h&gt;
+
+static void activate(GtkWidget *widget, gpointer data) {
+  // widget->window is the GdkWindow containing this widget.
+  g_print("Display handle: %x\n", GDK_WINDOW_XDISPLAY(widget->window));
+  g_print("Window id: %d\n", GDK_WINDOW_XID(widget->window));
+}
+
+int main(int argc, char **argv) {
+  GtkWidget *window;
+
+  gtk_init (&argc, &argv);
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+
+  g_signal_connect(G_OBJECT(window), "realize",
+                   G_CALLBACK(activate), NULL);
+
+  gtk_widget_show_all(window);
+  gtk_main();
+  return 0;
+}
+</pre>
+
+Compiled with: gcc `pkg-config --cflags --libs x11` test.c
+
+<p>
+
+The little bit of GTK I wrote tonight can be found <a
+href="/files/blogposts/20070617/navmacro.c">here</a>. It's not much, but it
+does example how to use GTK and Xlib at the same time, on the same windows.
+
+<p>
+
+Oops... it's getting light outside. Naptime ;)

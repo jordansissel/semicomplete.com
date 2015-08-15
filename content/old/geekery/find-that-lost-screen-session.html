@@ -1,0 +1,92 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-06-05T00:10:27-07:00"
+title = "Find that lost screen session\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["screen", "hacks", "tools", "automation", "screen ninja"]
++++
+
+Scenario:
+I run lots of xterms. Each xterm runs a single screen session(*). At any given
+time, I can only see some of the xterm windows (the others are hidden).
+
+<p>
+
+(*) All my xterms run with: 'xterm -e screen -RR'. This causes them to attach
+to the first-found detached screen, and if none exist creates a new screen
+session. See 
+<a href="http://semicomplete.googlecode.com/svn/tools/run-xterm.sh">run-xterm.sh</a>
+for my pleasant, random-colored xterm script.
+<p>
+
+Problem: I forget where I put things. I can't find that terminal where I'm editing foo.c!
+
+<p>
+
+Possible Solutions:
+<ol>
+  <li> Bad: Kill the vim session that's editing the file, and rerun vim somewhere else. </li>
+  <li> Good: Use <a href="/projects/xdotool">xdotool</a> to search window titles for 'foo.c' </li>
+  <li> Great: Find the screen STY variable for the process 'vim foo.c' </li>
+  <li> Great: Ask each open screen session about what it is on screen </li>
+</ol>
+
+Today, we'll cover the two 'great' solutions. I wrote both of these a while ago, but I totally forgot to post about them. Here you go :)
+
+<p>
+
+<dl>
+  <dt> Find a screen by it's child processes </dt>
+  <dd> Tool:
+    <a href="http://semicomplete.googlecode.com/svn/tools/screenps.sh">screenps.sh</a>
+    <p>
+
+    This tool takes a regexp pattern as the only argument and will output a
+    list of screen sessions having child process commands that match that
+    pattern. This is useful for finding what screen is running 'vim foo.c'
+    <pre>
+% ./screenps.sh 'vim foo.c'
+23464.pts-0.snack
+</pre>
+  </dd>
+
+  <dt> Find a screen by what is being displayed </dt>
+  <dd> Tool: 
+    <a href="http://semicomplete.googlecode.com/svn/tools/screen-find.sh">screen-find.sh</a>
+    <p>
+
+    This tool takes a regexp pattern as the only argument. It uses screen's
+    <i>hardcopy</i> command to save the on-screen buffer and then applies the
+    regexp given to the buffer. If it matches, the screen session is output.
+    There is special behavior if only one screen session is found: If the
+    screen session is currently attached, it will flash that screen session
+    giving you a visual clue about where it is; if it is not attached, it will
+    attach to it.
+
+    <pre>
+% ./screen-find.sh "keynav"
+28504.pts-27.snack
+</pre>
+  </dd>
+</dl>
+
+In case you still aren't clear, the two tools help you find your lost screen
+sessions. Maybe they aren't lost, but certainly it's easier to search for them
+by text than by eyeballs if you know what's in them.
+
+<p>
+
+A short summary: screenps.sh will search for commands running in a screen
+session and screen-find.sh will search for literal text displayed in a screen
+session. Both are super useful.
+
+<p>
+
+Note: Currently, screen-find.sh can only capture the contents of the 0th screen
+window (screen sessions can have multiple windows). I worked for a while on
+solving this, but for whatever reason I couldn't get it working properly.

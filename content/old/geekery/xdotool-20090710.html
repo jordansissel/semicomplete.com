@@ -1,0 +1,49 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-07-10T01:08:15-07:00"
+title = "new xdotool version available (20090710)\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["xdotool", "xlib", "release"]
++++
+
+Looking at svn logs for xdotool shows that the project is now just over 2 years
+old. Crazy!
+
+<p>
+
+Hop on over to the <a href="/projects/xdotool">xdotool project page</a> and
+download the new version.
+
+<p/>
+
+The changelist from the previous announced release is as follows:
+
+<pre>
+20090710:
+  * You can clear keyboard modifiers during typing now with --clearmodifiers
+    When used, this flag causes physical keyboard modifiers (alt, control, etc)
+    that are currently active to be ignored during typing.
+    This is supported in: xdotool key, keyup, keydown, and type.
+    
+    Example: 
+      xdotool type 'hello world' results in 'HELLO WORLD' while holding shift.
+      xdotool type --clearmodifiers 'hello world' results in 'hello world'
+        regardless of you holding shift.
+
+    The 'reset' only happens at the beginning of typing and the modifiers are
+    restored at the end. If you press a modifier key *during* typing it will 
+    act as if --clearmodifiers was not present.
+    (http://code.google.com/p/semicomplete/issues/detail?id=6)
+
+  * You can now specify literal keycodes for any key command.
+    Example: xdotool key 38   (types 'a' with my keyboard)
+    (requested via mailing list)
+
+  * Regression fix: 'xdotool type' now properly obeys capitalization, again.
+  * Bug fix: 'xdotool key --window' now works properly
+</pre>

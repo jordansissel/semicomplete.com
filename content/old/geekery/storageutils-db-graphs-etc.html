@@ -1,0 +1,63 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-11-26T06:55:02-08:00"
+title = "Storage utils, eventdb, etc.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["eventdb", "python", "bdb", "graphing", "graphs"]
++++
+
+Spent lots of time over thanksgiving playing with bdb in python.
+
+<p>
+
+Again, I still don't have releaseworthy code, but here's a snippet of rrdtool-like behavior from this system:
+
+<pre>
+% ./evtool.py create /tmp/webhits.db
+% ./evtool.py addrule /tmp/webhits.db http.hit agg.http.hit.daily total $((60*60*24)) time
+% time cat webhits.data | ./evtool.py update /tmp/webhits.db -
+11.10s user 0.80s system 94% cpu 12.627 total
+% time ./evtool.py graph /tmp/webhits.db agg.http.hit.daily  
+0.49s user 0.11s system 96% cpu 0.624 total
+</pre>
+
+The result is exactly the <a
+href="http://www.semicomplete.com/images/hits-1day.png">same graph</a> as
+mentioned in my <a
+href="http://www.semicomplete.com/blog/geekery/eventdb-graphing.html">previous
+post</a>. Speed so far is pretty good. The input was 125000 entries, in 12.6
+seconds; which equates roughly to 10000 updates per second. That kind of
+QPS seems pretty reasonable.
+
+<p>
+
+The primary difference today is that the aggregates are computed as data enters
+the system. 'Addrule' tells the database to schedule an aggregation for
+specific timestamps.
+
+<p>
+
+The goal is to be able to chain rules, and have N:M relationships between rule
+input and output. Those will happen soon. Chaining would've happened tonight,
+but I'm having some locking problems due to it being quite late ;)
+
+<p>
+
+The database code itself is designed to be reusable elsewhere. There are two
+primary classes: SimpleDB and FancyDB. SimpleDB lets you store and retrieve
+data based on row+timestamp => value pairs. FancyDB wraps SimpleDB and gives
+you operation listeners such as the rule used in the above example.
+
+<p>
+
+I've already used SimpleDB elsewhere; in the sms traffic tool I mentioned <a
+href="http://www.semicomplete.com/blog/geekery/sms-traffic-reports.html">in my
+last post</a>, I cache geocode data and traffic requests with this same
+database tool.
+
+<p>

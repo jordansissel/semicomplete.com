@@ -1,0 +1,21 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2004-07-03T02:10:00-07:00"
+title = "HTTP::Handle 0.2\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["perl"]
++++
+
+After using HTTP::Handle heavily in my new link spider for work, I found a bunch of bugs and pitfalls that would snag it and make it eat iself. The lacking-features and bugs I found were added and fixed, respectively.
+<p>
+* <code>$http->connect()</code> now returns -1 on failure.<br>
+&nbsp;&nbsp;&nbsp;Connections will fail on 3 occaisions: <code>socket()</code> fails, <code>connect()</code> fails, or the dns lookup on the hostname fails.<br>
+* After the socket is connected, <code>$http->connect()</code> can fail if no data is recevied in a given timeout period, which can be set. See perldoc HTTP::Handle.
+<p>
+
+It should be up on CPAN sometime later this morning, I just uploaded it.

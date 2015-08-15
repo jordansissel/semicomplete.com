@@ -1,0 +1,44 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2003-08-01T00:34:00-07:00"
+title = "Neat ksh prompt\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["shell"]
++++
+
+My prompt is something in the form of: <br>
+<code>hostname(/path/to/pwd) [###] &gt;</code><p>
+
+Unless the previous command that was executed returned an exit code other than 0, in which case it will display the exit code just before the &gt; as !#! where # is the exit code.<p>
+
+<b>from my .profile</b><br>
+<pre>[ -w "/" ] && Z="#" || Z=">"
+EXITCODE='$(A=$? && [ $A -ne 0 ] && echo "!!${A}!! ")'
+PS1='$HOST($(/bin/pwd | sed -Ee "s,(/usr)?$HOME,~,")) [!] '$EXITCODE'$Z '</pre>
+<br>
+
+This will let you use pwd and substitute ~ for your home directory. (pdksh currently doesn't support something like this, so the hack was needed)<p>
+
+That's it, here's an example of what it'll look like:
+<pre>nightfall(~) [471] > 
+nightfall(~) [471] > echo "hi there"
+hi there
+nightfall(~) [472] > ls -asoijo23i5j23
+ls: illegal option -- j
+usage: ls [-ABCFGHLPRTWabcdfghiklnoqrstu1] [file ...]
+nightfall(~) [473] !1! > thisisnotacommand
+ksh: thisisnotacommand: not found
+nightfall(~) [474] !127! > cd bin
+nightfall(~/bin) [475] > cd /nope
+ksh: cd: /nope - No such file or directory
+nightfall(~/bin) [476] !1! > cd /usr/local/
+nightfall(/usr/local) [477] > 
+</pre>
+
+<br>
+Note the <code>!1!</code> and <code>!127!</code>. These are the exit codes of the previous commands.

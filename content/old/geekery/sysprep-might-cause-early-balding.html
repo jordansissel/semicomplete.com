@@ -1,0 +1,36 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-10-02T04:28:56-07:00"
+title = "Sysprep may cause early balding.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["wtf", "sysprep", "microsoft", "vista"]
++++
+
+
+I was happily moving along doing windows automation tonight, when suddenly
+sysprep broke. I'm sure I killed it by accident, or something. Googling around
+for the error found <a href="http://support.microsoft.com/kb/947212">this
+knowledgebase article</a> explaining that there is no way to recover and,
+quote, "When you experience this error, you must re-create the image. You
+cannot correct the problem with the image."
+
+<p>
+
+Fuck that.
+
+<p>
+
+If you read the docs on using sysprep/wsim/windows aik/whatever, they all point
+you at building a 'reference computer' which entails lots of manual work
+modifying settings and installing things. Sysprep can make useless all of your
+precious work? Sweet!
+
+<p>
+
+I'm just glad most of the things I've done to this system were automated so I
+can just reinstall and rerun the scripts.

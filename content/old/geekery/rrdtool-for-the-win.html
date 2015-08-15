@@ -1,0 +1,156 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-05-04T00:57:23-07:00"
+title = "RRDTool to graph log-originating data.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["rrdtool", "statistics", "perl", "graphs", "logs", "sysadmin"]
++++
+
+I need to relearn rrdtool, again, for this sysadmin time machine project.
+Today's efforts were spent testing for features I hoped were in RRDTool. So
+far, my feature needs are met :)
+
+<p>
+
+Take something simple, like webserver logs. Let's graph the hits.
+
+<p>
+
+Create the RRD:
+<pre>
+rrdtool create webhits.rrd --start 1128626000 -s 60 \
+   DS:hits:GAUGE:120:0:U RRA:AVERAGE:.5:5:600000 \
+   RRA:AVERAGE:.5:30:602938 RRA:AVERAGE:.5:60:301469 \
+   RRA:AVERAGE:.5:240:75367 RRA:AVERAGE:.5:1440:12561
+</pre>
+
+My logs start *way* back in November of last year, so I create the rrd with a
+start date of sometime in Novemeber. The step is 60, so it expects data every
+minute. I then specify one data type, hits, which is a gaugue (rate), and
+ranges from 0 to infinity (U). The rest of the command is RRA's defining how
+data is stored. The first one says take 5 samples and average them, and store
+600,000 of these samples, at a maximum.
+
+<p>
+
+Now that we have the database, we need a "hits-per-minute" data set. I wrote a
+short perl script, <a
+href="http://www.semicomplete.com/scripts/parsehttp">parsehttp</a> that will
+read from standard input and calculate hits-per-minute and output rrdtool
+update statements. Capture this output and run it through sh:
+
+<pre>
+./parsehttp < access.log | sh -x
+</pre>
+
+Simple enough. This will calculate hits-per-minute for all times in the logs
+and store it in our RRD.
+
+<p>
+
+Now that we have the data, we can graph it. However, since I want to view
+trends and compare time periods, I'll need to do something fancier than simple
+graphs.
+
+<p>
+
+RRDTool lets you graph multiple data sets on the same graph. So, I want to
+graph this week's hits and last week's hits. However, since the data sets are
+on different time intervals, I need to shift last week's set forward by one
+week. Here's the rrdtool command that graphs it for us, with last week's and
+this week's data on the same graph, displayed at the same time period:
+
+<pre>
+rrdtool graph webhits.png -s "-1 week" \
+   DEF:hits=webhits.rrd:hits:AVERAGE  \
+   DEF:lastweek=webhits.rrd:hits:AVERAGE:start="-2 weeks":end="start + 1 week" \
+   SHIFT:lastweek:604800 \
+   LINE1:lastweek#00FF00:"last week" LINE1:hits#FF0000:"this week"
+</pre>
+
+That'll look like line noise if you've never used RRDTool before. I define two
+data sets with DEF: hits and lastweek. They both read from the 'hits' data set
+in webhits.rrd. One starts at "-1 week" (one week ago, duh) and the other
+starts 2 weeks ago and ends last week. I then shift last week's data forward by
+7 days (604800 seconds). Lastly, I draw two lines, one for last weeks (green),
+  the other for this weeks (red).
+
+<p>
+
+That graph looks like this:
+<p>
+<img src="http://www.semicomplete.com/images/webhits-1.png">
+<p>
+
+That's not really useful, becuase there's so many data points the graph almost
+becomes meaningless. This is due to my poor creation of RRAs. We can fix that
+by redoing the database, or using the TREND feature.
+
+Change our graph statement to be:
+<pre>
+rrdtool graph webhits.png -s "-1 week" \
+   DEF:hits=webhits.rrd:hits:AVERAGE  \
+   DEF:lastweek=webhits.rrd:hits:AVERAGE:start="-2 weeks":end="start + 1 week" \
+   SHIFT:lastweek:604800 \
+   CDEF:t_hits=hits,86400,TREND CDEF:t_lastweek=lastweek,86400,TREND \
+   LINE1:lastweek#CCFFCC:"last week" LINE1:hits#FFCCCC:"this week" \
+   LINE1:t_lastweek#00FF00:"last week" LINE1:t_hits#FF0000:"this week"
+</pre>
+
+I added only two CDEF statements. They take a data set and "trend" it by one
+day (86400 seconds). This creates a sliding average across time. I store these
+in new data sets called t_hits and t_lastweek and graph those aswell.
+
+<p>
+
+The new graph looks like this:
+<p>
+<img src="http://www.semicomplete.com/images/webhits-2.png">
+<p>
+
+You'll notice the slide values are chopped off on the left, that's becuase it
+doesn't have enough data points at those time periods to make an average.
+However, including the raw data makes the graph scale as it did before, making
+viewing the trend difference awkward. So, let's fix it by not graphing the raw
+data. Just cut out the LINE1:lastweek and LINE1:hits options.
+
+<p>
+
+Fixing the sliding average cutoff, add a title, and a vertical label:
+<p>
+
+<pre>
+rrdtool graph webhits.png -s "-1 week" \
+   -t "Web Server Hits - This week vs Last week" \
+   -v "hits/minute" \
+   DEF:hits=webhits.rrd:hits:AVERAGE:start="-8 days":end="start + 8 days"  \
+   DEF:lastweek=webhits.rrd:hits:AVERAGE:start="-15 days":end="start + 8 days" \
+   SHIFT:lastweek:604800 \
+   CDEF:t_hits=hits,86400,TREND CDEF:t_lastweek=lastweek,86400,TREND \
+   LINE1:t_lastweek#00FF00:"last week" LINE1:t_hits#FF0000:"this week" \
+</pre>
+
+The graph is still from one week ago until now, but our data sets used extend
+beyond those boundaries, so that sliding averages can be calculated throughout.
+The new, final graph, looks like this:
+
+<p>
+<img src="http://www.semicomplete.com/images/webhits-3.png">
+<p>
+
+Now I can compare this week's hits against last weeks, quickly with a nice
+visual. This is what I'm looking for.
+
+<p>
+
+This would become truely useful if we had lots of time periods (days, weeks,
+whatever) to look at. Then we could calculate standard deviation, etc. A high
+outlier could be marked automatically with a label, giving an instant visual
+cue that something is potentially novel. It might be simple to create a sort-of
+sliding "standard deviation" curve. I haven't tried that yet.
+

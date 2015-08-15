@@ -1,0 +1,72 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-01-09T01:22:10-08:00"
+title = "vmware 2.0 startup problems (and a solution)\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["vmware"]
++++
+
+A few weeks ago I installed Vmware Server 2.0 Beta 1. I <a
+href="/blog/geekery/vmware-server-2.0-beta-1.html">noted</a> a regression from
+vmware server 1.3 (and 1.2) that "raw disks" were seemingly not supported. The
+workaround was to manually edit the 'vmx' file for the virtual machine to add
+the old entries which exposed raw disks to vmware.
+
+<p>
+
+Tonight, I rebooted my server after accidentally powering it off while cleaning dust off of the intake vents, and vmware didn't start back up. Technically, all of the startup scripts (/etc/init.d/vmware) ran fine and reported no errors, but I couldn't connect to the management interface on port 8333. Netstat output confirmed that nothign was listening on this port. Crap.
+
+<p>
+
+After grepping around in various places, I figured that the tomcat server  that
+comes with vmware (named webAccess) had no intentions on listening to port
+8333, and this was normal. I checked /var/log/ for anything useful, and found /var/log/vmware. In this directory, was a set of hostd-N.log files, where N is a number. In hostd-0.log, was this entry (the entry below is truncated for readability):
+
+<pre>
+[2008-01-08 21:31:23.790 'vm:/vmdisks/vms/filer (solaris 64bit)/filer (solaris 64bit
+).vmx' 47879793637584 warning] Disk was not opened successfully. Backing type unknow
+n: 0
+[2008-01-08 21:31:23.790 'vm:/vmdisks/vms/filer (solaris 64bit)/filer (solaris 64bit
+).vmx' 47879793637584 warning] Disk was not opened successfully. Backing type unknow
+n: 0
+[2008-01-08 21:31:23.791 'App' 47879793637584 error] 
+
+Exception: ASSERT /build/mts/release/bora-63231/bfg-atlantis/bora/vim/hostd/vmsvc/vm
+ConfigReader.cpp:3251
+
+[2008-01-08 21:31:23.794 'App' 47879793637584 error] Backtrace:
+&lt;actual backtrace snipped&gt;
+</pre>
+
+Keep in mind, that even though vmware-hostd was failing, /etc/init.d/vmware
+reported success for every operation. Eek.
+
+<p>
+
+So, I went to my filer vmx file and commented out the rawDisk entries and restarted vmware (with the init script). No more failures were logged in hostd-0.log, and a subsequent netstat showed vmware-hostd listening on port 8333. Peachy.
+
+<p>
+
+Back on my windows box, I ran the vmware console, and guess what happens... I
+can now manage my vmware sessions again.
+
+<p>
+
+I can only hope that VMware decides to allow raw, local disk access in the
+finished version of vmware 2.0, because I am rather dependent on it. If they
+don't, I might be able to get away with moving the data out of the zfs pool,
+initializing the drives with some random linux file system, and creating a
+500gig vmware virtual drive on each disk, and finally telling Solaris to fix
+its zfs stuff. Since I don't have too much data there, I might be able to get
+away with draining one disk out of the zfs pool,  and doing the conversion from
+raw to virtual disk one physical disk at a time. Might be a useful exercise in
+learning zfs more.
+
+<p>
+
+I'll cross that bridge when I get to it.

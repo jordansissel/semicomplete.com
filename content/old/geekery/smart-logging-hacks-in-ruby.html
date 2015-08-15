@@ -1,0 +1,78 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-11-12T15:13:44-08:00"
+title = "Smart logging hacks in ruby\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["logging", "logstash", "awesome_print", "logger"]
++++
+
+Ruby has Logger. It is good, but strings suck. In a world where more and more people are using log data for inputs and analysis, structured data is good. I want to log structured data.
+
+<p>
+
+This lead to me subclassing Logger and additionally providing my own logger
+format class. The code for this is in logstash, <a
+href="http://code.google.com/p/logstash/source/browse/trunk/lib/logstash/logging.rb?spec=svn469&r=469">logging.rb</a>.
+
+<p>
+
+What did I add? Two main goals: First, improve context. Second, log structured data (objects). This is achieved by style changes (log objects, not strings), adding awesome_print support, adding code context to each log (line/file/method), etc.
+
+<p>
+
+To support the first goal (context), if the loglevel is 'debug' I will inspect
+the call stack and include the file and line of code that is logging. I also
+set the 'progname' to the name of the program by default.  To support the
+second goal, log objects and improve how objects are formatted into strings
+with Object#inspect (or <a
+href="https://github.com/michaeldv/awesome_print">awesome_inspect</a>, if
+available). 
+
+<p>
+
+Some examples:
+
+<pre style="white-space: pre-wrap;">
+>> logger = LogStash::Logger.new(STDOUT)
+I, [2010-11-12T15:19:48.388469 #18782]  INFO -- : ["Failed: require 'ap' (aka awesome_print); some logging features may be disabled", #&lt;LoadError: no such file to load -- ap&gt;]
+<i># This is an example of what javascript folks call 'progressive enhancement'
+# - we still function if awesome_print is not available.</i>
+
+>> logger.level = Logger::WARN
+>> logger.warn("Hello")
+W, [2010-11-12T15:20:05.465705 #18782]  WARN -- irb: Hello
+
+>> logger.warn(["rejecting bad client", { :client => "1.2.3.4" }])
+W, [2010-11-12T15:21:04.639404 #18782]  WARN -- irb: ["rejecting bad client", {:client=>"1.2.3.4"}]
+
+>> logger.level = Logger::DEBUG
+>> logger.warn("Hello")
+W, [2010-11-12T15:21:57.754874 #18782]  WARN -- (irb):12#irb_binding: Hello
+<i># Notice the context (file, line, method)       ^^^^^^^^^^^^^^^^^^^^
+# When DEBUG level is set only due to performance and verbosity concerns.</i>
+</pre>
+
+The main benefit personally is logging objects instead of strings, which you
+can do, today, with the standard Logger. However, standard logger doesn't make
+nice with awesome_print or add file/line/method context. Anyway, logging
+objects lets you later hook a smarter error handling tool up to your
+logging that can inspect the structured data rather than having to regex your
+way through a single string.
+
+<p>
+
+If you have awesome_print available, the object output by my formatter gets
+even more useful for human viewing:
+
+<p>
+
+<img src="/files/blogposts/20101112/logstash-logger-with-awesome_print.png">
+
+<p>
+
+Why log structured? Easier to parse and query later, like in a logstash query.

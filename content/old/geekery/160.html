@@ -1,0 +1,56 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-04-26T02:41:00-07:00"
+title = "zsh compctl\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["shell"]
++++
+
+
+Got bored after doing some homework tonight and added a few more
+completions to my zsh config. The top two are yanked from petef's zshrc
+
+<pre>
+compctl -g '/u9/psionic/Mail/*(/:t)' -P '+' folder
+compctl -g '/var/db/pkg/*(/:t)' pkg_delete pkg_info
+compctl -g "/tmp/screens/S-${USER}/*(p:t)" screen
+compctl -g "*(-/D)" + -g "*.class(.:r)" java
+</pre>
+
+What do they do? (Listed in order)
+<ul>
+<li> for the program 'folder' complete to any directory in /u9/psionic/Mail/ and drop the path above it (like basename(1)). Also prefix it with a '+' character.
+<pre>
+fury(~) [1] !127! % folder +<b>TAB</b>
+drafts      exec        inbox       lists       old         rtp         spam        
+duplicates  foo         jason       main        outbox      security    work        
+</pre>
+</li>
+<li> complete package names under freebsd for pkg_delete and pkg_info
+<pre>
+nightfall(~/foo/project) [1021] % pkg_info <b>TAB</b>
+ORBit2-2.12.1_1               isc-dhcp3-server-3.0.1.r14_6  png-1.2.6
+adns-1.0_1                    jad-1.5.8c                    portupgrade-20041226_1
+aspell-0.60.2                 jpeg-6b_3                     ruby-1.8.2_3
+... the list goes on ...
+</pre>
+</li>
+<li> complete screen sessions 
+<pre>
+nightfall(~/foo/project) [1022] !1! % screen -x <b>TAB</b>
+11950.ttyp6.nightfall  16783.ttyp2.nightfall  16852.ttypa.nightfall  709.ttyp8.nightfall
+16146.ttypn.nightfall  16801.ttyp4.nightfall  17336.ttyp0.nightfall  741.ttypc.nightfall
+</pre>
+</li>
+<li> complete java class names without the '.class' extension 
+<pre>
+nightfall(~/foo/project/os1/step1) [1024] % java sys/<b>TAB</b>
+ExitCode  Kernel    Panic
+</pre>
+</li>
+</ul>

@@ -1,0 +1,87 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-11-21T03:41:46-08:00"
+title = "Python, event tracking, and bdb.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["bdb", "python", "databases", "monitoring", "statistics"]
++++
+
+In previous postings, I've put thoughts on monitoring and data aggregation.
+Last night, I started working on prototyping a python tool to record arbitrary
+data. Basically it aims to solve the problem of "I want to store data" in a
+simple way, rather than having to setup a mysql database, user access, tables,
+a web server, etc, all in the name of viewing graphs and data reports.
+
+<p>
+
+The requirements are pretty simple and generic:
+<ul>
+  <li> Storage will be mapping key+timestamp => value </li>
+  <li> Timestamps should be 64bit values, so we can use microsecond values (52
+  bits to represent current unix epoch in microsecond) </li>
+  <li> Access method is assumed to be random access by key, but reading
+  multiple timestamp entries for a single key is expected to be sequential.
+  </li>
+  <li> Key names must be arbitrary length </li>
+  <li> Storage must be space-efficient on key names </li>
+  <li> Values are arbitrary. </li>
+  <li> Minimal setup overhead (aka, you don't have to setup mysql) </li>
+</ul>
+
+The goal of this is to provide a simple way to store and retrieve timestamped
+key-value pairs. It's a small piece of the hope that there can be a monitoring
+tool set that is trivial to configure, easy to manipulate, easy to extend, and
+dynamic. I don't want to pre-declare data sources and data types (rrdtool,
+cacti), or make it difficult to add new collection sources, etc. I'm hoping
+that relying on the unix methodology (small tools that do one or two things
+well) that this can be achieved.
+
+The next steps in this adventure of a monitoring system are:
+<ul>
+  <li> a graphing system </li>
+  <li> aggregation functions </li>
+  <li> templating system (web, email, etc?) </li>
+</ul>
+
+Space efficiency on key names is achieved with a secondary storage containing a
+list of key to keyid mappings. Key IDs are 64bit values. The first value is 1.
+We could use a hash function here, but I want a guarantee of zero collisions.
+However, this means that keys are specifically stored as key ids in insertion
+order, not lexigraphical order.
+
+<p>
+
+This may become a problem if we want to read keys sequentially. However, if we
+scan the secondary database (one mapping key => 64bit_keyid) we can get keys in
+lexigraphical order for free. So iterating over all keys starting with the
+string 'networking' is still possible, but it will result in random-access
+reads on the primary database. This may be undesirable, so I'll have to think
+about whether or not this use case is necessary. There are some simple
+solutions to this, but I'm not sure which one best solves the general case.
+
+<p>
+
+Arbitrary key length is a requirement because I found the limitations of
+RRDTool annoying, where data source names cannot be more than 19 characters -
+lame! We end up being more space efficient (8 bytes per name) for any length of
+data source name at the cost of doing a lookup finding the 64bit key id from
+the name.
+
+<p>
+
+I have some of the code written, and a demo that runs 'netstat -s' a once a
+second for 5 seconds and records total ip packets inbound. The key is
+'ip.in.packets'
+
+<pre>
+ip.in.packets[1195634167358035]: 1697541
+ip.in.packets[1195634168364598]: 1698058
+ip.in.packets[1195634169368830]: 1698566
+ip.in.packets[1195634170372823]: 1699079
+ip.in.packets[1195634171376553]: 1699590
+</pre>

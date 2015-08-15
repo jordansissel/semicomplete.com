@@ -1,0 +1,72 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-05-15T03:29:41-07:00"
+title = "Impulse-driven computing\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["keynav", "ideas"]
++++
+
+Muscle memory is great. Are there flexible, programmable tools which let you
+turn a set of potentially-complex actions into something muscle-memory
+trainable?
+
+<p>
+
+I suspect making a generic tool to do this would be difficult.
+<a href="/projects/keynav">keynav</a> and
+<a href="/projects/xdotool">xdotool</a> aim to solve some of these problems, but
+what about some of the more complex ones? Is it worth trying to solve these
+edge cases with automation? Specifically, I mean solutions where
+programatically you'd be talking to two or more separate systems (or APIs).
+
+<p>
+
+One specific set of problems is because X11's default clipboard buffer is not
+the same thing as GTK's clipboard buffer. So, in firefox, using 'middle click'
+to paste gives me X11's clipboard while CTRL+V gives me GTK (firefox)'s
+clipboard contents. It's likely I'm calling this thing "X11's clipboard" when
+it's really the "X11 Selection". It seems simple to write a tool that would
+copy X11's current selection to GTK's clipboard.
+
+<p>
+
+You could have code that looked like this, but it wouldn't be efficient:
+<pre>
+while true:
+  if gtk_clipboard_changed:
+    set_x11_clipboard(value)
+  else if x11_clipboard_changed:
+    set_gtk_clipboard(value)
+</pre>
+
+You could make that not chew up cpu by adding a small sleep at the end of each
+iteration, but that still sucks. From what I can tell, GTK has a way to block
+for clipboard changes, but X11 may not.
+
+<p>
+
+If the X11 application uses cut buffers, then the root X window gets
+notifications about cut buffer changes. However, copying stuff in firefox
+doesn't show any cut buffers being used.
+
+<p>
+
+Alternately, we could hack our own "ctrl+v" functionaly by grabbing that
+keystroke, or by grabbing a different, unrelated keystroke, which would do:
+
+<ol>
+<li> copy primary selection to clipboard </li>
+<li> send literal "ctrl+v" </li>
+<li> restore clipboard </li>
+</ol>
+
+<b> Update: </b> An existing tool will keep your selection and clipboard
+buffers in sync: <a href="http://www.nongnu.org/autocutsel/">autocutsel</a>.
+Looks like it uses the sleepy-loop approach I mentioned, but it does work.
+Awesome!
+

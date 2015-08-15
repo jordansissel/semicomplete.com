@@ -1,0 +1,40 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2003-08-18T23:09:47-07:00"
+title = "yes, even more ksh prompt fun...\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["mail"]
++++
+
+So the next thing that bothered me about my prompt was the fact that sometimes I'd have some crazy long directory filling up 90% of the line - this was a bad thing. So I set out along with my companion, <code>sed</code>, and together we squashed this beast.<br>
+<pre>
+
+PS1='$(A=$?; [ $A -ne 0 ] && A="!!{$A}!! " || A=""; SPWD=$(/bin/pwd | /usr/bin/sed -Ee "s,(/usr)?$HOME,~,; sz(/[^/]+/).*(/.{20,})\$z\1...\2z"); /bin/echo -n $HOST"("$SPWD") [!] ${A}${Z} " )'
+
+[ -w "/" ] && Z="#" || Z=">"; export Z
+PROMPT='$(A=$?; [ $A -ne 0 ] && A="!!{$A}!! " || A=""; SPWD=$(/bin/pwd | \
+/usr/bin/sed -Ee "s,(/usr)?$HOME,~,; <b>sz(/[^/]+/).*(/.{20,})\\$z\1...\2z</b>"); \
+/bin/echo -n $HOST"("$SPWD") [!] ${A}${Z} " )'
+
+case $TERM in
+   aterm|xterm|dtterm)
+      PROMPT=${PROMPT%)*}'; /bin/echo -n "^[]2;"$HOST"("$SPWD") [!] ${A}^G" 1>&2)'
+      ;;
+esac
+PS1=$PROMPT
+</pre>
+
+The part marked in bold is what actually shortens the path. This will take what was previously a terribly long prompt and shorten the directory... ie;<br>
+<code>/usr/local/lib/perl5/site_perl/5.6.1/Curses/UI/Dialog</code> 
+<br>
+will become
+<br>
+<code>/usr/.../5.6.1/Curses/UI/Dialog</code>
+<p>
+
+Oh, and this new feature actually makes the overal content of <code>$PS1</code> shorter by 3 characters! Instead of 257 characters, it's 254. This is due to a rewrite of part of the code - <code>pwd</code> and <code>sed</code> are only called one time now.

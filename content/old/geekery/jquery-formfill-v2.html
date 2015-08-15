@@ -1,0 +1,65 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-06-30T02:38:58-07:00"
+title = "jQuery autofill version 2\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["jquery", "javascript", "site", "user experience"]
++++
+
+This post marks 4 in one day. Whew!
+<p>
+
+<a href="http://www.ejohn.org">Resig</a> and I were bouncing ideas around after
+I made the form filler, and we came up with something that fits very nicely
+into the jQuery api (in the form of something very pluggable).
+
+<p>
+
+You'll need the following code that will extend jQuery's functionality.
+Basically, it adds 'saveAsCookie' and 'loadAsCookie' function calls to
+<code>$()</code> objects.
+
+<pre>
+$.fn.saveAsCookie = function(n,t){
+   return this.each(function(){
+     createCookie( (n || '') + (this.name || this.id), this.value, t );
+   });
+ };
+
+$.fn.loadAsCookie = function(n){
+  return this.each(function(){
+    this.value = readCookie( (n || '') + (this.name || this.id) );
+  });
+};
+</pre>
+
+You can safely put that code somewhere and load it anywhere you need autofill. Reusable code is awesome.
+
+<p>
+
+Now, we don't want to cache *all* input elements, becuase only some contain
+user-input and only some need to be saved. For this, I put the class 'cookieme'
+on all input elements I wanted to save.
+<pre>
+ $(document).ready(function(){
+   $("form#comments_form").submit(function(){
+     $("input.cookieme",this).saveAsCookie("formdata");
+   })
+   .find("input.cookieme").loadAsCookie("formdata");
+ });
+</pre>
+
+The arguments to 'saveAsCookie' and 'loadAsCookie' are namespace prefixes. This way, you can avoid namespace collisions with other cookies. All of my autofill cookies will be prefixed with 'formdata' and suffixed with the element name or id attribute.
+
+<p>
+
+So, we squished the code down to 6 lines, 4 of which are actually meaningful.
+
+<p>
+
+jQuery++

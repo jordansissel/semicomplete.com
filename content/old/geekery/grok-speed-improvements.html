@@ -1,0 +1,70 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-09-29T03:27:38-07:00"
+title = "Grok speed improvements\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok", "profiling", "perl"]
++++
+
+The benchmark for testing speed improvements was to process 3000 lines for
+'%SYSLOGBASE .*? %IPORHOST%'. Profiler was Devel::Profile.
+
+<p>
+Before:
+<pre>
+time running program:  11.9738  (85.07%)
+number of calls:       409362
+
+%Time    Sec.     #calls   sec/call  F  name
+64.52    7.6336     2870   0.002660     main::meta2string
+10.00    1.1838     5740   0.000206     main::filter
+ 8.88    1.0507     3000   0.000350     main::handle
+ 3.14    0.3710    54828   0.000007     main::handle_capture
+ 0.77    0.0908     2870   0.000032     main::react
+</pre>
+
+After
+<pre>
+time running program:  2.5216  (82.73%)
+number of calls:       105152
+
+%Time    Sec.     #calls   sec/call  F  name
+40.56    1.0228     3000   0.000341     main::handle
+15.22    0.3838    54828   0.000007     main::handle_capture
+ 4.47    0.1128     2870   0.000039     main::meta2string
+ 3.31    0.0834     2870   0.000029     main::react
+ 2.61    0.0658    14747   0.000004     main::debug
+ 1.81    0.0456      237   0.000192     main::readlog
+</pre>
+
+Primary changes were mostly to pregenerate a few regular expressions.
+Previously, I was generating the same regex every time filter() or
+meta2string() was being called. These small changes gave grok a serious boost
+in speed: what was taking 12 seconds now takes 2.5 seconds.
+
+<p>
+
+One example of a simple optimization is this:
+
+<pre>
+before: my $re = join("|", map { qr/(?:$_)/ } keys(%$filters));
+after:  our $re ||= join("|", map { qr/(?:$_)/ } keys(%$filters));
+</pre>
+
+This may decrease readability, but it only sets $re once no matter how many
+times that line of code is executed. This line of code change was in the
+filter() function. Just doing this one simple change reduced the runtime of
+each filter() call by 97%; which reduces its runtime to something trivially
+small by comparison.
+
+<p>
+
+At this point, this is where I was very happy to have written tests for grok.
+To verify that grok still behaved properly after making these speed
+improvements, I just ran the tests suite. It passed, giving me some confidence
+in the stability of the changes.

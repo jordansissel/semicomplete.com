@@ -1,0 +1,57 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-08-13T22:12:13-07:00"
+title = "Fedora 6, utmp growth, Amazon EC2\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["utmp", "fedora", "amazon", "ec2", "wtf"]
++++
+
+<pre>
+% ls -l /var/run/[wu]tmp
+-rw-rw-r-- 1 root  utmp  364366464 Aug 13 22:00 utmp
+-rw-rw-r-- 1 root  utmp  1743665280 Aug 13 22:10 wtmp
+</pre>
+
+That's 350 megs and 1.7 gigs. Cute. Performance sucks for anything needing utmp
+(w, uptime, top, etc). The 'init' process is spending tons of time chewing
+through cpu.  System %cpu usage says 38% and is holding there on a mostly idle
+machine.
+
+<p>
+
+Lots of these in  /var/log/messages:
+<pre>
+Aug 13 22:10:27 domU-XX-XX-XX-XX-XX-XX /sbin/mingetty[6843]: tty3: No such file or d
+irectory
+Aug 13 22:10:27 domU-XX-XX-XX-XX-XX-XX /sbin/mingetty[6844]: tty4: No such file or d
+irectory
+Aug 13 22:10:27 domU-XX-XX-XX-XX-XX-XX /sbin/mingetty[6845]: tty5: No such file or d
+irectory
+Aug 13 22:10:27 domU-XX-XX-XX-XX-XX-XX /sbin/mingetty[6846]: tty6: No such file or d
+irectory
+Aug 13 22:10:32 domU-XX-XX-XX-XX-XX-XX /sbin/mingetty[6847]: tty2: No such file or d
+irectory
+</pre>
+
+I'm not sure why /dev/tty1 is the only /dev/ttyN device, but whatever. Either
+way, mingetty flapping will flood /var/run/[ubw]tmp over the span of weeks and
+eventually you end up with a system that spends most of its time parsing that
+file and/or restarting mingetty.
+
+<p>
+
+I fixed this by commenting out all tty entries in /etc/inittab and running "init q":
+<pre>
+# Run gettys in standard runlevels
+#1:2345:respawn:/sbin/mingetty tty1
+#2:2345:respawn:/sbin/mingetty tty2
+#3:2345:respawn:/sbin/mingetty tty3
+#4:2345:respawn:/sbin/mingetty tty4
+#5:2345:respawn:/sbin/mingetty tty5
+#6:2345:respawn:/sbin/mingetty tty6
+</pre>

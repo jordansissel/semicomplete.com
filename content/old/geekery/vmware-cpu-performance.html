@@ -1,0 +1,122 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-09-17T01:45:50-07:00"
+title = "Boredom, vmware cpu performance, and /dev/random\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["performance", "vmware"]
++++
+
+These are strictly cpu-bound tests using 'openssl speed'. I didn't compile any
+of the openssl binaries here, so it's possible that differences in
+compilationcaused the differences in the numbers.
+
+<p>
+
+I've never noticed a performance decrease of the host vs guest systems in
+vmware, and here's data confirming my suspecions.
+
+<pre>
+Versions:
+guest/solaris10    OpenSSL 0.9.8e 23 Feb 2007
+guest/freebsd6.2   OpenSSL 0.9.7e-p1 25 Oct 2004
+host/linux         OpenSSL 0.9.8c 05 Sep 2006
+
+'openssl speed blowfish'
+                   type             16 bytes     64 bytes    256 bytes   1024 bytes   8192 bytes
+host/linux         blowfish cbc     72062.94k    77117.35k    78280.70k    78680.96k    79309.48k
+guest/freebsd6.2   blowfish cbc     68236.69k    73335.83k    74060.50k    74423.40k    74703.29k
+guest/solaris10    blowfish cbc     64182.15k    73944.47k    75952.21k    76199.94k    76931.07k
+
+'openssl speed rsa'
+                                      sign    verify    sign/s verify/s
+host/linux         rsa  512 bits 0.000308s 0.000020s   3244.3  49418.3
+guest/freebsd6.2   rsa  512 bits   0.0003s   0.0000s   3343.5  41600.1
+guest/solaris10    rsa  512 bits 0.001289s 0.000116s    775.6   8630.8
+
+host/linux         rsa 1024 bits 0.000965s 0.000049s   1036.7  20409.8
+guest/freebsd6.2   rsa 1024 bits   0.0009s   0.0001s   1160.0  18894.2
+guest/solaris10    rsa 1024 bits 0.007152s 0.000369s    139.8   2708.1
+
+host/linux         rsa 2048 bits 0.004819s 0.000135s    207.5   7414.4
+guest/freebsd6.2   rsa 2048 bits   0.0045s   0.0001s    222.8   6951.1
+guest/solaris10    rsa 2048 bits 0.045780s 0.001334s     21.8    749.8
+
+host/linux         rsa 4096 bits 0.028600s 0.000422s     35.0   2371.3
+guest/freebsd6.2   rsa 4096 bits   0.0279s   0.0004s     35.8   2271.4
+guest/solaris10    rsa 4096 bits 0.317812s 0.004828s      3.1    207.1
+</pre>
+
+It's interesting that the performance on blowfish were pretty close, but rsa
+was wildly different. The freebsd guest outperformed the linux host in signing
+by 10%, but fell behind in verification. Solaris peformed abysmally. The
+freebsd-guest vs linux-host data tells me that the cpu speed differences
+between guest and host environments is probably zero, which is good.
+
+<p>
+
+Again, the compilation options for each openssl binary probably played large
+parts in the performance here. I'm not familiar with SunFreeware's compile
+options with openssl (the binary I used came from there).
+
+<p>
+
+Either way, the point here was not to compare speeds against different
+platforms, but to in some small way compare cpu performance between host and
+guest systems. There are too many uncontrolled variables in this experiment to
+consider it valid, but it is interesting data and put me on another path to
+learn about why they were different.
+
+<p>
+
+My crypto is rusty, but I recall that rsa may need a fair bit of entropy to
+pick a big prime.  Maybe solaris' entropy system is slower than freebsd's or
+linux's system? This lead me to poke at /dev/random on each system. I wrote <a
+href="/files/blogposts/20070917/devrandom-speed.pl">a small perl script</a> to
+read from /dev/random as fast as possible.
+
+<pre>
+host/linux        82 bytes in 5.01 seconds: 16.383394 bytes/sec
+guest/solaris10   57200 bytes in 5.01 seconds: 11410.838461 bytes/sec
+guest/freebsd6.2  210333696 bytes in 5.01 seconds: 41947398.850271 bytes/sec
+</pre>
+
+I then ran the same test on the host/linux machine while feeding /dev/random on
+the host from entropy from the freebsd machine:
+
+<pre>
+% ssh jls@teabag 'cat /dev/random' > /dev/random &
+% perl devrandom.pl                                  
+448 bytes in 5.00 seconds: 89.563136 bytes/sec
+
+# Kill that /dev/random feeder, and now look:
+% perl devrandom.pl
+61 bytes in 5.01 seconds: 12.185872 bytes/sec
+</pre>
+
+When speed is a often a trade-off for security, are FreeBSD's and Solaris's
+/dev/random features more insecure than Linux's? Or, is Linux just being dumb?
+
+<p>
+
+Googling finds data indicating that /dev/random on linux will block until
+entropy is available, so let's retry with /dev/urandom instead.
+
+<pre>
+host/linux        29405184 bytes in 5.01 seconds: 5874687.437817 bytes/sec
+guest/solaris10   70579600 bytes in 5.00 seconds: 14121588.405586 bytes/sec
+guest/freebsd6.2  208445440 bytes in 5.02 seconds: 41502600.216189 bytes/sec
+</pre>
+
+FreeBSD's /dev/urandom is a symlink to /dev/random, so the same throughput
+appearing here is expected. FreeBSD's still wins by a landslide. Why? Then
+again, maybe that's not a useful question. How often do you 40mb/sec of random
+data?
+
+<p>
+
+Back at the rsa question - If solaris' random generator is faster than linux in all cases, then why is 'openssl speed rsa' slower on solaris than linux? Compile time differences? Perhaps it's some other system bottleneck I haven't explored yet.

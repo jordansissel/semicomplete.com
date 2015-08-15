@@ -1,0 +1,98 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-11-24T22:01:00-08:00"
+title = "Poor man's todo list.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["shell", "productivity"]
++++
+
+I've often had a yearning for any kind of a todo list that meets the following requirements:
+<ul>
+	<li> Simple to use </li>
+	<li> Easy to maintain </li>
+	<li> Quick to start using </li>
+	<li> High Mobility </li>
+	<li> Require low effort </li>
+</ul>
+
+I have tried many kinds of "todo" lists. The first one is the ungeeky kind, Ye
+Olde Paper. Paper is great, unfortunately it doesn'treplicate easily and
+is easily lost when made portable. Post-It notes fall under this category -
+easily lost, not mobile without high loss.
+<p/>
+
+Next, I tried online "todo" lists such as <a
+href="http://www.tadalist.com">tadalist.com</a>. These such organizational
+tools are great and meet all but one of my requirements: requiring low effort.
+I am a creature of habit, and learning new habits is difficult. This "new
+habit" would be my continual visitation of the online todo list. What actually
+happens is I update the todo list once, then promptly forget about it. That
+means I need some sort of periodic reminder.
+
+<p/>
+There exist many kinds of virtual "postit" programs. One such program is called
+xpostitPlus. It wastes valuable screen realestate and is ugly. Furthermore, it
+is not mobile unless I use X forwarding or replicate the notes database. GNOME
+has a similar program called 'stickynotes-applet' or something similar. I don't
+use GNOME, and I imagine that the stickynotes applet suffers from the same
+problems as xpostitPlus.
+<p/>
+
+So I got to thinking about how to best solve this problem. I immediately
+thought about writing my own python-gtk app that would let me do it, but I
+realized quickly that it would fall under the same problems as the virtual
+postit programs. Furthermore, that's overengineering a solution to a simple
+problem that can have a simple solution (pen and paper, remember). I remembered
+that zsh has a 'periodic' feature that you can schedule jobs to occur every N
+seconds. "Every N seconds" isn't quite true, and this becomes beneficial. It
+actually schedules execution for N seconds after the last run but doesn't
+actually execute until you reach a prompt. My solution is very simple,
+portable, and easy for me to use.
+
+<p/>
+
+In my .zshrc:
+<pre>
+# Periodic Reminder!
+PERIOD=3600                       # Every hour, call periodic()
+function periodic() {
+        [ -f ~/.plan ] || return
+
+        echo
+        echo "= Todo List"
+        sed -e 's/^/   /' ~/.plan
+        echo "= End"
+}
+</pre>
+
+Periodic is scheduled as soon as the shell starts, so I see my '.plan' file as
+soon as I open an xterm or otherwise login. every hour I get a reminder. I may
+change this to once a day or something, but for the most part my solution is
+complete and meets my requirements.
+
+<p/>
+
+My '~/.plan' file:
+<pre>
+* Register for classes
+* Pimp
+* newpsm/newmoused 
+* rum
+</pre>
+
+This solution is stupid simple and is effective:
+<ul>
+	<li> Simple to use: <i> integrated into my shell </i> </li>
+	<li> Easy to maintain: <i> with vi </i> </li>
+	<li> Quick to start using: <i> 10 lines of shell and vi... done </i> </li>
+	<li> High Mobile: <i> via ssh, local .plan replica, etc </i> </li>
+	<li> Require low effort: <i> reminders are automatic </i> </li>
+</ul>
+
+I may improve this later using xsltproc(1) so I can set priority levels and
+other things, but for now this will definatley suffice.

@@ -1,0 +1,51 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2003-08-09T07:21:00-07:00"
+title = "mh fun, still.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["mail"]
++++
+
+I'm still awake from last night, yadda yadda yadda.<br>
+So I got leet with my vim stuff and wrote a keymap that automatically
+generates an attached pgp signature. I should note, however, that you'll
+have to run <code>mime</code> from <code>whatnow</code> or run
+<code>mhbuild</code> yourself, before you send out your email.
+<table border="0" cellspacing="0" cellpadding="0" class="pre">
+<tr><td><code>
+" MH comp header/body separator<br>
+let g:mhseparator="---------"<br>
+<br>
+if bufname(1) == '/u9/psionic/Mail/draft'<br>
+   set tw=72<br>
+   map \t :w&lt;CR&gt;1G:exec "/^" . g:mhseparator . "$"&lt;CR&gt;jyG:enew&lt;CR&gt;PGdd:w! ~/tmp/.draft&lt;CR&gt;:bn&lt;CR&gt;O#&lt;text/plain&lt;ESC&gt;Go#&lt;application/pgp-signature&lt;ESC&gt;:exec "r!gpg --detach-sign --no-secmem-warning --output - --armor --textmode ~/tmp/.draft"&lt;CR&gt;<br>
+endif<br>
+</code></td></tr>
+</table>
+This should be placed in your <code>.vimrc</code>. The only thing I'll
+really mention above is the <code>g:mhseparator</code>. This should be
+exactly the same line that separates your headers from your body (comp,
+repl, and forw formatting)<br>
+Just modify the variable in <code>.vimrc</code> to match your comp format.<p>
+One final note: To get the pgp signature mail part to play nice with
+mhbuild, you'll have to add this line to your
+<code>.mh_profile</code><br>
+<code class="pre">mhbuild-compose-application/pgp-signature:</code><p>
+
+This just lets mhbuild know of the existance of <code>Content-Type:
+application/pgp-signature</code>.
+
+<table cellspacing="0" cellpadding="0" width="600"
+style="width:600px;border-bottom:1px solid
+lightgrey"><tr><td>&nbsp;</td></tr></table>
+<br>
+So the other update is to my mailfilter script. It now supports better
+html stuffs and pgp signature verification. I've done a bit of testing
+with other people's pgp signature attachments (though not extensive) and
+trial runs verifying emails tagged by vim keymapping above. It seems to
+work pretty well.<br>

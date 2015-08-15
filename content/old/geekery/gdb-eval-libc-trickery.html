@@ -1,0 +1,32 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-09-21T20:22:33-07:00"
+title = "GDB for poking at libc to test random things\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["gdb", "c", "libc", "hacks", "tricks"]
++++
+
+I wanted to test something quickly out in C, but didn't want to write the 5
+line of code to do it. Having done some fun ruby debugging with gdb recently, I
+decided to go with that.
+
+<pre>
+% gdb -q `which sleep` --args `which sleep` 60000
+(gdb) break nanosleep
+(gdb) run
+Starting program: /bin/sleep 60000
+[Thread debugging using libthread_db enabled]
+[New Thread 0x7f8c40bc46f0 (LWP 6504)]
+[Switching to Thread 0x7f8c40bc46f0 (LWP 6504)]
+
+Breakpoint 1, 0x00007f8c404f7ce0 in nanosleep () from /lib/libc.so.6
+(gdb) call strcspn("hello world", "w")
+$1 = 6
+</pre>
+
+I don't know why I didn't think about this before. This is nicely useful, allowing me to easily test any simple function call unrelated.

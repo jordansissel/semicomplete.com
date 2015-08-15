@@ -1,0 +1,120 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-01-31T04:43:40-08:00"
+title = "Session affinity and load distribution with Tomcat and Apache\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["tomcat", "apache", "scalability"]
++++
+
+You can scale tomcat webapps somewhat well using session affinity and load
+distribution. But how? Apache to the rescue.
+
+<p>
+
+For each tomcat server, modify the server.xml and change the value for
+'jvmRoute' to the ip address of the tomcat server. Example:
+
+<pre>
+  &lt;Engine name="Standalone" defaultHost="localhost" jvmRoute="192.168.0.10">
+</pre>
+
+This affects the last token in your <i>jsessionid</i> cookie. Visiting my tomcat, my cookie gets set to the following:
+
+<blockquote>
+C40ABF646B07162A621856F459977E9B.<b>192.168.0.10</b>
+</blockquote>
+
+<p>
+
+Use apache's mod_rewrite to use apache as a frontend to your tomcat servers. That is, use apache as a reverse proxy.  In your httpd.conf:
+
+<p>
+
+<pre>
+RewriteMap SERVERS rnd:/etc/httpd/conf/frontends.conf
+RewriteCond "%{HTTP_COOKIE}"          "(^|;\s*)JSESSIONID=\w*\.([0-9.]+)($|;)"
+RewriteRule "^(.*)"                   "http://%2:8080%{REQUEST_URI}"  [P,L]
+RewriteRule "^.*;jsessionid=\w*\.([0-9.]+)($|;)"  "http://$1:8080%{REQUEST_URI}"  [P,L]
+RewriteRule "^(.*)"                    "http://${SERVERS:ALL}:8080%{REQUEST_URI}" [P,L]
+</pre>
+
+This technique is quite similar to the one <a
+href="http://tomcat.apache.org/tomcat-5.0-doc/balancer-howto.html">on
+tomcat.apache.org</a> in the docs, but I think it's better. Why? Less files to
+modify when you add or remove tomcat servers means less complexity, less errors
+and less effort.
+
+<p>
+<ol>
+  <li> <code>RewriteCond "%{HTTP_COOKIE}"          "(^|;\s*)JSESSIONID=\w*\.([0-9.]+)($|;)"</code>
+    <br>
+    If a jsessionid cookie is found, go to #2 and store match groups (backreferences) as %1, %2, etc.
+  </li>
+  <li> <code> RewriteRule "^(.*)"                   "http://%2:8080%{REQUEST_URI}"  [P,L] </code>
+    <br>
+    Session Affinity: Redirect everything using an internal proxy request to the 2nd group
+    matched in the previous RewriteCond. Since we use the IP as the jvmRoute,
+    that's what is matched, and your request is proxied to the server that gave
+    you your cookie.
+  </li>
+  <li> <code> RewriteRule "^.*;jsessionid=\w*\.([0-9.]+)($|;)"  "http://$1:8080%{REQUEST_URI}"  [P,L] </code>
+    <br>
+    Session affinity: Tomcat likes to add (who knows why?) ";jsessionid=blah" to the end of the
+    url when it first sets you up the cookie. In case no cookie is found, this
+    will proxy your request to the proper server just like the previous rule.
+  </li>
+  <li> <code> RewriteRule "^(.*)"                    "http://${SERVERS:ALL}:8080%{REQUEST_URI}" [P,L] </code>
+    <br>
+    Load distribution: Catch-all for anything that didn't have a cookie or
+    jsessionid thing in the url. "ALL" is just a key from the RewriteMap listed
+    below. A random one is chosen and inserted. 
+  </li>
+</ol>
+
+<p>
+
+Since the server ip is stored in the cookie, apache (using regular expressions)
+can pull it out and will internally proxy your request through to the proper
+tomcat server.
+
+<p>
+
+That works great for sessions that already exist, but what about for sessions
+that don't exist? That's what <code>${SERVERS:ALL}</code> is for. You need
+something like this in your frontends.conf file:
+
+<pre>
+ALL 192.168.0.10|192.168.0.11
+</pre>
+
+This would be even better if you only used DNS for this. Then, you wouldn't
+need to update any config files when you added or removed tomcat servers.
+
+<p>
+
+If you had the fallback redirect of:
+
+<pre>
+<strike>RewriteRule "^(.*)"       "http://${SERVERS:ALL}:8080%{REQUEST_URI}" [P,L]</strike>
+RewriteRule "^(.*)"       "http://mytomcats.foo.com:8080%{REQUEST_URI}" [P,L]
+</pre>
+
+Apache should redirect internally to "mytomcats.foo.com" which should result in
+a dns lookup of that hostname. If you have multiple records in that hostname,
+you get round-robin balancing across all tomcats for new sessions. When you add
+or remove tomcat servers, you don't have to update any config files.
+
+<p>
+No config files to change when you add new servers? That makes for healthy,
+dynamic scaling.
+
+<p>
+
+The best way to solve this would be to have tomcat share it's session data, but
+it uses multicast, and the network where tomcat lives doesn't have multicast
+routing enabled, so that doesn't seem like an option.

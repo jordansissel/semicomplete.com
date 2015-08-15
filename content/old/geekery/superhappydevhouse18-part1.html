@@ -1,0 +1,26 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-06-23T20:23:44-07:00"
+title = "At SuperHappyDevHouse 18\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["shdh", "jquery", "xulrunner", "shdh18"]
++++
+
+I've been working on the jquery commandline tool. The base features work, now
+all that remains is endlessly interating over adding features.
+
+<pre>
+% ./jquerycmd.sh --url http://www.google.com --query img
+&lt;IMG width='276' height='110' src='/intl/en_ALL/images/logo.gif' alt='Google' /&gt;
+% ./jquerycmd.sh --url http://www.technorati.com/ --query form
+&lt;FORM method='post' action='/query.php'&gt;
+        &lt;div class="controls"&gt;
+            &lt;a href="/search?advanced"&gt;advanced search&lt;/a&gt;
+        &lt;/div&gt;
+... &lt; remainder cut &gt; ...
+</pre>

@@ -1,0 +1,46 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-03-19T20:17:13-07:00"
+title = "Interesting FreeBSD rc.conf network option\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["freebsd", "networking"]
++++
+
+In rc.conf, I can put:
+<pre>
+ipv4_addrs_bge0="192.168.0.1-254/24 192.168.5.50-100/24"
+</pre>
+
+And do <code>/etc/rc.d/netif restart bge0</code>
+
+<p>
+
+and we get:
+
+<pre>
+% ifconfig bge0
+bge0: flags=8843&lt;UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST&gt; mtu 1500
+        options=1b&lt;RXCSUM,TXCSUM,VLAN_MTU,VLAN_HWTAGGING&gt;
+        inet 192.168.0.1 netmask 0xffffff00 broadcast 192.168.0.255
+        inet6 fe80::20a:e4ff:fe3f:92ee%bge0 prefixlen 64 scopeid 0x1 
+        inet 192.168.0.2 netmask 0xffffffff broadcast 192.168.0.2
+        inet 192.168.0.3 netmask 0xffffffff broadcast 192.168.0.3
+...
+        inet 192.168.0.253 netmask 0xffffffff broadcast 192.168.0.253
+        inet 192.168.0.254 netmask 0xffffffff broadcast 192.168.0.254
+        inet 192.168.5.50 netmask 0xffffff00 broadcast 192.168.5.255
+        inet 192.168.5.51 netmask 0xffffffff broadcast 192.168.5.51
+...
+        inet 192.168.5.99 netmask 0xffffffff broadcast 192.168.5.99
+        inet 192.168.5.100 netmask 0xffffffff broadcast 192.168.5.100
+        ether 00:0a:e4:3f:92:ee
+        media: Ethernet autoselect (none)
+        status: no carrier
+</pre>
+
+Neat. That's one way to take an entire subnet.

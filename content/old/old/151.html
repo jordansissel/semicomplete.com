@@ -1,0 +1,46 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-03-05T05:19:00-08:00"
+title = "Ahh, ::Mason, what would I do without you?\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["BROKEN"]
++++
+
+
+So I posted some time ago about moving to XML and such for this website. Well
+it turns out the apache+mod_perl+libxml setup we have here at CSH is busted
+nicely. Apache segfaults when you try to use XML::Xpath or XML::XSLT. I made
+several efforts to get a new apache+php+mod_perl+xml working, but it seems
+I made the problem worse. The supposed solution is to build mod_perl static
+into Apache, which is what I did. Now, in testing, I managed to cause this
+Solaris 9 server to kernel panic. Neat! So I gave up on xml for now. <p>
+
+Back to mason with me! The new site is coming along well and has features
+I've wanted in my website for ages. Firstly, it's completely modular. My
+reasons for using mason for this site in the first place was modularity.
+The current website's code is a terrible bit of ugly. The new code is
+very very clean and lets me do newer neater things. Secondly, I now make
+heavy use of CSS to make the site look the way it does. Again, the old
+site is a bag of hackery from the days of HTML 2.0 where we didn't have 
+nice things like CSS and such. Look at the source yourself - it's
+all embedded tables and ugliness abounds.<p>
+
+The new site can be previewed, for now, at<p>
+<a href="http://www.csh.rit.edu/~psionic/new">http://www.csh.rit.edu/~psionic/new</a>
+
+<p>
+
+Mason seems to be having everything I need, again. If you go to the new site you'll
+see a "Recent CVS Commits" section on the right. This is generated from a cvs module 
+I wrote. It calls things like 'cvs history' and whatnot, and certainly doesn't need to
+be run every time someone hits the page. So I use HTML::Mason's awesome caching feature
+to cache its results for 5 minutes and use those until it expires. The same goes for
+the center of the page where the blog posts are. I don't update that section as often
+so it is cached for 15 minutes.<p>
+
+HTML::Mason is sexy.  I'll post more later when I've got more done.

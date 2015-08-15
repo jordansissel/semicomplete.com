@@ -1,0 +1,61 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-11-12T16:15:38-08:00"
+title = "Puppet data into mcollective facts\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["mcollective", "puppet", "facts"]
++++
+
+There's a plugin for mcollective that lets you use puppet as your mcollective
+fact source. However, it doesn't seem to support the plugins-in-modules
+approach that puppet allows, and I don't want to have to regenerate and restart
+mcollective any time I add new fact modules.
+
+<p>
+
+Mcollective comes with a yaml fact plugin by default which will load facts from
+a yaml file of your choice. Exporting puppet facts in yaml format is super trivial
+during a puppet run:
+
+<pre>
+  package {
+    "mcollective": ensure => "0.4.10-1";
+    ...
+  }
+
+  file {
+    "/etc/mcollective/facts.yaml":
+      ensure => file,
+      content => inline_template("&lt;%= scope.to_hash.reject { |k,v| !( k.is_a?(String) &amp;&amp; v.is_a?(String) ) }.to_yaml %&gt;"),
+      require => Package["mcollective"];
+  }
+</pre>
+
+Easy. Now each puppet run updates will dump it's fact/parameter knowledge to
+that file and mcollective can use those facts:
+
+<pre>
+% mc-facts lsbdistrelease
+Report for fact: lsbdistrelease                            
+
+        10.04                                   found 18 times
+
+Finished processing 18 hosts in 5533.86 ms
+</pre>
+
+An added benefit of this is that any puppet variables (not just facts!) that
+are in scope are included in the yaml output. This lets you write "facts" to feed
+mcollective and puppet from plain puppet manifests. Awesome!
+
+<p>
+
+<b>Update: </b> Looks like there's a bug/feature somewhere that causes puppet
+to output yaml that mcollective can't handle due to sorting problems (like
+'!ruby/sym _timestamp'). To solve this, filter the scope hash for keys and
+values that are not strings.  I have updated the code above to reflect this.
+Future mcollective releases will handle funky data more safely.

@@ -1,0 +1,39 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-05-02T12:21:09-07:00"
+title = "ZSH: Disable 'cd' supporting usernames\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["zsh", "fix", "hack"]
++++
+
+I have a directory called "lib". If I try to do "cd l&lt;tab&gt;", zsh will
+offer me "libuuid list lib" as completion candidates. The words 'libuuid' and
+'list' show up because they are usernames. This is really annoying, and there
+doesn't seem to be an option to disable this. What happend to doing "cd ~root"
+to change to root's homedir? Was typing '~' too hard?
+
+<p>
+
+At any rate, I figured out where to fix the unfeature: A file '_tilde' in
+path/to//zsh/4.3.4/functions/Completion/Zsh. It happens to be
+/usr/share/zsh/4.3.4/functions/Completion/Zsh on my ubuntu workstation.
+
+<pre>
+... around line 22 ...
+while _tags; do
+  <b>_requested users && _users "$suf[@]" "$@" && ret=0</b>
+
+  _requested named-directories expl 'named directory' \
+...
+</pre>
+
+Comment out the bold line above (starting '_requested users  ...') and restart
+zsh. This only disabled the username completion part of zsh's cd command, but
+that's good enough for now. If I ever accidentally typo and cd to someone's
+home directory, I can just popd to return to my previous location.
+

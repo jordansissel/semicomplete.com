@@ -1,0 +1,26 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2003-10-23T05:48:00-07:00"
+title = "sshall again\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["productivity"]
++++
+
+So <code>xapply -f</code> doesn't cut it for when I want interactive ssh sessions, so I updated my sshall script to use the <code>apply</code> syntax instead of <code>xargs</code>  - this lets me do<p>
+<pre>sshall</pre>
+<br>
+and actually get a login prompt. If I used xapply (as previously) it would complain about not being able to grab stdin (or a tty) because we were doing:<p>
+<pre>cat hostlist | xapply -f 'ssh ...'</pre>
+<br>
+This would give the error message (for each host):
+<pre>
+project1 -
+Pseudo-terminal will not be allocated because stdin is not a terminal.
+</pre>
+
+The solution to this problem is varied. You'll probably need the <i>-t</i> option for ssh: ssh -t user@server will allocate a terminal for you on the remote server so console-based applications will work. 

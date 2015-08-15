@@ -1,0 +1,171 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-03-07T04:06:25-08:00"
+title = "Splitting large logs\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["logs", "automation", "parallelization"]
++++
+
+I've started using grok more. I don't have any regular log processing to do, so
+any usage is random and not related to previous runs. As such, I'd would really
+love it if grok could process faster. Rather than concentrating on a
+potentially-dead-end of making grok faster (complex regex patterns are cpu
+intensive), I think it'll be easier to make it parallelizable. The first step
+towards parallelization of grok is being able to split logs into small pieces,
+quickly.
+
+<p>
+
+
+Both FreeBSD's and Linux's (GNU, really) split(1) tool is fairly slow when you
+want to split by line count. Splitting by byte count is (should be) faster, but
+that will break logs because the byte boundary probably won't ever align on a
+log boundary..
+
+<p>
+
+I'd prefer both: the speed of byte size splitting and the sanity of line based
+splitting. To that end, I wrote a small tool to do just that. Yes, there's
+probably a tool already available that does exactly what I want, but this was
+only 100 lines of C, so it was quick to write. GNU split's --line-bytes option
+is mostly what I want, but it's still crap slow.
+
+
+<p>
+
+<a href="/projects/fastsplit/fastsplit.tar.gz">download fastsplit</a>
+
+<p>
+
+Here's a comparison between my tool and gnu's split, run on the fastest
+workstation I have access to. My tool runs 4 times faster than gnu split for
+this task.
+
+<pre>
+# Source file is 382 megs, which is tiny.
+% du -hs access
+382M    access
+
+# (Fast) Split into approximately 20meg chunks while preserving lines.
+% time ./fastsplit -b 20971520 -p ./split.fast. access 
+
+real    0m1.260s
+user    0m0.018s
+sys     0m1.242s
+
+# (GNU) Split into 87000-line chunks, no guarantee on size.
+% time split -l 87000 access split.normal..
+
+real    0m4.943s
+user    0m0.395s
+sys     0m2.440s
+
+# (GNU) Split into 20mb (max) chunks, preserve lines.
+% time split --line-bytes 20971520 access split.normal_bytes.
+
+real    0m4.391s
+user    0m0.001s
+sys     0m1.779s
+</pre>
+
+You can see that the actual 'system' time is somewhat close (mine wins by
+0.4s), but 'real' time is much longer for Linux's split(1).. My solution is
+really good if you want quickly split logs for parallel processing and you
+don't really care how many lines there are so much as you get near N-sized
+chunks.
+
+<p>
+
+What's the output look like?
+
+<table border="1">
+<tr>
+<th> fast split </th>
+<th> gnu split -l </th>
+<th> gnu split --line-bytes </th>
+</tr>
+<tr>
+<td valign="top"> 
+<pre>
+% wc -l split.fast.*
+ 86140 split.fast.00000
+ 81143 split.fast.00001
+ 92725 split.fast.00002
+...
+ 91067 split.fast.00016
+ 86308 split.fast.00017
+ 84533 split.fast.00018
+  1654604 total
+</pre>
+</td>
+<td valign="top">
+<pre>
+% wc -l split.normal.*
+ 87000 split.normal.aa
+ 87000 split.normal.ab
+ 87000 split.normal.ac
+...
+ 87000 split.normal.ar
+ 87000 split.normal.as
+  1604 split.normal.at
+  1654604 total
+</pre>
+</td>
+<td valign="top"> <pre>
+% wc -l split.normal_bytes.*
+ 85973 split.normal_bytes.aa
+ 80791 split.normal_bytes.ab
+ 92363 split.normal_bytes.ac
+...
+ 86141 split.normal_bytes.ar
+ 85665 split.normal_bytes.as
+  3999 split.normal_bytes.at
+  1654604 total
+</pre> </td>
+</tr>
+
+<tr>
+<td valign="top">
+<pre>
+% du -hs split.fast.*
+21M     split.fast.00000
+21M     split.fast.00001
+21M     split.fast.00002
+...
+21M     split.fast.00016
+21M     split.fast.00017
+20M     split.fast.00018
+</pre>
+</td>
+<td valign="top">
+<pre>
+% du -hs split.normal.*
+21M     split.normal.aa
+22M     split.normal.ab
+19M     split.normal.ac
+...
+21M     split.normal.ar
+21M     split.normal.as
+352K    split.normal.at
+</pre>
+</td>
+<td valign="top"><pre>
+% du -hs split.normal_bytes.*
+21M     split.normal_bytes.aa
+21M     split.normal_bytes.ab
+21M     split.normal_bytes.ac
+...
+21M     split.normal_bytes.ar
+21M     split.normal_bytes.as
+896K    split.normal_bytes.at
+</pre></td>
+</tr>
+</table>
+
+
+

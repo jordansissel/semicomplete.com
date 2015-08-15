@@ -1,0 +1,155 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-03-03T00:58:54-08:00"
+title = "Making iptables changes atomically and not dropping packets.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["iptables", "linux", "firewall"]
++++
+
+I'm working on rolling out iptables rules to all of our servers at work. It's
+not a totally simple task, as many things can go wrong.
+
+<p>
+
+The first problem is the one where you can shoot yourself in the foot. Install
+a new set of rules for testing on a remote server, and suddenly your ssh
+session stops responding. I covered how to work around that <a href="http://www.semicomplete.com/blog/geekery/firewall-reset-for-testing.html">in a previous post</a>.
+
+<p>
+
+Another problem is ensuring you make your firewall changes atomically. All
+rules pushed in a single step. In linux, if you have a script with many lines
+of 'iptables' invocations, running it will make one rule change per iptables
+command. And what if you write your rules like this?
+
+<pre>
+# Flush rules so we can install our new ones.
+iptables -F
+
+# First rule, drop input by default
+iptables -P INPUT DROP
+
+# Other rules here...
+iptables -A INPUT ... -j ACCEPT
+iptables -A INPUT ... -j ACCEPT
+</pre>
+
+If your server is highly trafficked, then the delay between the 'DROP' default
+and accept rules can mean dropped traffic. That sucks. This is an example of a
+race condition. Additionally, there's a second race condition earlier in the
+script where, depending on the default rule for INPUT, we may drop or accept
+all traffic for a very short period. Bad.
+
+<p>
+
+One other problem I thought could occur was a state tracking problem with
+conntrack. If previously we weren't using conntrack, what would happen to
+existing connections when I set default deny and only allowed connections that
+were established? Something like this:
+
+<pre>
+iptables -P INPUT DROP
+iptables -A INPUT -i eth0 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+iptables -A INPUT -p tcp -m tcp --dport 22 --syn -j ACCEPT
+</pre>
+
+I did some testing with this, and I may be wrong here, but it does not drop my
+existing sessions as I had predicted. This is a good thing. Turns out, when
+this runs, the 'conntrack' table is populated with existing connections from
+the network stack. This further helps us not drop traffic when pushing new
+firewall rules. You can view the current conntrack table in the file
+/proc/net/ip_conntrack.
+
+<p>
+
+What options do we have for atomically applying a bunch of rules so we don't
+drop traffic?  The iptables tool set comes with 'iptables-save' which lets you
+save your existing iptables rules to a file. I was unable to find any
+documentation on the exact format of this file, but it seems easy enough to
+read. The output includes rules and counters for each table and chain. Counters
+are optional.
+
+<p>
+
+All the documentation I've read indicates that using 'iptables-restore' will
+apply all of the rules atomically. This lets us set a pile of rules all at once
+without any race conditions.
+
+<p>
+
+So I generate an iptables-restore file and use iptables-restore to install it.
+No traffic dropped. I'm generating it with a shell script, so there was one
+gotcha - 
+
+I basically take iptables commands and output them to a file. I do this with a
+shell function I wrote, called 'addrule'. However, I have some rules like this:
+
+<pre>
+addrule -A INPUT -p tcp -m limit --limit 5/min -j LOG --log-prefix "Denied TCP: " --log-level debug
+</pre>
+
+I quoted the argument in the addrule invocation, but we need to also produce a
+quoted version in our iptables-restore rule file, otherwise --log-prefix will
+get set to 'Denied' and we'll also fail because 'TCP:' is not an option
+iptables expects. It appears to be safe to quote all arguments in the
+iptables-restore files except for lines declaring chain counters (like ':INPUT
+ACCEPT [12345:987235]'), defining tables (like '*filter'), or the 'COMMIT'
+command. Instead of quoting everything, I just quote everything with spaces in
+an argument.
+
+<p>
+The fix makes my 'addrule' function look like this:
+
+<pre>
+rulefile="$(mktemp)"
+
+addrule() {
+  while [ $# -gt 0 ] ; do
+    # If the current arg has a space in it, output "arg"
+    if echo "$1" | grep -q ' '  ; then
+      echo -n "\"$1\""
+    else
+      echo -n "$1"
+    fi
+    [ $# -gt 1 ] && echo -n " "
+    shift
+  done &gt;&gt; $rulefile
+  echo &gt;&gt; $rulefile
+}
+
+# So this:
+#   addrule -A INPUT -j LOG --log-prefix "Hello World"
+# will output this to the $rulefile
+#   -A INPUT -j LOG --log-prefix "Hello World"
+</pre>
+
+So now the quoted arguments stay quoted. All of that madness is in the name of
+being able to simple replace 'iptables' with 'addrule' and you're good to go.
+No extra formatting changes necessary.
+
+<p>
+
+One last thing I did was to make sure iptables-restore didn't reject my file, and if
+it did, to tell me:
+
+<pre>
+if iptables-restore -t $rulefile ; then
+  echo "iptables restore test successful, applying rules..."
+  iptables-restore -v $rulefile
+  rm $rulefile
+else
+  echo "iptables test failed. Rule file:" &gt;&2
+  echo "---" &gt;&2
+  cat $rulefile &gt;&2
+  rm $rulefile
+  exit 1
+fi
+</pre>
+
+Throw this script into puppet and we've got automated firewall rule management
+that won't accidentally drop traffic on rule changes.

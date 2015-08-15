@@ -1,0 +1,30 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-09-29T00:54:43-07:00"
+title = "Ruby: Finding subclasses in your world\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["ruby", "inspection"]
++++
+
+Use the ObjectSpace class to find all ancestors of a given class.
+
+<pre>
+class Foo; end
+class Bar < Foo; end
+class Baz < Foo; end
+
+subclasses = ObjectSpace.each_object(Class).select do |klass|
+  klass.ancestors.include?(Foo) and klass != Foo
+end
+
+# prints "[Baz, Bar]"
+puts subclasses
+</pre>
+
+Of course, you could always override Class#inherited instead, but if you don't
+want to override methods, the above is a reasonable choice.

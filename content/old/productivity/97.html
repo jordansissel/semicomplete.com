@@ -1,0 +1,40 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2003-12-29T00:14:00-08:00"
+title = "xterm -e screen? Something better...\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["productivity"]
++++
+
+I got tired of losing my terminal sessions whenever I decided I needed to
+restart X for some reason, or one of my assclown dorm-mates decides to
+ctrl+alt+backspace my X session. So, instead of enabling <code>DontZap</code>
+in my XF86Config, I figured I would just use screen to compensate. This wasn't
+enough, seeing as <code>xterm -e screen</code> would just start up a new screen
+session completely ignoring the current detached ones and thus defeating the
+purpose of using screen for convenience. Thus, I wrote a two line script to fix
+this problem:
+<br>
+<pre>
+#!/bin/sh
+
+SESSION=`screen -ls | grep '(Detached)$' | sed -ne '1p' | awk '{print $1}'`
+[ -z "$SESSION" ] && screen || screen -x "$SESSION"
+</pre>
+<br>
+What this does is look for the first detached screen session listed by
+<code>screen -ls</code> and use it to attach to. If there are no
+currently-detached screen sessions running it'll start up a new one and running
+your default shell.
+<p>
+Ok, so how is this useful? Put the script above in a file called "attach" and throw it in ~/bin/ (make that directory if you have to). Make sure you <code>chmod 755 ~/bin/attach</code>! Now change the way you open terminals in your windowmanager to:
+<pre>
+xterm <u>-e ~/bin/attach</u> [other xterm opts here] 
+</pre>
+<br>
+And you're good to go :)

@@ -1,0 +1,59 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-01-17T23:56:00-08:00"
+title = "jQuery on XML Documents\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["open source adventures", "jquery", "xml"]
++++
+
+Ever since BarCampNYC, I've been geeking out working with jQuery, a project by
+my good friend <a href="http://ejohn.org/">John Resig</a>. It's a JavaScript
+library that takes ideas from Prototype and Behavior and some good smarts to
+make writing fancy JavaScript pieces so easy I ask myself "Why wasn't this
+available before?" I won't bother going into the details of how the library
+works, but it's based around querying documents. It supports CSS1, CSS2 and
+CSS3 selectors (and some simple XPath) to query documents for fun and profit.
+
+<p/>
+
+In the car ride back from BarCampNYC, I asked Resig if he knew whether or not
+jQuery would work for querying on xml document objects. "Well, I'm not sure"
+was the response. I took the time today to test that theory. Becuase jQuery
+does not rely on <code>document.getElementById()</code> to look for elements
+the way Prototype does. Bypassing that limitation, you can successfully query
+XML documents and even subdocuments of HTML or XML. This is fantastic.
+
+<p/>
+
+Today's magic was a demo I wrote to pull my rss feed via XMLHttpRequest (AJAX)
+and very simply pull the data I wanted to use out of the XML document object
+returned.
+
+<p/>
+The gist of the magic of jQuery revolves around the <code>$()</code> function.
+This function is generations ahead of what the Prototype <code>$()</code>
+function provides.
+
+<p/>
+The magic is here, in the XMLHttpRequest onreadystatechange function
+<pre>
+// For each 'item' element in the RSS document, alert() out the title.
+var entries = $("item",xml.responseXML).each(
+   function() {
+      var title = $(this).find("title").text();
+      alert("Title: " + title);
+   }
+</pre>
+
+The actual demo is quite impressive, I think. I can query through a complex XML
+document in only a few lines of code. Select the data you want, use it, go
+about your life. So simple!
+
+<p/>
+
+<a href="http://www.csh.rit.edu/~psionic/test/jquery-on-xml.html">View the RSS-to-HTML jQuery Demo</a>

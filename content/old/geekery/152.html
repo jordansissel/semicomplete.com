@@ -1,0 +1,75 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-03-05T23:19:00-08:00"
+title = "Curious me web stats.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["perl"]
++++
+
+I got bored and wanted to see how my new site compares against other things.
+These statistics are by no means thorough. The benchmarker I used is a 
+very simple program called webbench. It simply sends request after
+request at whatever you point it at. The statistics were done using 5
+concurrent clients over 30 seconds (-c 5 -t 30).<p>
+
+I think the results are pretty interesting.<p>
+
+<table border="0">
+<tr>
+<td> http://www.google.com/ </td>
+<td> 7126 pages/min </td>
+</tr><tr>
+<td> http://www.amazon.com/ </td>
+<td> 8340 pages/min </td>
+</tr><tr>
+<td> http://www.csh.rit.edu/ </td>
+<td> 3690 pages/min </td>
+</tr><tr>
+<td> http://www.csh.rit.edu/~psionic/new </td>
+<td> 7066 pages/min </td>
+</tr><tr>
+<td> http://www.csh.rit.edu/~psionic/new?nocache </td>
+<td> 710 pages/min </td>
+</tr>
+</table>
+<br>
+
+A factor of 10 difference with caching than without. Sheesh.
+How easy is it to cache things in mason? Let me show you.
+
+<pre>
+<%init>
+return if (!exists($m->request_args()->{'nocache'}) && 
+		$m->cache_self(key => $m->comp("/lib/cachename"), expires_in => '30 minutes'));
+&lt;/%init>
+</pre>
+
+Put that in the %init section of any component and poof, mason caches the
+output of that component for 30 minutes (as specified). According to <a
+href="http://www.masonhq.com/docs/manual/Request.html#item_cache_self">this
+site</a>, you can cache the return values of components too, which makes it a
+bit like Memoize in a way.<br>
+The <code>/lib/cachename</code> componenet is a little dohicky I wrote up to 
+automatically generate a key name to cache by:
+
+<pre>
+<%perl>
+	my ($k,$v);
+	my $args = scalar($m->caller_args(1));
+	my $key = scalar($m->callers(1))->{"path"};
+	$key .= ".$k=$v" while (($k,$v) = each(%$args));
+	$key =~ s!s!_!g;
+	return $key;
+&lt;/%perl>
+</pre>
+
+This component generates a key in the form of "compname.foo=bar.baz=fizz" or
+whatever. It takes the arguments passed to the component  and makes a unique
+key out of it. This is so I can cache specific calls to each component (like
+Memoize!) with specific arguments rather than simply caching only one output
+and using that. This is slick.

@@ -1,0 +1,50 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2003-10-02T11:35:30-07:00"
+title = "bourne shell goodness.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["shell"]
++++
+
+
+So until now I never knew how to pipe things into my shell scripts - I'm smacking myself on the head now for not having figured this out sooner.<p>
+
+In unix, the standard file descriptors <code>stdin</code>, <code>stdout</code>, and <code>stderr</code> are numbered
+0, 1, and 2, respectively. I've always done descriptor redirection, such as:<p>
+<pre>grep ^Poop myfile.txt 2>&1 > /dev/null</pre>
+<br>
+This will redirect <code>stderr</code> (fd #2) to <code>stdout</code> (fd #1). <code>stdout</code> is then redirected to <code>/dev/null</code>.
+<p>
+What I never bothered trying was redirecting <code>stdin</code>. (fd #0). Let's take a look at this simple script:<p>
+<pre>
+#!/bin/sh
+
+echo "Printing output:"
+sed -e 's/^./Output: &/' <&0 
+</pre>
+<br>
+
+Note the <code><&0</code> - this will use our <code>stdin</code> as the <code>stin</code> for sed.<br>
+Now, let's try running it:<br>
+<code>ls | ./myscript</code>
+<p>
+
+The output is just how I want:<br>
+<pre>
+whack(~/bin) [590] > /bin/ls | sh myls.sh
+Printing output:
+Output: Mrandom
+Output: fix
+Output: hostlist
+Output: intarweb
+Output: logtail
+Output: malbums
+Output: mclear
+Output: minfo
+Output: myls.sh
+</pre>

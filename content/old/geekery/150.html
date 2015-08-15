@@ -1,0 +1,76 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-03-04T04:01:00-08:00"
+title = "soekris adventures\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["soekris", "freebsd"]
++++
+
+So for this new part-time job I've got, I'm working on a Soekris net4501.
+FreeBSD has some surprisingly cool support for these things thanks mostly to
+phk@freebsd's work. Now that I've managed to get a slimmed down version of
+freebsd built and running (7.3meg world, 2.2 meg kernel) of a pxe boot, I've
+had a chance to actually play with the darned thing.<p>
+
+The first thing I noticed was /dev/led/error. You can do 
+
+<br><pre>echo 1 > /dev/led/error</pre><br> 
+
+and viola! The error led on the board is on. This device
+supports quite the array of syntax you can throw at it. For instance, I can do
+
+<br><br><pre>echo "f1" > /dev/led/error</pre><br>
+
+and the error led will start blinking.
+Read led(4) if you care to know more about the rest of the syntax it supports 
+(it'll even handle morse code from running /usr/games/morse -l).<p>
+
+I also discovered there was support for the GPIO pins on the board, too. This
+is done through the same /dev/led interfaces. To enable one of the pins as a
+device, you fudge around with the machdep.elan_gpio_config sysctl and you'll
+end up with devices such as /dev/led/gpio5. Neato! More about the GPIO-specific
+stuff here:<br>
+<a href="http://lists.freebsd.org/pipermail/freebsd-current/2003-November/014700.html">http://lists.freebsd.org/pipermail/freebsd-current/2003-November/014700.html</a>
+<p>
+
+So far so good, I've got a usable shell with most tools I use (short of gcc and gdb)
+in 8.7 megs.
+<p>
+<pre>
+# df -h
+Filesystem    Size    Used   Avail Capacity  Mounted on
+/dev/md0       19M    8.7M    8.8M    50%    /
+</pre>
+<br>
+
+Since it's less than 10 megs, I have it mounted in memory instead of nfs. Doesn't
+hurt too much, seeing as how the board has 64 megs of ram, and with everything 
+booted and me logged in I have 26 megs free.
+<p>
+
+Speaking of disk size, /usr/bin/host is a whopping 1.1 megs. That's quite large for
+dynamically linked binary. However, I think it was statically linked against libbind
+or something silly. Either way in the final product it'll go away, shaving more disk 
+usage off.<p>
+
+This project has been a grand adventure into freebsd's world build system. My
+whole time working on this has been me writing one makefile. The way it works
+is fairly slick, I think. First, it generates a 20 meg vnode-backed filesystem,
+then builds a bunch of things from /usr/src and installs them to that new
+filesystem. Once this is done, I clean out some unnecessary files like library
+archives (.a files), worthless things in /usr/share, etc. The kernel is handled
+much in the same way, doing make buildkernel in /usr/src and then plopping a new 
+kernel.gz in /tftpboot.<p>
+
+The cool part is how libraries are built. The makefile builds all the necessary
+binaries, installs them, and then uses ldd(1) to look for library dependencies.
+With this list of required libraries, it builds each required library from
+/usr/src and installs those. To make things easier to work with, I have two
+other make targets that let me test the system in both a jail(8) and chroot(8).
+
+This soekris board is so cool :)

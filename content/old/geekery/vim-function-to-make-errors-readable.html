@@ -1,0 +1,62 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-01-14T00:39:29-08:00"
+title = "Vim function to make g++ errors readable.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["vim", "g++", "c++", "templates", "sanity"]
++++
+
+If you've ever used templates in C++, you've probably gone blind trying to read the compiler errors.
+
+<pre>
+grokmatch.hpp:7: error: 'typedef class std::map&lt;std::basic_string&lt;char,
+std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::basic_string&lt;char,
+std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;,
+std::less&lt;std::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt;
+&gt; &gt;, std::allocator&lt;std::pair&lt;const std::basic_string&lt;char,
+std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::basic_string&lt;char,
+std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt; &gt;
+GrokMatch&lt;boost::xpressive::basic_regex&lt;__gnu_cxx::__normal_iterator&lt;const
+char*, std::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;
+&gt; &gt;::match_map_type' is private
+</pre>
+
+I'm supposed to read all that crap? Especially since 99% of the data isn't
+useful in most cases. The following vim script sanitizes this output:
+
+<pre>
+function! GPPErrorFilter()
+  silent! %s/->/ARROW/g
+  while search("<", "wc")
+    let l:line = getline(".")
+    let l:col = col(".")
+    let l:char = l:line[l:col - 1]
+    if l:char == "<"
+      normal d%
+    else
+      break
+    endif
+  endwhile
+  silent! %s/ARROW/->/g
+  silent %!awk '/: In/ { print "---------------"; print }; \!/: In/ {print }'
+endfunction
+</pre>
+
+If I dump the output of make to a file (including stderr), and run the function while in vim, using ':call GPPErrorFilter()', the output turns into this:
+
+<pre>
+g++ -g -I/usr/local/include -c -o main.o main.cpp
+---------------
+grokmatch.hpp: In function 'int main(int, char**)':
+grokmatch.hpp:7: error: 'typedef class std::map GrokMatch::match_map_type' is private
+main.cpp:43: error: within this context
+make: *** [main.o] Error 1
+</pre>
+
+So much better... Now i know I'm clearly trying to access a private typedef.
+Sanity++

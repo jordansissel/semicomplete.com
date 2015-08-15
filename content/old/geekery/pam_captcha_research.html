@@ -1,0 +1,58 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-07-19T10:40:11-07:00"
+title = "Is pam_captcha worth using? (Securing your sshd)\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["pam_captcha", "security"]
++++
+
+In /var/log/auth.log today, I see:
+
+<pre>
+Jul 19 04:37:21 dns sshd[5072]: Invalid user test from 211.154.254.73
+Jul 19 04:37:22 dns sshd[5074]: Invalid user guest from 211.154.254.73
+Jul 19 04:37:26 dns sshd[5080]: Invalid user user from 211.154.254.73
+</pre>
+
+No authentication failures, just invalid user notifications.
+
+<p>
+
+FreeBSD has (for a while?) disabled simple "password" authentication in it's base sshd config. What does this mean? If client connects requesting only "password" authentication, it will be rejected. Period. Example:
+
+<pre>
+dns(~) !255! % ssh -o "PreferredAuthentications password" happytest@dhcp
+Permission denied (publickey,keyboard-interactive).
+</pre>
+
+If you check /var/log/auth.log, you'll see:
+<pre>
+Jul 19 06:10:32 dns sshd[5403]: Invalid user happytest from 192.168.0.252
+</pre>
+
+However, try the same with a valid user. Nothing is logged (by default). Still,
+you are denied outright.
+
+<p>
+
+The important point, is that I guess pam_captcha is not necessary at this time.
+Every ssh client I have used has supported both public-key and
+keyboard-interactive authentication, so disabling 'password' everywhere should
+be a viable option. FreeBSD disables password auth by default, and no one seems
+to be complaining.
+
+<p>
+
+If you're worried about brute force attacks over ssh, then just disable
+'password' authentication.  In sshd_config:
+
+<pre>
+PasswordAuthentication no
+</pre>
+
+This probably requires that you use public-key or keyboard-interactive (PAM) to authenticate. Keeps normal users happy, and blocks brute force bots. That is, until the bot scripts are updated to use keyboard-interactive, perhaps? Who knows...

@@ -1,0 +1,87 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-01-18T20:07:36-08:00"
+title = "Grok + Lucene\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok", "lucene", "log analysis"]
++++
+
+I <a href="/blog/geekery/log-analytics-with-open-source.html">mentioned last
+night</a> some ideas about an open source data analytics tool. I spent a few minutes today cleaning up the code I used to test grok and lucene.
+
+<p>
+
+I used the latest HEAD version of <a
+href="http://code.google.com/p/semicomplete/source/browse/cgrok">grok</a> to
+turn Apache logs into JSON and wrote a Java program to read the JSON output
+into Lucene. The last step was to write a simple search tool to query the data
+in Lucene.
+
+<p>
+
+<ul>
+  <li> <a href="http://code.google.com/p/semicomplete/source/browse/sandbox/20090118-lucene-grok/grok.conf">grok.conf</a> </li>
+  <li> <a href="http://code.google.com/p/semicomplete/source/browse/sandbox/20090118-lucene-grok/GrokJSONImport.java">GrokJSONImport.java</a> </li>
+  <li> <a href="http://code.google.com/p/semicomplete/source/browse/sandbox/20090118-lucene-grok/LogSearch.java">LogSearch.java</a> </li>
+</ul>
+
+For a test case, I used a 10000-line apache access log. To populate, I just ran this:
+
+<pre>
+% ./grok | java GrokJSONImport
+</pre>
+
+Grok (per the config above) will output json objects for each match and GrokJSONImport will read each line and parse it as json, telling Lucene that each new log entry is a new document with fields matched by grok.
+
+<p>
+
+Let's search for all successful HTTP POSTs (well, the first 100 hits, since LogSearch.java only asks for 100 hits):
+
+<pre>
+% java LogSearch '+response:200 +verb:post' timestamp verb request response
+Found 5794 hits.
+timestamp: 18/Jan/2009:04:01:00 -0500
+verb: POST
+request: /hackday08/randomtags.py
+response: 200
+
+timestamp: 18/Jan/2009:04:01:05 -0500
+verb: POST
+request: /hackday08/randomtags.py
+response: 200
+
+&lt; remainder of output cut &gt;
+</pre>
+
+Most of the hits are related to 'randomtags.py' which is a CGI script used by
+my yahoo pipes hack, <a
+href="http://pipes.yahoo.com/jordansissel/snackupon">SnackUpon</a>. Let's
+filter out all of those requests:
+
+<pre>
+% java LogSearch '+response:200 +verb:post NOT request:/hackday08/randomtags.py' timestamp verb request response
+Found 91 hits.
+timestamp: 18/Jan/2009:09:12:04 -0500
+verb: POST
+request: /blog/geekery/217
+response: 200
+
+timestamp: 18/Jan/2009:09:16:02 -0500
+verb: POST
+request: /blog/static/about#comment_anchor
+response: 200
+
+&lt; remainder of output cut &gt;
+</pre>
+
+What if I want to see some non-200 response code GETs? Turn the query into
+'verb:get NOT response:200' and you're done.
+
+<p>
+
+Pretty cool, eh? :)

@@ -1,0 +1,37 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2004-02-16T05:27:00-08:00"
+title = "Java JSSE SSLSocket/SSLServerSocket\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["java"]
++++
+
+Holy christ... I've never had so much trouble getting something to work in my
+life. For the past several hours of scouring google and online book resources I
+was left without any working means by which to use <code>javax.net.ssl</code>
+usefully - and by usefully I mean without requiring a pregenerated key
+certificate, etc. After looking at SSLSocket.getSupportedCipherSuites() and
+seeing <code>DH_</code> prefixes on some of the supported ciphers but not on
+the enabled-by-default ciphers, I looked into what the DH stood for. Turns out
+it stands for Diffie-Hellman which I knew to be a secret key generation method:
+My salvation was at hand. For those who are still in the dark, Diffie-Hellman
+key exchange allows both parties (server and client) to negotiate a secret key
+across the wire, cancelling my need for a stored, pregenerated key certificate.
+<p>
+Anyhoo, so the past few hours have been totally not awesome. Here's the fix to get SSLSockets to play kosher with eachother without the need for a certificate:<p>
+<pre>
+socket.setEnabledCipherSuites(socket.getSupportedCipherSuites());
+</pre>
+<br>
+Do this for both sockets (server AND client) and they will eventually negotiate upon the Diffie-Hellman key exchange, and you can go about your merry way on the happy SSLSocket-land.
+<p>
+I'm so tired :(
+
+Want a good example? Here<br>
+<a href="/misc/client.java">The SSL Client</a><br>
+<a href="/misc/server.java">The SSL Server (multithreaded)</a><br>

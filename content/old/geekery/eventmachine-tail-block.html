@@ -1,0 +1,47 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-05-24T22:40:39-07:00"
+title = "New eventmachine-tail features\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["eventmachine-tail", "eventmachine", "tail"]
++++
+
+I added block support to EM::file_tail in the eventmachine-tail gem. This lets
+you give a handler to the tail instead of a class, which could mean less code
+to write for the common case (handle lines of input):
+
+<pre>
+require "rubygems"
+require "eventmachine-tail"
+
+def main(args)
+  if args.length == 0
+    puts "Usage: #{$0} &lt;path&gt; [path2] [...]"
+    return 1
+  end
+
+  EventMachine.run do
+    args.each do |path|
+      EventMachine::file_tail(path) <b>do |filetail, line|
+        # filetail is the 'EventMachine::FileTail' instance for this file.
+        # line is the line read from thefile.
+        # this block is invoked for every line read.
+        puts line
+      end</b>
+    end
+  end # EventMachine.run
+end # def main
+
+exit(main(ARGV))
+</pre>
+
+You can use gem to install the latest eventmachine-tail. 
+
+<p>
+
+You can also pull the latest from <a href="http://github.com/jordansissel/eventmachine-tail">github</a>

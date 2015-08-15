@@ -1,0 +1,48 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2004-12-07T13:20:00-08:00"
+title = "Terminals and meta characters\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["perl"]
++++
+
+So it seems that there's two ways your terminal can send "meta" key
+combinations.<p>
+
+One method is to send escape + the character. So hitting ALT+J will send an
+escape character followed by 'J'. <br>
+Alternatively, your terminal might simply read the character value in and set
+it's most significant bit high before sending that byte to the terminal. What
+does does that mean?<br>
+Let's say you were to hit ALT+J this time. J, in ascii is 74 in ascii. This
+number represented in binary is: <code>01101010</code>. Having alt held down
+sets the left-most (most significant) bit high, becoming
+<code>11101010</code>.<p>
+
+Many terminals allow you to set which method of input it uses. XTerm, for
+instance, allows you through the menu accessed by control+leftclicking on the
+terminal (anywhere). Select "Meta sends Escape" and alt-key combinations will
+send escape+character. If "Meta sends Escape" is unchecked, then your terminal
+will set-high the most significant bit before sending the character.<p>
+
+Here's a perl oneliner that'll let you see what's going on. The output for mat
+is: <code> char / ascii / binary </code> where ascii is the hexadecimal value
+of what you entered, and binary is the binary representation. You'll notice
+that if "Meta sends Escape" is unchecked, then your terminal will set-high the
+most significant bit before sending the character.<p>
+
+<pre>
+#!/usr/bin/perl
+
+system("stty raw -echo"); 
+while (sysread(STDIN,$foo,1)) {
+        printf("%s / %2x - ", ($foo =~ /[[:print:]]/ ? $foo : " "), ord($foo)); 
+        print unpack("B32", pack("n", ord($foo))) . "\r\n" 
+}
+
+</pre>

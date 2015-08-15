@@ -1,0 +1,53 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-11-08T13:14:10-08:00"
+title = "new keynav version available (20091231)\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["keynav", "xlib", "release"]
++++
+
+Hop on over to the <a href="/projects/keynav">keynav project page</a> and
+download the new version.
+
+<p>
+
+The changelist from the previous announced release is as follows:
+
+<pre>
+20091231.04:
+  - Try repeatedly to grab the keyboard with XGrabKeyboard on 'start' commands.
+    This loop is a necessary workaround for programs like xbindkeys that could
+    launch keynav but at the time of launch still hold a keyboard grab
+    themselves. Reported by Colin Shea.
+
+20091231.02:
+  - Nonfunctional bug fixes and other code cleanup from patches by Russell Harmon
+
+20091231.01:
+  - Some internal code refactor/cleanup
+  - Reduce drawing flicker by drawing to a Pixmap and blitting to the window.
+  - Allow commands to be given on keynav startup. (Reported by Colin Shea)
+    The same commands valid as keybindings are valid as startup commands:
+    % keynav "start, grid 3x3"
+  - Allow clicking through the keynav grid window area (Reported by Yuri D'Elia)
+  - Support daemonizing using the 'daemonize' command in keynavrc. Added an
+    example to the distributed keynavrc.
+  - Use new library features given by xdotool/libxdo 20091231.01
+
+20091208:
+  - Support linking against libxdo.so if it is found, otherwise we build xdo.o
+    into keynav. The original intent of including xdotool in the release package
+    was to make make it easy to build keynav without a packaging system. Now
+    that more distros have keynav and xdotool, this requirement is less
+    important.
+
+    This change is in response to Debian rqeuest:
+      http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=560103
+</pre>
+
+<a href="http://semicomplete.googlecode.com/files/keynav-20091231.02.tar.gz">keynav-20091231.02</a>

@@ -1,0 +1,116 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-01-27T21:26:08-08:00"
+title = "Mysql prepare'd queries aren't cached, ever.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["mysql", "rants", "performance"]
++++
+
+There once was a database named MySQL.
+
+<p>
+
+It had a query cache, becuase caching helps performance.
+
+<p>
+
+It also had queries you could "prepare" on the server-side, with the hope that
+your database server can make some smart decisions what to do with a query
+you're going to execute N times during this session.
+
+<p>
+
+I told mysql to enable it's caching and use a magic value of 1gb for memory storage. Much to my surprise, I see the following statistic after testing an application:
+
+<pre>
+mysql> show status like 'Qcache_%';
++-------------------------+------------+
+| Variable_name           | Value      |
++-------------------------+------------+
+| Qcache_free_blocks      | 1          | 
+| Qcache_free_memory      | 1073732648 | 
+| Qcache_hits             | 0          | 
+| Qcache_inserts          | 0          | 
+| Qcache_lowmem_prunes    | 0          | 
+<strong><font color="red">| Qcache_not_cached       | 814702     | </font></strong>
+| Qcache_queries_in_cache | 0          | 
+| Qcache_total_blocks     | 1          | 
++-------------------------+------------+
+8 rows in set (0.00 sec)
+</pre>
+
+Why are so many (all!?) of the queries not cached? Surely I must be doing
+something wrong. Reading the doc on caching explained what I can only
+understand as a complete lapse of judgement on the part of MySQL developers:
+
+<blockquote>
+<i>from <a href="http://dev.mysql.com/doc/refman/5.0/en/query-cache.html">http://dev.mysql.com/doc/refman/5.0/en/query-cache.html</a></i>
+<br>
+Note: The query cache is not used for server-side prepared statements. If you're using server-side prepared statements consider that these statement won't be satisfied by the query cache. See Section 22.2.4, C API Prepared Statements.
+</blockquote>
+
+Any database performance guide anywhere will tell you to use prepared
+statements. They're useful from both a security and performance perspective.
+
+<p>
+
+Security, becuase you feed the prepared query data and it knows what data types
+to expect, erroring when you pass something invalid. It also will handle
+strings properly, so you worry less about sql injection. You also get
+convenience, in that you don't have to escape your data.
+
+<p>
+
+Performance, becuase telling the database what you are about to do lets it
+optimize the query.
+
+<p>
+
+This performance is defeated, however, if you want to use caching. So, I've got
+a dillema! There are two mutually-exclusive (because MySQL sucks) performance-enhancing options available to me: using prepared statements or using caching.
+
+<p>
+
+Prepared statements give you two performance benefits (maybe more?). The first,
+is the server will parse the query string when you prepare it, and execute the
+"parsed" version whenever you invoke it. This saves parsing time; parsing text
+is expensive. The second, is that if your database is nice, it will try to
+optimize your queries before execution. Using prepared statements will permit
+the server to optimize query execution once, and then remember it. Good, right?
+
+<p>
+
+Prepared statements improve CPU utilization, in that the cpu can work less
+becuase you're teaching the database about what's coming next. Cached query
+responses improve disk utilization, and depending on implementation should
+vastly outperform most (all?) of the gains from prepared statements. This
+assumption I am making is based on the assumption that disk is slow and cpu is
+fast.
+
+<p>
+
+Cached queries will (should?) cache results of complex queries. This means that
+a select query with multiple, complex joins should be cached mapping the query
+string to the result. No amount of statement preparation will improve complex
+queries becuase they still have to hit disk. Large joins require lots of disk
+access, and therefore are slow. Remembering "This complex query" returned "this
+happy result" is fast regardless of whether or not it's stored on disk or in
+memory. Caching also saves cpu utilization.
+
+<p>
+
+I can't believe preparing a query will prevent it from being pulled from the
+query cache, but this is clearly the case. Thanks, MySQL, for making a stupid
+design decision.
+
+<p>
+
+Maybe there's some useful JDBC (oh yeah, the app I'm testing is written in
+Java) function that'll give you all the convenience/security benefits of
+prepare, but without the server-side bits, and thus let you use the query
+cache.

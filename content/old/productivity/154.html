@@ -1,0 +1,44 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-03-22T11:32:00-08:00"
+title = "procmail, formail, and duplicates\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["productivity", "mail"]
++++
+
+People are fundamentally bad at using 'reply-all' - or perhaps it is
+that 'reply-all' itself is bad. Either way, reply-all to lists will
+reply to the list AND to the poster, who most likely is a member of the
+list anyway. So, s/he gets two copies. This irritates me because I have
+to end up removing duplicates myself, manually.<p/>
+
+Worry not, here comes procmail and formail to save the day. The
+following 2 rules will put duplicates in a 'duplicates' folder.
+
+<pre>
+# Keep track of message IDs.
+:0Whc
+| formail -D 8192 messageid.cache
+
+# I don't want to see duplicate messages
+:0a
+duplicates
+</pre>
+
+A special note on duplicate detection. Every email (hopefully) will have
+a Message-ID. Replies will hopefully have an In-Reply-To or a References
+header that specified the Message-ID that it is in response to. This is
+how MUA's (mail user agents) know how to sort mail by "thread." <p/>
+
+At any rate, formail -D tells formail to look in the cache
+(messageid.cache) for an existing message id. If it's not found, it is
+stored and formail exits with failure status. If it is found, formail
+exits with a success<p/>
+
+Read the procmailrc manpage if you want to know what the W, h, c, or a
+flags mean on rules.

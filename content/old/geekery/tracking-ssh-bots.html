@@ -1,0 +1,96 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-12-22T16:37:10-08:00"
+title = "Tracking and Analyzing SSH Bots.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["ssh", "security", "tracking", "hacks", "liboverride", "pam_logfailure"]
++++
+
+I've <a href="/blog/geekery/pam_captcha_research.html">posted previously</a>
+about what can be done about ssh bots. In this same context, I've just finished
+working on a new idea: Tracking the username/passwords used by the bots.
+
+<p>
+
+To track the login attempts, I wrote a new pam module: pam_logfailure. The goal
+of pam_logfailure is to log the passwords used by bots attempting to bruteforce
+logins. However, when I installed the module, I found that it wasn't working properly:
+
+<pre>
+Dec 20 12:24:50 kenya2 pam_logfailure: host:125.243.206.194 user:john pass:^H ^M^?INCORRECT
+</pre>
+
+I saw line after line of these, and couldn't figure out why the bots were using
+this as a password. Turns out they aren't. This password is what OpenSSH forces
+upon pam for users that do not exist. This is apparently by design:
+
+<pre>
+auth-pam.c: static char badpw[] = "\b\n\r\177INCORRECT";
+</pre>
+
+If you are an invalid user, or are trying to login as root while root login is
+disabled, the password you sent is replaced with 'badpw' above. This makes it
+kind of hard to track what passwords bots are using...
+
+<p>
+
+Thankfully, I was already one step ahead of myself when I wrote a function
+injection tool back in September (<a
+href="http://www.semicomplete.com/blog/geekery/liboverride-20070903.html">liboverride</a>).
+So, all I had to do was inject my own 'getpwnam' function to spoof data when a
+user did not exist to trick OpenSSH into passing the password through.
+
+<p>
+
+After injecting my own getpwnam(), pam_logfailure started working just fine:
+
+<pre>
+Dec 22 11:17:47 kenya2 pam_logfailure: host:218.1.65.233 user:admin pass:admins
+</pre>
+
+So where will I go next with these ssh-bot games?
+
+<ul>
+  <li> Reverse-hack. I picked 3 random ssh bot hosts from my logs, and all of
+  them run sshd. It would be pretty trivial to take the password attempts used
+  against my machine and try them on the host the bot is coming from. Seems
+  likely that turning the bot's actions on itself will grant me access to the
+  infected machine. </li>
+  <li> Redirect to a honeypot. We could detect when a bot is trying to login,
+  and add a firewall rule that would put future ssh attempts from these hosts
+  into a honeypot which accepts all logins to see what happens. </li>
+  <li> Fingerprint ssh bots by behavior. </li>
+</ul>
+
+<p>
+
+The usage of getpwnam.over is like any other liboverride code. 'make
+getpwnam.so' and then use "LD_PRELOAD=/path/to/getpwnam.so <your program>". In this case, I added this line to /usr/local/etc/rc.d/openssh (my sshd start script):
+
+<pre>
+export LD_PRELOAD=/path/to/getpwnam.so
+</pre>
+
+<p>
+Here is the code:
+<ul>
+  <li>
+    <a href="/files/blogposts/20071222/getpwnam.over">
+    getpwnam.over
+    </a>
+  <li>
+    <a href="/files/liboverride/liboverride-2007122.tar.gz">
+    liboverride-2007122.tar.gz
+    </a>
+  </li>
+  <li>
+    <a href="/files/pam_logfailure/pam_logfailure-2007122.tar.gz">
+    pam_logfailure-2007122.tar.gz
+    </a>
+  </li>
+</ul>

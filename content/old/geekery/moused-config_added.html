@@ -1,0 +1,28 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-03-27T23:50:44-08:00"
+title = "Configuration file support added to moused and its modules\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["mouse", "freebsd", "projects"]
++++
+
+With the simple api that is <code>getcap(3)</code>, moused and it's device modules will soon be able to be configurable from config files. The code is still in perforce to do this, however, and not on this site (at time of writing). A simple config file could be something like this:
+
+<pre>
+synaptics:virtscroll:notouchpad:
+</pre>
+
+This would modify options ONLY for the synaptics driver and enable "virtual scrolling" and disable the touchpad. Currently, only 'notouchpad' is supported (again, at time of writing).
+
+<p>
+
+I really want to add lots of options, mostly for synaptics support, but this would allow for some serious flexibility in mouse configuration. You can specify any kind of mouse you want and whatever config you please. Personally, I'd love to see an option to disable movement on the touchpad, and only allow the touchpad to be used for scrolling. Furthermore, allow me to decrease the sensitivity of the touchpad so that near-finger touches and palm touches don't trigger scrolling.
+
+<p>
+
+Wee! I love programming for fun. Makes me glad I'm not going to ever be a software developer. I like to code for myself and for my own goals.

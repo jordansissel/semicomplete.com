@@ -1,0 +1,42 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-06-11T02:15:05-07:00"
+title = "FreeBSD, Jails, and BPF.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["freebsd", "jails", "kernel", "bpf", "filter", "packet capture", "jail"]
++++
+
+Tonight's fun was spent learning bpf's internals (the pseudo-machine code it
+uses). The point was to find out exactly how much effort it would take to add
+secure bpf support to jails. Ideally, we'd want to expose the bpf(4) device to
+any jail but only make available the traffic that is actually destined for the
+jail (or broadcast traffic).
+
+<p>
+
+It seems like you could get away with this, if you prefixed all jailed bpf
+filters with: <i>(ip and (host [jail_ip] or multicast or broadcast))</i>.
+
+I've got userland-code that does exactly this. Once I knew how to inject my own
+bpf code into an existing bpf_program struct, I was basically ready to go. The
+only other thing left was to figure out how, in the FreeBSD kernel, to figure
+out if you were in a jail and what that jail's IP was - turns out this is a
+trivial operation :)
+
+<p>
+
+Userland example code: <a href="/files/blogposts/20080611/pcapinject.c">pcapinject.c</a>
+
+<p>
+
+Working Patch: <a href="/files/blogposts/20080611/bpf-jail.patch">bpf-jail.patch</a>
+
+<p>
+
+The code in the patch is crappyish and has a pile of debug statements, but it
+does appear to work as intended.

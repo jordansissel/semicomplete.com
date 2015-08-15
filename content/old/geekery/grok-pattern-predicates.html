@@ -1,0 +1,94 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-02-26T05:27:40-08:00"
+title = "grok pattern match predicates\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok"]
++++
+
+I've added predicate tests to grok's pattern match system. These predicates
+allow you to specify an additional requirement on any matched patterns. Here's
+the grammar:
+
+<pre>
+  '%' pattern_name [ ':' subname ] [ operator value ] '%'
+</pre>
+
+The difference is that now you can put operator and values on the end of the
+pattern. The following are valid operators: &lt; &gt; &lt;= &gt;= == ~
+
+<p>
+
+<dl>
+  <dt> == &lt; &gt; &lt;= &gt;= </dt>
+  <dd> Match equals, less than, etc. Should be obvious. One special note is
+  that if both the match and predicate values are numbers, then the comparison
+  is done using perl's numerical compare operators. Otherwise, string
+  comparators are used (eq, lt, gt, etc).
+  </dd>
+
+  <dt> ~ </dt>
+  <dd>
+    Regular expression match.
+  </dd>
+</dl>
+
+<p>
+
+Still confused? Let's run through some examples.
+
+<p>
+
+<ol>
+  <li> Let's find out what's going on in our auth.log on any day from 20:00 to 20:09:
+  <pre>% sudo cat /var/log/auth.log | ./grok -m '%TIME~/^20:0[0-9]/%'
+Sep 15 20:05:24 nightfall sshd[503]: Server listening on :: port 22.
+Sep 15 20:05:24 nightfall sshd[503]: Server listening on 0.0.0.0 port 22.
+Sep 15 20:07:31 nightfall login: login on ttyv0 as jls
+Nov 12 20:09:42 nightfall xscreensaver[647]: FAILED LOGIN 1 ON DISPLAY ":0.0", FOR "jls"
+Nov 26 20:07:18 nightfall sshd[494]: Server listening on :: port 22.
+Nov 26 20:07:18 nightfall sshd[494]: Server listening on 0.0.0.0 port 22.
+  </pre>
+  </li>
+  <li> How about looking through 'netstat -s' output for big numbers? Yes, you
+can use awk for this particular example.
+  <pre>% netstat -s | ./grok -m "%NUMBER>100000%"
+        130632 total packets received
+        130465 packets for this host
+        114759 packets sent from this host
+  </pre>
+  </li>
+  <li> Let's look in "all.log" (all syslog stuff goes here) for sshd lines with
+an IP starting with '83.'
+<pre>% ./grok -m "%SYSLOGBASE~/sshd/% .* %IP~/^83\./%" -r "%SYSLOGDATE% %IP%" < all.log
+Oct 17 09:54:37 83.170.72.199
+Oct 17 09:54:53 83.170.72.199
+Oct 17 09:56:02 83.170.72.199
+&lt;snip some output &gt;
+Apr 16 06:54:52 83.14.104.202
+Apr 16 06:54:53 83.14.104.202
+Apr 16 06:54:54 83.14.104.202</pre>
+  </li>
+</ol>
+
+If you're interested in playing with this new feature, 
+<a href="/projects/grok/grok-20070226.tar.gz">download grok-20070226</a>.
+
+<p>
+
+This seems pretty powerful. Next feature I need to add is the ability to add
+predicates to patterns after they've been specified. Something like this would be sweet:
+
+<pre>
+% ./grok -m "%APACHELOG%" -p "%NUMBER:RESPONSE==404%"
+&lt; some output showing you all apache log entries with response code 404 &gt;
+</pre>
+
+Something like that, which would let you modify the
+<code>%NUMBER:RESPONSE%</code> pattern to add a predicate requiring that it be
+404.

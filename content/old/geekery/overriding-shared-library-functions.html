@@ -1,0 +1,52 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-08-03T22:16:23-07:00"
+title = "Overriding shared library functions\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["defcon", "projects", "hacks", "C"]
++++
+
+Long story short...
+
+<p>
+
+File: 'connect.over' contains
+<pre>
+#include &lt;netinet/in.h&gt;
+
+override(`connect', `
+  {
+    // code to inject before the connect() call is actually made
+  }
+')
+</pre>
+
+Output is 'connect.so' which overrides libc's connect function.
+
+<pre>
+% LD_PRELOAD=./connect.so nc google.com 80
+stream connect: fd=3 host=64.233.187.99:80
+% LD_PRELOAD=./connect.so nc -u 129.21.60.9 53 
+dgram connect: fd=3 host=129.21.60.9:53
+% LD_PRELOAD=./connect.so ssh scorn           
+stream connect: fd=3 host=129.21.60.26:22
+stream connect: fd=4 host=109.112.47.115:12148
+scorn(~) %
+</pre>
+
+The output by nc was due to my function above outputting this.
+
+<p>
+
+The strange ssh connection on fd=4 above is seemingly due to ssh calling
+connect() on a tty? fstat says:
+<pre>
+jls      ssh         3221    4 /dev        122 crw--w----   ttypd rw
+</pre>
+
+inode 122 on /dev is /dev/ttypd.

@@ -1,0 +1,58 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2012-11-05T15:04:52-08:00"
+title = "Disabling battery/power management in Ubuntu\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
++++
+
+I have some ubuntu VMs. VirtualBox's guest tools provide a way for guest OSs to
+see battery and other power states.
+
+<p>
+
+The problem is that Ubuntu 12.04 will always suspend itself when battery is
+low. What is "low"? Something  not tunable. Can you change the 'low battery'
+action? No, the setting panel for it says "Perform action on critical battery"
+or something and the dropdown box is blank.
+
+<p>
+
+When Ubuntu decides it's 'critical' time, OSX (the host os, here) claims
+usually 20% battery remaining. Critical, eh? :\
+
+<p>
+
+So, the next step is to get Ubuntu/Gnome to not even see a battery.
+
+<p>
+
+The utility providing this data is 'upowerd'. You can try to kill it, but dbus
+will just start it back up again. It's not a service you can disable with upstart,
+since it's managed by dbus itself.
+
+<p>
+
+You can't just uninstall the 'upower' package, no, because it will remove
+gnome-session and other probably important packages for your workstation.
+
+<p>
+
+To disable upowerd, you have to remove this file:
+
+<pre>
+/etc/dbus-1/system.d/org.freedesktop.UPower.conf
+</pre>
+
+Then reboot. Alternately, you could 'pkill upower; restart dbus' but I found
+that restarting dbus made gnome/xorg freak out (blink, apps restarting
+frequently, etc) as well as it killing the network (because networkmanager), so
+I had to reboot anyway.
+
+<p>
+
+And now I have a vm that doesn't foolishly suspend itself. Also, dbus is shitty.

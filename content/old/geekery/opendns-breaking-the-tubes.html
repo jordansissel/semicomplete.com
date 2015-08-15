@@ -1,0 +1,26 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-07-29T12:34:14-07:00"
+title = "OpenDNS breaks the internet.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["opendns"]
++++
+
+
+All DNS servers should respond to invalid domains with advertisement space
+&lt;/sarcasm&gt;, but OpenDNS takes it a step further, by responding to A
+record queries that aren't possibly valid:
+
+<pre>
+% dig +short @208.67.222.222 "When is no-pants-o-clock?"
+208.67.219.132
+% dig +short @208.67.222.222 "$(dd if=/dev/urandom bs=1 count=30 2> /dev/null)" 
+208.67.219.132
+</pre>
+
+Good job.

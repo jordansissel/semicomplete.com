@@ -1,0 +1,113 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-11-21T17:24:23-08:00"
+title = "Thoughts and a crazy prediction on ipv6\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["ipv6"]
++++
+
+Every few months there's a new (or old!) article that floats around the
+echochamber of blogs and twitter that lays predictions about the rate
+of IPv4 address consumption and targets our iminent destruction. People
+parrot off quotes from this article, dates, etc. It's amusing to me given the
+frequency in which new posts occur compared to the inaction.
+
+<p>
+
+This post isn't about predicting when or why we should care, because that's
+such a boring, dead horse, I'd rather not kick it. Poor little horsey.
+
+<p>
+
+Realistically, I think the whole v4 to v6 transition is going to be pretty
+lame and unexciting. Existing owners of IP space probably won't care and will
+move to IPv6 when the business need demands it.  I want excitement, fireworks,
+and explosions. That's what makes movies awesome, isn't it? That's what keeps
+<a
+href="http://video.adultswim.com/robot-chicken/michael-bay-presents-explosions.html">Michael
+Bay</a> in business, anyway.
+
+<p>
+
+So let's talk about explosions. Our story begins.
+
+<p>
+
+Week 1: We're out of IP space. Shit hits the fan. No one really
+understands what IPv4 or IPv6 is, or why we should care, but we're out of it,
+so there's a media frenzy. Stories on the front page of the Wall Street Journal
+declare that ecommerce is dead due to this mysterious affliction called "eye
+pee vee four".  Someone makes a crappy metaphor of a mall being out of retail
+spaces. C-level folks around the world panic: "We can't launch tomorrow! THE
+MALL IS FULL!!!" - misinformation leads decisions on  product delays. Stock
+market takes a small dip. Nobody really knows what is going on, but everyone is
+sure the sky is falling. Rumors of undead walking in San Francisco spike on
+Twitter.
+
+<p>
+
+Week 2: CTOs do internal invesgitations to see how much IP space they own. The
+CFO gets wind that they have "thousands" of IP addresses and remembers last
+week's panic about how there are no more IP addresses, but doesn't really know
+what an "eye pee" is, but it sounds funny. An idea hits. IPv4 address space
+becomes a profit center. CFO presents to the board about sales/rental/lease
+models for IP addresses. There's a slide with graph on it that has an line
+that goes up and to the right.
+
+<p>
+
+Week 4: IT Operations is told by the exec team that priority #1 is to
+consolidate IP usage. No reason is given. Profit incentives feed IT management
+and pressure mounts on the operations team from the inside. Six IPv4 
+auction sites launch, including Godaddy. Three of the new sites have venture
+funding.
+
+<p>
+
+Week 6: C-level pressure to monetize this new scarce resource results in deals
+struck, contracts signed, and ultimately IP addresses sold. Except nobody
+involved knows how the internet works, so they sell individual addresses or
+otherwise small pieces here and there. Later in the week, eBay is updates their
+TOS to deny sale of /32 addresses.
+
+<p>
+
+Week 8: Cloud providers, thanks to CFO-profit-center drives, now start charging
+for public IP addresses.
+
+<p>
+
+Week 12: Due to poor communication, nobody involved in any of these
+single-ip-address sales has gotten the memo that for technology reasons you
+can't usually share routing announcements that small due to filtering,
+performance, and routing table <a
+href="http://en.wikipedia.org/wiki/Border_Gateway_Protocol#Routing_table_growth">size
+problems</a>.
+
+<p>
+
+Week 14: Major network hardware vendors get wind of this new practice. Despite
+internal pressure against it, Cisco announces that new router upgrades and
+hardware are available to support the massive router tables expected. The new
+causes Cisco's stock to jump. Other major vendors follow with similar
+announcements.
+
+<p>
+
+Week 18: Thousands of small address spaces have been sold or rented. Companies
+are forced to advertise even smaller routes routes over BGP. Network transit
+customer support lines are full 24 hours a day with customers complaining that
+their new routing advertisments are not functioning. Routing table size grows
+by four times. God kills a kitten.
+
+<p>
+
+Week 20: Major routers everywhere are overwhelmed.  Struggling to maintain
+active users, Facebook buys AOL for it's dialup service and announces a new
+feature called "facebook keywords". You smell something burning. The internet
+dies.

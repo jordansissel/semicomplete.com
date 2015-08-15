@@ -1,0 +1,48 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2003-08-08T19:42:00-07:00"
+title = "I am the winner, take THAT ksh!\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["shell"]
++++
+
+I've been trying off-and-on for some time now to get dynamically
+updating xterm titles in ksh. Sure, you could set your prompt to
+something like:<p>
+<pre>
+XTERM="^[]2;Yay for titles^G"
+PS1=$XTERM'$HOST($PWD) >'
+</pre><br>
+
+This works all good and dandy until you try to write something on the
+command line longer than what's displayable on a single row of text,
+you'll see that ksh thinks the end of your line is shorter than where
+it's at. This is due to the problem that your xterm title is still
+physically a part of your prompt. This was too annoying for me to bother
+dealing with since my prompt at a minimum is something around 20
+characters. <br>
+So I gave up trying different ways, and today I had another idea. $()
+and `` doesn't return anything printed to stderr. We'll use that to our
+advantage!<p>
+<pre>
+PROMPT='$HOST($(/bin/pwd | sed -Ee "s,(/usr)?$HOME,~,")) [!] '$EXITCODE'$Z '
+EXITCODE='$(A=$? && [ $A -ne 0 ] && echo "!!${A}!! ")'
+XTERM= 
+case $TERM in
+  aterm|xterm|dtterm)
+    XTERM='$(echo -n "\033]2;'$PROMPT'\007" 1>&2)'
+    ;;
+esac
+export PS1=$XTERM$PROMPT
+</pre>
+<br>
+
+As you can see, the $(echo ...) has stdout redirected to stderr, and
+therefore our xterm title text gets completely ignored by
+<code>PS1</code> when it's executed.<br>
+Huzzah!

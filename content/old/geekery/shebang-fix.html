@@ -1,0 +1,64 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-04-01T00:40:02-07:00"
+title = "Shebang (#!) fix.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["shebang", "hack", "shell", "linux", "unix"]
++++
+
+Most shebang implementations seem to behave contrary to my expectations.
+
+<p>
+
+As an example, prior to today, I would have expected the following script to
+output 'debug: true'
+
+<pre>
+#!/usr/bin/env ruby -d
+puts "debug: #{$DEBUG}"
+</pre>
+
+Running it, I get this:
+
+<pre>
+% ./test.rb
+/usr/bin/env: ruby -d: No such file or directory
+</pre>
+
+This is because the 'program' executed is '/usr/bin/env' and the first argument
+passed is 'ruby -d', exactly as if you had run: /usr/bin/env "ruby -d"
+
+<p>
+
+My expectation was that the above would behave exactly like this:
+<pre>
+% /usr/bin/env ruby -d test.rb
+debug: true
+</pre>
+
+It doesn't. The workaround, however, is pretty trivial. It's only <a
+href="http://semicomplete.googlecode.com/svn/codesamples/shebang.c">a few lines
+of C</a> to get me a program that works as I want. I call the program
+'shebang'. Why is it C and not a script? Because most platforms have a
+requirement that the program being executed from the shebang line be a binary,
+not another script.
+
+<p>
+
+<pre>
+#!/usr/local/bin/shebang ruby -d
+puts "debug: #{$DEBUG}"
+</pre>
+
+Now run the script again, with our new shebang line:
+<pre>
+% ./test.rb
+debug: true
+</pre>
+
+Simple and works perfectly.

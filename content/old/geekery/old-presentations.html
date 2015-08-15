@@ -1,0 +1,37 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-01-03T13:39:33-08:00"
+title = "Found some old presentations\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["presentations", "school", "old stuff"]
++++
+
+While doing backups of my important personal stuff (this website, my code,
+etc), I found some presentations I'd done in school:
+
+<ul>
+<li> <a href="/presentations/mpi">MPICH 101</a> </li>
+<li> <a href="/presentations/security">Hacking/Security 101</a> </li>
+<li> <a href="/presentations/semantic-blogging">RDF/Semantic Web</a> </li>
+</ul>
+
+I also removed a pile of comments that were spam or people testing the comment
+system. Some comments had unicode characters in them causing python to barf (I
+have a python cgi script that helps me search/delete comments), but doing
+<code>.encode("latin-1")</code> fixed it.
+
+<p>
+
+There were only a few spams that got past my scripts. I might add word
+filtering to the pyblosxom comment plugin so crap mentioning viagra and cialis
+won't even be permitted. Still seeing these happily in my logs:
+
+<pre>
+REJECT: Comment attempt by 193.203.99.31 rejected. Reason: expired secret, referer: http://www.semicomplete.com/blog/articles/week-of-unix-tools/day-1-sed.html
+REJECT: Comment attempt by 78.110.175.18 rejected. Reason: javascript test failed (expiration ok), referer: http://www.semicomplete.com/projects/xdotool/
+</pre>

@@ -1,0 +1,56 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-07-17T23:32:30-07:00"
+title = "Python's seeming lack of good parser\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["python"]
++++
+
+I've been searching for a decent recursive descent parser for Python. Too bad I haven't found one :(
+
+<p>
+
+None are truely standalone, though many claim to be generators. Either generate code or give me a nice parser library, not half-assedly in the middle! Urgh!
+
+<p>
+
+ANTLR depends on <code>import antlr</code> and Java. PLY does similar. Others
+simply suck. Who wants to lug around piles of libraries and modules? I don't.
+PLY may be an option, but it may be some time before I can make a decent
+grammar with it. Perhaps in a day or two when I have more time.
+
+<p>
+
+Granted, I'm probably just frustrated from many hours of trying parsers without
+success. It's not that there aren't any parsers that don't work. It's that
+there aren't any parsers that are as easy to use as perl's Parse::RecDescent.
+
+<p>
+
+All I want is to parse an extremely simple config file of my own design. I may
+not even need recursive descent, seeing as how I only go 1 level deep. Though,
+I would prefer a token parser  that suited my needs (cfgparser is too limited,
+shlex is broken), I haven't been able to find one.
+
+<p>
+
+I was able to get a config file parser with older grok using Parse::RecDescent
+in only a few hours, and even after 10 minutes I was using it successfully.
+Have parsers fallen to the way-side with the advent of XML as a cure-all?
+
+<p>
+
+This pisses me off. I should be able to say, "here's the grammar for my data"
+and be happy. I really wanted to get the config parser done in py grok tonight.
+I'm giving serious consideration to adding multiline and statefulness support
+to grok, just so I can parse a damned config file. That is, use grok to read
+it's own config file so that we can grok whatever data the config file says.
+
+<p>
+
+If you're reading, and you have suggestions for python text parsing modules that do not suck, please let me know.

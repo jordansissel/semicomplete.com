@@ -1,0 +1,18 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-02-12T01:06:00-08:00"
+title = "apache+mod_perl perl handler adventures\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["perl", "HTML::Mason"]
++++
+
+I started thinking about the redesign tonight, and Mason is clearly more than I need.<p>
+
+I still want to use mod_perl, but don't want a whole mess of perl scripts to drive the website. So instead of going with either end of the spectrum, I've started writing my own perl handler (PerlHandler option in apache). It's dead simple and will let me do things I need to do with apache and also allow me to have most of the site driven with XML and XSLT in some very cool ways.<p>
+
+More news on this as it develops.

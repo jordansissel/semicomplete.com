@@ -1,0 +1,49 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-11-28T00:45:26-08:00"
+title = "Flex start conditions\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["flex", "parsing"]
++++
+
+I finally (after a bit of searching and thinking) figured how to properly match
+comments with flex/bison. Horray :)
+
+<p>
+
+Some tutorials use this in flex:
+
+<pre>
+#.*$
+</pre>
+
+But since flex chooses longest-match-first for the next token, any line with a
+# in it might have the remainder of the line accidentally cut as a comment. The
+right way to do this appears to be:
+
+<pre>
+/* in your .lex file */
+
+%x LEX_COMMENT
+
+%%
+
+"#" { BEGIN(LEX_COMMENT); }
+&lt;LEX_COMMENT&gt;[^\n]*  /* ignore comments. */
+&lt;LEX_COMMENT&gt;\n   { yylineno++; BEGIN(INITIAL); } /* end comment */
+</pre>
+
+There's a mini state-machine going on here. When it matches a "#" it moves into
+the 'LEX_COMMENT' (name chosen by me, could be anything) state where only
+tokens in this state are accepted. Now my config files can ignore comments
+properly: only when outside the presence of any other token (like a quoted
+string).
+
+<p>
+
+<a href="http://flex.sourceforge.net/manual/Start-Conditions.html">Details here</a>

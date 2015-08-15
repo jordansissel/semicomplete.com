@@ -1,0 +1,32 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-04-14T03:35:55-07:00"
+title = "newpsm/newmoused update - merge into -CURRENT preparation\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["freebsd", "projects", "mouse"]
++++
+
+Lots of hours were spent today preparing the new moused and psm code for import
+into the FreeBSD source tree. I don't have a commit bit to CVS, so I'll have to
+wait on having it committed. This wait time will probably be spent fixing bugs,
+writing a decent rc script, and improving configuration options.
+
+<p/>
+
+This update is only known to work for -CURRENT. The patch can be found on the
+<a href="http://www.semicomplete.com/projects/newpsm">newpsm project page</a>. I
+had a friend test the patch against 6.0-RELEASE, and it seemed to apply cleanly
+with the exception that patch(1) got confused about sys/sys/mouse.h. Tell patch
+to <i>not</i> attempt to reverse-apply the patch, then tell it yes for trying
+the patch anyway. No guarantees if it doesn't build.
+
+<p/>
+
+You can find almost all the information you need on the newpsm project page. If
+you find bugs, are interested in helping test, or have questions or comments,
+please contact me :)

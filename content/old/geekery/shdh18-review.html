@@ -1,0 +1,58 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-06-25T18:02:52-07:00"
+title = "SuperHappyDevHouse 18 - review\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["shdh", "shdh18", "travel"]
++++
+
+This past shdh was my first. It wasn't what I expected; way more people showed up than I thought would show. Totally sweet.
+
+<p>
+
+There were 6 or so tables setup with chairs and power strips. Wifi. Someone
+setup a projector to display sniffed google/yahoo searches flying over the
+wireless. I was already doing my standard 'ssh -D8888 somewhere' and having
+firefox proxy over that.
+
+<p>
+
+The projector was displaying the decoded contents of search queries. My first
+work that day was on hacking the projected screen. The first one was hacking
+pushing search queries with wget(1) that had terminal control codes.  After
+that, I figleted-things to the screen using figlet, awk, xargs, and wget. Some
+time later I got around to doing something way cooler. Basically, I had a
+script that would read every key stroke I typed, and send a search query
+consisting of a clear-screen sequence followed by the whole string I had typed.
+When I demoed it, I managed to convince some through assumption that I had
+owned the machine itself, and not that I was doing this all via search queries.
+Hehe, fun. Here's what I was using:
+
+<pre>
+(stty raw; x=""; while true; do a="$(dd bs=1 count=1 2> /dev/null)"; if [ "$a" == "^H" ] ; then x=${x%?}; else x="${x}${a}"; fi; wget --read-timeout=.001 --tries=1 "http://www.google.com/search?q=^[[2J^[[0;0H$x"; done)
+</pre>
+
+<p>
+
+There was a large ruby-fan presence. Lots of people working on facebook apps, too.
+
+<p>
+
+If you didn't see the slurry of posts I made during shdh about code I was working on, here's a short list:
+
+<ul>
+<li> Got a prototype of jquerycmd working </li>
+<li> Wrote a google maps direction scraper with jquerycmd </li>
+<li> Wrote Makefiles for navmacro and xdotool that work without pkg-config </li>
+<li> Started working on the urledit firefox extension </li>
+<li> Implemented urledit with xdotool and a shellscript </li>
+</ul>
+
+Tons of code written. I had a good time, but next time I'm going to try for a
+more social approach instead of sitting in a corner coding like a fiend ;)
+

@@ -1,0 +1,84 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-07-25T04:04:01-07:00"
+title = "Field extraction tool\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["fex", "xapply", "c"]
++++
+
+Tonight was spent implementing and extending one of my favorite features of
+xapply: its subfield extracting feature, aka this syntax: %[1,2:1]
+
+<p>
+
+The gist of this is that you specify a sequence of field number, separator,
+field number, separator, etc, to get some very quick tokenization to pull the
+specific data you want. Basically it gives you *extremely* concise syntax for
+the a subset of the features provided by cut(1).
+
+<p>
+
+My tool expands on this a bit further. It's best shown by example:
+
+<pre>
+% ./fex '0:-2/1' &lt; /etc/passwd | sort  | uniq -c
+      3 bin 
+      1 dev 
+      4 home 
+      2 nonexistent 
+      1 root 
+      2 usr 
+     14 var 
+</pre>
+
+The string '0:-2/1' means:
+
+<ul>
+  <li> 0 - the full string (aka "root:x:0:0:root:/root:/bin/bash". <br>
+  "0" here uses awk semantics where $0 in awk is the full record and $1 is the first field. </li>
+
+  <li> : - split by colons </li>
+  <li> -2 - take the 2nd to last token (by colon) (aka "root") <br>
+  Negative offsets aren't available in xapply, but are valid here.</li>
+  <li> / - split that by "/" </li>
+  <li> 1 - take the 1st token (aka "root") </li>
+</ul>
+
+The output is essentially the root directory for everyone's home directories.
+Doing this in awk, cut, perl, or any other tool would be much more typing.
+
+<p>
+
+You can also specify multiple field extractions on a single invocation:
+
+<pre>
+# Take the first and 2nd to last token split by colon
+% ./fex '0:1' '0:-2' < /etc/passwd  
+root /root 
+daemon /usr/sbin 
+bin /bin 
+
+# Alternatively, {x,y,z,...} syntax selects multiple tokens
+# note that the output is joined by colons.
+# Again, this is a feature unavailable in xapply's subfield extraction
+% ./fex '0:{1,-2}' < /etc/passwd
+root:/root
+daemon:/usr/sbin
+bin:/bin
+
+# Parse urls out of apache logs:
+% ./fex '0"2 2' < access | head -4
+/
+/icons/blank.gif
+/icons/folder.gif
+/favicon.ico
+</pre>
+
+<p>
+
+I still have tests to write and bugs to fix, so you won't find a release yet.

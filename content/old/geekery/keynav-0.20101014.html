@@ -1,0 +1,37 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-10-14T23:42:42-07:00"
+title = "New keynav release available (0.20101014)\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["keynav", "release", "keyboard", "nomouse"]
++++
+
+The keynav project gets a upgrade today. Some small feature additions and bug fixes.
+
+<p>
+
+Download: <a href="http://semicomplete.googlecode.com/files/keynav-0.20101014.3067.tar.gz">keynav-0.20101014.3067.tar.gz</a>
+
+<p>
+
+Changes from the previous release:
+
+<pre>
+0.20101014.*
+  - Added 'restart' command. Makes keynav restart. Useful for binding a key to
+    reload the config.
+  - Added 'loadconfig' command. This lets you include additional config files
+    to load on the command line or in one of the default keynavrc files.
+    (requested by Axel Beckert)
+  - keynav will now restart if it receives SIGHUP or SIGUSR1
+  - Map 'Enter' by default to 'warp,click 1,end' (requested by Axel Beckert)
+    by Axel Beckert)
+  - Fix a bug causing the point under the mouse cursor to not click through the
+    keynav window in certain conditions. Reported via mailing list by Eric Van
+    Dewoestine and Krister Svanlund.
+</pre>

@@ -1,0 +1,56 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-06-03T23:32:35-07:00"
+title = "Grok + PCRE\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok", "pcre"]
++++
+
+Perl grok was great. I learned a lot about how far beyond normal I could take
+regular expressions. I ported much of perl grok to C++ using Boost Xpressive, but
+Boost has a lot of baggage with it. I didn't like the feel of Xpressive, Boost
+is huge, compiling takes forever and a day (thanks C++ Templates!), and
+binaries are almost guaranteed to be 1meg or more.
+<p>
+
+That said, I think I might be reinventing the wheel again by trying to see what
+grok in C with libpcre feels like.
+
+Sample code line:
+
+<pre>
+  re = pcre_compile("([0-9]+)(?C1)", 0, &errptr, &erroffset, NULL);
+</pre>
+
+<i>(?C1)</i> is PCRE-syntax for "call callback #1" - the callback I wrote
+converts the last capture into a number and only succeeds if the value is
+greater than 5. It'll succeed once that precondition passes:
+
+<pre>
+% ./a.out "foo 2 4 6 8"     
+Trying: 2
+Trying: 4
+Trying: 6
+Found: 6
+</pre>
+
+All with a single regular expression + callouts. This feature (called callouts
+by PCRE) is what allows me (and you) to use predicates in grok. PCRE passes the
+first test.
+
+<p>
+
+A few hours later, I had pattern injection working (Turning %FOO% into it's
+regular expression) and could parse logs with ease.
+
+<p>
+
+I couldn't help pitting the boost and pcre versions against eachother, even
+though the feature set isn't the same, yet. pcregrok processed 37000lines/sec
+of apachelog (the most complex regexp I have), versus 6200/sec from c++/boost
+grok.

@@ -1,0 +1,61 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-07-27T13:28:35-07:00"
+title = "Hack for quickly trimming invalid ssh keys\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["ssh", "hacks"]
++++
+
+If you reimage a machine or change dns, you may get any of these messages when sshing in:
+<pre>
+Offending key for IP in /home/jsissel/.ssh/known_hosts:239
+Matching host key in /home/jsissel/.ssh/known_hosts:252
+Offending key in /home/jsissel/.ssh/known_hosts:237
+</pre>
+
+Seem familiar? Here's a very quick way to trim those.
+
+<pre>
+#!/bin/sh
+
+eval "value=\\$$#"
+
+if [ "$#" -lt 1 ] ; then
+  echo "Invalid arguments."
+  exit 1
+fi
+
+if ! echo "$value" | egrep -q '.*:[0-9]+$' ; then
+  echo "Invalid file:lineno format: $value"
+  exit 1
+fi
+
+echo "$value" | awk -F: '{print "sed -i -e "$2"d",$1}' | sh -x
+</pre>
+
+<ul>
+  <li> Put this in ~/bin/clearssh.sh </li>
+  <li> chmod 755 ~/bin/clearssh.sh </li>
+  <li> ln -s ~/bin/clearssh.sh ~/bin/Matching </li>
+  <li> ln -s ~/bin/clearssh.sh ~/bin/Offending </li>
+</ul>
+
+Now the next time you see these messages and want to clear the offending key,
+just paste the log message, as a command, into your terminal:
+
+<pre>
+jls(~) % Offending key for IP in /home/jsissel/.ssh/known_hosts:239
++ sed -i -e 239d /home/jsissel/.ssh/known_hosts
+</pre>
+
+Makes for a quick fix if you hit these messages in your normal day.
+
+<p>
+
+I prefer this to using 'ssh-keygen -R' as the error message has exactly the
+information you need to clear the bad key.

@@ -1,0 +1,384 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-01-29T12:28:00-08:00"
+title = "ISTS4 wrapup\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["sparsa", "ists", "security", "networking"]
++++
+
+This year's ISTS security competition has come and gone. My team was robbed of victory.
+
+<p>
+
+Our defensive strategy this year was some trivial security through obscurity
+combined with some very clever hardening. Using FreeBSD on all of our machines,
+we ran all of our services on one machine leaving the remaining 3 machines for
+attacking and forensics.
+
+<p>
+
+All services ran inside a single jail. The creation of the jail was done mostly
+with rsync to copy the freebsd base system. Inside this jail, we ran sshd, ftpd
+(via inetd), sendmail, popd, and apache. The jail had several mechanisms to
+limit malicious user activity. These include pseudo-quotas, login.conf user
+limits, etc.
+
+<h4>The Plan</h4>
+Run all services inside a jail. Use arpd to spoof unallocated addresses in our
+/24 network. Use a firewall to redirect all connections to any spoofed
+addresses on any ports to the real SSH server. That means we'll have almost 13
+million ssh "servers" that appear to be running. One of these "servers" is the
+real one you can actually get a login shell for. The plan was wrapped around
+the assumption that the latest versions of apache, popd, and sendmail are not
+going to be exploitable. Generally this is a safe assumption especially in a
+small-scale competition like this one. So, the tools/software we used here were
+as follows:
+<ul>
+	<li> FreeBSD 6.0 </li>
+	<li> Sendmail 8.13.4 (freebsd 6 default) </li>
+	<li> popd 2.2.2a </li>
+	<li> default ftpd run from inetd </li>
+	<li> default sshd (openssh 4.2p1) </li>
+	<li> Apache 1.3.34 </li>
+</ul>
+
+<h4>The Firewall</h4>
+
+I am most familiar with PF, so that's the firewall we used. The pf config was
+pretty short.
+<pre>
+web_ip="10.10.102.97"
+mail_ip="10.10.102.143"
+ftp_ip="10.10.102.34"
+ssh_ip="10.10.102.178"
+
+# Redirect real-service ports first
+rdr inet proto tcp to $web_ip port 80 -> 192.168.1.1 port 80
+rdr inet proto tcp to $mail_ip port 25 -> 192.168.1.1 port 25
+rdr inet proto tcp to $mail_ip port 110 -> 192.168.1.1 port 110
+rdr inet proto tcp to $ftp_ip port 21 -> 192.168.1.1 port 21
+rdr inet proto tcp to $ftp_ip port 20 -> 192.168.1.1 port 20
+
+# The REAL ssh "server"
+rdr inet proto tcp to $ssh_ip port 31975 -> 192.168.1.1 port 29
+
+# Pretend everything else is ssh
+rdr inet proto tcp port 1:49152 -> 192.168.1.1 port 22
+
+# Make everything pingable, too
+rdr inet proto icmp -> 192.168.1.1
+</pre>
+
+You'll notice the "real ssh server" is directed to 192.168.1.1 port 29. We'll
+cover sshd next and why this is important.
+
+<h4>The SSH Server (inside the jail)</h4>
+
+There's nothing *too* special about our ssh config. I set it to listen in port
+22 and port 29. Port 29 will be used to verify if you are connecting to the
+"real" server.
+
+<pre>
+ListenAddress 0.0.0.0:22
+ListenAddress 0.0.0.0:29
+</pre>
+
+<h4>Network Configuration</h4>
+
+The actual machine only had 2 IPs assigned to it. The host address,
+10.10.102.145, and the private address that the jail ran from, 192.168.1.1.
+The rest of the network was spoofed using arpd:
+<pre>
+arpd -d 10.10.102.0/24
+</pre>
+
+So now anyone who tries to touch our network will get a response from any ip
+they hit. This is similar to a honeyd or labrea approach, but better. Labrea can
+successfully tarpit people who don't know how to tell real hosts from fake ones,
+but you can almost always easily determine labrea tarpitted (faked) hosts from
+real ones. Another solution might have involed honeyd, but I wanted a real,
+usable service. Since the only damage I felt anyone could incur would be from
+the shell, I wanted to keep users busy by baiting them with working ssh services
+that they simply didn't have real shells on.
+
+<p>
+
+Now, SPARSA's rules stated that no arp poisoning was allowed. I don't consider this arp poisoning because I could easily accomplish the same thing arpd supplied with this one-liner, and without true spoofing:
+
+<pre>
+jot 253 1 | xapply -fv 'ifconfig em0 alias 10.102.1.%1 netmask 0xffffffff' -
+</pre>
+
+It's not spoofing if I actually have all of the IPs on the network, now is it?
+
+<h4>The Shell</h4>
+
+<pre>
+PORT=`echo "$SSH_CONNECTION"|awk '{print $4}'`
+trap - INT
+
+if [ "$PORT" -eq 22 ]; then
+        sl -laF
+        cat /root/mario
+        sleep 3
+else
+        /bin/tcsh -l
+
+fi
+</pre>
+
+This script was called 'happyshell' and each team's account had this shell. The
+script looks at SSH_CONNECTION for the port they sshed into the machine with. If
+it's 22 (the "fake" server), then they get some useless output printed to their
+screen, and it quits. If they hit the real server, it gives them tcsh. Very
+simple. If you want to know what '/root/mario' contained, check it out here:
+<a href="http://www.csh.rit.edu/~psionic/misc/sparsa/mario">mario ascii picture</a>
+
+<p>
+
+If you attempted to login via ssh to any IP:PORT other than 10.10.102.178:31975
+you would get a message that would annoy you instead of a shell. Perfect, but
+you could still write a script to attempt to login and find the real ssh
+server, so we needed something else to slow you down.
+
+<h4> Enter pam_captcha </h4>
+pam_captcha was an idea Rusty, Dan, and I came up as a solution to prevent
+scripts from attempting logins aswell as to annoy and deter users who wanted to
+login and be naughty. We needed it to be difficult-to-impossible to script
+logins to find our real ssh server.
+
+<p>
+We initially thought a 10 second sleep delay would be sufficient, but as we
+discussed it further we realized we could ask the authenticating user questions
+to verify that they were human. The technical term for this kind of
+challenge-response authenticator is "captcha" - <a
+href="http://en.wikipedia.org/wiki/Captcha">read about captchas on
+wikipedia</a>.
+
+<p>
+I spent a few hours the weekend before the competition (last weekend) to write
+pam_captcha. There are currently 3 kinds of captchas. The first is a identifying
+a random string that's been run through figlet, turning it into text-ascii art.
+The second captcha is a simple math problem also run through figlet; users must
+solve this math problem to continue. The third captcha has no real practical
+uses, but for the context of the competition would be both annoying to users and
+hilarious for me. It involves users performing physical activities, such as
+stealing a competitor's hat, or singing a song. Verification was done by a human
+who then alerts the computer that this person is a human. I called this 3rd
+captcha "Dance Dance Authentication" or DDA.
+
+<p>
+I had to turn off DDA after the first 2 hours due to complaints. This was fine
+becuase I only wrote it for humor's sake. The other two captchas stayed enabled
+throughout the competition.
+
+<p>
+Outside of this competition, pam_captcha will prevent or atleast deter script kiddies
+from bruteforcing login attempts via ssh. So if you're interested in preventing
+this, then go ahead and use it. It works in Linux and FreeBSD.
+
+<h4> pseudo-quotas </h4>
+
+I say 'pseudo' becuase they aren't actual quotas. I used FreeBSD's mdconfig to
+create several vnode-backed (file-backed) disks. One for each user's home
+directory. The script I wrote to do this automatically can be <a
+href="http://www.csh.rit.edu/~psionic/misc/sparsa/mkhomedir">viewed here</a>. It
+created a 30 meg filesystem backed by a file for each team, initialized the file
+system, and unmounted it for later use. <a
+href="http://www.csh.rit.edu/~psionic/misc/sparsa/mounthome">Another script</a>
+let me mount a user's homedirectory. Quick and simple, this separated every
+user's home directory from everyone else's aswell as the rest of the file
+systems on the computer. This means if a user fills his/her homedir, the other
+file systems don't care.
+
+<h4> The Competition: Defense </h4>
+
+At this point, we had millions of potentially valid ssh servers and a means by
+which to prevent competitors from using brute force scripts to find the real
+server. Perfect.
+
+<p>
+
+During the 5-hour setup period of the competition, I installed the primary
+services on our system and finished some last minute testing before the
+attack-and-defend section began. 15 minutes before the end of the setup period,
+we were ready to go. 3 machines left to perform attacks and forensics, 1 to do
+services. So far so good, right?
+
+<p>
+
+Yep. Several teams attempted to find our ssh server and gave up after about 10
+login attempts and moved on to easier targets (other teams). No one bothered
+attacking via web, ftp, or mail. Our series of tricks tied to our SSH server
+worked extremely well until around 6pm (1 hour left in the competition) everyone
+got their collective panties in a bunch and demanded that I stop being so
+tricksy. The rules for the competition did not cover what ports you had to run
+your services on, so naturally I protested. Finally, after about 20 minutes of
+hearing people bitch and moan, I updated the firewall rules to direct port 22 on
+the "real" ssh server to the actual ssh server (192.168.1.1:29, remember?). Only
+3 (out of 6) teams attempted to login after that. Two teams attempted to fill
+fill the file system and failed. Another team attempted to starve CPU, but every
+team's default nice level was 19, making it only run when nothing else needed
+to do so.
+
+<h4> The Competition: Attack </h4>
+The only attacks I did were resource starvation: fork bombs, memory hogging, cpu
+hogging, file system filling, inode exhaustion, etc. My teammates attempted
+exploits and other attacks, sometimes these were successful.
+
+<p>
+The inode exhaustion attempts had a somewhat funny side-effect. The one-liner I
+used to do this was this:
+<pre>
+while :; do 
+  a=$(($a+1)); 
+  touch $a $a$a $RANDOM $RANDOM$RANDOM $RANDOM$a; 
+done
+</pre>
+
+I just wanted to create lots and lots of files. I did this typically in my
+homedir or /tmp on another team's ssh server. After running for a significant
+amount of time, running ls in the directory became quite sluggish as it read all
+of the files. At one point, I had created well over 300000 files in /tmp. The
+team affected finally noticed this and tried to do "rm *" which inevitably
+failed with an error of "Too many arguments" - even attempting to do "rm 1*"
+failed due to too many arguments. Wonderful! Eventually they figured it out and
+ran 'find /tmp | xargs rm' - but this machine was also running X11 which had
+sockets in /tmp. They got blown away and X crashed. Whoops ;)
+
+<p>
+
+Beyond that, I ran multiple resource starvation attacks (that can be easily
+prevented) on several teams multiple times.
+
+<h4> The Problems </h4>
+Some of the SPARSA members who were running the event were on the majority
+very, very stupid and arrogant. I say this in a mean way becuase they've
+well-earned that label.
+
+<ul>
+
+<li> I made several mentions of teams not providing usable services which were
+almost all ignored. One particular service a team was running was a 15 line perl
+script that "served" web pages. It did not conform to any part of the HTTP
+standard. It responded with a default page, no matter what you requested,
+immediately after sending the 'GET' request line. Thusly, it ignored headers
+and the path. I argued that this was not a webserver, and a SPARSA alumni (the
+fool listed later) asserted that "Well it works for him to serve a webpage,
+therefore it is a valid webserver." I mentioned that even simple requests like
+POST and HEAD were reported as invalid, and the path of the request did not
+change the page served. I was ignored.
+
+<li> One SPARSA guy was arguing with me about how ssh is ONLY a "user and
+password authenticating protocol" and that my "hacked server" was illegal for
+the competition. He further argued that having users enter any information
+other than a username and a password was illegal. None of this was in the rules
+for the competition. </li>
+
+<li> Another SPARSA guy, who is an RIT Alumni, began arguing with me that we
+should follow DNS standards and provide services on the PORTS dns was
+supposedly advertising for our service. I tried briefly to reeducate him that
+DNS only provided name-to-address mappings and not port information, but he
+insisted. Eventually, I said, "Look. It's obvious you have no clue what you're
+talking about. DNS does not serve ports. Do not argue with me about this, you
+will lose. Thanks." Another competitor there assisted by asserting that it
+could indeed not serve port information, and asked SPARSA to provide proof. No
+proof manifested itself. (Yes, SRV queries serve port information, but no ssh
+clients use it)</li>
+
+<li> Much later in the competition, eventually everyone started complaining that
+they could not login successfully to our SSH server. This caused a split in the
+SPARSA group. I asked some of them to confirm that they could indeed login. Half
+confirmed, the other half said they couldn't login. I replied, "You are
+attempting to login on the wrong port and/or ip if you do not get a shell after
+authenticating." Many of the SPARSA guys went crazy with rage insisting that I
+was breaking rules (that weren't written anywhere?) and that I had to run ssh on
+the standard port. Others kept quite or commented positively on the strategy.
+After much arguing, one of the SPARSA folks wrote the port number that the real
+ssh server could be accessed through. A few minutes later I switched it to port
+22, the standard port. The argument obviously enraged many of the SPARSA folks
+and put me in a bad light with them, I guess.
+</li>
+
+</ul>
+
+There were many more incidents that I may document later, but the overal point
+is that we came for a fun competition and while it was fun I did not expect to
+have to correct fallacies or arrogance on behalf of the SPARSA group. I do not
+claim to know everything, but it is ignorance to deny the truth when presented
+it. Cluelessness is not a fault, becuase you can always learn. Arrogance
+becomes a problem when I have to deal with it.
+
+<h4> The Scoring Conspiracy </h4>
+The rules stated you had a 2 minute grace period for any downtime before it
+would be counted against you. Our service machine was only taken down once - by
+a forkbomb from one of the SPARSA members (a limitation I forgot to place on the
+sparsa account). A quick reboot and all services came back online within 60
+seconds of the down. However, something was strange with the network and Nagios
+only showed that our web server was online. I tested it, my teammates tested it.
+All of our services were online, available, and working. One SPARSA member
+attempted to verify this, and said that our services were down. Another SPARSA
+member also attempted to verify this, and said that our services were UP.
+Conflicting answers? Neat. I didn't touch anything, and 5-10 minutes after the
+first downtime, nagios magically decided our services were back online.
+
+<p>
+
+We insisted we be given back points for Nagios' false positives on our
+downtime, but we were turned away. Other teams complained about Nagios falsely
+reporting downtime and were awarded points back for false downtime. That's
+nice. It's good that the judges were fair to all teams.
+
+<p>
+
+No other teams were able to take down our services. Nagios, at random times,
+would determine that one (usually random) of our services were offline. Every
+time this happened, we verified all of our services and they were indeed online.
+Thusly, there was only about 60 seconds where any of our services were down
+during the entire competition. Other teams had critical failures during the
+competition and were also attacked and taken offline by other teams. Therefore,
+we had almost 100% availability, other teams were not so lucky. The only point
+in the competition where you can lose points is for downtime beyond 2 minutes,
+or so the rules state. You gain points by attacking others and partaking in the
+SPARSA challenge and the forensics challenge.
+
+<p>
+
+Long story short, we did OK with the forensics and OK on the sparsa challenge,
+but not great.
+
+<p>
+
+I'm not angry that we didn't win (or place, for that matter). I'm angry with the
+behavior of the members of SPARSA who made up random, unsubstantiated rules on
+the spot for no reason and applied them to some teams and not others. Many of
+them were entirely unprofessional and down-right rude and arrogant.
+
+<p>
+
+Dan, a friend of mine on another team, overheard several of the judges talking
+about my team and how they should just dock an arbitrary amount of points from
+us. What kind of crap is that? We paid $40 to attend this competition to get
+treated like this? I'm considering lobbying for a refund. We'll see. I'm
+extremely annoyed that there are student organizations seemingly bent around
+supporting their own arrogant members. If you're at RIT and are looking to join
+SPARSA, don't. Join CSH instead. We suck less.
+
+<p>
+
+At any rate, the competition itself was pretty fun if nothing else than for
+demonstrating pam_captcha and the better-than-labrea
+tarpitting-with-real-services tricks. I feel that we should've been given style
+points for unique solutions so hiding services and for pam_captcha. Style
+points weren't in the rules, but style should certainly not cause anger.
+Instead, The SPARSA judges just got angry. Feature? Hate the game, not the
+player.
+
+<p>
+
+Oh well... I'm done with student organizations in May (graduation!).

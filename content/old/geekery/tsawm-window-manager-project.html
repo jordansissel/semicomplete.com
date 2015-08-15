@@ -1,0 +1,61 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-02-22T00:50:23-08:00"
+title = "Do we need another window manager?\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["tsawm", "window managers", "x11", "xlib", "python", "insanity"]
++++
+
+I've been doing various Xlib projects off and on for a few years, but none of
+them have been window manager projects because I was using a WM that pleased
+me: Ion. Many years later, after following ion from ion 1, 2, and now 3, the
+author decided to apply some user unfriendly licensing terms to newer releases
+of ion-3. This license change combined with the author's efforts to require
+distributions to comply with this license has resulted in most platforms
+dropping the ion-3 package from its distribution because nobody wants to deal
+with assholes.
+
+<p>
+
+I'm not going to get into a discussion about my opinions about the license.
+Just know that it inconveniences me, and if you know me, you know that I tend
+to solve problems of inconvenience with new software tools. That means I need a
+new window manager.
+
+<p>
+
+I've tested other window managers, but none fit me as well as ion did.
+
+<p>
+
+A few weeks ago I started on a window manager project tentatively called tsawm
+which implements features I like in ion but without the angry-author problems
+ion has. I started working on it initially in C, since that's where I use xlib,
+but C has some drawbacks. A nontrivial percentage of what I perceive to be
+window manager behavior is basically managing some heirarchy of data (frames,
+client windows, titles, some state). I started looking at Perl's X11::Protocol
+and Python's xlib module. Python's xlib module is pretty neat, in that it's a
+pure-python implementation of the X11 protocol.
+
+<p>
+
+Somewhat arbitrarily, I started prototyping to see if writing a window manager
+in python was possible. Yes, it is. So that's where I'm at today.
+
+<p>
+
+I've mostly been hacking things together while learning more about window
+managing in X, but what I have so far is promising: <a
+href="/images/tsawm-20070222.png">screenshot</a>.
+
+<p>
+
+It's not pretty, but finishing this will help me get past the drama and
+problems that ion and its author bring. Sorry tuomov, I still love ion, but any
+licenses that keep me (directly or indirectly) from getting shit done aren't
+acceptable.

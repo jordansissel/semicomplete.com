@@ -1,0 +1,33 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-07-16T21:40:45-07:00"
+title = "xscreensaver hack: show your screen while locked\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["xscreensaver", "xdotool", "hacks"]
++++
+
+There are some rare cases when you need to have your screen locked, but still have the current display visible without a screensaver or blanker.
+
+<p>
+
+Here's a hack to do it with xscreensaver and xdotool:
+
+<pre>
+#!/bin/sh
+while true; do
+  xdotool search --onlyvisible --name xscreensaver \
+  | xargs -r -n1 sh -c 'xdotool windowsize $1 1 1' -
+  sleep 3
+done
+</pre>
+
+Run this and lock the screen. Every 3 seconds this script will try to shrink
+the xscreensaver window to 1x1 pixels and reveal your desktop below it. Useful
+if you need it.
+
+  

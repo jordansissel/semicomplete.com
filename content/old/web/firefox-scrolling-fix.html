@@ -1,0 +1,29 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-04-14T15:07:42-07:00"
+title = "Firefox horizontal scrolling fix\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["firefox", "mouse"]
++++
+
+<p/>
+
+Go to 'about:config' in your URL bar in Firefox. If you've never done this before, literally type 'about:config' in the URL bar and hit enter. This will bring up a list of user settings. In the search bar, type 'mouse' and change the following values:
+
+<pre>
+mousewheel.horizscroll.withnokey.action - Set this to '1'
+mousewheel.horizscroll.withnokey.numlines - Set this to '1'
+</pre>
+
+The <i>action</i> defaults to 2, which means go forward/back. Annoying.
+<p/>
+
+The <i>numlines</i> defaults to -1, which scrolls left when you use the mouse to attempt scrolling right. Setting it to 1 will make it scroll left when you scroll left, as it should.
+
+<p/>
+Voila! Horizontal scrolling should now work properly.

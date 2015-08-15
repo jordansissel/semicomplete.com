@@ -1,0 +1,38 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-07-27T01:37:09-07:00"
+title = "Windows window management\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["windows", "vista", "wpf", "C++", "visual studio"]
++++
+
+My first real dive into any real windows programming was last week. There was much to learn: winapi, managed c++, wpf, and visual studio. Despite all the learning hurdles, I finally have a somewhat-working first-feature of a window management tool I'm working on - the first feature is being able to find an open window and jump to it.
+
+<p>
+
+<img src="/files/blogposts/20090727/winmgr.png">
+
+<p>
+
+For fun, it uses WPF's easy gradients and easy transparency. WPF's coolest
+feature is it's item templating, where you can easily represent a data object
+(say, a window structure) in the UI. The behavior of the tool right now is
+similar in behavior of my <a href="/projects/firefox-tabsearch">firefox
+tabsearch</a> extension, where it shows only items matching input words (each
+word is treated as a regex, etc).
+
+<p>
+
+If you are curious, <a href="/files/blogposts/20090727/winmgr.exe">download
+winmgr.exe</a>. When you run it, nothing happens - it registers the hotkey
+'alt+space'. Press alt+space and then start typing the name of the window you
+want to switch to. Press enter to select the first window in the list. 
+
+<p>
+
+I worked around VS Express' limitation around resource editing (it's not allowed) by telling VS to compile my UI files (XAML) with a custom ruby script that turned each into string-escaped #define (eg; #define FOO_XAML "<.....").

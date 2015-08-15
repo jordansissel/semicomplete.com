@@ -1,0 +1,29 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-01-09T21:47:03-08:00"
+title = "Boost xpressive library supports user-defined assertions\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["boost", "c++", "regex"]
++++
+
+<a href="http://boost-sandbox.sourceforge.net/libs/xpressive/doc/html/boost_xpressive/user_s_guide/semantic_actions_and_user_defined_assertions.html">See this doc</a>
+
+<p>
+
+Basically this regex library (Boost.Xpressive) supports what I like about
+perl's regex engine: The <a
+href="http://search.cpan.org/dist/perl/pod/perlre.pod">(??{ code })</a> feature
+(except with different syntax). This means what I had <a
+href="/blog/geekery/grok-and-advanced-regex.html">to hack around</a> in
+grok-perl I can easily express in C++ code. Awesome.
+
+<p>
+
+The docs only show examples of using static regexes with this great feature.
+I'm going to try using it with dynamic regexes. If it works, I'll be converting
+grok to C++.

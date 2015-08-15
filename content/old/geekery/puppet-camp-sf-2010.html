@@ -1,0 +1,99 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-10-11T01:03:05-07:00"
+title = "Puppet Camp San Francisco 2010\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["puppetcamp", "puppet", "event", "sysadmin"]
++++
+
+Another puppet camp has come and gone, and I'm certainly glad I went.
+Puppet, the surrounding ecosystem, and its community has grown quickly since
+last year.
+
+<p>
+
+The conference was the same format as last year. The morning was single-track
+presentations from various puppet users, and the afternoon was
+openspace/barcamp-style break out sessions. It was good to see some old faces
+and also to finally put faces to IRC and twitter names.
+
+<p>
+
+One of the bigger announcements was that <a
+href="http://marionette-collective.org/">mcollective</a> would join the Puppet
+project. Other announcements included new employees and other good news. Beyond
+that, I picked up a few tricks and learned more about the puppet roadmap.
+
+<p>
+
+In no particular order - some thoughts and notes.
+
+<p>
+
+Facter 2.0 will be good. Take lessons learned from Facter 1.x and improve
+things - Make the DSL for making facts simpler, add structured data, add
+caching, etc. 
+
+<p>
+
+Puppet supports a "config_version" option that specifies a script that
+will override how the version of a given catalog is determined. Useful for
+tagging based on revision control or deployment versions. 
+
+<p>
+
+Scoped defaults such as '<code>File { owner => root }</code>' apply
+downwards in all cases, something I hadn't considered before. That is, if you
+are class 'foo' and define a default and also include class 'bar', the default
+in foo will apply to bar as well.  This was new to me, and I will be cleaning
+up some of my manifests as a result (I use defaults in some classes but not
+others).  Best practice here is to either use no class-specific defaults or use
+class-specific defaults in every class. 
+
+<p>
+
+Twitter operations (John Adams) gave a talk covering their automation/puppet stuff.
+John talked about problems with sysadmins trying to hack around puppet by using
+<code>chattr +i</code> to prevent puppet from modifying certain files - a
+practice they heavily discouraged. He also mentioned problems with poor cron
+scheduling and presented the usual <code>sleep $(($RANDOM % 600))</code>-style
+solution. I didn't get around to sharing my <a
+href="http://sysadvent.blogspot.com/2009/12/cron-practices.html">cron
+practices (sysadvent)</a> with John before the end of the con. He also
+mentioned having problems with home directory syncing using puppet, which was
+another solution I'd covered that <a href="http://www.semicomplete.com/blog/geekery/puppet-manage-homedirectory-contents.html">here</a> and better solved <a href="http://sysadvent.blogspot.com/2008/12/day-11-home-away-from-home.html">previously on sysadvent</a>. 
+
+<p>
+
+During some downtime at the conference, I started working on an ssh key
+authorization module for mcollective. The ruby ssh key code is <a
+href="http://github.com/jordansissel/ruby-sshkeyauth">here</a> and the
+mcollective fork with the sshkey security plugin is <a
+href="http://github.com/jordansissel/marionette-collective">here</a>. It works
+pretty well:
+
+<pre>
+snack(~) % sudo grep security /etc/mcollective/{server,client}.cfg
+/etc/mcollective/server.cfg:securityprovider = sshkey
+/etc/mcollective/client.cfg:securityprovider = sshkey
+snack(~) % mc-ping                                         
+snack.home                               time=97.81 ms
+</pre>
+
+The gist of the key signing pieces is that your ssh agent signing authenticates
+you as a user for requests, and for responses the server signs messages with
+its own ssh host key (like /etc/ssh/ssh_host_rsa_key). Validation of you as a
+user is done through your authorized_keys file, and validation for the reply
+uses your known_hosts file to verify the host signature.
+
+<p>
+
+It was a good conference, though I would've enjoyed a more hackathon-style
+atmosphere. We tried to do a facter hackathon, but there wasn't enough time, so
+instead we code reviewed some of the sillier parts of facter and talked about
+the future.

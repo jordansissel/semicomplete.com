@@ -1,0 +1,26 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-01-30T04:51:00-08:00"
+title = "pam_captcha, release 1.0\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["pam_captcha"]
++++
+
+I've been working on some code cleanups and documentation for pam_captcha. I
+put the code up for download if anyone's interested. There's no pretty project
+description page, yet. This updated added syslog logging of captcha failures to
+LOG_AUTHPRIV for happy audit trails.
+
+<p>
+
+I also put pam_captcha on one of my servers to see what happens. I use SSH keys
+so I'll never see the captcha stuff. I'm interested to see what kinds of brute
+force attempts get thwarted.
+
+<p>
+<a href="http://www.semicomplete.com/projects/pam_captcha/">projects/pam_captcha</a>

@@ -1,0 +1,47 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-05-08T17:02:29-07:00"
+title = "Parallelization with /bin/sh\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["sysadmin", "shell", "parallelization", "productivity", "tricks", "unix", "logs"]
++++
+
+I have 89 log files. The average file size is 100ish megs. I want to parse all of the logs into something else useful. Processing 9.1 gigs of logs is not my idea of a good time, nor is it a good application for a single CPU to handle. Let's parallelize it.
+
+<p>
+
+I abuse /bin/sh's ability to background processes and wait for children to finish. I have a script that can take a pool of available computers and send tasks to it. These tasks are just "process this apache log" - but the speed increase of parallelization over single process is incredible and very simple to do in the shell.
+
+<p>
+
+The script to perform this parallization is here: <a href="http://www.semicomplete.com/scripts/parallelize.sh">parallelize.sh</a>
+
+<p>
+
+I define a list of hosts to use in the script and pass a list of logs to
+process on the command line. The host list is multiplied until it is longer
+than the number of logs. I then pick a log and send it off to a server to
+process using ssh, which calls a script that outputs to stdout. Output is
+captured to a file delimited by the hostname and the pid.
+
+<p>
+
+I didn't run it single-process in full to compare running times, however, parallel execution gets *much* farther in 10 minutes than single proc does. Sweet :)
+
+<p>
+
+Some of the log files are *enormous* - taking up 1 gig alone. I'm experimenting
+with split(1) to split these files into 100,000 lines each. The problem becomes
+that all of the tasks are done except for the 4 processes handling the 1 gig
+log files (there are 4 of them). Splitting will make the individual jobs
+smaller, allowing us to process them faster becuase we have a more even work
+load across proceses.
+
+<p>
+
+So, a simple application benefiting from parallelization is solved by using simple, standard tools. Sexy.

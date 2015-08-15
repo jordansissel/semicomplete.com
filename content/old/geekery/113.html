@@ -1,0 +1,212 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2004-05-03T09:02:00-07:00"
+title = "Term Abbreviation Handling and Ambiguity Resolution\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["perl"]
++++
+
+
+So I went along looking into implenting good term abbreviation system for
+pimp's protocol. I've had previous experience doing this, but it was an utter
+pain to do. I found two pretty decent ways of doing this in my research.
+<p>
+
+What is term abbreviation? Let's say that for a program you enter commands on a
+line. You have a lot of commands, and you get tired of typing the full word for
+every single thing. Term abbreviation allows you to type a partial command and
+the system will understand what command you mean. This can be seen on VMS
+systems, some MUD servers, etc. 
+<p>
+
+For example, let's say there's a command called <code>"status"</code>. To
+execute this command you would normally have to type the full word. This
+becomes tedius after multiple recurrances. With term abbreviation, you can
+simply type <code>"s"</code> or <code>"st"</code>, for instance, and the system
+will acknowledge that you really mean <code>"status</code>.
+
+<p>
+
+My original implementation went something like this (in perl):<p>
+
+<pre>
+# $string is some word that has been set beforehand.
+if ($string =~ m/^s(t(a(t(u(s)?)?)?)?)?$/i) {
+	# execute code for the status command
+	# ...
+} elsif ($msg =~ m/^h(e(l(p)?)?)?$/i) {
+	# execute code for the help command
+	# ...
+} else {
+	# unknown command, yadda yadda yadda
+}
+# ...
+</pre>
+
+<p>
+
+Obviously typing all that for a regular expression match allowing abbreviation
+is not only annoying to type but terribly difficult to change and maintain -
+you have to count parenthesis and question marks, etc. Ugh! Want more pain? Try
+using backreferences. Yeah, how about this example trapping extra arguments to
+the command:
+
+<p>
+
+<pre>
+my $string = "help fishing";
+#...
+} elsif ($string =~ m/^h(e(l(p)?)?)? (.*)$/i) {
+	print "User requested help for $4\n";
+}
+</pre>
+
+<p>
+
+If you aren't familiar with backreferences, $4 refers to the fourth group match
+in that regular expression - count the open parenthesis and you'll see that the
+(.*) is the fourth group. This is particularly nasty because for every command
+you want to grok arguments for (atleast in this particular fashion) you have to
+count how many groups you have.
+<p>
+
+So, that being a silly idea, there are atleast two other options we can use.
+One way is to essentially swap the two parameters in our regex comparison.
+Instead of seeing if <code>$string</code> is a shortened version version of
+<code>"status"</code>, see if <code>$string</code> matches <code>$status</code>.Check this:
+
+<p>
+
+<pre>
+my $cmd = "status";
+if ("status" =~ m/^$cmd/) {
+	# $cmd is "status" or is a shortened version of it.
+	print "Status!\n";
+} elsif ("help" =~ m/$cmd/) {
+	# $cmd is "help" or is a shortened version of it.
+	print "Help!\n";
+}
+</pre>
+
+<p>
+
+Ok, so, we're good now, right? No painful regular expressions, no painful
+maintanence when we want to change commands later. Neato. There is one small
+(major?) flaw in this design, however, it can be easily corrected. What if
+<code>$cmd</code> somehow contains characters special to regular exprsesions?
+Your match may fail entirely becuase of the way perl handles variables inside
+regular exprsesion patterns! Not to fear, there is an easy solution -
+<code>perldoc perlre</code> states that <code>\Q</code> will "quote (disable)
+pattern metacharacters till <code>\E</code>." So we make one small change to our
+expressions:
+
+<p>
+
+<pre>
+my $cmd = "status";
+if ("status" =~ m/^<strong>\Q</strong>$cmd<strong>\E</strong>/) {
+	# $cmd is "status" or is a shortened version of it.
+	print "Status!\n";
+} elsif ("help" =~ m/^<strong>\Q</strong>$cmd<strong>\E</strong>/) {
+	# $cmd is "help" or is a shortened version of it.
+	print "Help!\n";
+}
+</pre>
+
+<p>
+All better. Now it doesn't matter what characters are in <code>$cmd</code> our expression won't fail due to improper syntax. It is extremely important to remember that.
+
+<p>
+
+What if you don't like lots of if-elsif-else statements? Ok, there's a solution
+for you. It involves using hot grep and eval action:
+<p>
+
+<pre>
+my @commands = qw(status help info);
+
+# Let's say for this example the user tped "st" for "status"
+my $input_command = "st";
+
+my ($match) = grep { /^\Q$input_command\E/ } @commands;
+
+eval "&{$match}";
+
+sub status { print "status command called\n"; }
+sub help { print "help command called\n"; }
+sub info { print "info command called\n"; }
+</pre>
+
+<p>
+
+Much much shorter, and is good if you prefer it as such. This also helps split
+your code into simple functions instead of normal top-down code. One final
+problem exists: What if there is an ambiguity among two similar commands? That
+is, there might be two commands that, when shortened too much are the same. For
+example, there might be a <code>"status"</code> command and a
+<code>"start"</code> command. What now? Easy fix:
+
+
+<p>
+
+<pre>
+my @commands = qw(status help info);
+
+# Let's say for this example the user typed "st" for "status"
+my $input_command = "st";
+
+my <b>@matches</b> = grep { /^\Q$input_command\E/ } @commands;
+
+<b>
+if (scalar(@matches) > 1) {
+	print "The command '$input_command' is ambiguous.\n";
+} elsif (scalar(@matches) == 0) {
+	print "There is no such command or abbreviation '$input_command'\n";
+} else {
+	</b>eval "&{$matches[0]}";<b>
+}
+</b>
+
+sub status { print "status command called\n"; }
+sub help { print "help command calle\n"; }
+sub info { print "info command called\n"; }
+
+</pre>
+
+<p>
+
+<strong>*UPDATE*</strong>
+A fellow perl monger by the name of John Resig was kind enough to submit some
+extra code that also implements term abbreviation. It's a slightly different
+alternative:
+<p>
+
+<pre>
+my $in = "help";
+
+my $cmds = {
+	status => sub { print "Status!\n"; },
+	help => sub { print "Help!\n"; },
+	helpme => sub { print "Help Me!\n"; }
+};
+
+my @m = grep {/^\Q$in\E/i} keys %{$cmds};
+
+if ( @m > 1 && (!exists $cmds->{$in}) ) {
+	print "Ambigious!\n";
+} elsif ( @m == 0 ) {
+	print "No Such!\n";
+} else {
+	&{$cmds->{$m[0]}};
+}
+</pre>
+<p>
+
+Whew! Now we have a smart solution that's terribly easy to maintain.<p>
+
+Until next time... later :)

@@ -1,0 +1,37 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-01-22T00:02:47-08:00"
+title = "Pulling album covers from Amazon\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["python", "web services", "amazon", "pimp", "music", "web scraping"]
++++
+
+Amazon provides lots of web services. One of these is it's 
+<a href="http://www.amazon.com/E-Commerce-Service-AWS-home-page/b/ref=sc_fe_l_2/104-9787804-6282359?ie=UTF8&node=12738641&no=3435361&me=A36L942TSJ2AJA">E-Commerce API</a> 
+which allows you to search it's vast product database (among other things).
+
+<p>
+
+In Pimp, the page for any given listening station shows you the current song
+being played. Along with that, I wanted to provide the album cover for the
+current track.
+
+<p>
+
+You can leverage Amazon's API to search for a given artist and album eventually
+leading you to the picture of the album cover. To this end, I wrote a little
+python module that lets you search for an artist and album name combination and
+will give you a link to the album cover.
+
+<p>
+
+So, I wrote <a href="/scripts/albumcover.py">albumcover.py</a> as a prototype
+to turn an artist and album into a url to the album cover image. It works for
+the 20 or so tests I've put through it.
+
+

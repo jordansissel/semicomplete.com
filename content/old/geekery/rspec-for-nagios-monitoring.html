@@ -1,0 +1,145 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-10-30T01:36:44-07:00"
+title = "Bringing test tools to Nagios monitoring\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["nagios", "ruby", "rspec", "webrat", "mechanize", "testing"]
++++
+
+With all the TDD (test-driven design) and BDD (behavior-driven design) going
+around these days, it'd be a shame not to use these tools on monitoring
+applications.
+
+<p>
+
+You might have a boatload of tests that test your application before you roll a
+new version, but do you use those tests while the application is in production?
+Can you? Yes!
+
+<p>
+
+Let's take an important example of monitoring some complex interaction, like
+searching google and checking the results. Simple with a mouse, but perhaps
+complex in code. Even if you wrote a script to do it, using an existing testing
+framework gets you pass/fail testing automatically.
+
+<p>
+
+For this example, I'll use the following ruby tools: <a
+href="http://rspec.info/">rspec</a> and <a
+href="http://github.com/brynary/webrat">webrat</a>. This fairly easy, though it
+took me a bit to find all the right documentation bits to clue me in to the
+right way.
+
+<pre>
+require 'rubygems'
+require 'webrat'
+
+Spec::Runner.configure do |config|
+  include Webrat::Methods
+end
+
+describe "google search for my name" do
+  it "should include semicomplete.com in results" do
+    visit "http://www.google.com/"
+    webrat.response.title.should =~ /Google/
+    query = "jordan sissel"
+    fill_in "q", :with => query
+    field_named("btnG").click
+    webrat.response.title.should == "#{query} - Google Search"
+    click_link "semicomplete.com"
+  end
+end
+</pre>
+
+Now, we run this with the 'spec' tool:
+
+<pre>
+% spec rspec-webrat.rb 
+.
+
+Finished in 0.578546 seconds
+
+1 example, 0 failures
+</pre>
+
+Seems ok. Let's break the test and see what happens. Change the 'visit' line to something else:
+
+<pre>
+    visit "http://www.yahoo.com/"
+</pre>
+
+Now rerun the test, which was checking specifically for google things in the
+page and will now fail on yahoo's page:
+
+<pre>
+ % spec rspec-webrat.rb
+F
+
+1)
+'google search for my name should include semicomplete.com in results' FAILED
+expected: /Google/,
+     got: "Yahoo!" (using =~)
+./rspec-webrat.rb:29:
+
+Finished in 0.186847 seconds
+
+1 example, 1 failure
+</pre>
+
+This output kind of sucks. Additionally, rspec failures seem to have exit code
+1, not 2 as wanted by a nagios check reporting critical. Let's fix those.
+First, fixing the exit code can be hacked around directly in ruby if you want:
+
+<pre>
+# Nagios checks expect exit code '2' to mean CRITICAL.
+# Let's make any nonzero exit attempt always exit 2 (EXIT_CRITICAL).
+EXIT_CRITICAL = 2
+module Kernel
+  alias :original_exit :exit
+  def exit(value)
+    value = EXIT_CRITICAL if value != 0
+    original_exit(value)
+  end
+end
+</pre>
+
+Fixing the output just means telling spec to use a different output format. I
+like the 'nested' output. Rerun that test now:
+
+<pre>
+% spec -f nested rspec-webrat.rb
+google search for my name
+  should include semicomplete.com in results (FAILED - 1)
+
+1)
+'google search for my name should include semicomplete.com in results' FAILED
+expected: /Google/,
+     got: "Yahoo!" (using =~)
+./rspec-webrat.rb:30:
+
+Finished in 0.017534 seconds
+
+1 example, 1 failure
+
+% echo $?
+2
+</pre>
+
+All set.
+
+<p>
+
+Even better is that you can include multiple checks in the same script, if you wanted to. RSpec lets you select any test to run alone, so your nagios checks for a given web application could be a very simple:
+
+<pre>
+define command {
+  command_name check_google_for_semicomplete
+  command_line /usr/bin/spec -f nested -e "google search for my name" mytests.rb
+}
+</pre>

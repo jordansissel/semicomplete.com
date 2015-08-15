@@ -1,0 +1,58 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-09-26T00:01:19-07:00"
+title = "jQuery puffer\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["jquery", "javascript", "ui", "pimp"]
++++
+
+The <a href="http://interface.eyecon.ro/">Interface elements</a> plugin for jQuery is super slick. It has a puffer function I want to use. However, the act of 'puffing' makes the element disappear. I want to clone the element and puff the cloned version.
+
+<pre>
+  function magicpuff() {
+    $("img").mousedown(function() {
+      pos = findPos(this)
+      left = pos[0];
+      top = pos[1];
+
+      puffer = this.cloneNode(true);
+      puffer.style.left = left + "px";
+      puffer.style.top = top + "px";
+      puffer.style.position = "absolute";
+      $(document.body).append(puffer);
+      $(puffer).Puff(1000, function() { $(puffer).remove() });
+
+      return false;
+    })
+  }
+  $(document).ready(magicpuff);
+</pre>
+
+This code will duplicate the image clicked placing it directly on top of the
+old element. It then puffs the new element and removes it when the puff has
+completed. Simple enough.
+
+<p>
+
+What good is code without a fun little demo? <a href="http://www.semicomplete.com/demo/jquery-magicpuff.html">View the puffer demo</a>
+
+<p>
+
+I should note that it seems that the remove portion doesn't always remove the
+cloned object. This is especially noticable (though, not visually) when you
+activate puffing on more than one image at a time. You need somewhat fast hands
+to do this. Firefox's DOM inspector will show you the additional elements
+parented by the <code>body</code> tag.
+
+<p>
+
+This depends on <a href="http://www.quirksmode.org/js/findpos.html">findPos</a>
+available from <a href="http://www.quirksmode.org/">quirksmode</a>, <a
+href="http://www.jquery.com">jQuery</a>, and the forementioned Interface
+plugin.
+

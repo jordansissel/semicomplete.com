@@ -1,0 +1,26 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2003-12-26T00:48:00-08:00"
+title = "tik, tac... tic!\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["perl"]
++++
+
+So I got bored and started working on an aim client written, you guessed it, in perl. It's console-based and will eventually be very similar to 
+<a href="http://users.tmok.com/~smike/">tac</a>, but better. Eventually once I
+get some bugs and basic features nailed out I'm going to attempt to write both
+Gtk2 and Curses::UI front-ends for it.<p>
+
+Right now it supports the most basic of features including logging in, messaging, receiving messages, get user info, and aliases. Aliases can be nested, that is you can do:<br>
+<pre>
+/alias foo /msg psikronic
+/alias bar /foo Hello!
+</pre>
+and then call <code>/bar</code> and it will call <code>/foo Hello!</code> which will in-turn call <code>/msg psikronic Hello!</code>. Huzzah.
+<p>
+I also added a <code>/default</code> command which will set the default target to send messages to. You can also do <code>; some message text</code> to message the person who messaged you most recently (prefix the line with semi-colon). You can also do /default ; to set the default to the person who most recently messaged you.

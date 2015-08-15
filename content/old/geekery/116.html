@@ -1,0 +1,50 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2004-06-05T22:45:00-07:00"
+title = "tic 1.0 / Term::Shelly 0.2\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["perl"]
++++
+
+
+Candice wanted a nonsucky, terminal-based aim client, and I was bored enough to
+write one. So after about 3 months of off-and-on development I've got enough
+work done on it to safely say it's useable. She and I both use it more or less
+regularly now. Including work done on my new module, Term::Shelly, I've decided
+to tag a release. tic's mostly bug free at the moment and supports a fair set
+of the features in AIM.<p>
+
+<b>Features of tic:</b><br>
+<ul>
+<li> Basic functionality: sending messages, receiving them, checking info, setting away, seeing who's online, etc.
+<li> Aliases can be created on demand to do whatever you want. You can cascade aliases aswell, meaning you can have one alias call another.
+<li> Logging is supported, logs go to <code>~/.tic/</code>
+<li> Persistent settings can be put in <code>~/.ticrc</code>. See below for more info on this.
+<li> Tab completion of all commands, aswell as completion of screennames for certain commands (like /msg)
+<li> A shortcut for replying to whoever messaged you most recently - typing ; at the beginning of the line will auto fill in "/msg [whoever]" for you. 
+</ul>
+<p>
+
+You'll need 3 perl modules: <code>Net::OSCAR</code>, <code>Term::ReadKey</code>, and a module I wrote, <code>Term::Shelly</code>. The first two you can get from cpan. However, Term::Shelly hasn't been uploaded yet (I'm lazy) so you'll have to download it from me:<br>
+<b><a href="http://www.csh.rit.edu/~psionic/projects/Term-Shelly-0.2.tar.gz">Term::Shelly</a></b><p>
+
+<b>.ticrc syntax</b><br>
+The basic syntax is: <code>key = value</code><br>
+Comments are prefixed with #, and whitespace between the key, =, and value. The following settings are available:<p>
+<ul>
+<li> screenname = someusername
+<li> password = yourpassword
+<li> port = 8080
+<li> log = all|off
+<li> timestamp = on|off
+</ul>
+
+
+<p>
+
+Download tic over there on the right...

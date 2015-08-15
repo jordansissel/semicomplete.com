@@ -1,0 +1,79 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-08-18T00:24:41-07:00"
+title = "xdotool 2.20100818.3004\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["xdotool", "release"]
++++
+
+Here's a new xdotool release. This one includes lots of new features and some
+bug fixes. All of the tests pass in the test suite (225 tests, 2779 assertions,
+173 seconds).
+
+<p>
+
+New commands:
+<ul>
+  <li> get_desktop_viewport and set_desktop_viewport. Window managers (like
+  compiz) use viewports instead of the standard 'virtual desktop' model. This
+  means there is usually one big desktop area that you have a small view on,
+  and switching desktops means moving that view. </li>
+  <li> selectwindow. This command lets you pick a window by clicking on it.
+  Useful for chaining to other commands. </li>
+  <li> windowreparent. Change which window parents another. Useful if you want
+  to move a window  to be inside another. </li>
+  <li> windowkill. Kills a window. </li>
+  <li> getwindowname. Prints the window name (title). </li>
+  <li> behave. Allows you to bind additional xdotool commands to run based on
+  certain window events. See the manpage for examples. </li>
+</ul>
+
+<p>
+
+Download: <a href="http://semicomplete.googlecode.com/files/xdotool-2.20100818.3004.tar.gz">xdotool-2.20100818.3004.tar.gz</a>
+
+<p>
+
+As usual, if you find problems or have feature requests, please file <a href="http://code.google.com/p/semicomplete/issues/list">bugs</a> or
+send an email to the <a href="http://groups.google.com/group/xdotool-users">list</a>.
+The changelist from the previously-announced release:
+
+<pre>
+2.20100818.*
+  - New commands: 'get_desktop_viewport' and 'set_desktop_viewport'. Some
+    window managers don't actually do 'multiple desktops' but instead show
+    workspaces as views on a large desktop. For example, Compiz Fusion does
+    this, which is why you may see 4 or more desktops, but 'xdotool
+    get_num_desktops' reports only one.
+  - New command: 'selectwindow' command which picks a window by clicking on it.
+  - New command: 'windowreparent' with original patch by Markus Opitz.
+  - New command: 'windowkill' will kill a window and the client that owns it
+    (via XKillClient)
+  - New command: 'getwindowname' for printing the name (title) of a window.
+    Requested by Dominik Reichl for KeePass.
+  - New command: 'behave'. This allows you to run xdotool commands on window
+    events. For example, you can achieve 'mouse-follows-focus' with this:
+      xdotool search --class xterm behave %@ mouse-enter windowfocus
+    This will find all xterms and, upon mouse entering, will focus that window.
+    Not really sure what I wanted with this feature, but it can grow as needed.
+  - Support percentages in 'windowsize'. Percentages are relative to the size
+    of the screen the window is on. 'windowsize 12345 100% 50%' will make the
+    window the full width and half height of the screen.
+  - When typing, if we can't find a character in the existing keymap, try
+    looking up in keysym_charmap (xdo_util.h) and binding a key if we find one
+    that matches. Reported by Victor Baulac on the mailing list. This allows
+    us to type '@', for example, even if the current keymap does not have
+    this key.
+
+2.20100701.*:
+  - No functional changes.
+  - Add missing file 'Doxyfile' to the release package so the xdo docs can be
+    built from a release tarball. (Reported by Daniel Kahn Gillmor)
+  - Skip 'getwindowfocus' misc test if we don't have a windowmanager due to
+    a bug/feature in Xvfb and Xephyr if there is only one client and no wm.
+</pre>

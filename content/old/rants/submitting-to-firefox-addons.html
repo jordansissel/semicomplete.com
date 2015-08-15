@@ -1,0 +1,53 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-06-02T02:19:16-07:00"
+title = "Adventures in mozilla red tape.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["rants", "beaurocracy"]
++++
+
+So a short while ago I published the tabsearch firefox extension. I thought to myself, "Why not put it up on addons.mozilla.org?"
+
+<p>
+
+To publish, you need to submit it to the addons review system. Submitting it puts it in the "sandbox". To leave the sandbox and go public it must be nominated. To pass nomination it must meet a large set of criteria, all of which make some amount of sense with respect to quality assurance, etc.
+
+<p>
+
+I've submitted it 3 times. Every time it's been denied for different reasons. The first time was half reasonable, because one of the reasons was "Remove those debugging statmenets". Other reasons have been:
+
+<dl>
+  <dt> "Document your preferences" </dt>
+  <dd> tabsearch doesn't have any options, preferences, or tweakables </dd>
+  <dt> "Your extension must have atleast one review from one of your users" </dt>
+  <dd> Do I have a QA team who can review this for me? I thought the reason I
+  was publishing it on mozilla addons was to get users. Seems like an awkward
+  bootstrapping problem I'm not going to bother solving. </dd>
+  <dt> "Make the key binding configurable" </dt>
+  <dd> That's what keyconfig is for :( </dd>
+</dl>
+
+While I entirely agree that quality assurance through a review process is a
+great and useful idea, I think the firefox addons policies and reviewership
+group have taken it a bit far. There are only so many revisions I'm willing to
+do for the sake of publishing somewhere else. So, until I can find more time to
+throw at getting published at mozilla addons, you can expect to only find
+tabsearch here.
+
+<p>
+
+Benjamin Franklin wrote a blurb about perfection, '"Yes," said the man, "but I
+think I like a speckled axe best."'. Most of the time, perfection isn't worth
+the effort when something is already good enough.
+
+<p>
+
+I don't mean to discourage people from submitting to mozilla addons, but after
+3 attempts it's really not worth it. Basically, the fine, nearly-unwritten
+print in the policy is that you need real people to have submitted very
+detailed reviews of your extension before it'll be approved.

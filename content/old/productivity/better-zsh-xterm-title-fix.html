@@ -1,0 +1,66 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-06-29T21:54:16-07:00"
+title = "Better zsh xterm title function fix\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["zsh", "xterm", "usability"]
++++
+
+Sometimes I run commands that have special characters in them, newlines, or are very long. 'xterm set title' sequence breaks on those cases. So, let's fix that.
+
+<pre>
+function title() {
+  # escape '%' chars in $1, make nonprintables visible
+  a=${(V)1//\%/\%\%}
+
+  # Truncate command, and join lines.
+  a=$(print -Pn "%40>...>$a" | tr -d "\n")
+
+  case $TERM in
+  screen)
+    print -Pn "\e]2;$a @ $2\a" # plain xterm title
+    print -Pn "\ek$a\e\\"      # screen title (in ^A")
+    print -Pn "\e_$2   \e\\"   # screen location
+    ;;
+  xterm*|rxvt)
+    print -Pn "\e]2;$a @ $2\a" # plain xterm title
+    ;;
+  esac
+}
+</pre>
+
+The 3 cases are addressed individually.
+<ul>
+	<li> Special characters are made printable by using the 'V' flag, ${(V)varname}. This is documented in zsh under 'Parameter Expansion Flags' </li>
+	<li> Long lines are truncated with "%40>...>$varname" with "print -P". The '-P' flag has print interpret in prompt-style expansion. "%40>...>whatever" will truncate 'whatever' to 40 characters, trailed with '...' </li>
+	<li> Multi-line entries are joined with 'tr -d "\n"' - Maybe there's a better way to do this with zsh without needing to run tr(1) every time? </li>
+</ul>
+
+The 'title' function takes 2 arguments, which get separated by a '-' in xterm titles. First argument is the 'what' and second argument is the 'where'. Separated, they can be used to tell screen what is running ina  given session and where. Useful++
+
+<p>
+
+The only real changes to this function from the original was adding the fixes for those 3 cases. The rest of the function remains unchanged.
+
+<p>
+
+If you're still confused as to where this can be used, put it in a precmd and preexec function:
+
+<pre>
+# precmd is called just before the prompt is printed
+function precmd() {
+  title "zsh" "%m(%55<...<%~)"
+}
+
+# preexec is called just before any command line is executed
+function preexec() {
+  title "$1" "%m(%35<...<%~)"
+}
+</pre>
+
+An example of this can be seen <a href="http://www.semicomplete.com/images/zshtitle.png">in this screenshot</a>.

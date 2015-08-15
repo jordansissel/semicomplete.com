@@ -1,0 +1,42 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2004-03-03T00:40:00-08:00"
+title = "(?:Perl|Pretty)i?\\sMusic\\sPlayer and Tic\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["pimp", "perl", "tic"]
++++
+
+So I've been busy the past two days working furiously on both tic and pimp. Pimp has been resurrected.
+<p>
+It previously was a silly ncurses frontend to various media players (mplayer, mpg123, xmms, etc). It worked for the most part, but was limited by the dependency on 3rd party programs to run and die on whim. I needed to play mp3s and such from within perl to make this work the way I wanted.
+<p>
+Enter Audio::Ao and Audio::Mad. The former is an interface to libao, a library that talks dirty with your sound devices. The latter is an interface to libmad, a library that decodes mpeg audio decoding.
+<p>
+
+Right now, I've got a player/server set running. It supports client connections (telnet to port 3242) which supports the following:<br>
+&nbsp;&nbsp;&nbsp;<b>*</b> play/stop/next/pause commands<br>
+&nbsp;&nbsp;&nbsp;<b>*</b> info command, tells you what's playing<br>
+&nbsp;&nbsp;&nbsp;<b>*</b> set command, lets you change the ID3 tag of the currently-playing song.<br>
+<br>
+Everything works so far pretty well. Current problems are:<br>
+&nbsp;&nbsp;&nbsp;<b>*</b> reads the entire mp3 initially, then tosses it to <code>mad</code>. This should be addressed by slowly reading the file (buffered reading) - see below<br>
+&nbsp;&nbsp;&nbsp;<b>*</b> no playlist support! *cry*<br>
+<br>
+So, I decided I had a good idea as to how to read slowly over time, this went along the lines of:<br>
+1) Read X bytes, throw it over to Audio::Mad<br>
+2) After the stream's empty ($frame->decode($stream) returns -1), repeat step 1<br>
+<br>
+This works, kinda... What happens is you get effective streaming, however there are blips and errors in the sound output. Why, you ask? Because I'm reading a specific number of bytes and completely ignoring the size of each frame in the mp3. What's a frame? Mp3's are split into frames, much like video. If you take half of the data out of a frame, it won't sound right - much as if you were to take half of the data from a video frame, it wouldn't look right. <br>
+I have an idea how to read the proper number of bytes so that I always end at the end of a frame, but this will only work for fixed bitrate mp3s; VBR will be another challenge unto itself, but that's a problem to be solved another day.
+<p>
+I don't have streaming incorporated into PiMP yet, but I do have a demo script that does it without concern for the mp3 frames - It's over there on the right.
+
+
+<hr>
+I also picked up work again on tic, my aim client. It's back up to good 'n working condition. I fixed up a few of the bugs (erroneous output, etc) but found a few more (hurray!). Anyhoo, tab completion now works better. <br>
+I'll release tic soon, only a few more features need to be added.

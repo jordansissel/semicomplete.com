@@ -1,0 +1,111 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-11-03T01:54:22-08:00"
+title = "grok 20091103 release\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok", "release", "C", "projects"]
++++
+
+Lots of changes since the last announced release. Grok should get some
+more activity now that I'm actually using it in a few places. If you
+find bugs or have feature requests, please file them on googlecode
+issue tracker (see below)
+
+<p>
+
+The largest changes are:
+<ul>
+<li> we ship with Ruby and C API. </li>
+<li> lots of new testing code. </li>
+<li> we now use tokyocabinet internally instead of bdb. </li>
+</ul>
+
+<dl>
+<dt> Grok documentation: </dt>
+<dd> <a href="http://code.google.com/p/semicomplete/wiki/Grok">http://code.google.com/p/semicomplete/wiki/Grok</a> </dd>
+<dt> Download: </dt>
+<dd> <a href="http://semicomplete.googlecode.com/files/grok-20091103.tar.gz">http://semicomplete.googlecode.com/files/grok-20091103.tar.gz</a> </dd>
+<dt> File bugs/features: </dt>
+<dd> <a href="http://code.google.com/p/semicomplete/issues/list">http://code.google.com/p/semicomplete/issues/list</a> </dd>
+</dl>
+
+<p>
+
+This release has all tests passing in these configurations:
+<ul>
+<li> FreeBSD 7.1. tokyocabinet 1.4.30, pcre 8.00, libevent 1.4.12 </li>
+<li> Ubuntu 9.04. tokyocabinet 1.4.35, pcre 7.8-2, libevent 1.3e-3 </li>
+<li> CentOS 5.3. tokyocabinet 1.4.9-1, pcre 7.8-2, libevent 1.1a-3.2.1 </li>
+</ul>
+
+Thanks to Pete Fritchman, grok also ships with an RPM spec so you can 'rpmbuild
+-tb grok-20091103.tar.gz' for simple build and deployment.  The spec builds
+grok, grok-devel, and grok-ruby. 
+
+<p>
+
+I'm using this version of grok myself with good success. It's also
+being used in the new logstash (log indexing tool) project for doing
+log parsing.
+
+<p>
+
+Full changelist since the last announced release:
+
+<pre>
+20091103
+ - New: ruby bindings are now really supported.
+ - Change 'WORD' pattern to be word bounded (\b)
+ - Move grok-patterns to patterns/base
+ - update rpm spec to install patterns/base in /usr/share/grok
+
+20091102
+ - Add a bunch of tests, mostly in ruby, to exercise grok. This uncovered a
+   few bugs which are fixed.
+   All tests currently pass (both CUnit and Ruby Test::Unit) on:
+   * FreeBSD 7.1. tokyocabinet 1.4.30, pcre 8.00, libevent 1.4.12
+   * Ubuntu 9.04. tokyocabinet 1.4.35, pcre 7.8-2, libevent 1.3e-3
+   * CentOS 5.3. tokyocabinet 1.4.9-1, pcre 7.8-2, libevent 1.1a-3.2.1
+ - When making strings in ruby, we now make them tainted per ruby C docs.
+ - "Too many replacements" error will now occur if you have cyclic patterns,
+   such as defining 'FOO' to be '%{FOO}'. Max replacements is 500.
+
+20091030
+ - Make 'grok' main take a config for an argument.
+ - Add grok rpm spec.
+ - Updated Makefile to work on Linux and FreeBSD without modification.
+ - Fixed bug introduced in 20091022 where capture_by_(name,subname) didn't
+   work properly.
+ - Add default values for match {} grok.conf blocks:
+   shell: stdout
+   reaction: "%{@LINE}"
+ - Have grok exit nonzero if there were no reactions executed, akin to grep(1)
+   not matching anything. 'reactions' are important here; matches with no
+   reaction will not count as a reaction.
+
+20091023
+ - Fix libgrok accidentally sharing it's parser/lexer functions. Turns out,
+   libgrok doesn't actually need to parse the grok.conf, so we don't build
+   against it anymore for the library.
+
+20091022:
+ - Convert to using tokyocabinet instead of berkeley db.
+   * Berkeley DB isn't easy to target across platforms (4.x versions vary
+     wildly in bugs)
+   * tokyo cabinet should be faster
+   * tokyo cabinet is less code to write, and slightly more readable in the
+     author's opinion.
+   * we don't have to serialize with xdr anymore
+
+20091019:
+ - include pregenerated bison/flex output since gnu flex varies much from
+ non-gnu flex, and many important platforms don't have gnu flex available
+ easily from packages (freebsd, centos, etc) but come with the other flex.
+
+ No functional changes.
+</pre>

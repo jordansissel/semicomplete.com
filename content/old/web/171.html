@@ -1,0 +1,29 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-05-25T21:15:00-07:00"
+title = "xml, xslt, and kioskweb!\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["xml", "xslt", "web", "javascript"]
++++
+
+I put some more work into my kiosk interface today. I made the keyboard widget highly pluggable, such that you can drop one anywhere on a page. The particular place I wanted to try this first was on the Drink machine login page.<p/>
+
+<a href="http://www.semicomplete.com/projects/kioskweb/demo/drink.cgi?login">
+projects/kioskweb/demo/drink.cgi?login
+</a>
+
+<p/>
+If you do a 'view source' on that page, you'll see that it looks somewhat like html, but there's this little <i>widget</i> tag that you shouldn't recognize. An xslt sheet turns that tag into something more useful - Look in your dom inspector for the actual result. This shows you how I'm somewhat planning on building this web-based kiosk interfacing system.
+<p/>
+
+The end result will be that you can write your pages in psuedo XHTML and drop in fully featured widgets with simple tags like the widget tag. I currently support two forms of input (xml-wise) - those are XHTML with slight modifications and something I came up with that's less html-oriented. An example of this can be seen in this directory: <a href="http://www.semicomplete.com/projects/kioskweb/demo/xml/">projects/kioskweb/demo/xml</a>
+<p/>
+
+The entire interface is in xml, any html pages you may load are actually static html pages generated from xml. If you want to take a look at my xslt sheet, then <a href="http://www.semicomplete.com/projects/kioskweb/demo/ui.xsl">click here</a>. Opera 8 does not appear to support doing xslt client-side, so if you are using opera the pages won't render properly if at all.
+<p/>
+This project is going to be all over xml/xslt like a donkey on a waffle.

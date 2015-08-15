@@ -1,0 +1,46 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-07-02T22:36:00-07:00"
+title = "Using PF/ALTQ to make slow connections better\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["networking"]
++++
+
+ALTQ is a quality of service packet scheduler for OpenBSD pf (pf works in FreeBSD too). I'm at home right now on DSL. DSL is just fine when the only thing I'm doing is ssh and light web usage. However, once I start a download all of the bandwidth I've got ends up being used by that download. The problem is, then, that my ssh sessions become unnecessarily sluggish due to the fact that things are now having to compete for the transmission queue.
+
+<p/>
+
+If only there were a way to give things like ACKs and ssh sessions higher priority? Oh wait, there is! PF/ALTQ to the rescue. With very minimal effort, you can effectively make your ssh sessions usable once again even though you're downloading or uploading enough to fill your pipe.
+
+<p/>
+My pf.conf is as follows:
+
+<pre>
+ext_if=em0
+
+# Make a priority queue with 3 members: q_ack, q_pri, and q_def
+altq on $ext_if priq bandwidth 100% queue { q_ack, q_pri, q_def }
+
+# Give priorities
+queue q_ack priority 10
+queue q_pri priority 7
+queue q_def priority 1 priq(default)
+
+# ACKs get high priority
+pass out on $ext_if proto tcp from $ext_if to any flags S/SA keep state queue (q_def, q_ack)
+pass in  on $ext_if proto tcp from any to $ext_if flags S/SA keep state queue (q_def, q_ack)
+
+# SSH sessions also want priority
+pass out on $ext_if proto tcp from any to any port 22 keep state queue q_pri
+</pre>
+
+You'll need the ALTQ and ALTQ_PRIQ options in your kernel for this to actually work. ALTQ cannot be built as a module under FreeBSD due to the way it is implemented.
+
+<p/>
+
+If I turn pf on, and start a long file transfer (up or down), my ssh sessions won't lag anymore.

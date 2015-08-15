@@ -1,0 +1,51 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-12-27T03:43:41-08:00"
+title = "ssh honeypot.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["ssh", "honeypot", "vmware", "liboverride", "fedora", "ubuntu", "freebsd"]
++++
+
+Using slight variations on the techniques mentioned in <a
+href="http://www.semicomplete.com/blog/geekery/tracking-ssh-bots.html">my
+previous post</a>, I've got a vmware instance running Fedora 8 that permits any
+and all logins. These login sessions are logged with script(1).
+
+<p>
+
+Fedora 8 comes with selinux enabled by default. This means sshd was being
+denied permission to execute my special logging shell. The logs in /var/log/audit/ explained why, and audit2allow even tried to help make a new policy entry for me. However, I couldn't figure out (read: be bothered to search for more than 10 minutes) how to install this new policy. In searching, I found out about chcon(1). A simple command fixed my problems:
+
+<pre>
+chcon --reference=/bin/sh /bin/sugarshell
+</pre>
+
+The symptoms prior to this fix were that I could authenticate, but upon login I
+would get a '/bin/sugarshell: Permission Denied' that wasn't logged by sshd.
+
+<p>
+
+There are plenty of honeypot software tools out there, but I really wasn't in the mood for reading piles of probably-out-of-date documentation about how to use them. This hack (getpwnam + pam_permit + logging shell) took only a few minutes.
+
+<p>
+
+As a bonus, I found a feature in Fedora's yum tool that I like about freebsd's packaging system: It's trivial to ask "Where did this file come from?" Doing so made me finally look into how to do it in Ubuntu.
+
+<dl>
+  <dt> FreeBSD: pkg_info -W /usr/local/bin/ssh  </dt>
+  <dd> /usr/local/bin/ssh was installed by package openssh-portable-4.7.p1,1 </dd>
+  <dt> Fedora: yum whatprovides /usr/bin/ssh </dt>
+  <dd> openssh-server.x86_64 : The OpenSSH server daemon </dd>
+
+  <dt> Ubuntu: dpkg -S /usr/bin/ssh </dt>
+  <dd> openssh-client: /usr/bin/ssh </dd>
+</dl>
+
+<p>
+
+Let's see what I catch.

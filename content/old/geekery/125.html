@@ -1,0 +1,22 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2004-09-30T07:56:00-07:00"
+title = "FreeBSD moused patch\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["freebsd"]
++++
+
+I made a patch for freebsd -current's moused that lets you scroll up and down
+while holding the middle mouse button and moving the mouse up and down. I
+found this feature in windows on my laptop extremely useful, perhaps others
+will now aswell in FreeBSD.
+<p>
+The patch is available aswell as the patched source (which may or may not work
+for you). <br>
+Usage - Copy the source or patch to <code>/usr/src/usr.sbin/moused</code>. If you got the patch, then do patch < moused-patch. Run <code>make all install</code> and it should build it and install it for you.<br>
+Two new options are thus added to your moused: <code>-V</code> and <code>-U</code>. -V enables virtual scrolling and -U with a number parameters specifies the distance threshold (defaults to 5) before a scroll tick happens.

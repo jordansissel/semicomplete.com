@@ -1,0 +1,38 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-02-14T10:35:00-08:00"
+title = "getting pageup/pagedown to work properly under solaris (Xsun)\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["unix", "solaris", "productivity"]
++++
+
+The default handling of pageup and pagedown by xterm under Xsun is annoying.
+When you hit page up in xterm, it scrolls up. This behavior is undesirable and
+different from what I'm used to using. So, Xresources to the rescue.<p>
+
+Xterm supports a number of options including keybindings, here's my fix. This 
+will send a "page up" or "page down" character sequence to your terminal if you 
+hit page up or page down, respectively. Shift+pageup still works as expected 
+(actually scrolls)<p>
+
+<pre>
+! Override default action when hitting pageup and pagedown - actually
+! send the ANSI code for page up
+*VT100.translations: #override \n\
+	~Shift &lt;Key&gt;Prior: string(0x1b) string("[5~") \n\
+	~Shift &lt;Key&gt;Next: string(0x1b) string("[6~") \n
+</pre>
+<br>
+Put that in your .Xresources and load it with:
+<p>
+<pre>
+xrdb -merge .Xresources
+</pre>
+<p>
+This file should get loaded automatically when you login through dtlogin, but
+I haven't tested this yet.

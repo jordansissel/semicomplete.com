@@ -1,0 +1,120 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-05-03T03:22:07-07:00"
+title = "New event recording database prototype\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok", "eventdb", "sysadmin", "perl", "python", "projects", "oh-my-god-it's-4am"]
++++
+
+I finally managed to find time today to work on my events database project. In
+the processes of doing so, I found a few bugs in grok that needed to get fixed.
+Some of my regular expressions were being a bit greedy, so certain pattern
+expansion was breaking.
+
+<p>
+
+To summarize the event recording system, it is a webserver listening for event
+publish requests. It accepts the "when" "where" and "what" of an event, and
+stores it in a database.
+
+<p>
+
+To have my logs pushed to the database, I'll leverage the awesome power of
+Grok. Before I do that, I gathered all of the auth.log files and archives and
+compiled them into their respective files.
+
+<p>
+
+The grok.conf for this particular maneuver:
+<pre>
+exec "cat ./logs/nightfall.auth.log ./logs/sparks.auth.log ./logs/whitefox.auth.log" {
+   type "all syslog" {
+      match_syslog = 1;
+      reaction = 'fetch -qo - "http://localhost:8080/?when=%SYSLOGDATE|parsedate%&where=%HOST%/%PROG|urlescape|shdq%&what=%DATA:GLOB|urlescape|shdq%"';
+   };
+};
+</pre>
+
+This is farily simple. I added a new standard filter, 'urlescape' to grok
+becuase I needed it. it will url escape a data piece. Hurray!
+
+<p>
+
+Run grok, and it sends event notifications to the webserver for every
+syslog-matching line. Using FreeBSD's command-line web client, fetch.
+
+<pre>
+sqlite&gt; select count(*) from events;
+8085
+</pre>
+
+Now, let's look for something meaningful. I want to know what happened on all sshd services between 1am and 3am this morning (Today, May 3rd):
+
+<pre>
+nightfall(~/projects/eventdb) % date -j 05030100 +%s
+1146632400
+nightfall(~/projects/eventdb) % date -j 05030400 +%s
+1146643200
+</pre>
+
+Now I know the Unix epoch times for May 3rd at 1am and 4am.
+
+<pre>
+sqlite&gt; select count(*) from events where time >= 1146632400 
+   ...&gt; and time <= 1146643200 and location like "%/sshd" 
+   ...&gt; and data like "Invalid user%";
+2465
+</pre>
+
+This query is instant. Much faster than doing 'grep -c' on N log files across M
+machines. I don't care how good your grep-fu is, you aren't going to be
+faster.This speed feature is only the beginning. Think broader terms. Nearly
+instantly zoom to any point in time to view "events" on a system or set of
+systems. Filter out particular events by keyword or pattern. Look for the last
+time a service was restarted. I could go on, but you probably get the idea.
+It's grep, but faster, and with more features.
+
+<p>
+
+As far as the protocol and implementation goes, I'm not sure how well this
+web-based concept is going to prevail. At this point, I am not interested in
+protocol or database efficiency. The prototype implementation is good enough.
+From what I've read about Splunk in the past months in the form of
+advertisements and such, it seems I already have the main feature Splunk has:
+searching logs easily. Perhaps I should incorporate and sell my own,
+better-than-Splunk, product? ;) 
+
+<p/>
+Bear in mind that I have no idea what Splunk actually does beyond what I've
+gleaned from advertisements for the product. I'm sure it's atleast somewhat
+useful, or no one would invest.
+
+<p>
+
+Certainly, a pipelined HTTP client could perform this much faster than doing
+10000 individual http requests. A step further would be having the web server
+accept any number of events per page request. The big test is going to see how
+well HTTP scales, but that can be played with later.
+
+<p>
+
+At this point, we have come fairly close to the general idea of this project:
+Allowing you to zoom to particular locations in time and view system events.
+
+<p>
+
+The server code for doing this was very easy. I chose Python and started
+playing with CherryPy (a webserver framework). I had a working event reciever
+server in about 30 minutes. 29 minutes of that time was spent writing a
+threadsafe database class to front for pysqlite. The CherryPy bits only amount
+to about 10 lines of code, out of 90ish.
+
+<p>
+
+The code to do the server can be found here:
+<a href="/scripts/cherrycollector.py">/scripts/cherrycollector.py</a>

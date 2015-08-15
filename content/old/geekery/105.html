@@ -1,0 +1,28 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2004-03-06T06:45:00-08:00"
+title = "Neat perl trick\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["perl"]
++++
+
+I've never known how programs change what their command-lines are listed as in <code>ps(1)</code> output. I knew that <code>$0</code> in perl would let you view what the program was called as, so I took the chance of trying to actually *set* this variable. Here's what happened:
+
+<pre>
+whack(~) [530] !130! > perl -e 'sleep'&
+[1] 89053
+whack(~) [531] > ps | grep perl
+89053  p3  SL     0:00.00 perl -e sleep
+...
+whack(~) [523] > perl -e '$0 = "Hello there!"; sleep' &
+[1] 89119
+whack(~) [524] > ps | grep perl
+89119  p3  SL     0:00.00 Hello there! (perl)
+</pre>
+
+Neat? I think so... You may not, whatever :)

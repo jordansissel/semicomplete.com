@@ -1,0 +1,54 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-05-10T22:25:00-07:00"
+title = "ppp over ssh - paranoia solution\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["articles", "site"]
++++
+
+<p>
+I got bored today and wrote a quick script to start/stop a ppp over ssh vpn. I'm working on an article on how to get ppp over ssh working for freebsd, so that'll be up shortly. I've also been working on a few new upgrades to logwatch, i'll commit those as soon as they're completed.
+</p>
+
+<pre>
+% ifconfig ndis0
+ndis0: [snip...]
+        inet 129.21.112.158 netmask 0xffffff80 broadcast 129.21.112.255
+        media: IEEE 802.11 Wireless Ethernet autoselect (DS/11Mbps)
+        status: associated
+        ssid baccus 1:baccus
+        channel 11 authmode OPEN powersavemode OFF powersavesleep 100
+</pre>
+
+<p>
+As you can see, I'm currently using wireless on some random access point
+I associated to called <i>baccus</i>. I don't know who's access point
+this is, but it's what ndis0 insists on associating with, so I don't
+complain. Being on a school campus is, in my opinion, one of the most
+potentially dangerous networks you can put your computer on. Here you'll
+have an assortment of geeks of varying clue levels - pretty much anyone
+with half a brain can sniff all the wireless traffic they want.
+</p>
+<p>
+Having my traffic sniffed isn't really annoying until I want to login
+someplace that insists on clear-text passwords (say, thefacebook.com).
+So, I have gotten into the habbit of using OpenSSH's SOCKS5 proxy to do
+that, but it's annoying starting a proxy every time I need one. What can
+I do instead?
+</p>
+<p>
+A quick solution that is very simple is to tunnel PPP over SSH. I won't
+go into the details here, but the short of it is this: I have a ppp
+tunnel to one of my machines in my dorm room which is on a wired,
+switched network I consider to be trusted. Then, all of my traffic can
+possibly be tunneled to a safe network where it will then go forth and
+be happy.
+</p>
+<p>
+As I mentioned, I'll be posting an article on how to make this go shortly.
+</p>

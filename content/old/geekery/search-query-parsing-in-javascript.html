@@ -1,0 +1,79 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-12-27T03:37:49-08:00"
+title = "Query parsing in JavaScript\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["javascript", "rpc", "regexp", "parsing"]
++++
+
+For pimp, I want to be able to search a specific column, say, artist, without
+needing multiple fields for searching. The ability to specify more advanced
+searches than simple keywords is quite useful. How do we leverage this on the client and turn a search query into a set of key-value pairs?
+
+<p>
+
+I must confess I was hesitant to put this kind of logic into Javascript instead
+of Python. Furthermore, it makes me feel a little uneasy using <i>/foo/</i> in
+anything other than Perl. Nonetheless, doing this in Javascript was simple and
+it's still fast (as it should be).
+
+<p>
+
+The particular type of query I want to parse come in the following (hopefully
+intuitive) formats:
+
+<ul>
+  <li> foo </li>
+  <li> artist:Eminem </li>
+  <li> album:"Across a Wire" </li>
+  <li> artist:"Counting Crows" album:august </li>
+</ul>
+
+The following code does this for me. The <code>parse_query</code> function will
+return a dictionary of query terms. Values are lists.
+
+<p>
+
+Here's an example:
+<dl>
+  <dt> Query </dt>
+  <dd> <code> rain baltimore artist:"Counting Crows" album:august </code> </dd>
+  <dt> Results of parse_query </dt>
+  <dd> <pre>
+    { "artist": ["Counting Crows"],
+      "album": ["august"],
+      "any": ["rain", "baltimore"],
+    }
+  </pre> </dd>
+</dl>
+
+I take the dictionary returned and pass it to <a href="http://jquery.com">jQuery</a>'s
+<code>$.post</code> function to execute an AJAX (I hate that term, it's such a
+misnomer these days) request. Here's the code:
+
+<pre>
+query_re = /(?:"([^"]+)")|(?:\b((?:[a-z:A-Z_-]|(?:"([^"]+)"))+))/gi,
+
+function parse_query(string) {
+  dict = {}
+  while (m = query_re.exec(string)) {
+    val = (m[1] || m[2]).split(":",2)
+    if (val[1]) { key = val[0]; val = val[1]; }
+    else { key = "any"; val = val[0]; }
+
+    val = val.replace(/"/g,"");
+
+    dict[key] = dict[key] || [];
+    // the following should be .append(val) but 
+    // I don't think javascript lists have them
+    dict[key][dict[key].length] = val;
+  }
+
+  return dict;
+}
+</pre>

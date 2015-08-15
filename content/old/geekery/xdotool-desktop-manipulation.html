@@ -1,0 +1,87 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-05-31T03:55:15-07:00"
+title = "xdotool desktop features\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["xdotool", "x11", "xlib", "ewmh"]
++++
+
+I spent a while tonight reading up on 
+<a href="http://standards.freedesktop.org/wm-spec/wm-spec-1.3.html">extended
+window manager hints</a>. It's not a very well thought-through standard, but
+many window managers implement it nonetheless.
+
+<p>
+
+Tonight I added 7 new commands to xdotool (not yet in a release):
+<ul>
+  <li> get and set the number of desktops </li>
+  <li> get and set the currently active desktop </li>
+  <li> get and set the desktop for a specific window (set == move it to a new desktop)</li>
+  <li> activate a window </li>
+</ul>
+
+The first 3 should be pretty straight forward. For fun, I told Gnome2 to create
+50 workspaces, and it didn't barf. The taskbar pager looked a little funny as
+it was sprawling with little desktop views, but it works :)
+
+<p>
+
+The last is window activation.  It will jump you to the window and give it
+focus. If the window is on a different desktop, it jumps to that desktop and
+then activates the window. I've tested exactly that behavior (firefox lives on
+a separate desktop or workspace) in Gnome2 and ion-3, and it works.
+
+<p>
+
+Example: Jump to firefox:
+<pre>
+./xdotool windowactivate $(./xdotool search -title "Mozilla Firefox")
+</pre>
+
+Example: Trying to do bad things in Gnome2
+<pre>
+% ./xdotool set_num_desktops 5000
+% ./xdotool get_num_desktops
+36
+</pre>
+
+Example: Move firefox to another desktop
+<pre>
+# Find firefox's X Window ID
+% MOZWIN=$(./xdotool search --title "Mozilla Firefox")
+
+# Find the desktop containing firefox.
+% ./xdotool get_desktop_for_window $MOZWIN
+0
+
+# How many desktops do we have?
+% ./xdotool get_num_desktops
+5
+
+# Move firefox to desktop 3 (index starts at 0)
+% ./xdotool set_desktop_for_window $MOZWIN 3
+
+# Show me that firefox has moved to desktop 3
+% ./xdotool get_desktop_for_window $MOZWIN
+3
+
+# Show me the current desktop
+% ./xdotool get_desktop
+0
+
+# Activate firefox's window (taking us to Firefox's desktop)
+% ./xdotool windowactivate $MOZWIN
+
+# Show that we're now on the same desktop as firefox
+% ./xdotool get_desktop
+3
+</pre>
+
+
+I'll put out a new release after I have a chance to tidy up the code a bit.

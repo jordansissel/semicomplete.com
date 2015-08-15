@@ -1,0 +1,34 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-08-21T02:10:57-07:00"
+title = "Strange patterns in my apache logs\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["browser prefetch", "logs", "noise"]
++++
+
+A few weeks ago, ajaxrain.com linked to my <a
+href="http://www.semicomplete.com/blog/geekery/jquery-interface-puffer.html">jquery
+puffer</a> example. I randomly peruse my apache logs looking for new inbound
+link activity or new search activity. 
+
+<p>
+
+I saw lots of hits with a referrer of ajaxrain.com but were to pages not linked
+from that site. I thought this was someone's webbrowser with prefetch gone crazy, but apache logs tell me what it is. An example log is this:
+
+<pre>
+203.190.116.249 - - [07/Aug/2007:15:05:01 -0400] "GET /projects/xboxproxy HTTP/1.0" 301 467 "http://www.ajaxrain.com/" "Mozilla/4.5 (compatible; HTTrack 3.0x; Windows 98)"
+</pre>
+
+HTTrack? Windows 98? Mozilla 4.5? Ooookay. Sure.
+
+<p>
+
+Turns out HTTrack is a "website copier" tool. It isn't very nice to the webserver, as it requests many pages per second.
+
+

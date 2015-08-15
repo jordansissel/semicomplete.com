@@ -1,0 +1,68 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-06-14T04:19:29-07:00"
+title = "xulrunner command line adventures\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["xulrunner", "command line"]
++++
+
+<a href="http://developer.mozilla.org/en/docs/Chrome:_Command_Line">Oh my
+god.</a> If you followed the link, you surely noticd the 170ish lines in the
+example that shows you how to make use of command-line arguments from
+JavaScript. I totally forgot how nasty it is to often to simple things in
+XUL/XPCOM-land.
+
+<p>
+In my adventures of searching for telling teaching a small xulrunner
+application I'm working on to use the commandline, I found <a
+href="http://simile.mit.edu/wiki/Crowbar">Crowbar</a>, a project out of MIT
+that's pretty neat. 
+
+<p>
+
+Basically I wanted the power of my xpathtool but twist it with some help from
+jQuery. A command-line jquery tool would let you do some pretty neat things
+with web scraping. Crowbar can already do the page fetching, but I want to do
+more. And no, by 'command-line jquery tool' I certainly do not mean <a href="http://jquery.com/blog/2007/06/01/new-command-line-jquery-tool/">this command line jquery documentation tool</a>.
+
+<p>
+
+My frustration with XPCOM's burden-the-programmer design has me at the end of
+my patience for tonight. Basically I suck at XPCOM in JavaScript. I'll keep at
+it though, maybe something useful will come out.
+come out of it.
+
+<p>
+
+<b>Update:</b> Neat! While surfing through Crowbar's code for how they handle commandline arguments, I found this beauty:
+
+<pre>
+/*
+ * Process a series of command line arguments and modify default settings
+ */
+function processCommandLineArgs() {
+  var nsCommandLine = window.arguments[0];
+  nsCommandLine = nsCommandLine.QueryInterface(Components.interfaces.nsICommandLine);
+  port = getCommandLineArg(nsCommandLine, 'port', port);
+}
+</pre>
+
+So, I try this out myself:
+
+<pre>
+&lt;window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        onload="alert(window.arguments[0].QueryInterface(Components.interfaces.nsICommandLine).getArgument(0))" /&gt;
+</pre>
+
+And run xulrunner:
+<pre>
+% xulrunner application.ini happypants
+</pre>
+
+The result is this: <br>
+<img src="/images/xulrunner-cmdline.png">

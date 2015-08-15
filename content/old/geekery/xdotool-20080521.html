@@ -1,0 +1,29 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-05-21T01:27:19-07:00"
+title = "new xdotool version available (20080521)\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["xdotool", "xlib", "projects", "releases"]
++++
+
+Hop on over to the <a href="/projects/xdotool">xdotool project page</a> and
+download the new version. This is the first version being served totally from
+googlecode, let me know if you have problems.
+
+<p/>
+
+The changelist from the previous announced release is as follows:
+
+<pre>
+20080521:
+  * Import patches from keynav's xdotool branch (From Lukas Mai) which make
+    xdotool compile happily when building with -Wall and -pedantic (and others)
+  * Finally convert to using Window type for (hopefully) everything instead of
+    incorrectly typecasting Window to int sometimes.
+  * Confirmed that the one (but mostly useless) test passes.
+</pre>

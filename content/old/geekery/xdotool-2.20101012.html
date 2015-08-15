@@ -1,0 +1,87 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-10-12T01:08:55-07:00"
+title = "xdotool 2.20101012 release\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["xdotool", "release", "project", "C", "X11", "Xlib"]
++++
+
+New xdotool for your enjoyment. Lots of features and bug fixes. Huge thanks to 
+folks who sent in bug reports, patches, or ideas. This version should be ABI
+compatible to the previous release. All tests are passing (270 tests, 2838
+assertions).
+
+<p>
+
+Download: <a href="http://semicomplete.googlecode.com/files/xdotool-2.20101012.3049.tar.gz">http://semicomplete.googlecode.com/files/xdotool-2.20101012.3049.tar.gz</a>
+
+<p>
+
+Major changes:
+<ul>
+  <li> New commands: behave_screen_edge, windowminimize, exec </li>
+  <li> Add static build ('make xdotool.static')</li>
+  <li> Add 'restore' feature to 'mousemove'. </li>
+  <li> Improvements to xdotool 'script' behavior. Patch from Henning Bekel. </li>
+</ul>
+
+<p>
+
+Cool tool: With the new screen edge behavior, added <a
+href="http://code.google.com/p/semicomplete/source/browse/xdotool/examples/leftconsole.sh">examples/leftconsole.sh</a>.
+This takes a selected window (by click) and hides it until the mouse hits the
+left-side of the screen. The window will hide again when the mouse leaves the
+window; the window will be full-height and slide in from the left. When hiding
+it, it will slide left, off of the screen. If you run this and want to restore
+the window, just ctrl+c the script, rerun it, and hit ctrl+c again before
+clicking on a new window.
+
+<p>
+
+As usual, if you find problems or have feature requests, please file <a
+href="http://code.google.com/p/semicomplete/issues/list">bugs</a> or send an
+email to the <a href="http://groups.google.com/group/xdotool-users">list</a>.
+
+<p>
+
+Changelist since previous announcement:
+<pre>
+2.20101012.*
+  - New command: 'windowminimize' for minimizing windows.
+  - New command: 'behave_screen_edge' to attach commands to edge and corner activities.
+    For example, to lock your screen when the mouse hits the top-right corner
+    for more than 2 seconds:
+      xdotool behave_screen_edge --delay 2000 top-right exec xscreensaver-command -lock
+    'xscreensaver-command' comes with the xscreensaver package.
+  - New command: 'exec' for executing commands. Useful with behave_screen_edge.
+  - Bug fix: Catch pointer grab failures in selectwindow (xdo_window_select)
+    and abort if we can't grab it and report an error message.
+  - Add  --delay and --repeat flags to click. This allows you to easily
+    double-click (or more) in a single command. Requested by meenakshi sundaram
+    via the mailing list.
+  - Add new option to mouse move 'restore'. This will restore the mouse position
+    to the last known position prior to the most recent move. That is:
+      xdotool mousemove 0 0 mousemove restore
+    the above will move the mouse to 0,0 then move the mouse back to the
+    position it was before. Requested by luc le rumeur and suffian amjad on the
+    mailing list.
+  - Add 'static' and 'install-static' targets. Requested by Anthony
+    Thyssen on the mailing list.
+  - Fix bug in xdotool getmouselocation that didn't search for the client window
+    correctly.
+  - New function: xdo_mousewindow, which lets you get the window the mouse is
+    currently over.
+  - New function: xdo_mouselocation2, which is an extended version of
+    xdo_mouselocation and includes the window the mouse is currently over.
+  - New function: xdo_window_minimize, which minimizes a window.
+  - Add patch from Henning Bekel that greatly improves xdotool's script
+    feature. Scripts now no longer invoke /bin/sh for each line, but instead
+    build a command chain to execute. Further, positional arguments ($1, $2,
+    etc) and environment variables ($FOO, $WINDOWID, etc) work as expected
+    despite the removal of /bin/sh.
+</pre>

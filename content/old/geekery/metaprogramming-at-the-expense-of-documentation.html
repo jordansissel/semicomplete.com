@@ -1,0 +1,107 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-11-08T01:56:57-08:00"
+title = "Ruby metaprogramming will cost you documentation.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["rdoc", "ruby", "metaprogramming"]
++++
+
+Ruby, like many other dynamic and modern languages, makes it easy for you to do
+fun stuff like metaprogramming.
+
+<p>
+
+Ruby, also like other nice languages, comes with a builtin documentation
+generator that scans your code for comments and makes them available in html
+and other formats.
+
+<p>
+
+... until you start metaprogramming.
+
+<p>
+
+Take a simple example, the Fizzler! The name of the class is unimportant; this
+class will simply provide a new way to define methods, simply for the sake of
+showing some metaprogramming and how ruby's rdoc fails on it.
+
+<p>
+
+<pre>
+class Fizzler
+  def self.fizzle(method, &block)
+    self.class_eval do
+      define_method method, &block
+    end
+  end
+end
+
+class Bar < Fizzler
+  # Print a worldly message
+  fizzle :hello do
+    puts "hello world!"
+  end
+  
+  # A simple test
+  def test
+    puts "testing, 1 2 3!"
+  end
+end
+
+# Now some sample code, let's invoke the new 'hello' method we generated with
+# 'fizzle'.
+bar = Bar.new
+bar.hello
+</pre>
+
+The output looks like this:
+<pre>
+% ruby fizzler.rb 
+hello world!
+</pre>
+
+All is well! We are generating new methods on the fly, etc etc, all features of
+metaprogramming. However, we can never make this 'hello' method obviously
+available to the world via rdoc, at least as far as I can tell. The rdoc
+generated looks like this:
+
+<p>
+
+<a href="/files/blogposts/20091108/fizzler-rdoc.png"> <img
+src="/files/blogposts/20091108/fizzler-rdoc-thumb.png"> </a>
+
+<p>
+
+Note the lack of any mention of 'hello' as a method. I cannot simply do what
+works for lots of other normal ruby code and ask for the documentation of hello
+by running 'ri Bar#hello' - because rdoc simply doesn't see it.
+
+<p>
+
+I recall in python, if you were dynamically generating methods and classes, you
+could also inject their documentation by simply setting the '__doc__' property
+on your class or method. Ruby doesn't appear to have such a thing.
+
+<p>
+
+Additionally, in some metaprogramming cases, the stack traces are actually
+harder to read. For example, ActiveRecord makes extensive use of
+'method_missing' rather than dynamically generate methods. The output is the
+same, but the stacktraces are now littered with 'method_missing' and references
+to files and lines you don't own, rather than containing stacktraces to
+named functions and other useful pointers. This perhaps is a feature, but for
+cases like method_missing, being able to add other useful data onto the stack
+trace would greatly aid in debugging.
+
+<p>
+
+So, if long term necessities like documentation and easy debuggability (stack
+traces, etc), are hindered by metaprogramming, at least in ruby, what are we
+left to do? Metaprogramming is clearly a win in some places, but the automatic
+losses seem to detract from any value it may have.
+

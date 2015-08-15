@@ -1,0 +1,65 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-01-02T13:44:24-08:00"
+title = "RAID is not a backup techology.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["raid", "backups"]
++++
+
+I spent some time yesterday making backups of things I care about (code,
+content here, etc) in two remote places, in case anything should happen. Now
+two places are copying down data for me every few days. Backups are easy to
+ignore, but critical when you lose data.
+
+<p>
+
+Today, I heard about journalspace going down because it lost data and didn't
+have backups. While I don't use the service, so it doesn't affect me, the
+failure they experienced makes for a great case study in false data security
+and backups. From the front page of journalspace.com:
+
+<blockquote>
+Here is what happened: the server which held the journalspace data had two
+large drives in a RAID configuration. As data is written (such as saving an
+item to the database), it's automatically copied to both drives, as a backup
+mechanism.
+
+<br>
+<br>
+
+The value of such a setup is that if one drive fails, the server keeps running,
+using the remaining drive. Since the remaining drive has a copy of the data on
+the other drive, the data is intact. The administrator simply replaces the
+drive that's gone bad, and the server is back to operating with two redundant
+drives.
+</blockquote>
+
+RAID is not a backup solution. RAID can get you, depending on the
+configuration, better throughput and/or better data reliability. If you lose a
+drive in some raid configurations, the system can continue working normally
+without that drive. Backups should copy data somewhere other than the machine
+hosting the original data. The page goes on:
+
+<blockquote>
+So, after nearly six years, journalspace is no more.
+</blockquote>
+
+After almost 6 years nobody had a cron job that backed up data to somewhere
+offsite (or a more complex backup system)? Ouch! My condolences to journalspace
+and its users on the loss.
+
+<p>
+
+Losing important data unexpectedly will sting you bad if you don't have
+appropriate backups. The only thing to do is learn from this mistake and move
+on, accepting the consequences of the loss.
+
+<p>
+
+This isn't the first website I've heard of having to shutdown because they
+permanently lost data. Learn from their mistakes, keep backups of your stuff!

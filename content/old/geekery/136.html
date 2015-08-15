@@ -1,0 +1,44 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2004-11-18T11:23:00-08:00"
+title = "note takery thing\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["perl", "programming"]
++++
+
+For the longest time I've found myself jotting notes in files tossed
+throughout my home directory. Finding these files later has become a
+chore and half.<br>
+Some short while ago, the author of Ion, Tuomo Valkonen, wrote a little
+program called riot in haskel. I got this to build *once* and only once,
+so all future attempts to use this failed miserably. At any rate, riot
+is a useful tool to make notes of things. It stores notes in mbox
+format. All in all, a useful program, unless you can't get a haskell
+compiler working for your OS!
+<p>
+
+I quickly became annoyed, realizing the folly of my ways, having to put
+little jotted notes in various files that end up everywhere. Annoyed, I
+created a solution in a project I called 'note.' It's a simple perl
+Curses::UI interface to let me take notes and post followups in a
+thread-like manner.
+
+The config file needs to go in your home directory as
+<code>~/.noterc</code>. The format of the file is:
+<p>
+<pre>
+dbuser = DATABASE_USER
+dbpass = DATABASE_PASSWORD
+dbname = DATABASE_NAME
+dbhost = DATABASE_HOST
+</pre>
+<br>
+You'll need postgres and perl. Perl will need Curses::UI and
+File::Temp<br>
+I also have the sql you'll need to put in <a
+href="/~psionic/projects/note/tables.sql">tables.sql</a>

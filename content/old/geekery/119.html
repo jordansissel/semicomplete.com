@@ -1,0 +1,79 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2004-06-23T01:53:00-07:00"
+title = "Regular expression to match quoted and nonquoted strings\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["perl"]
++++
+
+The method I was using to match quoted strings didn't work all that well and it wasn't entirely flexible - so I wrote a lamer version which works for everything I've tried -
+<p>
+<pre>
+# Make the underlined part match characters that can't be in a word.
+# For HTML, set this to [^\s>]
+my $regex = q!(?:"([^"]*)"|'([^']*)'|(<u><b>[^\s]</b></u>+))!;
+
+while (<>) {
+	while (s/^$regex\s+//) {
+		my $string = $1 || $2 || $3;
+		print "Quoted string: $string
+";
+	}
+}
+</pre>
+<p>
+
+It works, I tested it. Here's some sample output:
+<p>
+<pre>
+nightfall(~) > perl quoteregex.pl
+testing
+Quoted string: testing
+foo bar baz
+Quoted string: foo
+Quoted string: bar
+Quoted string: baz
+"hello there" how are 'you doing'
+Quoted string: hello there
+Quoted string: how
+Quoted string: are
+Quoted string: you doing
+'foo
+Quoted string: 'foo
+'foo bar baz
+Quoted string: 'foo
+Quoted string: bar
+Quoted string: baz
+</pre>
+<p>
+
+For an example on how to get this to work with html, here's something that'll pull all the links from a webpage (anchor tags, and only the 'href' attribute):
+
+<p>
+<pre>
+#!/usr/bin/perl
+
+use strict;
+use HTTP::Handle;
+
+my $hd = HTTP::Handle->new();
+my $regex = q!(?:"([^"]*)"|'([^']*)'|([^\s>]+))!;
+
+$hd->url($ARGV[0] || "http://www.google.com");
+$hd->connect();
+my $fd = $hd->fd();
+
+undef $/;
+my $source = <$fd>;
+
+while ($source =~ s/&lt;a?s+(?:[^>]+s+)*href=$regex[^>]*>//s) {
+	my $link = $1 || $2 || $3;
+	print "Link: $link\n";
+}
+
+</pre>

@@ -1,0 +1,49 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-06-17T18:16:24-07:00"
+title = "Eliminiating special cases in strtok loops\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["c", "strtok", "coding style", "programming"]
++++
+
+strtok has a "first case" and "other case" usage. The first time you call
+strtok, you pass it the string. Future calls must pass NULL for this same
+session. This leads to this kind of code:
+
+<pre>
+void foo(char *mystr) {
+  char *tok;
+
+  tok = strtok(mystr, " ");
+  while (tok != NULL) {
+    // Do something with tok
+
+    tok = strtok(NULL, " ");
+  }
+}
+</pre>
+
+Notice the above duplicate code. You can use pointers properly and achieve this same result with only one line using strtok:
+
+<pre>
+void foo(char *mystr) {
+  char *tok;
+  char *strptr = mystr;
+
+  while ( (tok = strtok(strptr, " ")) != NULL ) {
+    if (strptr != NULL)
+      strptr = NULL;
+    // Do something with tok
+  }
+}
+</pre>
+
+This method lets you still invoke both first and nonfirst cases of strtok but
+you only have one line of code using strtok, making your code more maintainable
+and readable. This way has the great benefit of being able to use 'continue'
+inside your loop and you still move on to the next token.

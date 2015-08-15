@@ -1,0 +1,57 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-10-10T20:19:47-07:00"
+title = "GNOME keyring daemon vs ssh-agent\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["ssh-agent", "ssh", "keys", "signing", "gnome sucks"]
++++
+
+A fellow sysadmin friend of mine has, from time to time, bitched about
+performance problems with gnome's ssh agent called "keyring." I don't use
+gnome, so I don't have his problems.
+
+<p>
+
+Yesterday, I wrote some ruby code that'll let you use your own ssh keys (and
+agent) to sign and verify arbitrary strings. See <a
+href="http://github.com/jordansissel/ruby-sshkeyauth">jordansissel/ruby-sshkeyauth</a>
+on github. 
+
+<p>
+
+Putting the above module to work, I can easily compare signing speeds of agents
+under various load conditions. The main complaint was that keyring falls apart
+under parallel signing demands - a very common situation for any sysadmin that
+sshes to more than one system at a time say, with a script, or capistrano, or
+another similar tool.
+
+<p>
+
+Under single-client signing requests (one at a time), gnome-keyring on ubuntu
+10.04 signed 1000 "Hello world" strings in 12.76 seconds; ssh-agent cut that
+time by more than half achieving the same result in 5.05 seconds.
+
+<p>
+
+Under reasonable parallel load, ssh-agent's lead grew even further. On 4 cores,
+5 'signing' processes, and 1000 signing requests each, the results are gnome-keyring
+signing all 1000 requests on each of 5 processes in parallel in 113.23 seconds,
+while ssh-agent signed the same in 30.61 seconds.
+
+<p>
+
+If you want to repeat my tests, you can use the 'samples/speed.rb' script from
+the above ruby-sshkeyauth project on github. Single-thread tests were done
+using <code>ruby speed.rb "Hello world"</code> while the 5-process test was done using
+<code>seq 5 | xargs -P5 -n1 ruby speed.rb "Hello world"</code>.
+
+<p>
+
+So, if you're a regular user of ssh and ssh agents, you may want to stick with
+ssh-agent rather than gnome-keyring-daemon given the huge performance lead
+ssh-agent has.

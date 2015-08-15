@@ -1,0 +1,55 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-05-15T20:13:07-07:00"
+title = "Migration to Google Code hosting\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["revision control", "subversion", "google", "googlecode"]
++++
+
+I've been maintaining my own repository(s) for years, and I've finally grown
+out of doing it.
+
+<p>
+
+My first major
+<a href="/blog/geekery/merging-multiple-svn-repos.html">repository move</a> was
+to merge all my CVS and Subversion repositories into a single Subversion
+repository. This move made me happy for a while, but from time to time the
+machine hosting the repository would go down, and I'd be out of Subversion
+access for a while. Additionally, the machine hosting this repository grants me
+only a small quota (500mb) and my subversion repository was occupying 10% of
+the space. Lastly, I couldn't be bothered to setup webdav+svn, so I couldn't
+grant arbitrary users (like you) proper read (and perhaps write) access.
+
+<p>
+
+To solve all of these problems, in part or in full, I created a new project on
+googlecode called 'semicomplete' for my repository.  All of my projects will
+now live there.
+
+<p>
+
+I used svnsync to upload my local repository so as to keep all the change
+history, which took 5 hours, but was otherwise painless.
+
+<p>
+
+New repository: 
+<a href="http://semicomplete.googlecode.com/">http://semicomplete.googlecode.com/</a>
+
+<p>
+
+As a side bonus, Google Code Hosting allows you to publish "downloads", which
+means all of my releases can be put here, saving me 24 megs of used quota on
+the old machine. Further bonuses include an issue tracking system (so you and I
+can file bugs that won't get lost) and a project wiki. I don't know if I'll use
+the wiki yet.
+
+<p>
+
+

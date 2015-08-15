@@ -1,0 +1,53 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-02-06T07:23:00-08:00"
+title = "statistic deltas using awk\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["shell", "productivity"]
++++
+
+Short shell script I call 'delta' - It is useful for groking 'vmstat -s' output (and possibly other commands) to view time-based deltas on each counter.
+
+<pre>
+#!/bin/sh
+while :; do
+   $* | sed -e 's/^ *//';
+   sleep 1;
+done | awk '
+{
+   line = substr($0, length($1)+1);
+
+   if (foo[line]) {
+      printf("%10d %s\n", $1 - foo[line], line);
+   }
+   foo[line] = $1;
+   fflush();
+}'
+</pre>
+
+Example usage:
+<pre>
+delta vmstat -s | grep -E 'system calls|fork'
+
+       792  system calls
+         3   fork() calls
+         0  vfork() calls
+       120  pages affected by  fork()
+         0  pages affected by vfork()
+       680  system calls
+         3   fork() calls
+         0  vfork() calls
+       120  pages affected by  fork()
+         0  pages affected by vfork()
+      1150  system calls
+         3   fork() calls
+         0  vfork() calls
+       120  pages affected by  fork()
+         0  pages affected by vfork()
+
+</pre>

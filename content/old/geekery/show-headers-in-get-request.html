@@ -1,0 +1,87 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2006-12-19T17:22:11-08:00"
+title = "View http headers, or, how lwp-request sucks\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["www", "debugging"]
++++
+
+I normally use HEAD(1) to view HTTP response headers. However, when developing web applications outside of Apache or any other standard web server, it's often likely that you won't immediately support HEAD requests. This is a problem if all you want to do is see the http headers.
+
+<p>
+
+Perl's libwww comes with a tool called lwp-request, which is installed with symlinks GET, HEAD, etc. You can use GET and have it show only the HTTP headers. Or can you?
+
+<p>
+
+The response message I am looking for is this:
+
+<pre>
+HTTP/1.0 200 OK
+Server: PasteWSGIServer/0.5 Python/2.4.3
+Date: Tue, 19 Dec 2006 22:42:20 GMT
+content-type: text/html; charset=UTF-8
+Connection: close
+</pre>
+
+The response I get using <code>GET -sed</code> is:
+
+<pre>
+200 OK
+Connection: close
+Date: Tue, 19 Dec 2006 22:43:16 GMT
+Server: PasteWSGIServer/0.5 Python/2.4.3
+Content-Type: text/html; charset=UTF-8
+Client-Date: Tue, 19 Dec 2006 22:43:16 GMT
+Client-Peer: 127.0.0.1:5000
+Client-Response-Num: 1
+Link: &lt;/css/style.css>; media="all"; rel="stylesheet"; type="text/css"
+Link: &lt;/css/tabs.css>; media="all"; rel="stylesheet"; type="text/css"
+Link: &lt;/css/tabs-ie.css>; media="all"; rel="stylesheet"; type="text/css"
+Title: pimp: music for you.
+</pre>
+
+What? LWP appears to be doing some html parsing. :(
+
+<p>
+
+So, a solution usiung netcat, which is trash, because lwp should just not be
+stupid by default. All I want are http headers. Here's my netcat solution:
+
+<pre>
+% echo "GET / HTTP/1.0\r\n\r\n" | nc localhost 5000  | col | sed -e '/^$/q'
+HTTP/1.0 200 OK
+Server: PasteWSGIServer/0.5 Python/2.4.3
+Date: Tue, 19 Dec 2006 23:00:12 GMT
+content-type: text/html; charset=UTF-8
+Connection: close
+</pre>
+
+Oh look! The headers I wanted. I hate you, LWP.
+
+<p>
+
+Sigh.
+
+<p>
+
+<b>Update:</b> curl seems to be the best solution, here. 
+
+<pre>
+% curl -sS -D - -o /dev/null http://www.google.com
+HTTP/1.1 200 OK
+Date: Fri, 16 Jul 2010 21:34:01 GMT
+Expires: -1
+Cache-Control: private, max-age=0
+Content-Type: text/html; charset=ISO-8859-1
+Set-Cookie: PREF=ID=d8703167b9ea01a8:TM=1279316041:LM=1279316041:S=j5mVVrOv81lHeqpa; expires=Sun, 15-Jul-2012 21:34:01 GMT; path=/; domain=.google.com
+Set-Cookie: NID=36=plIkUp9cvYQ5Fc6VqIQxBDjjqS_VP1F1EohF0FBv2wW-phBuNTxqm0vduncInbp-MgLd2aikmgRu8JZlZmNnv6LcymNEfsxh33xyUaG8avqwaI8MkAYT6XiiWbxLXnAW; expires=Sat, 15-Jan-2011 21:34:01 GMT; path=/; domain=.google.com; HttpOnly
+Server: gws
+X-XSS-Protection: 1; mode=block
+Transfer-Encoding: chunked
+</pre>

@@ -1,0 +1,58 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-12-31T16:59:45-08:00"
+title = "ssh honeypot auditing\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["ssh", "honeypot", "fedora", "selinux"]
++++
+
+I've only gotten a few hits on my honey pot, and none of the bots seem to be
+doing much. I think it might be because the shell I have setup doesn't behave
+correctly. Here's the new one:
+
+<pre>
+#!/bin/bash
+d="$(date "+%Y%m%d-%H%M%S")"
+logfile="/var/log/traps/$d"
+env &gt; $logfile
+echo "Args: $*" &gt;&gt; $logfile
+export SHELL=/bin/bash
+script -c "$SHELL $*" -q -a $logfile
+</pre>
+
+This will log the env vars in addition to the arguments passed to the shell.
+Thus far, I've see 2 patterns of environment variables.
+
+<p>
+
+This new version supports arguments, so that things like 'ssh user@host
+somecommand' works. The next step is probably to have a setuid program chown
+the logfile to root shortly after script(1) starts, so that you can't remove
+your own log. I'll only bother with that if it's necessary.
+
+<p>
+
+In addition to the shell change, I started looking into the audit facility in
+Linux. I want to log all command execution, in case my script(1) idea fails. To do this, I added these rules with auditctl:
+<pre>
+auditctl -a exit,always -F uid=60000 -S open
+auditctl -a exit,always -F uid=60000 -S execve
+auditctl -a exit,always -F uid=60000 -S vfork
+auditctl -a exit,always -F uid=60000 -S fork
+auditctl -a exit,always -F uid=60000 -S clone
+</pre>
+
+I'm not entirely sure if this will specifically catch the execs I'm looking
+for, but it does seem to work:
+
+<pre>
+% ausearch -sc execve | grep EXECVE
+type=EXECVE msg=audit(1199138086.041:3293): a0="/bin/bash" a1="-c" a2="uptime"-
+type=EXECVE msg=audit(1199138086.056:3300): a0="uptime"-
+</pre>
+

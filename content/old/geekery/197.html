@@ -1,0 +1,72 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2005-12-05T01:47:00-08:00"
+title = "ldap, round 2\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["unix", "ldap"]
++++
+
+I already know how to setup ldap databases and add objects. Now I needed to figure out how to secure it and hook it to kerberos.
+
+<p/>
+The following in my slapd.conf maps kerberos users to ldap objects.
+
+<pre>
+authz-regexp uid=([^,]*),cn=gssapi,cn=auth 
+             "ldap:///ou=Users,dc=csh,dc=rit,dc=edu??sub?(uid=$1)"
+</pre>
+
+When you have kerberos ticket and authenticate using SASL, you will bind as 'uid=USER,cn=gssapi,cn=auth' - this is not the proper ldap object for any user on my system. Luckily, I can substitute this dn for a valid one using 'authz-regexp.' What this does, essentially, is do a subquery when you authenticate via SASL and looks for objects in the Users orgunit with a uid=USER. Very very helpful. Now I can get a kerberos ticket and ldap knows who I am:
+
+<pre>
+nightfall(~) [976] % kinit
+psionic@CSH.RIT.EDU's Password: 
+kinit: NOTICE: ticket renewable lifetime is 0
+nightfall(~) [977] % ldapwhoami
+SASL/GSSAPI authentication started
+SASL username: psionic@CSH.RIT.EDU
+SASL SSF: 56
+SASL installing layers
+dn:cn=jordan sissel,ou=users,dc=csh,dc=rit,dc=edu
+Result: Success (0)
+</pre>
+
+Wonderful! The next step was to allow users to modify their own objects. A short ACL entry in slapd.conf fixes that.
+
+<pre>
+access to attrs=gecos,description,loginShell,mail by self write
+</pre>
+
+This ACL ensures that users only have write access to themselves, and even then only to the attributes listed above. To test this, I did the following:
+
+<pre>
+nightfall(~) [981] % ldapsearch -Q -LLL '(uid=psionic)' 'loginShell'
+dn: cn=Jordan Sissel,ou=Users,dc=csh,dc=rit,dc=edu
+loginShell: /test/baz/fizz
+
+nightfall(~) [982] % cat myldif
+dn: cn=jordan sissel,ou=users,dc=csh,dc=rit,dc=edu
+changetype: modify
+replace: loginShell
+loginShell: Happy Login Shell
+
+nightfall(~) [983] % ldapmodify -Q -f myldif
+modifying entry "cn=jordan sissel,ou=users,dc=csh,dc=rit,dc=edu"
+
+ghtfall(~) [984] !1! % !ldapse
+ldapsearch -Q -LLL '(uid=psionic)' 'loginShell'
+dn: cn=Jordan Sissel,ou=Users,dc=csh,dc=rit,dc=edu
+loginShell: Happy Login Shell
+
+</pre>
+
+Users have write access to their own objects now.
+
+<p/>
+
+The next step is going to be getting SSL/TLS working. I made a brief attempt at doing that tonight but I failed. Getting some SSLv3 handshake error that is clearly PEBCAK on my part. Oh well, sleep now. More LDAP later.

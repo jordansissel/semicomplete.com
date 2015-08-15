@@ -1,0 +1,28 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-08-26T04:32:29-07:00"
+title = "Ruby/Oniguruma hacking\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["ruby", "oniguruma", "hacks", "regular expressions"]
++++
+
+<a href="http://www.semicomplete.com/blog/geekery/dear-ruby-and-python.html">Last night</a>, I mentioned that I wanted (?{ code }) in ruby and python.
+
+<p>
+
+I got bored tonight and decided to see how hard this would be to implement in ruby. Turns out it's not as bad as I thought, not that I'm finished yet.
+
+<p>
+
+<a href="/files/blogposts/20070826/test_new_re.rb">This ruby script</a> shows a
+demo of what I have so far. The output is in comments in the script. There's a
+few strange bugs yet, but I've nearly got it working properly. Something about
+my coding or the way oniguruma does backtracking/failures keeps this from
+working correctly on strings with multiple potential matches.
+
+

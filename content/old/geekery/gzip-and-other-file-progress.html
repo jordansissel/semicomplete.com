@@ -1,0 +1,94 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2010-05-11T14:58:16-07:00"
+title = "gzip and other file progress checking\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["gzip", "progress", "procfs", "is it done yet"]
++++
+
+While I wait for a mysql backup to replay against a test server, I was
+wondering how far along the replay was.
+
+<p>
+
+I am building the database using this command:
+
+<pre>
+% gzip -dc admin.sql.20100511.060001.gz| mysql -uroot -proot
+</pre>
+
+<p>
+
+Pipes have a finite buffer. That is, the mysql command is busy reading stuff
+from stdin while gzip is busy writing to stdout. If gzip outputs faster than
+mysql can consume, gzip will end up filling the pipe's buffer and its next
+write will block, pausing it momentarily until mysql can catch up.
+
+<p>
+
+If we can inspect what position gzip is currently at, we can use that data
+along with the input file size to give us a progress indicator.
+
+<p>
+
+In linux 2.6.22 and beyond, there is /proc/&lt;pid&gt;/fdinfo which will tell you the
+current seek position of any open file in a process, so let's use that. First
+we'll need to find what file descriptor number is the input file, then ask what
+position it is at.
+
+<pre>
+% pgrep -f 'gzip -dc admin'
+6261
+% PID=6261
+% cd /proc/$PID/
+% ls -l fd
+total 0
+lrwx------ 1 jsissel jsissel 64 May 11 15:04 0 -&gt; /dev/pts/12
+l-wx------ 1 jsissel jsissel 64 May 11 15:04 1 -&gt; pipe:[31912237]
+lrwx------ 1 jsissel jsissel 64 May 11 15:04 2 -&gt; /dev/pts/12
+<b>lr-x------ 1 jsissel jsissel 64 May 11 15:04 3 -&gt; /home/jsissel/admin.sql.20100511.060001.gz </b>
+% cat fdinfo/3
+pos:    149028864
+flags:  0104000
+
+# Get the file size
+% size=$(stat -L fd/3 -c "%s")
+
+# Get the position
+% pos=$(awk '/pos:/ { print $2 }' fdinfo/3)
+
+% echo "$pos/$size" | bc -l
+.25203137570698241973
+</pre>
+
+The above output says we are 25% complete.
+
+<p>
+
+You could go a step further and include the process uptime to show an estimate
+of time remaining.
+
+<pre>
+cd /proc/$PID
+size=$(stat -L fd/3 -c "%s")
+pos=$(awk '/pos:/ { print $2 }' fdinfo/3)
+start=$(date -d "$(ps -p $PID -o lstart=)" +%s)
+now=$(date +%s)
+echo "Minutes elapsed:"
+echo "($now - $start) / 60" | bc -l
+echo "Minutes remaining (estimated):"
+echo "((($now - $start) / ($pos / $size)) - ($now - $start)) / 60" | bc -l
+
+# Output
+Minutes elapsed:
+55.81666666666666666666
+Minutes remaining (estimated):
+110.58584668301847161105
+</pre>
+
+<b> Update: </b> Some commenters pointed out <a href="http://www.ivarch.com/programs/pv.shtml">pv</a> as a solution here. It looks pretty good.

@@ -1,0 +1,235 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2007-08-10T22:04:50-07:00"
+title = "Defcon 15 in review\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["defcon", "defcon15", "travel", "security", "booze"]
++++
+
+This year's defcon was similar to last years. At the Riviera, black and white
+ball were split across two night, a few amazingly lame talks were given, some
+cool talks, and as always Dan Kaminsky's talk was entertaining.
+
+<p>
+
+I'm no Vegas expert, but the Riviera casino/hotel is the *worst* casino in
+town. I had many conversations with fellow attendees reminiscing about how much
+we missed the Alexis Park. Finding parties at the Alexis was cake - walk
+outside, follow the people and noise. Parties were everywhere. There were also
+3 outdoor pool areas which collected people, booze, and music each night. The
+only downside to the Alexsis Park was that its conference areas were too
+small and too few. This downside was mitigated by three-channel closed-circuit
+TV channels broadcast live and viewable on any hotel room's tv. Watch the talks
+from your room? Awesome. For parties and community, the Alexis Park ruled. For
+more plentiful conference space, the Riviera is better. It's a shame we
+(Defcon) outgrew the Alexis Park.
+
+<p>
+
+The Riviera is a giant, old, dirty resort casino. The rooms are not great, the
+casino smells bad, and the food is horrible. Basically, I can't say much nice
+about the place other than it does have large quantities of conference space.
+The casino staff were generally nice folks, but I don't gamble so I didn't
+interact with them much. Their concierge desk is horrible. Every time I asked
+where I might find a particular place (pizza, sushi, flare bar, etc) that was not inside
+the Riviera, they had no answers.
+
+<p>
+
+I went to my usual (read: small) number of talks this year. I missed a few that
+were titled in such a way as to disinterest me that I later found out covered
+some cool material. Bruce Potter's talk was overflowing with people, so some of
+us had to leave - sad. If you have his talk on video, please send me a url :)
+
+<p>
+
+There were thousands of scene whores at defcon this year. We were drowning in
+them. So much so, perhaps, that some <a href="http://www.0x90.org">0x90</a>
+folks made <a
+href="http://www.flickr.com/photos/jordansissel/1067881814/in/set-72157601339514175/">these
+shirts</a> which showed up during the I/O Active party (which was awesome, btw).
+
+<p>
+
+I also found that there were so many super paranoid people at Defcon. Mostly
+scene whores who really have no idea what a computer is or what security is
+about. Too many evesdropped conversations where people said "I'm not turning on
+wireless! I have too much important stuff on my laptop that I can't allow to
+get out!" Are they that worried about being exploited? Probably. Do they really
+have shit worth protecting on their laptops? Probably not. One of these people
+was a student at UCSD and he talked shit about his friends' computer knowledge
+constantly while his friends were supposedly writing tetris for the defcon
+badges.
+
+<p>
+
+If you have a clue and have something on your laptop worth protecting so much
+so you physically turn off wifi, then you don't bring it to defcon. Clearly
+these people haven't got a clue and are just whoring up the scene. [*]
+
+<p>
+
+[*] One exception is reporters and other press types, who I won't require to
+have security or computer clue. Of the people I overheard freaking out about
+wireless, all of them were normal attendees, not press.
+
+<p>
+
+I flew into SFO on Monday morning. Wendy was due to land in a few hours, so I
+sat at the airport so we could go home together. After signing on for wireless,
+I remembered a project I've been meaning to do for a while - masquerade as a
+known-valid MAC and IP combination to bypass captive portals. It's easy to do,
+but I wanted it automated. Now I have a script. I'll post more on this later,
+but the typical configuration of "captive-portal authentication == your mac+ip
+is allowed through the firewall" is not a good way to run your pay-for
+wireless network.
+
+<p>
+
+One final notable event is that we took a limo ride to In-n-Out again this year.
+
+<p>
+
+I went to more than the talks listed below, but they weren't worth commenting
+on or I don't remember them.
+
+<ul>
+<dt> Mike Schrenk - "The Executable Image Exploit" </dt>
+<dd> Before going, I thought this talk was going to be on a new twist to recent
+image library exploits. It wasn't. His &lt;sarcasm&gt;amazing&lt;/sarcasm&gt;
+content covered something known for years, that 
+<a href="http://en.wikipedia.org/wiki/Deep_linking">hot-linked images
+(wikipedia calls them deep links)</a>, could be used to track users or reveal
+information by tracking the referrer url or *gasp* setting a cookie!
+
+<p>
+
+Mike also talked about using php to serve images and that you can set cookies
+using php, but myspace filters images ending with '.php' apparently. His
+workaround was to tell apache to process .jpg files as php, and he presented
+this as if he was breaking some kind of new ground and that this was the
+coolest thing ever: "You can fool apache into running php code on jpegs!" 
+Clearly by "fool" we really mean "configure the same way you do with .php
+except you put .jpg". Who's fooling who? ;)
+
+<p>
+
+Around this time I was realizing that by "executable image" he really meant
+that he was executing php code on his own server whenever someone requested an
+image, again, from his server. This would have been a good presentation for
+1998, perhaps, not 2007.
+</dd>
+
+<dt> Zac Franken - Biometrics and Token access control systems </dt>
+<dd>
+  This talk was great. My knowledge of rfid, biometrics, and other physical
+  access token systems is limited and this talk gave me lots of good
+  information. Furthermore, Zac gave a live demo that worked well. The tool
+  he made, which he called "Gecko", was really neat. Practical and cheap.
+
+  <p>
+
+  A short summary is that he was performing MITM on physical access systems. As
+  it turned out, most centralized security systems (biometrics, rfid locks,
+  etc) all talk the same protocol to the central authorization server. Gecko
+  simply man-in-the-middles these transactions. MITM is not new, but this
+  application was pretty neat and the small size of his prototype made this
+  kind of physical hacking practical.
+
+  <p>
+
+  He gave a live demo, which went smoothly, using a few RFID badges. Being
+  minimalist, the interface to his Gecko tool once it was installed was via
+  standard badges. He had made special "control" badges that the Gecko tool
+  understood to be commands such as a replay command, which would replay a
+  previously-intercepted, known-valid, badge read to the server.
+
+  <p>
+
+  He also talked about future versions of Gecko which might include bluetooth
+  or GSM, which would let you access the reader device from far away. Very neat.
+
+  </dd>
+  <dt> Dan Kaminsky - Design Reviewing the Web </dt>
+  <dd>
+    Oh Dan. I love you. I went to Dan's talk <a
+    href="http://www.semicomplete.com/blog/geekery/defcon-14.html">last
+    year</a> and saw the same attributes this year. His talk covered some
+    interesting things, but he's so full of himself. Watching him talk makes it
+    seem like he is the security industry. One person only, not the thousands
+    of security professionals and underground hackers around the world. Just
+    Dan.
+
+    <p>
+
+    He did demo his hack of SLIRP over the web browser (flash+http) which was
+    pretty neat, though. Tunneling traffic through the browser into your
+    network. He also ported his dotplot thing from last year to winamp for fun
+    and profit, which wasn't very impressive but made for a good screensaver.
+  </dd>
+
+  <dt> Jesse D'Aguanno - Arp Reloaded </dt>
+  <dd>
+    Jesse's description of this talk was that it would "build on the previous
+    research in this field and introduce new, more reliable attacks against the
+    ARP protocol which are much less identifiable and able to protect against."
+
+    <p>
+
+    He lied.
+
+    <p>
+
+    He covered exactly what is already known, and nothing more. Like Mike's
+    talk above, this talk would belong in 1995, or earlier, not 2007. Who's
+    reviewing these talk submissions?
+
+    <p>
+
+    It is almost like Jesse lives in a black box. Not only did he cover
+    decades-old exploits, he reinvented the wheel. There are many many tools that will
+    let you easily craft packets and dump them on the network. Netwox, nemesis,
+    and scapy are just 3 I can name off the top of my head. Ignoring the years
+    of developing packet crafting tools, he wrote his own crappy tool to dump
+    crafted arp packets onto the network which he calls "arpcraft" which does
+    exactly the same thing as netwox, nemesis, and scapy, in more or less the
+    same amount of typing. Weak sauce. I call shenanigans.
+
+    <p>
+
+    This lame presentation is from the same person who made headlines about his
+    blackberry hackery last year. Was this blackberry research really his own
+    work, or is he just a front for someone elses work?
+
+    <p>
+
+    He also demoed a remote shell tool using arp. Seems useless to me since arp
+    only goes over layer 2 and won't leave the local layer 2 network. <a
+    href="http://atarininja.org/">Wxs</a> joked that you would better off
+    beating the owner of your exploit target machine with a bat to wrest the
+    password out of him than using a remote shell via arp, since layer 2 means
+    your target almost guaranteed to be physically close.
+
+    </dd>
+    <dt> David Gustin - Hardware Hacking for Software Geeks </dt>
+    <dd>
+      The title of this talk grabbed me immediately. The content was great!
+      
+      <p>
+
+      Unfortunately, early in the talk, the speakers mentioned that <a
+      href="http://www.sparkfun.com/">sparkfun.com</a> was a great howto site.
+      I spent the rest of the talk reading tutorials on that website. Oops.
+
+    </dd>
+  </dl>
+
+</dl>
+
+
+

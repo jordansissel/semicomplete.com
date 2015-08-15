@@ -1,0 +1,28 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-06-03T02:10:21-07:00"
+title = "new xdotool version available (20080603)\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["xdotool", "xlib", "release"]
++++
+
+Hop on over to the <a href="/projects/xdotool">xdotool project page</a> and
+download the new version.
+
+<p/>
+
+The changelist from the previous announced release is as follows:
+
+<pre>
+20080603:
+  * Daniel Kahn Gillmor reported a problem with return codes from xdotool. All
+    commands return proper exit status now (0 == success, nonzero == error)
+  * I tested on 3 window managers: Gnome2 2.20.0, OpenBox 3.4, ion-3rc-20070608
+    - Gnome2 and OpenBox pass all tests.
+    - ion-3 fails on any desktop-related methods (ion-3 lacks the support).
+</pre>

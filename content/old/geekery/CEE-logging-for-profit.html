@@ -1,0 +1,135 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2012-09-12T01:34:28-07:00"
+title = "MITRE's CEE is a failure for profit.\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["logging", "standards", "rants"]
++++
+
+I wrote this post a few months ago, but never got around to publishing it.
+
+<p>Anyway, someone mentioned 'project lumberjack' and I found it was based on <a href="http://cee.mitre.org/">CEE: Common Event Expression</a>. CEE is a sort of comedic tragedy of design.</p>
+
+<p>The effort is owned by a "non-profit" (MITRE), but the complexity and
+obfuscation in CEE can only drive towards one thing: consultant profits.
+I had a go at explaining what I describe in this post on the 'project
+lumberjack' mailing list, but I did it quite poorly and got a few foot-stomps
+in response, so I gave up.</p>
+
+<p>CEE is a failure because, while claiming to be a standards effort, it <strong>maximizes
+incompatibility</strong> between implementations by doing the following:</p>
+
+<ul>
+  <li>poorly describes multiple serialization formats, requires none of them.
+  <em>This ensures maximum incompatibility in event serialization</em></li>
+  <li>defines requirements for log transport protocols, but does not describe
+  an actual protocol. <em>This ensures maximum protocol
+  incompatibility</em></li>
+  <li>naming style inconsistencies <em>This ensures confusion</em></li>
+</ul>
+
+<p>In general, the goal of CEE sounds like, but is actually not, creating a
+standard for common event expression. Instead, CEE is aimed at ensuring
+consulting dollars through obfuscation, complexity, and inconsistency.</p>
+
+<h1 id="inconsistency">Inconsistency.</h1>
+
+<p>No consistency in naming.  Some names are abbreviations like ‘crit’, some
+are prefixed abbreviations (“p_” prefix), some are full english words like
+‘action’. </p>
+
+<p>If the goal was to be inconsistent, CEE has succeeded.</p>
+
+<ul>
+  <li>Mysterious ‘p_’ prefix.
+Base fields are abbreviated names like “crit”, “id”, “pri”, yet others are
+called “p_app”, “p_proc”, and “p_proc_id”.</li>
+  <li>
+    <p>Some fields are abbreviated, like “crit” and “pri”, but others are full
+english words, like “action” and “domain”</p>
+  </li>
+  <li>there’s “id” which marks the “event type” by identifier, but “uuid” which
+marks the event instance identifier. You are confusing. I’m still not sure
+what the purpose of ‘uuid’ is.</li>
+</ul>
+
+<h1 id="etoomanyprotocols">ETOOMANYPROTOCOLS</h1>
+
+<ul>
+  <li>Serializations: JSON, RFC3164, RFC5424, and XML serializations</li>
+  <li>4 conformance levels.</li>
+</ul>
+
+<p>Pick one serialization and one transport (“conformance”) requirements list.
+Describe those two. Drop all the others.</p>
+
+<p>If I pick JSON, and you pick XML, we can both be CEE-conforming and have zero interoperability between our tools. Nice!</p>
+
+<h1 id="serialization-underspecified">Serialization underspecified</h1>
+
+<p>JSON for event serialization is fine, but no message framing is defined. Newline terminated? Length prefixed? You don’t know :(</p>
+
+<h1 id="json">JSON</h1>
+
+<ul>
+  <li>“Reserved Characters” - I don’t think you have read the JSON spec. Most
+(all?) of the ‘escaping’ detailed in CEE JSON is already specified in JSON:
+<a href="http://www.json.org/string.gif">http://www.json.org/string.gif</a></li>
+</ul>
+
+<p>Specific comments on the ‘json’ format inline as comments, this example was
+copied verbatim from the CEE :</p>
+
+<pre><code>{
+    # Forget this "Event" crap, just move everything up a level.
+    "Event": {
+        "p_proc": "proc1",
+        "p_sys": "host.vendor.com",
+        "time": "2012-01-18T05:55:12.4321-05:00",
+        "Type": {
+            # Action is like, edge-trigger information.
+            # Status is like, line-trigger information.
+            # You don't usually have both edge and line triggers in the
+            # same event. Confusing.
+            "action": "login",
+            "status": "ongoing",
+
+            # Custom tag values also MUST start with a colon? It's silly to make
+            # the common case (custom tags) the longer form.
+            # Also, tags is a plural word, but the value is a string. What?
+            "tags": ":hipaa"
+        },
+        "Profile": {
+            # This is a *huge* bloat, seriously. Stop making JSON into XML, guys.
+            "CustomProfile": {
+                "schema": "http://vendor.com/events/cee-profile.xsd",
+                "new_field": "a string value",
+                "new_val": 1234,
+                "product_host": "source.example.com"
+            }
+        }
+    }
+}
+</code></pre>
+
+<p>If you include the schema (CEE calls it a Profile) in <em>every</em> message, you’re
+just funding companies who’s business model relies on you paying them per-byte
+of log transit.</p>
+
+<p>Prior art here for sharing schema can be observed in the Apache Avro
+project, for example.</p>
+
+<h1 id="clt-protocol">CLT Protocol</h1>
+
+<p>Just define the protocol, all these requirements and conformance levels make
+things more confusing and harder to write tooling for.</p>
+
+<p>If you don’t define the protocol, there’s no incentive for vendors to use prior
+art and are just as likely to invent their own protocols. </p>
+
+<p>Combining this incentive-to-invent with the whole of CEE that underspecifies just about every feature, this guarantees incompatibilities in implementations.</p>

@@ -1,0 +1,65 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2004-05-31T00:20:00-07:00"
+title = "pimp, lame, ssh, and streaming!\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["pimp", "shell", "networking", "ssh tricks"]
++++
+
+So since pimp has a cheap shoutcast server thing, I decided to use that to play
+music while I'm at home.<p>
+
+Playing normal mp3s uses too much bandwidth to waste on my DSL connection
+(~20-30k/s with 128-160kbit mp3s). So, I decided to use lame as a middleman to
+down-encode the shoutcasted output from pimp. The following is a little script
+that uses netcat to connect to the shoutcasty thing aswell as act as a server
+elsewhere for the down-encoded mp3 data to be sent off. 
+
+<p>
+<pre>
+#!/usr/local/bin/ksh
+
+foo() {
+	killall nc
+	exit 1
+}  
+
+trap foo int 
+nc -lp 8081 |&
+
+echo "ICY 200 OK" >&p
+echo >&p
+
+nc whack 8080 | lame --mp3input -b 64 - - >&p
+</pre>
+<br>
+I probably don't need to use co-processes, but they're fun, so whatever. Run
+this script then run mplayer against whatever machine it's on. So what I do is, run the script, then mplayer:
+<p>
+<pre>
+whack(~) > ./projects/pimp/pimp &
+whack(~) > ./mp3foo
+... over on my laptop ...
+nightfall(~) > mplayer http://whack:8081
+
+</pre>
+<br>
+Poof! Instant mp3 shenanigans.
+Instead of averaging 24K/s I average 7.5K/s while playing streamed mp3s -
+what's better is I can still control what song is being played throug pimp's
+telnet interface and I don't have to waste time downloading every individual
+song I want to listen to.
+
+
+<p>
+Furthermore, here's a nice oneliner to do inbound(download) bandwidth monitoring:
+<p>
+<pre>
+netstat -w 1 | perl -e 'while (<>) { next unless m/^\s+\S+\s+\S+\s+(\d+)/; \
+	$b++; $a += $1; print "Total/Avg/Cur = $a / " . ($a / $b) . " / $1\n"; }'
+</pre>

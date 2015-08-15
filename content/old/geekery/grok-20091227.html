@@ -1,0 +1,50 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-12-28T00:55:49-08:00"
+title = "new grok version available (20091227.01)\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["grok", "projects", "pcre", "release"]
++++
+
+The latest release is another important step in grok's life. Most
+major changes were outside of the code:
+
+<ul>
+<li>
+FreeBSD users can install grok via ports: sysutils/grok. Thanks to sahil and <a href="http://atarininja.org/">wxs</a> for making this happen.  
+</li>
+<li>
+The project has <a
+href="http://code.google.com/p/semicomplete/wiki/Grok">online documentation</a> and also ships with a manpage.
+</li>
+</ul>
+
+<p>
+
+Hop on over to the <a
+href="http://code.google.com/p/semicomplete/wiki/Grok">grok project page</a>
+and download the new version.  
+
+<p>
+
+<p>
+
+Changes since last announced release:
+
+<pre>
+20091227.01
+ - Add function to get the list of loaded patterns.
+ - Ruby: new method Grok#patterns returns a Hash of known patterns.
+ - Added flags to grok: -d and --daemon to daemonize on startup (after config
+   parsing). Also added '-f configfile' for specifying the config file.
+ - Added manpage (grok.1, generated from grok.pod)
+
+20091110
+ - match {} blocks can now have multiple 'pattern:' instances
+ - Include samples/ directory of grok configs in release package.
+</pre>

@@ -1,0 +1,102 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-09-24T00:20:51-07:00"
+title = "Setuid bind(2) and switch!\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["bind", "switch", "ld_preload", "nonroot"]
++++
+
+Got a program that can't setuid but needs to listen on a priviledged port? I
+was hacking around with Linux's capabilities(7) tonight and came up empty
+trying to allow a non-priviledged user to bind to port 80 without having to
+start as root - after all, not everything is capable of setuid on startup, like
+many java programs.
+
+<p>
+
+Speaking of java, if you do setuid, the java hotspot monitor file thing
+(/tmp/hsperfdata_&lt;user&gt;/&lt;pid&gt;) is in the original user's directory,
+not the setuid'd user, so you can't jstack reliably. I might be PEBCAKing it,
+but this is the behavior I observe. Unless we can fix that, and my java-fu is
+weak, we'll have to find a workaround. One workaround is to run a proxy or
+firewall redirector that forwards the privileged port to the real port.
+
+<p>
+
+Linux supports this process setting that allows a special non-root process to
+listen on privileged ports, but I can't get it working.  I gave up trying to
+use libcap's sucap, execcap, and setpcaps tools trying to allow nonroot
+processes to bind to lower ports. Let's hack it with LD_PRELOAD and execve(2).
+
+<p>
+
+The trick is creating a socket and binding on the correct port, then sharing
+that socket with your process. This comes with two steps, the socket creation,
+and sharing.
+
+<p>
+
+The creation is easy, for simplicity, I used ruby. The sharing requires
+LD_PRELOAD - we'll override bind(2) and have it dup our existing socket to
+whatever socket bind(2) is being called with. The sharing is done using
+environment variables to share the file descriptor number and the port number.
+
+<p>
+
+The end result looks like this, where we can now force programs that try to
+bind on our specified port to use our pre-created socket instead.
+
+<pre>
+# id
+uid=0(root) gid=0(root) groups=0(root)
+# ./bindandswitch.rb
+Usage: bindandswitch.rb [host]:port user group command [arg1 ...]
+# ./bindandswitch.rb localhost:80 jls jls nc -l -p 80
+setgid: 1000 (jls)
+setuid: 1000 (jls)
+Exec: ["nc", "-l", "-p", "80"]
+
+
+# -- now in another terminal --
+% lsof -i :80 | grep LISTEN 
+ nc        27092  jls    4u  IPv4 8100070       TCP localhost:www (LISTEN)
+</pre>
+
+See, now we have given 'nc' the ability to bind to privileged ports as
+non-root (user 'jls' above). Sweet!
+
+<p>
+
+The ruby code takes care of creating the socket and doing setuid (I was lazy
+and didn't want to write the C code). I also have a very short C library that
+simply dup2()'s the original bound socket when bind(2) is called by the new
+process on our specific port.
+
+<p>
+
+bind(2) calls for other ports than the one specified in the command line are handled normally. For example, this fails:
+
+<pre>
+# ./bindandswitch.rb localhost:33 jls jls nc -l -p 80
+setgid: 1000 (jls)
+setuid: 1000 (jls)
+Exec: ["nc", "-l", "-p", "80"]
+Can't grab 0.0.0.0:80 with bind : Permission denied
+</pre>
+
+The reason for this investigation was really for seeing how we could allow
+non-root java processes to bind to port 80. Maybe I'll use this at work if it
+behaves well.
+
+<p>
+
+Code:
+<ul>
+<li> <a href="http://code.google.com/p/semicomplete/source/browse/liboverride/bindandswitch.over">bindandswitch.over</a> (needs <a href="http://www.semicomplete.com/projects/liboverride/">liboverride</a>) </li>
+<li> <a href="http://code.google.com/p/semicomplete/source/browse/liboverride/bindandswitch.rb">bindandswitch.rb</a> </li>
+</ul>

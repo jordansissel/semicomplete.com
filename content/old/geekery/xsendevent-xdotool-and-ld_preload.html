@@ -1,0 +1,67 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2009-06-06T22:28:18-07:00"
+title = "XSendEvent + LD_PRELOAD == win\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["xdotool", "xsendevent", "x11", "ld_preload", "c", "liboverride"]
++++
+
+As far as feature requests come, for xdotool, one of the more common ones is to
+have the ability to send key or mouse events to a specific window, not just the
+active one. XTEST (what xdotool uses for key/mouse currently) doesn't let you
+specify a window to send events. XSendEvent(3) lets you send hand-crafted
+events to a specific window, but most applications ignore these sent events.
+
+<p>
+
+The XEvent struct has a member 'send_event' which is true if the event came
+from an XSendEvent call and false otherwise. Programs like firefox and xterm
+(by default) ignore many events that have 'send_event' set to true.
+
+<p>
+
+Enter LD_PRELOAD.
+
+<p>
+
+Writing a custom shared library that overrides the default XNextEvent and
+XPeekEvent functions allows us to force 'send_event' to always be false, so an
+application with this library loaded will happily handle keyboard/mouse events
+generated with XSendEvent. I already have a helpful project that lets me write such a shared library: liboverride.
+
+<p>
+
+<pre>
+#include &lt;stdio.h&gt;
+#include &lt;X11/Xlib.h&gt;
+
+void hack_send_event(XEvent *ev) {
+  switch (ev->type) {
+    case KeyPress: case KeyRelease: case ButtonPress: case ButtonRelease:
+      ev->xany.send_event = False;
+      break;
+  }
+}
+
+override(`XNextEvent', `
+  {
+    real_func(display, event_return);
+    hack_send_event(event_return);
+    return;
+  }
+')
+</pre>
+
+This small bit of liboverride code will give me a shared library I can preload
+with LD_PRELOAD. Doing so will ensure that send_event is false for any key or
+mouse button events.
+
+<p>
+
+Works well. Now that we have a reliable way to allow XSendEvent I think it's
+worth putting this into xdotool.

@@ -1,0 +1,75 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14 21:10:30 -0700
+date = "2008-01-10T02:12:46-08:00"
+title = "Boost xpressive dynamic regexp with custom assertions\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "blog"
+categories = [ "blog" ]
+tags = ["boost", "xpressive", "c++", "regexp", "assertions"]
++++
+
+As it turns out, xpressive is (so far) exactly what I'm looking for.
+
+<p>
+
+'Dynamic regular expression' in Xpressive's docs are means that the regex
+object comes from compiling a regex string, not from using the static regular
+expression (aka coded in C++) that is the alternative. Very fortunately, you
+can mix the uses of dynamic and static expressions, since both end up turning
+into the same objects!
+
+<p>
+
+What I wanted was dynamic regexps with custom assertions, and here's how you do it:
+<pre>
+struct is_private {
+  bool operator()(ssub_match const &sub) const {
+    /* Some test on 'sub' */
+  }
+};
+
+/* somewhere in your code ... */
+sregex ip_re = sregex::compile("(?:[0-9]+\\.){3}(?:[0-9]+)");
+sregex priv_ip_re = ip_re[ check(is_private()) ];
+</pre>
+
+This is excellent because this was one of the features of perl that kept me
+from making grok available in any other language.
+
+<p>
+
+I have a <a href="/files/blogposts/20080109/boost_xpressive_test.cpp">working
+demo you can download</a>. I've tested on Linux and FreeBSD with success. It
+requires <a href="http://www.boost.org">boost</a>
+1.34.1 and the xpressive 2.0.1. The version of xpressive that comes with boost
+1.34.1 is insufficient, you must separately download the latest version of
+xpressive. I installed it by unzipping it and copying
+<code>boost/xpressive/*</code> to /usr/local/include/boost/xpressive/ - this
+overwrote the old copy of xpressive I had installed.
+
+<p>
+
+Compile with (on freebsd, the -I and :
+<pre>
+g++ -I/usr/local/include -c -o boost_xpressive_test.o boost_xpressive_test.cpp
+g++  boost_xpressive_test.o -o xpressivetest
+</pre>
+
+Running it:
+<pre>
+% ./xpressivetest 
+RFC1918 test on '1.2.3.4': fail
+RFC1918 test on '4.5.6.7': fail
+RFC1918 test on '192.168.0.5': pass
+Match on test1: 192.168.0.5
+RFC1918 test on '129.21.60.0': fail
+RFC1918 test on '29.21.60.0': fail
+RFC1918 test on '9.21.60.0': fail
+RFC1918 test on '172.17.44.25': pass
+Match on test2: 172.17.44.25
+</pre>
+
+This is exactly the behavior I expected.
