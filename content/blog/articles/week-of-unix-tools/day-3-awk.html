@@ -1,0 +1,165 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14
+date = "2008-04-09T10:23:29-07:00"
+title = " awk  -  Week of Unix Tools; Day 3 \n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "article"
+categories = [ "article" ]
++++
+
+      <p></p>
+
+      A record is generally a whole line. The default input record separator
+      (RS) is a newline. You can change this at any time.
+
+      <p></p>
+
+      A field is generally a word split by any number of whitespace (tab or
+      space). The default input field separator (FS) is a single space. FS can
+      be a single character or a regular expression. If FS is a single space,
+      it is treated magically as if you had specified [ \t]+.
+    <h4><a name="id2255986">Field selection</a></h4>
+      Fields are accessed using the $ "operator". The following are valid:
+
+      <dl>
+<dt> $1, $2, $3 ... </dt>
+<dd>(first, second and third fields) </dd>
+<dt>  $NF </dt>
+<dd> The last field. Nothing special. NF is a variable holding the
+        total number of fields in the current record, therefore $NF would be
+        the last field </dd>
+<dt> x=1; $(x + 3) </dt>
+<dd> The 4th field. $(x + 3) == $(1 + 3) == $4 </dd>
+</dl>
+<h4><a name="id2255988">Patterns and functions</a></h4>
+      Awk expressions come in two forms, a function or a pattern. I've never bothered writing functions.
+
+      <p></p>
+
+      Here's what a pattern looks like:
+      [condition_expressions] { [action_expressions] }
+
+      <p></p>
+
+      Basically this equates to the folloing psuedocode:
+      if (condition_expressions) { action_expressions }
+
+      <p></p>
+
+      If no action_expression is defined, the default is 'print' which means
+      'print $0' which means printthe current record. If no condition is given,
+      the default is to execute the action for all records.
+
+    <h4><a name="id2255989">Magic patterns: BEGIN and END</a></h4>
+      BEGIN and END are magic "conditions". BEGIN is used to execute things
+      before the first record has been parsed, and END is obviously to do
+      things after the last record. These patterns cannot be combined with
+      others.
+    <h4><a name="id2255990">Sample pattern expressions</a></h4>
+<dl>
+<dt> length($0) &gt; 72 (From FreeBSD's awk manpage) </dt>
+<dd> Print lines longer than 72 characters </dd>
+<dt> $1 ~ /foo/ { print $2 } </dt>
+<dd> Print the 2nd field of all records where the first field matches /foo/ </dd>
+<dt> $5 &gt; 0 </dt>
+<dd> Print all records where the 5th field is greater than 0. (Complete with magical number conversion, when possible. </dd>
+<dt> int($5) &gt; 0 </dt>
+<dd> Same as above, but force $5 to int before comparing </dd>
+</dl>
+<h4><a name="id2255992">Variables</a></h4>
+      Variables are the same syntax as in C. You do not declare variables.
+
+      <p></p>
+      Examples:
+
+      <dl>
+<dt> $2 == "test" { x++ }; END { print x } </dt>
+<dd> Total records where $2 == "test" </dd>
+<dt> { $1 = ""; print } </dt>
+<dd> Delete the first field of every record, print the new record </dd>
+<dt> { $3 = "Hello"; print } </dt>
+<dd> Should be obvious. This one is *super* useful; modifying fields inline is awesome </dd>
+<dt></dt>
+</dl>
+<h4><a name="id2255994">Arrays</a></h4>
+      Arrays are magical. You simply start using a variable as an array, and it
+      becomes an array. Arrays are more like dictionaries/hash
+      tables/associative arrays than "real" arrays. Quite useful.
+
+      <p></p>
+
+      Example: awk '{ a[$1]++ } END { for (i in a) { print i, a[i] } }'
+    <h4><a name="id2255995">String concatonation</a></h4>
+      String appending is simple.
+
+      <pre>
+x = "foo"; x = x"test";    # x == "footest"
+
+print $1","$2" = "$3;      # if input was "hello there world"
+                           # output will be: "hello,there = world"
+</pre>
+<h4><a name="id2255997">Example: Open files by user</a></h4>
+
+      This example is basically "add things up by a given key, then print them
+      at the end". I use it so often I'm probably just going to write an alias
+      for it in my shell.
+
+      <pre>
+% fstat | sed -e 1d \
+  | awk '{a[$1]++} END { for (i in a) { print i, a[i] } }' \
+  | sort -nk2
+smmsp 8
+_dhcp 11
+www 45
+root 328
+jls 482
+</pre>
+<h4><a name="id2255998">Example: Datestamp input</a></h4>
+      This particular example is *extremely* useful for long-running programs
+      that output logs or other data without any kind of timestamp. 
+      <b> This requires GNU awk. </b><pre>
+% (echo hello; sleep 5; echo world) \
+  | awk '{ print strftime("%Y/%m/%d %H:%M:%S", systime()), $0 }'
+2007/05/22 01:09:47 hello
+2007/05/22 01:09:52 world
+</pre>
+<h4><a name="id2255998">Example: show non-empty files</a></h4>
+<pre>
+% ls -l | awk '$5 &gt; 0'
+</pre>
+<h4><a name="id2255999">Example: Date-scan your logs</a></h4>
+      Let's assume all log entries are syslog format:
+      <pre>May 22 01:12:02 nightfall pptp[860]: anon log ...</pre>
+
+      Show only log entries between May 10th and May 20th (inclusive)
+      <pre>
+% cat *.log | awk '$1 == "May" &amp;&amp; ($2 &gt;= 10 &amp;&amp; $2 &lt;= 20)'
+</pre>
+<h4><a name="id2256000">Example: Scrape host(1) output</a></h4>
+<pre>
+% host www.google.com | awk '/has address/ { print $4 }'
+</pre>
+<h4><a name="id2256001">Example: Find an environment variable</a></h4>
+      I often login to my workstation remotely and want to use its ssh-agent.
+      So, I need to find the most common value for SSH_AUTH_SOCK on all
+      processes.
+
+      <pre>
+% ps aexww \
+  | awk '{ for (i = 0; i &lt; NF; i++) { if ($i ~ /^SSH_AUTH_SOCK=/) { print $i } } }' \
+  | sort | uniq -c
+  24 SSH_AUTH_SOCK=/tmp/ssh-sc4iKR7ZIf/agent.721
+</pre>
+<h4><a name="id2256002">Teeth that will bite you</a></h4>
+      Awk falls to the same problem C does. You can assign in conditions. Here's how you screw up:
+
+      <pre>
+% cat *.log | awk '$1 = "May"'
+</pre>
+      This will replace the first field with "May" for every record, and since
+      "May" is a positive value, it will print your modified $0 with $1 set to
+      "May" now. Ouch.
+    </div>

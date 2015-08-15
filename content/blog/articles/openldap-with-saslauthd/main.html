@@ -1,0 +1,129 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14
+date = "2006-12-31T21:01:22-08:00"
+title = "OpenLDAP with saslauthd and Kerberos - \n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "article"
+categories = [ "article" ]
++++
+
+    <p></p>
+
+    Problem with SASL/GSSAPI is that address book clients aren't going to
+    support much beyond simple authentication over SSL. Thusly, we need a way
+    to use a simple bind over SSL and still authenticate against Kerberos.
+
+    <p></p>
+
+    The LDAP Server's slapd.conf has the following to translate between gssapi
+    auth DNs and real user object DNs:
+
+    <pre>
+    authz-policy from
+    authz-regexp "^uid=([^,]+),cn=gssapi,cn=auth" "uid=$1,ou=Users,dc=csh,dc=rit,dc=edu"
+    </pre>
+
+    This allows GSSAPI authentication:
+
+    <pre>nightfall(~) % ldapwhoami
+SASL/GSSAPI authentication started
+ldap_sasl_interactive_bind_s: Local error (-2)
+        additional info: SASL(-1): generic failure: GSSAPI Error:  Miscellaneous failure (see text) (open(/tmp/krb5cc_1001): No such file or directory)
+
+nightfall(~) !1! % kinit psionic
+psionic@CSH.RIT.EDU's Password: 
+kinit: NOTICE: ticket renewable lifetime is 0
+nightfall(~) % ldapwhoami
+SASL/GSSAPI authentication started
+SASL username: psionic@CSH.RIT.EDU
+SASL SSF: 56
+SASL installing layers
+dn:uid=psionic,ou=users,dc=csh,dc=rit,dc=edu
+Result: Success (0)</pre>
+
+    I have a TGT and can authenticate to LDAP over SASL (my ldap.conf defaults
+    to sasl+ssl). However, when you try to do a simple bind:
+
+    <pre>nightfall(~) % ldapwhoami -x -D 'uid=psionic,ou=users,dc=csh,dc=rit,dc=edu' -W 
+Enter LDAP Password: 
+ldap_bind: Invalid credentials</pre>
+
+    On the slapd side, you'll see errors like:
+
+    <pre>==&gt; bdb_bind: dn: uid=psionic,ou=users,dc=csh,dc=rit,dc=edu
+SASL Canonicalize [conn=0]: authcid="psionic@CSH.RIT.EDU"
+SASL Canonicalize [conn=0]: authcid="psionic@CSH.RIT.EDU"
+SASL [conn=0] Failure: Could not open db
+SASL [conn=0] Failure: Could not open db</pre>
+
+    Googling around will tell you that lots of people put the following in
+    their "slapd.conf" files:
+
+    <pre>pwcheck_method: saslauthd
+saslauthd_path: /var/run/saslauthd/mux</pre>
+
+    Now, you'll recognize that this format of "token: value" doesn't match the
+    normal slapd.conf. There's a reason for this: This isn't OpenLDAP's slapd.conf
+    file. It's the config file for SASL! From what I gather, saslauthd is working
+    similarly to the way PAM works, in that it sees a service trying to use it and
+    uses that particular service's config file. I believe saslauthd comes with a
+    standard Sendmail.conf for example usage.
+
+    <p></p>
+
+    It took me several hours to find this fact out. My slapd SERVER config file
+    is located here:
+    <br>
+    /usr/local/etc/openldap/slapd.conf
+    <p></p>
+
+    While the SASL (saslauthd) "slapd.conf" authentication config file is located here:
+    <br>
+    /usr/local/lib/sasl2/slapd.conf
+    <p></p>
+
+    If you can't find the right place, look for 'Sendmail.conf' somewhere near
+    where you installed sasl or saslauthd.
+
+    <p></p>
+
+    Anyway, once we've added this magic config file and told it to use saslauthd,
+    the SASL library LDAP's slapd is using will now attempt communication with
+    saslauthd over the /var/run/saslauthd/mux socket. I ran saslauthd like this:
+
+    <pre>
+/usr/local/sbin/saslauthd -a kerberos5 -d
+    </pre>
+
+    The directory, /var/run/saslauthd was owned by 'cyrus' and I changed the group
+    ownership to 'ldap' so that the slapd server (running as 'ldap') could access
+    the socket. This is a necessary step, else you will get Permission Denied
+    errors permissions disallow you from accessing the socket or its directory.
+
+    <p></p>
+
+    Now, once we have saslauthd running, the sasl library slapd.conf, and the moons
+    aligned, we can perform a simple bind:
+
+    <pre>
+nightfall(~) % ldapwhoami -x -D 'uid=psionic,ou=users,dc=csh,dc=rit,dc=edu' -W 
+Enter LDAP Password: 
+dn:uid=psionic,ou=Users,dc=csh,dc=rit,dc=edu
+Result: Success (0)
+    </pre>
+
+    saslauthd, in debug mode, will say something meaningful such as:
+
+    <pre>
+saslauthd[28910] :do_auth         : auth success: [user=psionic] [service=ldap] [realm=CSH.RIT.EDU] [mech=kerberos5]
+saslauthd[28910] :do_request      : response: OK
+    </pre>
+
+    Whew! My LDAP Authentication journey is complete. I am elated that gssapi
+    and simple binds both work for eventually authenticating against our
+    Kerberos server. I'd post my configs, but the system this was working on
+    died and I didn't have a backup.
+    </div>

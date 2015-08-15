@@ -1,0 +1,138 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14
+date = "2007-05-25T03:21:44-07:00"
+title = " data sources  -  Week of Unix Tools; Day 4 \n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "article"
+categories = [ "article" ]
++++
+
+      <ol>
+<li> Files and devices </li>
+<li> Output of other tools </li>
+<li> The network (via other tools) </li>
+</ol>
+<h4><a name="id45964">cat</a></h4>
+      Cat means 'concatonate'. It is mostly useful for doing a few things:
+      <ul>
+<li> Cat lots of files together; eg 'cat *.c' for processing by
+        another tool, or generally glueing data sets (from files) together. </li>
+<li> Make a shell script more readable by making the input more obvious </li>
+</ul>
+<h4><a name="id45981">nc</a></h4> 
+      Netcat. Basically gives you the ability to talk tcp and udp from the
+      shell. You can send data using standard input, and receive data from
+      standard output. Simple.
+
+      <dl>
+<dt> tcp client (connect to google.com port 80) </dt>
+<dd> nc google.com 80 </dd>
+<dt> tcp server (listen on port 8080) </dt>
+<dd> nc -l 8080 </dd>
+<dt> udp client (connect to ns1.slashdot.org port 53) </dt>
+<dd> nc -u ns1.slashdot.org 53 </dd>
+<dt> udp server (listen on port 5353) </dt>
+<dd> nc -l -u 5353 </dd>
+</dl>
+
+      Examples:
+      <dl>
+<dt> Basic HTTP request </dt>
+<dd><pre>
+% echo "GET / HTTP/1.0\n" | nc google.com 80 | head -1
+HTTP/1.0 200 OK
+</pre></dd>
+</dl>
+<h4><a name="id46027">openssl</a></h4>
+      openssl is a command that any unix-like system will probably have
+      installed. The command itself can do many many things, but for this article
+      I'll only cover the s_client command.
+
+      <p></p>
+
+      'openssl s_client' is essentially 'netcat + ssl'. This tool is extremely
+      useful for debugging text-based protocols behind SSL such as ssl'd nntp,
+      imaps, and https.
+
+      <p></p>
+
+      Example:
+      <dl>
+<dt> Open an https connection to addons.mozilla.org </dt>
+<dd>
+<pre>
+% echo "GET / HTTP/1.0\r\n\r\n" \
+| openssl s_client -quiet -connect addons.mozilla.org:443 \
+| col \
+| sed -e '/^$/q'
+depth=3 /C=BE/O=GlobalSign nv-sa/OU=Root CA/CN=GlobalSign Root CA
+verify error:num=19:self signed certificate in certificate chain
+verify return:0
+HTTP/1.1 302 Found
+Date: Fri, 25 May 2007 10:07:25 GMT
+Server: Apache/2.0.52 (Red Hat)
+Location: http://www.mozilla.com/
+Content-Length: 293
+Keep-Alive: timeout=300, max=1000
+Connection: Keep-Alive
+Content-Type: text/html; charset=iso-8859-1
+</pre>
+          * The 'col' command will strip the \r (carriage return) characters
+          from the http response, allowing sed's /^$/ to match an empty line
+          (end of headers).
+        </dd>
+</dl>
+<h4><a name="id46084">GET/curl/wget/fetch</a></h4> 
+      You can query webservers (http) with any number of tools and you'll get
+      the raw source or data for any page you query. This is really useful.
+      <ul>
+<li> GET, POST, lwp-request, et al. Comes with libwww-perl </li>
+<li> curl </li>
+<li> wget </li>
+<li> fetch (FreeBSD) </li>
+</ul>
+
+      Most of the time I need to fetch pages to stdout, I use GET, becuase
+      it's less typing. Here's some examples of the above commands:
+
+      <dl>
+<dt> Fetch / from www.w3schools.com and output page to stdout </dt>
+<dd><ul>
+<li> GET http://www.w3schools.com/ </li>
+<li> wget -O - -q http://www.w3schools.com/ </li>
+<li> fetch -o -q  http://www.w3schools.com/ </li>
+<li> curl  http://www.w3schools.com/ </li>
+</ul></dd>
+</dl>
+<h4><a name="id46131">w3m/lynx</a></h4> 
+      But what if you don't want the raw html from a webpage? You can have
+      w3m and lynx do some basic rendering for you, also to stdout. I
+      recommend w3m instead of lynx, but use whatever.
+
+      <ul>
+<li> w3m -dump http://www.google.com/ </li>
+<li> lynx -dump http://www.google.com/ </li>
+</ul>
+
+      w3m's output looks like <a href="/articles/week-of-unix-tools/w3m.google.output">this</a>.
+    <h4><a name="id46151">ssh</a></h4>
+      ssh can be a data source too. Run a command on 1000 machines and process
+      the output locally, for fun and profit.
+      
+      <p></p>
+<dl>
+<dt> Login to N systems and get uptime. Prefix output with the hostname </dt>
+<dd><pre>
+% echo "fury\ntempest" \
+| xargs -n1 -i@ sh -c 'ssh @ "uptime" | sed -e "s/^/@/"'
+fury  6:18am  up  2:25,  1 user,  load average: 0.06, 0.04, 0.04
+tempest 06:18:00 up  9:01,  2 users,  load average: 0.12, 0.09, 0.09
+ </pre></dd>
+</dl>
+
+      Combining xargs and ssh gives you a powerful ability to execute commands
+      on multiple machines easily, even in parallel.
+    </div>

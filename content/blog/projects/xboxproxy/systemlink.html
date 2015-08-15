@@ -1,0 +1,41 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14
+date = "2007-03-01T23:45:06-08:00"
+title = " xbox system link  -  description of the protocol\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "projects"
+categories = [ "projects" ]
++++
+
+    <p></p>
+
+    All traffic from the xbox comes from IP 0.0.0.1. The general idea is that I
+    take the entire layer2 (ethernet) packet and send it in an UDP packet to
+    another proxy. That proxy receives it and dumps it, unchanged, on the
+    remote network. That's it. That's the whole deal.
+
+    <p></p>
+
+    Let me reiterate. It doesn't matter what happens above the UDP layer. You
+    don't care. The proxy just forwards the raw packets, and your xbox gets
+    them unchanged. Works like a charm and is game agnostic.
+
+    <p></p>
+
+    This works through the magic of switches learning mac addresses. Your local
+    network starts to learn that all of the remote xboxes are coming from your
+    machine. The xboxproxy itself also tries to be a bit smarter. It learns
+    which mac addresses (xboxes) are coming from what proxies and only sends
+    unicast packets to the correct proxy housing that xbox.
+
+    <p></p>
+
+    That's pretty much all of the proxy. It could be done in much fewer lines
+    in Java or Python (Scapy for example) becuase 70% of the code is just
+    setting up and managing the list of known proxies and xboxes as well as
+    fancy packet checking. I'm reasonably certain that if you were to implement
+    my xboxproxy in scapy, it would be around 20 lines of code if not less.
+	</div>

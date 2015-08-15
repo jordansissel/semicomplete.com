@@ -1,0 +1,27 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14
+date = "2006-03-24T22:24:16-08:00"
+title = "PPP Over SSH - a simple vpn solution for unix\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "article"
+categories = [ "article" ]
++++
+
+nightfall(~) [1004] % traceroute google.com
+traceroute: Warning: google.com has multiple addresses; using 216.239.57.99
+traceroute to google.com (216.239.57.99), 64 hops max, 40 byte packets
+ 1  192.168.10.1 (192.168.10.1)  2.589 ms  1.707 ms  1.728 ms
+ 2  rit-core1-vlan60.rit.edu (129.21.61.232)  2.673 ms  2.197 ms  1.966 ms
+ 3  rit-rit1-pp-core1-vlan807.rit.edu (129.21.8.25)  2.724 ms  2.607 ms  2.203 ms
+ ...
+</pre>
+<p>
+		And we're all done! You can see that the first route goes to
+		192.168.10.1.
+		</p>
+<h4><a name="id46249">Summary</a></h4>
+			So now you know how to tunel with ppp using ssh as transport. If something in this article is unclear or you need more information, shoot me an email and I'll try and clear it up for you :)
+		</div>

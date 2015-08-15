@@ -1,0 +1,227 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14
+date = "2006-03-24T22:24:15-08:00"
+title = "ARP Security - ARP-related security issues\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "article"
+categories = [ "article" ]
++++
+
+			In any case, much of this article is probably common knowledge in the
+			security community. However, it was new to me as I was discovering and
+			researching it; so here it is. All of the research here was through
+			trial and error, and I broke the network a few times ;)
+		<h4><a name="id44778">ARP, IPs, and You</a></h4>
+			My first hunch for why this works was to blame the network hardware
+			(switches, etc). Turns out I was wrong. Let's start from the beginning!
+			<p></p>
+			So, I start off by assuming someone else's ip address:
+			<pre>ifconfig rl0 inet 192.168.15.1</pre>
+
+			What happens when I do that? Watching tcpdump in another window:
+			<pre>17:25:40.216489 00:50:ba:15:19:0d &gt; Broadcast, ethertype ARP (0x0806), length 60: arp who-has 192.168.15.1 tell 192.168.15.1</pre>
+
+			Can't decipher tcpdump output? That's ok. When I set my IP to
+			'192.168.15.1' my operating system sends out an arp "who-has" packet
+			seeing if anyone else has this IP. So why is this important?
+
+			<p></p>
+
+			When <i>any</i> computer on the network receives this kind of packet,
+			it puts an entry in a table called the ARP table. The ARP table maps IP
+			addresses to MAC addresses. This kind of packet is a broadcast arp
+			packet that has the same "who-has" IP address as "tell" IP address. The
+			problem with very dynamic networks is that the likelihood of anything
+			on the network having any static (permanent) arp entries is very low.
+			Translation: You can poison hosts and network devices with little
+			effort.
+
+			<p></p>
+
+			How can we make the process of poisoning easier? We can use <a href="http://nemesis.sourceforge.net">nemesis</a>, a packet injection
+			tool, to help us out. Instead of using OS tools to set our IP, we can
+			use nemesis to poison networked devices.
+
+		<h4><a name="id45934">Nemesis for Arp Poisoning</a></h4>
+			Remember that packet that we sent out when we changed our IP? Well we
+			can spoof it with nemesis.
+
+			<pre>
+nemesis arp -S 192.168.100.100 -D 192.168.100.100 \ 
+            -H 00:de:ad:be:ef:00 -h 01:de:ad:be:ef:00</pre>
+
+			This will broadcast an arp "who-has" packet on the network and pretty
+			much every machine will happily update their arp tables with your new
+			entry for the ip <i>192.168.100.100</i> and the mac address of
+			<i>00:de:ad:be:ef:00</i>.
+
+			<p></p>
+
+			So let's put this to use on an existing host on our network:
+			<pre>
+kenya% arp 192.168.100.100 
+? (192.168.100.100) at 00:0c:f1:2e:2b:95 on tl0 [ethernet]
+... meanwhile, I'm being evil ...
+whack% sudo nemesis arp -S 192.168.100.100 -D 192.168.100.100 \ 
+            -H 00:de:ad:be:ef:00 -h 00:de:ad:be:ef:00
+... and back on the other machine ...
+kenya% arp 192.168.100.100
+? (192.168.100.100) at 00:de:ad:be:ef:00 on tl0 [ethernet] </pre>
+
+		Note how the mac addresses are different after I poison the network. This
+		technique is wonderfully simple. Most (all?) machines and network devices
+		on the network should now be convinced that <i>00:de:ad:be:ef:00</i> is
+		the proper mac address for the ip <i>192.168.100.100</i><p></p>
+		Now that we've poisoned the network, we can sniff traffic and see that
+		packets that were intended on the "real" <i>192.168.100.100</i> are now
+		coming to us because the switches know that <i>00:de:ad:be:ef:00</i> is
+		us. The added benefit, is that our real mac address is not
+		<i>00:de:ad:be:ef:00</i>. Audits logs will not track us easily, especially
+		on large-user networks with several unmanaged switches.
+		<h4><a name="id46013">Attack: Local DoS</a></h4>
+			If your network uses dhcp with dynamic dns, you can very easily track
+			someone and keep them from gaining network access if you are on the
+			same network segment (wireless networks, anyone?). This simple
+			scriptlet will keep a particular host offline as long as it's running:
+			<pre>while true; do 
+	nemesis arp -S poorsap -D poorsap \ 
+		-H 00:de:ad:be:ef:00 -h 00:de:ad:be:ef:00
+	sleep 1
+done</pre>
+			Once a second, I'll claim I am <i>poorsap</i>. Every time this person
+			does dhcp and it updates dns, nemesis will look up the hostname and
+			send out the packet on the network claiming that another machine is
+			actually <i>poorsap</i>. No one will send packets to the real
+			<i>poorsap</i> because they think it's mac address is elsewhere.
+			Furthermore, if the OS panics and does a dhcp release/renew sequence,
+			the dns entry will update and it'll kick it off a new IP address, if
+			any. This has other benefits I'll mention in the next section
+		<h4><a name="id46033">Attack: Man in the Middle</a></h4>
+			There are two flavors of this kind of attack: Local and Remote. I don't
+			want to get in a religious war with security pedants about semantics,
+			but for this situation, <i>local</i> means the local network segment
+			(layer 2), and <i>remote</i> means outside the local network.
+
+			<p></p>
+
+			There are two styles of each attack: The first being where you
+			broadcast arp changes to the local net to convince everyone on the
+			local segment that there is a new mac address for a given IP. The
+			second is where you convince only an individual host that a mac address
+			has changed for a given IP.
+
+			<p></p>
+
+			The first attack, local, is where you convince a network or a host that
+			you are someone else on the local segment. Traffic intended for the
+			target host will go to you. 
+			
+			<p></p>
+			
+			The second attack, remote, is where you convince a network or a host
+			that you are the gateway. Traffic intended for outbound delivery will
+			try to go through you. Feel free to sniff their outbound traffic such
+			as authentication, aim conversations, etc. More on this later
+
+			<p></p>
+
+			You get the idea, arp poisoning is too easy to do on normal host
+			machines. And on dynamic networks, it's very likely that local-segment
+			routers will have to listen to arp updates.
+
+		<h4><a name="id46087">Simple MITM Script</a></h4>
+			I'm lazy. I'll be the first to admit it. So in lazy efforts, I wrote a
+			script to automate the task of poisoning hosts and routers. You can 
+			<a href="/articles/arp-security/arpmitm"> grab arpmitm here</a>. 
+			You can repair your changes once you've played around with it enough
+			by using the '-r' option along with the original -v and -g options.
+
+			<p></p>
+
+			I can simply do this:
+			<pre>./arpmitm -v poorsap -g gateway_ip</pre>
+
+			And viola! All of poorsap's traffic is going through me, both inbound
+			and outbound. Makes you feel safe about your network eh? Hell, Windows
+			doesn't even log arp table changes as far as I know. I tried this
+			against a friend's Windows XP machine, and there was nothing about it
+			in the event viewer logs. Therefore, any normal user will be completely
+			oblivious to the fact that their computer just agreed to route traffic
+			through you. Fantastic design, eh?
+
+			<p></p>
+
+			The clear benefit here is that I can now sniff your traffic without
+			being in promiscuous mode. Promiscuous mode is detectable in certain
+			environments depending on the promiscuous node's OS, drivers, etc.
+			Furthermore, I've found that wireless cards stop being able to function
+			normally while in promiscuous mode. Kill both of those birds with one
+			stone by doing this method.
+
+		<h4><a name="id46105">Getting more complex</a></h4>
+			Add a firewall rule or two for nat and port redirection (FreeBSD PF):
+			<pre>
+nat on ndis0 from !ndis0 to any -&gt; 129.21.61.3
+rdr pass on ndis0 inet proto tcp from any to any port 80 -&gt; cnn.com port 80
+			</pre>
+
+			Turn on pf, load those rules, and run arpmitm on someone. All their web traffic will point them to 'cnn.com' regardless of the destination host. The poor user tries to go to google.com, and cnn.com comes up. Brilliantly simple.
+		<h4><a name="id45809">Prevention</a></h4>
+			The danger from this kind of attack is clear. It seems the only way to
+			protect against this is to use static (permanent) arp entries in both
+			the router and client hosts. However, it needs to be mentioned that
+			using static arp entries will never scale even in small environments
+			(less than 5 servers) becuase you'll have to update all servers
+			whenever an entry needs changing. PITA, more work that it's worth.
+
+			<p></p>
+
+			Static arp entries can be set in most operating systems with the
+			following command:
+			<pre>arp -s [ip_address] [mac_address]</pre>
+
+			If you do this, then your arp table will now have a permanent entry in
+			it. It might be a good idea if you had a dhcp-client hook script that
+			set a static arp entry for the gateway after every successful dhcp
+			request. That assumes, however, that you are getting a dhcp address
+			from a trustworthy dhcp server. If someone's put up an evil dhcp
+			server, that's a whole other ball game I won't be covering in this
+			article.
+
+			<p></p>
+
+			Forgetting dhcp-client hosts for the moment, let's focus on servers.
+			If your environment is such that server ip addresses never change,
+			then you may benefit from static arp entries. However, if IPs or
+			network interfaces change more than never, static entries are a waste
+			of effort and will just serve as a point of breakage. Unfortunately in
+			a larger environment, servers may change more often than never, so
+			setting static entries, again, is way more effort than it is worth. 
+
+			<p></p>
+			Anyway, most switches can have static arp entries for servers mapping
+			the server's mac address to the switch port where the server is
+			connected.  Furthermore, all servers can also have static arp entries
+			of other servers as well as static entries for any gateway hosts.
+
+			<p></p>
+
+			Another way to fix this is to rethink your network layout. Have your
+			important servers on a secure subnet with limited access. This includes
+			limiting both physical and remote access. If I can't get on the local
+			segment, I can't poison your machines.
+
+		<h4><a name="id45827">Conclusion</a></h4>
+			The ease of this style of attack worries me. For those of you who
+			already know about it and have worked with it before: How else can you
+			prevent this? 
+			
+			<p></p>
+			
+			As always, if you feel like contributing ideas or comments, please
+			email me or bug me on AIM. I'm always interested in feedback. (My
+			contact information can be found in the 'about' section) 
+		</div>

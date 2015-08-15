@@ -1,0 +1,150 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14
+date = "2009-07-09T12:54:35-07:00"
+title = " liboverride  -  simpler function injection \n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "projects"
+categories = [ "projects" ]
++++
+
+    <p></p>
+
+    It uses the run-time linker and LD_PRELOAD to inject functions into your
+    programs.
+    <p></p>
+<h4><a name="id2255988">Requirements</a></h4>
+<ul>
+<li> gnu make </li>
+<li> m4 </li>
+</ul>
+<h4><a name="id2255989">How do I use it?</a></h4>
+    Let's use an example.
+
+    <p></p>
+
+    You have a server program that you want to bind to a specific IP, but this
+    program doesn't have any simple way of saying "bind to 127.0.0.1". You
+    could inject your own version of socket() or listen() to make sure that it
+    was bound to the correct IP. To hack this with liboverride, you would use
+    this code:
+
+    <pre>
+override(`bind', `
+  {
+    inet_aton("127.0.0.1", &amp;(((struct sockaddr_in*)addr)-&gt;sin_addr));
+  }
+') </pre>
+
+    Server's must call bind() to start listening on a specific port. So, we
+    override bind() with our own, which sets the sin_addr to 127.0.0.1, making
+    our server listen only on that IP. The original function 'bind' is called
+    after your injected code, and uses the modified sockaddr.
+
+    <p></p>
+
+    Let's show this working with netcat:
+<pre>
+% nc -l 8888 &amp;
+% sockstat -4 | grep 8888
+jls      nc         36250 3  tcp4   *:8888                *:*
+
+# Now run with our function override:
+% gmake bind.so
+% LD_PRELOAD=./bind.so nc -l 8888 &amp;
+% sockstat -4 | grep 8888
+jls      nc         36253 3  tcp4   127.0.0.1:8888        *:*
+</pre>
+
+  Notice how nc is now listening on 127.0.0.1:8888. Pretty simple :)
+  <h4><a name="id2255991">Adding new functions to liboverride.</a></h4>
+    The release of liboverride only includes a small set of functions it knows
+    how to override. You can add your own! All you need to know is:
+
+    <ul>
+<li> The function prototype </li>
+<li> The function's include requirements </li>
+<li> The library providing this function </li>
+</ul>
+<h4><a name="id2255994">Example: add override for read()</a></h4>
+    The manpage for read() says the prototype looks like this:
+
+    <pre>ssize_t read(int d, void *buf, size_t nbytes)</pre>
+
+    Add this line to 'funcdefs' in liboverride:
+    <pre> define(`read_prototype', `ssize_t read(int d, void *buf, size_t nbytes)') </pre>
+
+    The manpage also says which includes are needed for read(2), so let's add that to funcdefs too:
+    <pre> define(`read_includes', `
+#include &lt;sys/types.h&gt;
+#include &lt;sys/uio.h&gt;
+#include &lt;unistd.h&gt;
+')</pre>
+
+    Lastly, we'll need to tell liboverride what library provides read(2). In this case, it is libc:
+    <pre>define(`read_library', '/lib/libc.so.6')</pre>
+
+    Now that we have added the ability to override read(2), we can write an
+    override for this function. In 'testing.over' put: 
+
+   <pre>
+override(`read', `
+  {
+    fprintf(stderr, "read(%d, 0x%tx, %zd)\n", d, buf, nbytes);
+  }
+')</pre>
+
+  Now build it (with gnu make): make testing.so
+
+  <p></p>
+
+  Assuming everything was done correctly, you should have a 'testing.so' file.
+  Let's test it with cat(1):
+  <pre>
+    LD_PRELOAD=./testing.so cat /etc/motd &gt; /dev/null
+    read(3, 0x504000, 4096)
+    read(3, 0x504000, 4096)
+</pre>
+<p></p>
+
+  If we wanted to something more advanced, such as providing strace or truss
+  output for the read(2) function, we would use this:
+
+<pre>
+#include &lt;stdio.h&gt;
+override(`read', `
+  {
+    ssize_t ret;
+    fprintf(stderr, "read(%d, 0x%tx, %zd) = ", d, buf, nbytes);
+    ret = real_func(d, buf, nbytes);
+    fprintf(stderr, "(%zd bytes) ", ret);
+    if (ret &gt; 0)
+      fprintf(stderr, "\"%.*s%s\"", 30, buf, (ret &gt; 30 ? "..." : ""));
+    fprintf(stderr, "\n");
+    return ret;
+  }
+')
+</pre>
+
+  Rebuild testing.so, and run cat again:
+  <pre>
+% LD_PRELOAD=./testing.so cat /etc/motd &gt; /dev/null
+read(3, 0x504000, 4096) = (1110 bytes) "FreeBSD 6.2-RELEASE (SMP) #0: ..."
+read(3, 0x504000, 4096) = (0 bytes)
+</pre>
+<h4><a name="id2255998">Implementation details</a></h4>
+    Your compiled code looks like this:
+
+    <pre>
+function_prototype {
+  real_func = real_function_being_overridden;
+  &lt;... your code ..&gt;
+  return real_func(args...);
+}</pre>
+<h4><a name="id2256000">Download</a></h4>
+<a href="http://semicomplete.googlecode.com/files/liboverride-20090709.tar.gz">Download liboverride</a><p></p>
+    Looking for older releases? Try the 
+    <a href="http://code.google.com/p/semicomplete/downloads/list?q=label:liboverride">liboverride releases archive</a>
+</div>

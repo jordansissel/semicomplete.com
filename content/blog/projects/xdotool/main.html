@@ -1,0 +1,91 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14
+date = "2015-04-24T21:46:35-07:00"
+title = " xdotool  -  fake keyboard/mouse input, window management, and more \n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "projects"
+categories = [ "projects" ]
++++
+
+    <p></p>
+
+    Additionally, you can search for windows and move, resize, hide, and modify
+    window properties like the title. If your window manager supports it, you
+    can use xdotool to switch desktops, move windows between desktops, and
+    change the number of
+    desktops.
+  <h4><a name="idp4320">Mailing list</a></h4>
+    The xdotool users mailing list is: <a href="mailto:xdotool-users@googlegroups.com">xdotool-users@googlegroups.com</a><p></p>
+
+    I'll be announcing new versions on this mailing list. Additionally, if you
+    want help or want to contribute patches to xdotool, the mailing list is a
+    good place to go. 
+    
+    <p></p>
+    If you want to file a bug, you can do that <a href="https://github.com/jordansissel/xdotool/issues">on github</a>.
+  <h4><a name="idp7312">Prerequisites</a></h4>
+<ul>
+<li> xlib (pkg-config xlib) - Standard Xlib library </li>
+<li> xtst (pkg-config xtest) - XTEST library </li>
+</ul>
+<h4><a name="idp9392">Download</a></h4>
+<a href="http://semicomplete.googlecode.com/files/xdotool-2.20110530.1.tar.gz">xdotool-2.20110530.1.tar.gz</a><p></p>
+
+    Looking for older versions? <a href="http://code.google.com/p/semicomplete/downloads/list?q=label:xdotool">Check the archive</a>.
+
+    <p></p>
+<ul>
+<li> Debian and Ubuntu users can install xdotool with: apt-get install xdotool 
+        <br><i> (Note: you will get a pretty ancient version of xdotool, if you want newer ones check <a href="http://code.google.com/p/semicomplete/downloads/list?can=2&amp;q=label:deb+label:xdotool+label:featured&amp;colspec=Filename+Summary+Uploaded+Size+DownloadCount">here</a>)</i>
+</li>
+<li> FreeBSD ports has xdotool in x11/xdotool </li>
+<li> Fedora users can install xdotool: yum install xdotool</li>
+<li> Mac OS X users can install xdotool using <a href="http://www.macports.org/">MacPorts</a> with: sudo port install xdotool </li>
+<li> OpenSUSE users can install xdotool: zypper install xdotool</li>
+</ul>
+<h4><a name="idp17232">Build Instructions</a></h4>
+<ol>
+<li> make all install </li>
+<li> If if you want to run the test suite, use 'make test' - requires ruby and Xvfb. Will also use Xephyr, openbox, and gnome when available to run more complete tests. </li>
+</ol>
+<p></p>
+
+    If the build fails, it might be because you don't have the required
+    libraries and header files installed. You will need to set install them,
+    and if you don't have pkg-config for x11 and xtst, set DEFAULT_LIBS and
+    DEFAULT_INC (see the Makefile) correctly.
+
+    <p></p>
+
+    If all else fails, please email the mailing list or file a bug.
+  <h4><a name="idp20144">How to use it</a></h4>
+    Basic usage is: <i>xdotool &lt;cmd&gt; &lt;args&gt;</i><p></p>
+<ul>
+<li><a href="/projects/xdotool/xdotool.xhtml">Read the xdotool documentation here</a></li>
+<li><a href="/files/xdotool/docs">Read the libxdo documentation here</a></li>
+</ul>
+<h4><a name="idp24160">Example: focus the firefox url bar</a></h4>
+<pre>
+WID=`xdotool search "Mozilla Firefox" | head -1`
+xdotool windowactivate --sync $WID
+xdotool key --clearmodifiers ctrl+l
+
+
+# As of version 2.20100623, you can do this simpler version of above:
+xdotool search "Mozilla Firefox" windowactivate --sync key --clearmodifiers ctrl+l
+</pre>
+<h4><a name="idp25536">Example: Resize all visible gnome-terminal windows</a></h4>
+<pre>
+WIDS=`xdotool search --onlyvisible --name "gnome-terminal"`
+for id in $WIDS; do
+  xdotool windowsize $id 500 500
+done
+
+# As of version 2.20100623, you can do this simpler version of above:
+xdotool search --onlyvisible --classname "gnome-terminal" windowsize %@ 500
+500
+</pre>
+</div>

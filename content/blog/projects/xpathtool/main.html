@@ -1,0 +1,58 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14
+date = "2007-11-19T21:11:47-08:00"
+title = " xpathtool  -  powerful xpath queries on the commandline\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "projects"
+categories = [ "projects" ]
++++
+
+    <p></p>
+
+    Long version: swanky frontend to xsltproc which takes an xpath query and content and spits out the results.
+
+    <p></p>
+
+    Dependencies: xsltproc (comes with libxslt), xmllint (comes with libxml2).
+  <h4><a name="id2244830">Download</a></h4>
+<a href="/files/xpathtool/xpathtool-20071102.tar.gz">xpathtool-20071102.tar.gz</a><h4><a name="id2244842">Usage</a></h4>
+<dl>
+<dt> --ihtml </dt>
+<dd> Set input format as html. </dd>
+<dt> --otext </dt>
+<dd> Output should be text. Implemented as &lt;xsl:value-of select="." /&gt; </dd>
+<dt> --oxml </dt>
+<dd> Output should be xml. </dd>
+<dt> --ohtml </dt>
+<dd> Output should be html. </dd>
+<dt> --indent (default) or --noindent </dt>
+<dd> Set whether or not xml or html output should be depth-based indented. </dd>
+<dt> --stripspace=XXX </dt>
+<dd> Define elements who's content should be space-stripped. Implemented with <a href="http://zvon.org/xxl/XSLTreference/Output/xslt_strip-space.html">&lt;xsl:strips-ace&gt;</a>. </dd>
+<dt> --pretty (default) or --nopretty </dt>
+<dd> Pretty print xml and html output by filtering through 'xmllint --format' </dd>
+</dl>
+<h4><a name="id2244904">Example: Technorati WTF RSS</a></h4>
+<pre>
+% GET feeds.technorati.com/wtf | ./xpathtool.sh '//link' | tail -3
+http://technorati.com/wtf/we-can-take-our-country-back/2007/05/16/ron-paul-is-standing-up-tot-the-establishment-1
+http://technorati.com/wtf/giuliani-is-deluded/2007/05/16/delusional-and-out-of-touch-with-reality-1
+http://technorati.com/wtf/macbook/2007/05/16/apples-rule-1
+</pre>
+<h4><a name="id2244913">Example: Slashdot article links</a></h4>
+    Slashdot is worthless. The article writeups are worthless. The comments are worthless. The users are worthless.
+    <p></p>
+
+    Sometimes, the linked content is not. Let's pull out all the links in all the articles on the frontpage:
+    <pre>
+# slashdot articles are inside the following html element
+% xbase="//div[@class='article']//div[@class='intro']/i"
+% GET www.slashdot.org | ./xpathtool.sh --ihtml "$xbase//a/@href|$xbase//a/text()"  | paste -d" " - - 
+http://www.foreignpolicy.com/story/cms.php?story_id=3807 the world's biggest digital dump
+http://googleblog.blogspot.com/2007/05/google-apps-partner-edition.html turn over their entire email operation to Google
+http://apcmag.com/6138/the_dark_side_of_google_apps_for_isps the dark side of Google's offer
+</pre>
+</div>

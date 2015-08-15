@@ -1,0 +1,131 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14
+date = "2006-03-25T23:06:10-08:00"
+title = "<%attr>\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "projects"
+categories = [ "projects" ]
++++
+
+<span class="title"> wiconf - a Wireless configuration utility for FreeBSD</span>
+<p>
+<span>
+Quick Links: 
+<a href="#WhatIsIt">What is it?</a> |
+<a href="#WhyDoIWantThis">Why do I want this?</a> |
+<a href="#HowToSetup">How do I make it work?</a> |
+<a href="#Download">Download</a>
+</span>
+<p>
+
+<span class="topic"><a name="Todo">Todo List</a></span><br>
+<span class="description">
+
+</span>
+<p>
+<span class="topic"><a name="WhatIsIt">What is it?</a></span><br>
+<span class="description">
+wiconf is a utility that allows you to configure your laptop to handle 
+different wireless situations however you want. Neither -STABLE nor 
+-CURRENT branches offered me the kind of flexibility I needed, and by the 
+end of the school year this year I had about 5 different configurations 
+(one or two line shell scripts doing ifconfig and such) for the different 
+wireless networks I would frequent. I broke down and wrote this to meet my own needs so when I head back up to school I don't have any issues.
+</span>
+<p>
+
+<span class="topic"><a name="WhyDoIWantThis">Why do I want this?</a></span><br>
+<span class="description">
+The tools FreeBSD gives you are not enough to support multiple unique 
+wireless networks. If you are usually hopping between (or just generally 
+use) two or more wireless networks, then wiconf is for you. On boot and 
+pccard insertion, it will automatically associate with the best available 
+access point based on the priority of the entries in your configuration.
+</span>
+<p>
+
+<span class="topic"><a name="HowToSetup">How easy is this thing to setup and use?</a></span><br>
+<span class="description">
+In making wiconf I wanted it to be as hands-free and automated as possible. After a few commands to configure wiconf, you never have to touch it again unles you want to make changes to the configuration!
+<p>
+Firstly, you will need to have wiconf tell FreeBSD about itself and your card. So, if you only have one PCMCIA card inserted you can type this command and it will automatically do that for you!<br>
+
+<pre class="command">nightfall# wiconf config --add</pre>
+<pre>
+Probe results:
+NETGEAR MA401RA Wireless PC / Card
+Card entry found on line 2070 of /etc/defaults/pccard.conf
+Added new entry to /etc/pccard.conf
+</pre>
+<br>
+Noteably, you will have to run this as root so that it will be able to update /etc/pccard.conf(8).<br>
+The next step is to start adding network information. This, too, is easy. Here's an example using DHCP on my home network:<p>
+
+<pre class="command">nightfall# wiconf add --ssid="homenet" --dhcp</pre>
+<pre>
+Added new entry to wiconf.conf.
+SSID: homenet
+DHCP: 1
+Priority: 0
+</pre>
+<br>
+
+And let's say that your office has another wireless network named "officenet." But your office WAP doesn't run dhcp, so you have to set your IP and route manually.<p>
+
+<pre class="command">nightfall# wiconf add --ssid="officenet" --route="192.168.0.254" \ 
+                      --ifconfig="inet 192.168.0.2 netmask 0xffffff00"</pre>
+<pre>
+Added new entry to wiconf.conf.
+SSID: officenet
+Ifconfig: inet 192.168.0.2 netmask 0xffffff00
+Route: 192.168.0.254
+Priority: 0
+</pre>
+
+<br>
+So now you have both networks configured. Now your laptop will associate with whichever network is available on boot, wireless card insertion, or the "manual" method.<br>
+
+The manual method is simply a simulation of the card insertion:<p>
+
+<pre class="command">nightfall# wiconf insert wi0</pre>
+<pre>
+wiconf: List of APs found:
+wiconf: homenet / 00:09:5b:4d:74:82
+wiconf:
+wiconf: Using the following entry (highest priority of matches):
+wiconf: SSID: homenet
+wiconf: Ifconfig: inet 192.168.0.3 netmask 0xffffff00
+wiconf: Priority: 10
+wiconf: 
+wiconf: Setting SSID to homenet
+wiconf: Running ifconfig wi0 inet 192.168.0.3 netmask 0xffffff00
+wiconf: Setting default route to 192.168.0.1
+wiconf: Associated with homenet
+</pre>
+</span><br>
+
+<span class="topic"><a name="Download">Download</a></span><br>
+
+<table border="0" cellspacing="1" cellpadding="1">
+<tr>
+<td>
+Latest Version: 
+</td>
+<td>
+<a href="/~psionic/projects/wiconf/wiconf-0.3.tar.gz">wiconf-0.3.tar.gz</a>
+</td>
+</tr>
+<tr>
+<td valign="top">
+Older Versions:
+</td>
+<td>
+<a href="/~psionic/projects/wiconf/wiconf-0.2.tar.gz">wiconf-0.2.tar.gz</a>
+</td>
+</tr>
+</table>
+
+

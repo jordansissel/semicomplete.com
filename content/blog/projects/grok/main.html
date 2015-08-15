@@ -1,0 +1,157 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14
+date = "2009-07-06T00:16:05-07:00"
+title = " grok  -  an expert system for real time log analysis \n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "projects"
+categories = [ "projects" ]
++++
+
+    <p></p>
+<b>Requirements: </b> Perl 5.8.x, Parse::RecDescent, Unix::Syslog,
+    Regexp::Common, Date::Parse (from TimeDate).
+  <h4><a name="id2255991">Why use Grok?</a></h4>
+    My servers get hit with brute-force ssh login attempts almost every day.
+    They're also hit with several exploit attempts on varying protocols
+    daily.  Chances are all Internet-facing systems will see this on a
+    regular basis. I've never had a successful break in, but why give script
+    kiddies a chance?
+
+    <p></p>
+    My logs end up riddled with line after line of failed logins, etc. So I
+    needed a system that could watch the logs
+
+    <p></p>
+    Failed login attempts are logged in <code>/var/log/auth.log</code> on
+    FreeBSD, so that's where I'll be looking for patterns to match. An
+    example of a failed login attempt is this:
+
+    <pre>
+Apr 30 22:19:32 kenya sshd[76279]: Failed password for illegal user test from 61.30.94.124 port 36884
+</pre>
+
+    This is an illegal login attempt for a username 'test' - this means there
+    is no user 'test' on that server. I have made the assumption that no one
+    will try to login to this machine with an invalid username more than once
+    or twice in a short while, so that will be my criteria for blocking these
+    script-kiddie login attempts.
+
+    <p></p>
+    Enter grok. This is a short perl program I wrote that allows you to
+    configure reactions to certain patterns.  The configuration file format
+    is pretty straight forward, in my opinion.
+
+    <p></p>
+    A sample configuration follows:
+<pre>
+file "/var/log/auth.log" {
+  type "bad username" {
+    match = "Illegal user %USERNAME% from %IP%";
+    threshold = 4;
+    interval = 300;
+    reaction = "pfctl -t whores -T add %IP%";
+  };
+};
+</pre>
+
+    This will look for patterns matching the 'match' part of the
+    configuration above. So, for example, if the following appears in the log
+    file:
+
+<pre>
+Apr 24 07:15:37 kenya sshd[44889]: Illegal user admin from 193.195.96.6
+</pre>
+
+    The match will be triggered and a count will be increased. If the
+    threshold ever hits 4 in 300 seconds, the "reaction" will be executed. It
+    will run <code>pfctl -t whores -T add 193.195.96.6</code>, which will add
+    that IP to the 'whores' table in pf. Here is the pertinent section of my
+    <code>pf.conf</code>:
+
+<pre>
+table &lt;whores&gt; persist file "/etc/pf.whores"
+
+# Block whores.
+block in log quick on $ext_if from &lt;whores&gt; to any
+block out log quick on $ext_if from any to &lt;whores&gt;
+</pre>
+<p></p>
+    I find this to be pretty useful in helping to keep my machine free of
+    brute-force attempts.
+
+    <hr>
+<h4><a name="id2255994">More advanced usage</a></h4>
+    The latest update to grok added support for more descriptively named
+    pattern captures. This is an extremely necessary feature if you have
+    multiple of the same patterns that need to be matched.
+
+    <p></p>
+
+    Example:
+<pre>
+exec "tcpdump -li tl0 -n 2&gt; /dev/null" {
+  type "ssh-connect" {
+    match = "%IP:SRC%.\d+ &gt; %IP:DST%.22: S";
+    reaction = "echo 'SSH connect(): %IP:SRC% -&gt; %IP:DST%'";
+  };
+};
+
+</pre>
+
+    This will run tcpdump and grok the output for new connections to port 22.
+    Sample output is as follows:
+<pre>
+SSH connect(): 192.168.2.1 -&gt; 192.168.50.4
+SSH connect(): 192.168.4.8 -&gt; 192.168.50.4
+SSH connect(): 192.168.4.3 -&gt; 192.168.50.4
+</pre>
+
+    This, immediately, may not seem useful. However, you'll note that grok is
+    able to parse tcpdump output with very little effort on your part. Here's
+    another example, where we look for port scans using the new 'key'
+    feature:
+
+<pre>
+exec "tcpdump -li tl0 -n 2&gt; /dev/null" {
+  type "port-scan" {
+    match = "%IP:SRC%.%PORT% &gt; %IP:DST%.%PORT:DST%: S";
+
+    # Store each "hit" by source ip only
+    key = "%IP:SRC%";
+
+    threshold = 30;
+    interval = 5;
+    reaction = "echo 'Port scan from %IP:SRC%'";
+  };
+};
+</pre>
+
+    I then run 'nmap -sT' against this host:
+
+<pre>
+Port scan from 129.21.61.220
+Port scan from 129.21.61.220
+Port scan from 129.21.61.220
+Port scan from 129.21.61.220
+Port scan from 129.21.61.220
+</pre>
+
+    grok is not a substitute for IDS software, nor is it IDS software, but
+    the point of the above demonstrations are to show the usefulness of both
+    the better capture naming and key generation. However, you may find it
+    useful to use grok for IDS-type activities.
+
+    <p></p>
+<a href="/files/grok/grok-20070915.tar.gz">download grok-20070915</a><h4><a name="id2255997">Mailing list</a></h4>
+    Grok has a mailing list hosted on Google Groups.
+
+    <ul>
+<li> URL: <a href="http://groups.google.com/group/grok-users/">http://groups.google.com/group/grok-users/</a>
+</li>
+<li> Email: <a href="mailto:grok-users@googlegroups.com">grok-users@googlegroups.com</a>
+</li>
+</ul>
+</div>

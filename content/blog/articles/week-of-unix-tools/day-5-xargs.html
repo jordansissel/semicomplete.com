@@ -1,0 +1,119 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14
+date = "2009-08-26T16:36:23-07:00"
+title = " xargs  -  Week of Unix Tools; Day 5 \n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "article"
+categories = [ "article" ]
++++
+
+      <ul>
+<li> Use xargs as a 'threadpool' for parallel processing of input. </li>
+<li> Take a list of things on input, and run a command with one thing
+        as the argument, for all things input. </li>
+<li> Reformat word lists. </li>
+</ul>
+<h4><a name="id2255983">And then... ?</a></h4>
+      No "and then".
+    <h4><a name="id2255984">Usage</a></h4>
+<pre>xargs [flags] [command [args]]</pre>
+
+      'command' is optional. If unspecified, it defaults to '/bin/echo' or
+      something very similar.
+    <h4><a name="id2255985">Flags that matter</a></h4>
+<dl>
+<dt> -t </dt>
+<dd> trace. Show the commands being run before they are executed </dd>
+<dt> -P{N} </dt>
+<dd> Specify number (where {N} is) of forked processes for parallelism; ie, -P5 for 5 processes. </dd>
+<dt> -n{N} </dt>
+<dd> Call the command with {N} arguments </dd>
+<dt> -I{REPLSTR} </dt>
+<dd> Specify that '{REPLSTR}' will be replaced with the argument </dd>
+</dl>
+<h4><a name="id2255986">First example</a></h4>
+      Find some files and delete them.
+
+      <pre>
+% mkdir i; touch i/a.png i/b.png i/c.png i/otherfile
+% find ./i/ -name '*.png' | xargs
+./i/a.png ./i/b.png ./i/c.png
+
+# Default action above was to echo, so it output as if you had typed:
+# echo ./i/a.png ./i/b.png ./i/c.png
+
+# Actually delete the png files:
+% find ./i/ -name '*.png' | xargs rm
+% ls ./i
+otherfile
+</pre>
+<h4><a name="id2255988">Advanced xargs</a></h4>
+      Sometimes the "thing" you want to do with this argument list is not just
+      one command. You know how express what you need in shell, but you don't
+      know how to get xargs to play nice? Not to fear. Simply use "sh" as your
+      command, like this example:
+
+      <p></p>
+
+      Rename *.foo -&gt; *.bar
+      <pre>
+% touch a.foo b.foo c.foo
+% ls *.foo | xargs -n1 -I@ sh -c 'x="@"; mv $x ${x%.foo}.bar'
+# ${x%.foo} means remove '.foo' from the end of $x. 
+
+% ls *.bar
+a.bar   b.bar   c.bar
+</pre>
+
+      This example shows using replacement with the character '@'. This means
+      any instance of '@' in the command string will be replaced with the
+      current value (a.foo, for example).
+
+      <p></p>
+
+      A better example is this, using sh's natural argument handling:
+      <pre>
+# A quick refresher for you:
+% sh -c 'echo $0,$1,$2,$3' hello one two three
+hello,one,two,three
+
+# Now let's use it:
+% ls *.foo | xargs -n1 sh -c 'mv $1 ${1%.foo}.bar' -
+# the '-' is to pass '-' as $0 to sh, so we can use $* and $@ like normal if we wanted.
+% ls
+a.bar   b.bar   c.bar
+</pre>
+      
+      This lets you use $@, $*, and $1, etc, and is more natural to shell scripting.
+    <h4><a name="id2255990">Parallel ssh'ing</a></h4>
+      This example expects 'somehosts' to a line-delimited list of hosts to
+      connect to. Please note that I am using ssh keys (with ssh-agent) so ssh
+      will not prompt for a password when logging in.
+
+      <pre>
+% echo kenya scorn | tr ' ' '\n' &gt; /tmp/somehosts
+% cat /tmp/somehosts \
+  | xargs -P10 -I"HOST" -n1 ssh HOST uptime
+ 1:28AM  up 11 days,  3:44, 4 users, load averages: 0.13, 0.08, 0.02
+ 4:28AM  up 2 days, 18:54, 10 users, load averages: 0.10, 0.05, 0.05
+</pre>
+
+      There's a slight problem with the above invocation. You don't know what
+      host is outputting what data! This becomes much more clear of a problem
+      when you aren't executing 'uptime' but instead are doing something that
+      outputs many lines.
+
+      <p></p>
+
+      An easy solution is to use sed (or awk, et al) to prefix everything with the hostname.
+
+      <pre>
+% cat /tmp/somehosts \
+  | xargs -P10 -I"HOST" -n1 sh -c 'ssh HOST uptime | sed -e "s/^/HOST: /"'
+kenya:  1:36AM  up 11 days,  3:52, 4 users, load averages: 0.07, 0.07, 0.03
+scorn:  4:36AM  up 2 days, 19:03, 10 users, load averages: 0.01, 0.02, 0.02
+</pre>
+</div>

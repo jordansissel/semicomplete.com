@@ -1,0 +1,197 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14
+date = "2006-04-13T14:37:40-07:00"
+title = "newpsm framework - description - Details and benefits over the Old Ways\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "projects"
+categories = [ "projects" ]
++++
+
+			<p></p>
+
+			The old design of mouse magic in FreeBSD appears somewhat ad-hoc.
+			psm(4) stands on it's own, as does ums(4), and mse(4). moused(8) can
+			be used, optionally. Independently, all three mouse drivers can be
+			used as input to X. Without moused(8), you don't get a mouse in the
+			console (if you want one). moused(8) can direct multiple mice through
+			the sysmouse(4) device, allowing you to present X (or others) with one
+			single mouse device. This is great, and allows you to hotplug mice and
+			not need to reconfigure or restart X to use it.
+
+			<p></p>
+
+			A problem with this setup is the fact that protocol handlers are all
+			over the place. psm(4) supports a number of mice, ums(4) has hacks to
+			support different "broken" mice aswell as standard uhid mice. and
+			mouse(8) itself supports a number of other mice magic as well.
+		  
+			<p></p>
+
+			Adding new ps/2 mice drivers to psm(4) requires hacking code in 3 or 4
+			different places (if not more) of psm.c. This may not seem all that
+			bad, except it is further hindered by the fact that you have to reboot
+			every time you want to test your code. Compound that with kernel
+			segfaults result in panics, and you have a very difficult environment
+			in which to write new mouse drivers.
+
+			<p></p>
+
+			The same goes for ums(4), though uhid is a bit easier to deal with.
+
+			<p></p>
+			Furthermore, moused(8) itself is awkward to hack on. Rather, that has
+			been my experience. Feature magic such as emulate-3-button is
+			intertwined amongst other unrelated logic, making debugging annoying
+			and making it annoying to write new features due to the entangled
+			nature of the code.
+
+			<p></p>
+			I'm not trying to say "this sucks" as an offense to the developers who
+			worked on these projects. I simply believe there is a better way to do
+			it.
+			
+			<p></p>
+
+			To summarize, the problems with the old way are:
+			<ul>
+<li> Protocol magic is handled in many different places </li>
+<li> Design is not modular and does not lend itself to easy feature additions </li>
+<li> Kernel-land makes for difficult "trial and error" tweaking </li>
+</ul>
+<h4><a name="id45973">The New Hotness</a></h4>
+			The new design is based upon a few ideas:
+			<ul>
+<li> All protocol magic should be handled by moused </li>
+<li> Kernel devices should report raw data only </li>
+<li> Drivers are implemented in the form of loadable modules </li>
+<li> Magic features (ie; emulate 3 buttons) should be modular and independent </li>
+</ul>
+
+			I'll address these individually.
+
+			<h4><a name="id45994">Protocol Magic</a></h4>
+				Instead of having ums(4) or psm(4) have a deep understanding of
+				their respective protocols, they should report data, unmodified,
+				from the hardware.
+
+				<p></p>
+
+				That is, instead of psm(4) providing Synaptics Touchpad support, a
+				userland driver module should provide this support. psm(4) should
+				merely act as a hardware-to-userland interface, and a dumb one at
+				that.
+			<h4><a name="id46002">Raw Data</a></h4>
+<b>psm</b>: The new psm kernel driver should allow protocol
+				commands to be transmitted from the userland to the hardware via
+				ioctl(2). Such commands include setting packet size, data checksum
+				information, and little else. Movement data is transmitted using
+				read(2) and will report data of instructed packet size. The packet
+				size defaults to 3, the "real" PS/2 protocol's packet size.
+
+				<p></p>
+<b>ums</b>: ums simply fronts for uhid(4). Therefore, I believe
+				ums(4) should be moved to a userland moused module, which reads
+				from uhid(4) devices.
+
+				<p></p>
+
+				No protocol understanding is required for the new psm to function,
+				becuase all it does is proxy commands and data between hardware and
+				the userland.
+
+			<h4><a name="id46018">Userland driver modules</a></h4>
+				Mouse-specific drivers will be implemented in userland loadable
+				modules. A module will provide certain functions such as probing
+				and data handling.
+
+				<p></p>
+
+				The probe function is responsible for two things:
+				<ul>
+<li> Test if the mouse is a specific kind of mouse by.. </li>
+<li> Enabling extended features of the specified mouse </li>
+</ul>
+
+				If the probe succeeds, then we can go about using this module as
+				our mouse driver. If it fails, then return failure to indicate that
+				this module cannot understand this mouse.
+
+				<p></p>
+
+				The handler function is called whenever new data is available from
+				the mouse device. New data is detected using the select(2) system
+				call. The handler function is expected to read data from the given
+				mouse device and process it as necessary. Updates are conveyed by
+				calling an update function with a structure containing the activity
+				data.
+			<h4><a name="id46037">Magic features AKA filters</a></h4>
+				Features such as emulate-3-button, chordmiddle, acceleration,
+				button remapping, jitter correction, and virtual scrolling, are all
+				what I would consider post-process filters. They are used to modify
+				the activity structure after the driver module has processed a new
+				piece of activity data.
+
+				<p></p>
+
+				For instance, the button mapping filter would map the reported
+				mouse button to another mapping, such as swapping left and right
+				mouse button actions. That is, the reports "right mouse button
+				held" and this filter would change it to "left mouse button held."
+				This is extremely useful.
+
+				<p></p>
+
+				Filters in the old moused(8) are not modular. They are grossly
+				intertwined with other unrelated code. In the new moused(8),
+				filters are independent functions. As as result, post processing
+				filters are chained.
+
+				<p></p>
+
+				This chaining allowed you to have "emulate 3 button" and "virtual
+				scroll" enabled at the same time. "emulate 3 button" will send
+				faked middle-mouse button activity if both left and right buttons
+				are pressed at the same time. "virtual scroll" will change
+				movements into scrolling activity while the middle mouse button is
+				held. "emulate 3 button" is called before "virtual scroll" is
+				called. Therefore, if you have both enabled, you can press
+				left and right buttons together, and scroll up and down by moving
+				the mouse up and down. This is not possible with the old moused(8)
+				implementation.
+			<h4><a name="id46117">Per-mouse configuration</a></h4>
+				The new moused(8) also provides a means to configure each specific
+				mouse. The syntax is that of termcap entries.
+
+				<p></p>
+
+				For example, on my laptop I have the following configuration:
+
+				<pre> synaptics:virtscroll:notouchpad: </pre>
+
+				This enables "virtual scrolling" only for synaptics and disables the
+				touchpad. I have a T41 and it has a trackpoint and touchpad, both
+				show up via the same psm(4) device.
+
+				<p></p>
+
+				Another example (unimplemented) may look like this, if you have a
+				fancy logitech MX100 mouse:
+
+				<pre>usb:type=MX1000:maptokey:9=F5</pre>
+
+				Assuming I do this (might be useful), 'maptokey' would map a button
+				press to a keyboard key stroke. Here, mouse button 9 would get
+				mapped to "F5" - Keep in mind that I have not implemented this yet.
+				More research is required :)
+			<h4><a name="id46136">Framework Comparison</a></h4>
+				For some flow-chart-ey goodness, see the following:
+
+				<p></p>
+				Old mouse diagram:
+				<br><a href="images/oldmouse.png"><img src="images/thumb-oldmouse.png"></a><p></p>
+				New mouse diagram
+				<br><a href="images/newmouse.png"><img src="images/thumb-newmouse.png"></a>
+</div>

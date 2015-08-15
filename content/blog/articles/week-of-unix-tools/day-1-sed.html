@@ -1,0 +1,247 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14
+date = "2010-10-10T21:28:20-07:00"
+title = " sed  -  Week of Unix Tools; Day 1 \n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "article"
+categories = [ "article" ]
++++
+
+      I think it's fair to say that not enough people know sed. Mostly, because
+      it's probably scary. This week-of-unix-tools is intended to be a high
+      concentration of information with little fluff. I'll be covering only GNU
+      versions of the tools, for the sake of choosing only one version for
+      sanity sake.
+
+    <h4><a name="id54059">What is sed?</a></h4>
+      Sed is short for 'stream editor' and basically lets you do lots of things
+      to streams of text.
+    <h4><a name="id54065">Basic usage and Invocation</a></h4>
+<pre>sed [-lrn] [-e 'sedscript'] [file1 file2 ...]</pre>
+<code>-l</code> means line buffered (ie; flush output every line),
+      <code>-r</code> means use extended regex, <code>-n</code> silences
+      default output, and <code>-e</code> should be self explanatory.  There
+      are other flags (such as -f) but I never use them. Seek the man page for
+      more information.
+
+      <p></p>
+
+      If you've ever seen the perlism <code>s/foo/bar/</code>, that came from
+      sed.  Sed is basically a string processing language. The language
+      consists of a very small grammar, but is still very powerful. Here are
+      some examples:
+
+      <p></p>
+<dl>
+<dt> Simple text replacement. </dt>
+<dd><pre>
+% echo "Hello there foo" |  sed -e 's/foo/bar/'
+Hello there bar
+</pre></dd>
+<dt> Grep-like behavior. </dt>
+<dd><pre>
+% sed -ne '/FreeBSD/p' /etc/motd
+FreeBSD 6.2-PRERELEASE (FOO) #0: Sat Nov 11 00:12:52 EST 2006
+Welcome to FreeBSD!
+</pre></dd>
+<dt> Grep '-v' like behavior </dt>
+<dd><pre>
+% echo "foo\nbar\nbaz\nfoobar" | sed -ne '/foo/!p'r
+bar
+baz
+</pre></dd>
+</dl>
+<h4><a name="id54136">Backreferences</a></h4>
+
+      Backreferences are using a captured group's matched value later in your
+      pattern. You group regexp patterns with parenthesis, but in non-extended
+      mode (ie; without -r), you must escape your parentheses. Example:
+
+<pre>
+% echo "hello world" | sed -e 's/\([a-z]*\) world/\1 sed/'
+hello sed
+
+# Now with -r (or -E on FreeBSD and OS X):
+% echo "hello world" | sed -r -e 's/([a-z]*) world/\1 sed/'
+hello sed
+</pre>
+
+      There is a special "reference" when using substitution (s///). Ampersand
+      (&amp;).  This will expand to the entire matched pattern:
+
+<pre>
+% echo "hello world" | sed -e 's/.*/I say, "&amp;"/'
+I say, "hello world"
+</pre>
+<h4><a name="id54154">Syntax and Functions</a></h4>
+
+      Sed syntax is pretty straight forward. A general expression will look
+      like this:
+
+      <p></p>
+<code>
+      address[,address]function
+      </code><p></p>
+
+      That's it. Expressions are separated by newlines or semicolons.
+
+    <h4><a name="id54169">What is a address?</a></h4>
+
+      A address is a way to indicate a location in your data stream. An address can be any of:
+      <ol>
+<li> A line number (eg 1). The first line is '1' </li>
+<li> A regexp match expression, such as /foo/. </li>
+<li> The literal '$', which means 'last line of file' </li>
+<li> Nothing at all, which means "every line in the file" </li>
+</ol>
+
+      If you specify two addresses, it means "inclusive" of the first and last
+      address, and includes all lines in between. After the last address is
+      hit, the first address is searched for again further down the file. More
+      on this later.
+
+    <h4><a name="id54196">What are functions?</a></h4>
+
+      Functions are always one-letter in sed. The useful ones (to me) are:
+
+      <ul>
+<li> p (print) </li>
+<li> s (substitute) </li>
+<li> d (delete) </li>
+<li> x (swap pattern and hold buffer) </li>
+<li> h and H (copy and append to hold buffer) </li>
+<li> ! (apply the next function against lines not matched) </li>
+</ul>
+<h4><a name="id54227">What can I do with sed?</a></h4>
+<dl>
+<dt> Print the first line of input (same as head -n 1) </dt>
+<dd><pre> sed -ne 1p </pre></dd>
+<dt> Print everything *except* the first line </dt>
+<dd><pre>
+sed -ne '1!p' # print everything not on the first line
+or
+sed -e '1d'   # delete the first line
+              # default action is to print, so everything else is printed
+</pre></dd>
+<dt> Print the first non-whitespace, non-comment line in httpd.conf </dt>
+<dd><pre>
+sed -ne '/^[^# ]/{p;q;}' httpd.conf
+or
+sed -ne '/^#/! { /^ *$/! { p;q; }; }' httpd.conf
+</pre></dd>
+<dt> Show only 'Received:' headers in a mail </dt>
+<dd>
+<pre>
+% cat mymail \
+  | sed -ne '/^[A-Za-z0-9]/ { x; /^Received: /{p;}; }; /^[A-Za-z0-9]/!H' 
+Received: from localhost (localhost [127.0.0.1])
+        by whitefox.csh.rit.edu (Postfix) with ESMTP id 731F81145C
+        for &lt;email-snipped&gt;; Sat, 19 May 2007 01:19:30 -0400 (EDT)
+Received: from whitefox.csh.rit.edu ([127.0.0.1])
+        by localhost (whitefox.csh.rit.edu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id EURHKUeHSrao for &lt;email-snipped&gt;;
+        Sat, 19 May 2007 01:19:16 -0400 (EDT)
+... etc ...
+  </pre> 
+          Noisey code, eh? Gets the job done though. There are two checks here.
+          The first pattern checks to see if the line starts with a letter or
+          number, if so, it swaps to the "hold" buffer and checks if it starts
+          with 'Received:' and prints if it does. The side effect is that the
+          current input line is now in the hold buffer and the old header
+          "line" is in the pattern space, which we discard. After that, we
+          check if the line does *not* start with a letter or number, in which
+          case we append the input (aka pattern space) to the hold space.
+
+          <p></p>
+
+          Basically, we build the current header (which can be multiple lines)
+          in the hold buffer until the next header happens.
+        </dd>
+<dt> Output a file, but color matched patterns. </dt>
+<dd><pre>
+# The '^[' below are raw escape characters, entered at the shell 
+# with CTRL+V and hitting escape.
+% dmesg | sed -e 's/ath0/^[[33m&amp;^[[0m/g'
+<img src="/images/sed-color-output.png"></pre></dd>
+</dl>
+<h4><a name="id54317">Use sed to make a 'section grep' tool</a></h4>
+
+      You can use sed to "grep" paragraphs of data using similar techniques to
+      the above mail header example. This script will let you 'grep' whole
+      paragraphs (empty-line-delimited).
+
+<pre>
+#!/bin/sh
+
+if [ $# -eq 0 -o "${1:-}" = "-h" ] ; then
+  echo "usage: $0 [-v] pattern [files]"
+  return 1
+fi
+
+func='!d'
+if [ "$1" = "-v" ]; then
+  # support '-v' like 'grep -v' 
+  func='d'
+  shift
+fi
+
+pattern="$1"
+shift
+
+sed -ure '/./{H;$!d;}; '"x;/${pattern}/$func;" $1
+</pre>
+
+      Call this 'sgrep.sh', put it somewhere, and make it executable. Let's use
+      it to find anything with 'Delete' and 'cycle' in FreeBSD's sed manpage :
+
+<pre>
+% man sed | ./sgrep.sh 'Delete .* cycle' 
+
+     [2addr]d
+             <b>Delete</b> the pattern space and start the next <b>cycle</b>.
+
+     [2addr]D
+             <b>Delete</b> the initial segment of the pattern space through the first
+             newline character and start the next <b>cycle</b>.
+</pre>
+<h4><a name="id54351">Bonus notes</a></h4>
+<ul>
+<li>
+        The 's' function has a 'p' flag, which prints only if a substitution was made.
+
+        <pre>
+# this:
+sed -ne '/foo/ { s/foo/bar/; p }'
+
+# is the same as
+sed -ne 's/foo/bar/p'
+</pre>
+</li>
+<li>
+          You can insert data into the hold space (or the pattern space) if you really want:
+          <pre>
+# Print 'Hello there' before the second line
+% echo "one\ntwo\nthree" | sed -e '2 { x; s/.*/Hello there/; p; x; }'
+one
+Hello there
+two
+three
+</pre>
+</li>
+</ul>
+<h4><a name="id54377">Ok, now what?</a></h4>
+
+      Given your choice of filter tools, sed is an extremely useful one that
+      often allows you to describe what you want to do with your text in a
+      shorter, simpler form than awk or perl can offer you. If you wish to
+      venture down the path of unix ninja, then sed should be on your list of
+      commands to understand.
+
+      <p></p>
+
+      Want to really make your eyes hurt? Check out <a href="http://www.npcguild.org/~ksb/hack/math.sed">this calculator written
+      entirely in sed</a>.
+    </div>

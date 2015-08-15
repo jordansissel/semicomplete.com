@@ -1,0 +1,135 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14
+date = "2007-05-20T00:42:05-07:00"
+title = " cut and paste  -  Week of Unix Tools; Day 2 \n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "article"
+categories = [ "article" ]
++++
+
+      There are 3 different ways to cut. One by bytes, one by characters, and one by fields.
+
+      <p></p>
+
+      A range is one or more sequences, separated by commas. A sequence can be
+      any of the following:
+      <ul>
+<li> N = Select only the Nth piece (on each line) </li>
+<li> N- = Select the Nth piece through end-of-line </li>
+<li> N-M = Select the Nth through Mth pieces </li>
+<li> -M = Select the first through Mth pieces </li>
+</ul>
+<dl>
+<dt>field cutting - get me the 1st and 3rd fields delimited by comma</dt>
+<dd><pre>
+% echo "one,two,three,four" | cut -d"," -f 1,3
+one,three
+
+# output space-delimited from comma-separated input (GNU only)
+% echo "one,two,three,four" | cut -d"," -f 1,3 --output-delimiter=" "
+one three
+ </pre></dd>
+<dt>character cutting - output everything except the first character of every line </dt>
+<dd><pre>
+% seq 15 19 | cut -c 2-
+5
+6
+7
+8
+9
+ </pre></dd>
+</dl>
+<h4><a name="id4734">When to use cut</a></h4>
+      Cut provides features easily done in sed and awk. Why would you use it instead of sed or awk?
+
+      <p></p>
+
+      Simplicity of statement.
+
+      <p></p>
+
+      Example: Let's print the 1st and 7th fields from /etc/passwd:
+      <pre>
+% grep '^root' /etc/passwd | cut -d: -f1,7
+root:/bin/sh
+</pre>
+
+      In the above invocation, it is very clear to the reader that you want the
+      1st and 7th field. Yes, this in awk would also be simple, but if you
+      don't know awk syntax, then awk might be harder for you to write and/or
+      read.
+
+      <p></p>
+
+      Use the tool that best allows you concisely and unobfuscatingly describe
+      what you want to do. Cut often lets you do that. However, there are a few
+      cut-like things that you can't do in cut because of the way it determines
+      fields.
+    <h4><a name="id4765">When not to use cut</a></h4>
+      If your input will have multiple instances of the delimiter in a row, cut
+      won't do it the way you might think: delimiters are single characters in
+      cut. Multiple delimiters in a row are not handled in any special way as
+      awk handles whitespace. Consider this simple example:
+      <pre>
+% echo "one    two     three" | cut -d' ' -f 2
+
+% echo "one    two     three" | awk '{print $2}'
+two
+</pre>
+      According to cut, field 2 in the above example is an empty string because
+      it occurs between the first and second space (delimiter). Not what we
+      wanted. Keep this behavior in mind.
+    <h4><a name="id4777">What is paste?</a></h4>
+      Think of it as a horizontal version of cat(1). It will join lines by delimiters from different file inputs.
+    <h4><a name="id4793">Basic paste(1) usage</a></h4>
+<pre> paste [-s] [-d delimiter_list] [input1 input2 input3 ...] </pre>
+
+      Paste reads a line from each input, in order, and prints them without
+      newlines. After one line has been read from each input, a newline is
+      printed. Optional '-d' will let you specify a list of delimiters that are
+      to be used to separate each input file. The default is separation with
+      tab characters.
+
+      <p></p>
+
+      '-s' is a neat little flag, that supresses newline output entirely. The
+      effect is that all lines of all inputs are concatonated on one single
+      line of output. Very similar to "tr '\n' '*delimiter*'" except there's no
+      trailing delimiter. Useful!
+
+      <p></p>
+
+      The same input file can be specified multiple times, which gives you some neat effects.
+    <h4><a name="id4820">Why is it useful?</a></h4>
+      I rarely use paste, but what it does is quite useful.
+
+      <dl>
+<dt> Join input lines in triplets </dt>
+<dd><pre>
+% seq 9 | paste - - -
+1       2       3
+4       5       6
+7       8       9
+</pre></dd>
+<dt> Print line numbers </dt>
+<dd><pre>
+% FILE="/etc/hosts"
+% seq `wc -l &lt; $FILE` | paste - $FILE | head -3
+1       # /etc/hosts
+2       #
+3       # This file describes a number of hostname-to-address
+</pre></dd>
+<dt> List of users on a system </dt>
+<dd><pre>
+% cut -d: -f1 /etc/passwd | paste -d, -s -
+root,bin,daemon,adm,lp,sync,shutdown,halt,mail,news,uucp,operator
+</pre></dd>
+</dl>
+<h4><a name="id4862">Conclusion</a></h4>
+      Cut and paste are somewhat niche tools, but keep them in your toolbelt
+      because of the functionality they provide. Sometimes it's much simpler to
+      use cut or paste instead of another tool.
+    </div>

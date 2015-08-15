@@ -1,0 +1,161 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14
+date = "2006-03-25T23:06:26-08:00"
+title = "newpsm framework - A new mouse driver framework for FreeBSD 7.x\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "projects"
+categories = [ "projects" ]
++++
+
+
+			Installing libps2 and the moused modules will not overwrite anything
+			already existing in the system. It is safe to install them. Now, try
+			running moused:
+			<ul>
+<li> if you have synaptics: ./moused -m synaptics </li>
+<li> if you have another ps/2 mouse: ./moused -m generic </li>
+<li> if you use ums: ./moused -m sysmouse -d /dev/ums0 </li>
+</ul>
+<b>Build Problems? </b><dl>
+<dt> Compilation errors with psm(4) regarding 'MOUSE_COMMAND' not being defined:</dt>
+<dd> You didn't properly patch sys/sys/mouse.h.<br>cp newmoused/newpsm/oldpsm/sys/mouse.h /usr/src/sys/sys/mouse.h </dd>
+<dt> Compilation errors with libps2 </dt>
+<dd> Make sure you copied my mouse.h to /usr/include/sys/mouse.h </dd>
+</dl>
+<b>Patches to bugs:</b><dl>
+<dt> Synaptics taphold (leftbutton down) always triggers after a tap and a finger-down </dt>
+<dd> Patch: <a href="synaptics-tapholdclick.patch">synaptics-tapholdclick.patch</a>.
+					<pre>cd newmoused/moused/modules/synaptics/
+patch &lt; synaptics-tapholdclick.patch</pre>
+</dd>
+</dl>
+
+			Current issues:
+			<ul>
+<li> Synaptics support has a few issues probably due to incomplete
+				porting from the psm(4) implementation and the new module. It still
+				works, however, for me. </li>
+<li> The X "sysmouse" driver will no longer work on /dev/psm0. This is becuase X expects the 'sysmouse' mouse protocol and it gets whatever the mouse spits out. You MUST use moused from now on.</li>
+</ul>
+
+			If you get compilation errors, email me and I'll help you get them fixed.
+		<h4><a name="id46094">Progress</a></h4>
+			You can check on what I've done through p4web:
+			<a href="http://perforce.freebsd.org/depotTreeBrowser.cgi?FSPC=//depot/user/jls/newmoused&amp;HIDEDEL=NO">
+			View my p4 depot on perforce.freebsd.org
+			</a><ul>
+<li>newpsm driver stubbed out and written.</li>
+<li><strike>the old psm driver needs to be split. It has a part called psmcpnp that needs to become it's own separate driver.</strike></li>
+</ul>
+<h4><a name="id46152">Roadmap</a></h4>
+<ul>
+<li> start newpsm(4) - include extremely basic functionality:
+					probing, attaching, detaching, open, read, etc </li>
+<li>start moused(8) - basic commandline options (-p, etc) and
+				reading from newpsm.</li>
+<li>moused - write a plugin interface for loadable userland mouse
+				drivers.</li>
+<li>moused - write some basic filters (emulate 3 button, etc) </li>
+<li>moused - write a ps/2 generic pass-through plugin</li>
+<li>moused - write a synaptics module </li>
+<li>moused - write a ums (sysymouse?) module </li>
+<li>ums(4) - make new mice work well with this </li>
+</ul>
+<h4><a name="id46189">Ideas?</a></h4>
+			newpsm(4) will only provide a more-or-less raw interface with a
+			connected ps/2 mouse. I don't know right now whether or not the X ps/2
+			mouse driver will still work, but we'll see. If it doesn't, I'll look
+			into having newpsm provide a generic ps/2 interface X will understand
+			with an ioctl that lets you switch between generic ps/2 and raw.
+			<p></p>
+			I'm still trying to get my feet wet with both FreeBSD's kernel and
+			talking to hardware, so a lot of my ideas are probably misguided.
+			<p></p>
+			I recently bought a new keyboard (IBM USB Travel Keyboard with
+			UltraNav) which has a synaptics touchpad and trackpoint for mice. The
+			trackpoint and touchpad come up as two separate uhid devices . The
+			windows driver probably supports lots of things like pressure
+			sensitivity, touchpad-scrolling, etc. The protocol may or may not be
+			uhid, I don't know.
+
+		<h4><a name="id46199">Known Issues</a></h4>
+<ul>
+<li> Microsoft Explorer Mouse 4.0A acts very strangely under ums/moused. </li>
+<li> Synaptics USB (on my thinkpad ultranav travel keyboard) seems
+				to act funny with moused, though I've only used it for 5 minutes so
+				far.</li>
+<li> atkdbcreg.h defines PSM_MOUSE_ID, PSM_INTELLI_ID, and others. Shouldn't this be in a more mouse-specific place? </li>
+<li> psm needs GIANT, why? More research is required, or someone should just tell me. </li>
+</ul>
+<h4><a name="id46224">new psm design</a></h4>
+			The new psm kernel driver only provides the bare minimum features. All
+			of the ioctls have been stripped and replaced with, essentially,
+			MOUSE_COMMAND and MOUSE_SET_SYNCBITS. Every other activity has been
+			moved to the userland in the form of moused's libps2, a ps/2
+			protocol library. Such actions as the old MOUSE_SET_RESOLUTION are
+			replaced by libps2/s ps2_set_resolution() which in-turn calls
+			MOUSE_COMMAND using an ioctl on /dev/psm0. 
+			
+			<p></p>
+			This moves all of the real work handling the mouse to the userland and
+			provides a much more flexible model for implementing mice drivers.
+		<h4><a name="id46231">new moused design</a></h4>
+<h4><a name="id46235">moused: slimmed down</a></h4>
+				The new moused(8) will provide a minimum api for the plugin drivers to
+				access. The api should provide means to pass state deltas (x, y, and
+				other changes) with little else. What kinds of data will a mouse
+				driver need to convey? However, deltas may not be the easiest way of
+				transmitting button changes from the driver to moused. I'm not sure
+				yet. At any rate, the delta will be in the form of passing a structure
+				back to moused(8) containing x, y, z1, z2, and button deltas. I'm
+				not sure if this should be of the callback form where moused calls
+				the plugin for data, or if the plugin loops itself. However, seeing
+				as how plugins (drivers) should do the least amount of OS-level
+				work, but instead act as liasons between hardware and the OS, I
+				think the read loop should go in moused itself. This should be the
+				easy part.
+			<h4><a name="id46241">plugin structure</a></h4>
+				The plugin structure will work similiarly to how the freebsd kernel
+				object system works. Plugins will provide functions to probe for
+				mice, read from mice, and reset mice. Probing will be used to
+				detection of mice given the mouse type of "auto" to moused. It will
+				also be used to make sure the right plugin is used if a user
+				specifies what plugin to use. Plugins will be shared objects loaded
+				during runtime with dlopen(3).
+
+				<p></p>
+
+				Modules will be provided with protocol libraries to aid in the
+				creation of new modules. The ps/2 protocol library has already been
+				created and will help developers write new drivers for ps/2 mice.
+			<h4><a name="id46248">filters</a></h4>
+				Filters may be a good idea, but their lifespan/usefulness may be
+				short, I haven't decided yet. However, the goal behind them is
+				something I consider to be a good idea, so moused(8) may provide
+				these natively instead of using output filters. The premise behind
+				filters would be to manipulate the output of moused before it hits
+				the device (and thus, the OS).  Such filters could be to add
+				features interpreted from the deltas. For example, a recent patch I
+				made to moused(8) added "virtual scrolling" - this could be
+				implemented in a filter so that this feature would be accessible
+				regardless of the plugin driver.  Another such example is the
+				"emulate 3 button mouse" feature provided again by the current
+				moused(8) using the <i>-3</i> option.  However, I don't know if
+				there are enough delta-reactive features (like virtual scrolling)
+				to be written that would merit a filter framework. This requires further
+				discussion and brainstorming. A short list of some useful features I can
+				come up with are:
+				<ul>
+<li> Emulate 3 button mouse</li>
+<li> Virtual Scrolling (Vertical/Horizontal)</li>
+<li> X/Y acceleration</li>
+<li> Physical to Logical button mapping </li>
+<li> Z-Axis activity (moused -z option) </li>
+<li> Jitter correction/smoothing </li>
+</ul>
+
+				Many of these have already been written. Check moused/filters.c for what I have done.
+			</div>

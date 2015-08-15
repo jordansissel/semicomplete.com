@@ -1,0 +1,105 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14
+date = "2006-03-26T01:29:15-08:00"
+title = " xboxproxy  -  an xbox system link proxy \n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "projects"
+categories = [ "projects" ]
++++
+
+		<p></p>
+		It's a very simple program that simple takes certain packets and forwards
+		them to other known xbox proxies. The xbox system link bridge will let
+		you essentially bridge the broadcast and multicast traffic across
+		multiple networks using these proxy bridge-points.
+
+	<h4><a name="id45944">How does it work?</a></h4>
+		The xbox system link uses ethernet addresses (Layer 2) to indicate
+		destination address and UDP (Layer 4) to send data. If you aren't
+		familiar with the OSI model, then the layer information won't help you
+		here. Basically, the 3 layers we care about for this system link proxy
+		are ethernet (layer 2) and udp (layer 4). There's a special mention for
+		the ip layer (layer 3) but that will be explained shortly.
+
+		<p></p>
+		System link packets come in two flavors: broadcast and unicast. In Halo
+		2, when you go to look for system link games, your xbox will send
+		ethernet broadcast packets probing for available games. Broadcast packets
+		are received by every network device on your layer 2 segment, this
+		usually means your subnet or immediate network. Other xbox systems who
+		are hosting games will respond directly to your xbox using your xbox's
+		ethernet address (MAC address) as the destination. This process is called
+		"discovery." After the discovery process completes and your xbox knows
+		about other xboxes hosting games on the network, it begins direct
+		communication to the known xboxes. When you try to join a game, your xbox
+		sends packets directly to the other xbox you are connecting to. Direct
+		communication continues until you quit the game.
+
+		<p></p>
+		A special note needs to be made, becuase you can't simple skip over layer
+		3 (the ip layer). We know now that addressed communication uses ethernet
+		addresses, and we also know that the payloads are inside UDP packets, but
+		what about the IP layer? The IP layer has addresses of its own, among
+		other kinds of flags. Xboxes use the IP of 0.0.0.1 to communicate. This
+		is nothing *too* special, but if you want to sniff only your xbox's
+		traffic, then you can simply filter for that ip and you'll get it.
+
+		<p></p>
+		The proxy works by listening for broadcast packets from any xboxes on the
+		immediate network. Any broadcast packets are forwarded to any known
+		proxies over UDP. The proxy also keeps track of ethernet addresses by
+		proxy. So if a packet from "my" xbox wants to talk to another xbox, the
+		proxy will know which proxy that target xbox is on, and only forward the
+		packet to that proxy.
+
+		<p></p>
+		This is a very simple system, and I don't have to know anything about the
+		system link protocol beyond what the underlying layers are used for
+		communication.
+
+		<p></p>
+		I later did some investigating into iTunes music shares. iTunes uses mdns
+		(Apple calls it Rendezvous) for "discovery" of other iTunes music shares.
+		The discovery is done over a protocol called multicast. Adding mdns
+		support to the proxy/bridge program was quite trivial, and I have tested
+		that it does in-fact work. You can use it to listen to iTunes music
+		shares which are not on your immediate network.
+
+	<h4><a name="id45960">Where can I download it?</a></h4>
+<a href="/projects/xboxproxy/proxy-2.1.tar.gz">download xboxproxy</a><h4><a name="id45971">What OS's are known to work?</a></h4>
+<ul>
+<li> FreeBSD 4.x/5.x/-current </li>
+<li> Fedora 3 Linux 64bit </li>
+<li> RH9 (<i>Requires Fedora 4 binaries of libpcap and libnet</i>) </li>
+<li> Solaris 10 SPARC </li>
+</ul>
+<h4><a name="id45995">How do I use it?</a></h4>
+<b>Requirements:</b><ul>
+<li> libpcap </li>
+<li> libnet 1.0 or 1.1.x (both are supported) </li>
+</ul>
+<b>Build instructions:</b><ul>
+<li> Unpack it with <code>tar -zxf proxy-2.1.tar.gz</code>
+</li>
+<li> cd proxy-2.1 </li>
+<li> ./configure </li>
+<li> make </li>
+<li> make install </li>
+</ul>
+<b>Use instructions:</b><pre>
+Usage: ./proxy [-bxm] [-u] [-s &lt;server&gt;] [-i &lt;dev&gt;] [-d &lt;debuglevel&gt;] [-p &lt;port&gt;] [-h]
+-x              forward xbox system link packets
+-b              forward broadcast traffic
+-m              forward multicast packets
+-u              use udp encapsulation instead of tcp (default)
+-s &lt;server&gt;     specify another proxy to send packets to
+-i &lt;dev&gt;        ethernet device to sniff packets on
+-d &lt;level&gt;      specify debug level, (0-1000)
+-p &lt;port&gt;       which port to send data on when talkin to other proxies
+-f &lt;bpf filter&gt; an additional bpf filter string you wish to use
+-h              this message!
+</pre>
+</div>

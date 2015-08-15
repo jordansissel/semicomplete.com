@@ -1,0 +1,116 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14
+date = "2006-04-21T14:36:54-07:00"
+title = "XML Presenter - an xml/xslt slideshow tool\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "projects"
+categories = [ "projects" ]
++++
+
+<i> Impatient? 
+<a href="/projects/xmlpresenter/demo/">View the Demo</a>
+</i>
+
+<p/>
+<a href="/projects/xmlpresenter/demo.tar.gz">Download the demo</a>
+
+<span style="float: right; padding: 5px;">
+<a href="/projects/xmlpresenter/xmlpresenter-screenshot.png">
+<img src="xmlpresenter-screenshot_thumb.png" border="1">
+</a>
+</span>
+<p>
+Some would consider my behavior and preferred operating environment in unix-like
+operating systems to classify me as a "power user." Whatever you want to call
+it, there only a few graphical programs that I've used that don't make me angry.
+Many graphical interfaces place a significant burden on me, the user, through
+various means. These burdens include hide-and-seek games looking for a
+particular function or feature, heavy mouse usage (which perhaps isn't all that
+bad), and generally making me spend more time actually *using* the program than
+getting useful work done.
+
+<p>
+I'm completely unfamiliar with any and all existing tools to create
+PowerPoint-like presentations, so my attempts at making useful work come out of
+these programs bring frustration and annoyance. Frankly, I'm a programmer and a
+sysadmin; my goal is to increase productivity while decreasing the amount of
+superfluous effort I have put towards actually achieving the end result, which
+might be a finished PowerPoint-like presentation. Time and energy are wasted on
+hunting through a seemingly endless pile of context menus and toolbars.  
+
+<p>
+As I mentioned, I am a programmer. I like doing useful work. At the office, I
+was told I needed to give a presentation to my co-workers on some various
+topics.  In an effort not to have to use PowerPoint or OpenOffice, I decided
+that instead of spending time putzing around in either of those programs, I'd
+write my own presentation/slideshow solution and use it to write and show my
+presentation.
+
+<p>
+I'm fairly well-versed in the ways of XML/XSLT and HTML/JavaScript, so I
+figured that's where I'd start. The end result allows me to very simply and
+quickly throw together presentations on anything I want.  
+
+<p>
+As for the technical aspects of the project: it makes use of XSLT to turn my
+own "XPL" files into web-based PowerPoint-like slideshows. The xml formatting
+of the project is very simple. Slide bodies can contain any HTML I choose to
+use for formatting.
+
+<pre>
+&lt;slideshow>
+	&lt;title> Simple Slideshow Example &lt;/title>
+	
+	&lt;slide>
+		&lt;title> My First Slide &lt;/title>
+		&lt;body>
+			The body can contain any valid html. It's pretty much copied verbatim using 'xsl:copy' and recursion.
+		&lt;/body>
+	&lt;/slide>
+
+	&lt;slide>
+		&lt;title> This is another slide &lt;/title>
+		&lt;body>
+			&lt;h3> Example use &lt;/h3> &lt;i> of &lt;/i> &lt;b> html&lt;/b> in this tool.&lt;p/>
+
+			&lt;ul>
+			&lt;li> point 1 &lt;/li>
+			&lt;li> point 2 &lt;/li>
+			&lt;/ul>
+
+		&lt;/body>
+	&lt;/slide>
+&lt;/slideshow>
+</pre>
+
+<p>
+That's the gist of it. Slides are displayed in order of appearance in the XPL file. 
+This solution solves many issues:
+</p>
+<ul>
+<li> No cumbersome graphical interface </li>
+<li> No learning curve (for me anyway, I wrote it!) </li>
+<li> Uses programs I'm already familiar with: Firefox, vi, xsltproc. </li>
+<li> Doesn't make me angry </li>
+</ul>
+
+<p>
+A demo can be seen here: 
+<a href="/projects/xmlpresenter/demo">View demo</a>
+
+<p>
+Browser Support List:
+<ul>
+<li> Mozilla Family: 100% works </li>
+<li> Konqueror 3.4.0: 100% works </li> 
+<li> Opera 8: Everything works except browser back/forward (history) </li>
+<li> Internet Explorer 5: Navigation works kind of works, something's busted. </li>
+<li> Safari: Basic features work. Browser history, side-bar, etc do not. </li>
+</ul>
+
+<p/>
+<a href="/projects/xmlpresenter/demo.tar.gz">Download the demo</a>
+

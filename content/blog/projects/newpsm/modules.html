@@ -1,0 +1,111 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14
+date = "2006-05-09T09:41:28-07:00"
+title = "new moused modules guide -  Developer guide to writing modules for new moused\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "projects"
+categories = [ "projects" ]
++++
+
+/* If you need to use the ps2 library: */
+#include &lt;ps2.h&gt;</pre>
+
+			Those should get you started.
+		<h4><a name="id45950">The rodent_t Structure</a></h4>
+			The rodent_t structure has many members of interest to you:
+			<dl>
+<dt><code>char *device</code></dt>
+<dd> The path of the mouse device </dd>
+<dt><code>int mfd</code></dt>
+<dd> The file descriptor of the mouse device </dd>
+<dt><code>char *packet</code></dt>
+<dd> Buffer for storing packets. Dynamically allocated based on rodent_t.mode.packetsize </dd>
+<dt><code> int (*update)(struct mouse_info *t) </code></dt>
+<dd> Function to call when pushing movement updates </dd>
+</dl>
+<h4><a name="id46000">Function Overview</a></h4>
+			For every MOUSE_*_FUNC functin, you can expect to be passed a rodent_t
+			pointer.
+
+			<p></p>
+
+			The following functions exist:
+			<dl>
+<dt>MOUSED_INIT_FUNC</dt>
+<dd> Used to initialize your mouse module. Perform any necessary configuration and other setup here. Do NOT probe mice. </dd>
+<dt> MOUSED_PROBE_FUNC </dt>
+<dd> Probe the given mouse for functionality. This function should
+				be used to test if the mouse we have opened is somethin we can
+				handle.</dd>
+<dt> MOUSED_HANDLER_INIT_FUNC </dt>
+<dd> Initialization function called before the main loop of moused
+				is entered. Do NOT probe mice. This function should be used to
+				prepare data structures before the main loop is run. </dd>
+<dt> MOUSED_HANDLER_FUNC </dt>
+<dd> This is called every time a packet is available for reading
+				from the mouse. It is up to you to read data from the mouse. </dd>
+</dl>
+<h4><a name="id46039">Initialization</a></h4>
+			The init function is declared like this:
+			<pre>MOUSED_INIT_FUNC {
+	/* Initialization code here */
+}</pre>
+<h4><a name="id46048">Probe</a></h4>
+			This function should test the mouse for features. That is, you should
+			test the mouse device (however necessary) to check if it is the kind
+			of mouse your module supports.
+
+			<p></p>
+
+			For instance, the synaptics module tests the ps/2 mouse by attemptig
+			an extended status request. If this fails or otherwise indicates that
+			no synaptics device is present, then it is clearly not a
+			synaptics mouse, and we should fail.
+
+			<p></p>
+
+			The following return values are expected:
+			<dl>
+<dt> MODULE_PROBE_FAIL </dt>
+<dd> Indicates that mouse type tests failed, and to not use this module </dd>
+<dt> MOUSE_PROBE_SUCCESS </dt>
+<dd> Indicate successful mouse probe. This mouse can be handled by this module </dd>
+</dl>
+<h4><a name="id46075">Handler Initialization</a></h4>
+			Last-minute changes to any data needed before the moused main loop is
+			entered. This includes things such as setting expected packet size (In
+			ps/2 drivers), enabling magic features such as Absolute mode (for
+			synaptics).
+
+			<p></p>
+
+			PS/2 drivers should set the following at this point:
+			<ul>
+<li> sync mask </li>
+<li> packet size (don't forget to update rodent-&gt;mode.packetsize) </li>
+<li> ps2_enable_stream(), if necessary </li>
+</ul>
+<h4><a name="id46130">Handler Function</a></h4>
+			The handler function is expected to read one "packet" of data per
+			function call. That is, only process one piece of mouse activity per
+			call.
+
+			<p></p>
+
+			A typical order of operations is:
+			<ul>
+<li> Read a packet </li>
+<li> Check for proper byte length (if necessary) </li>
+<li> Parse the packet for mouse data </li>
+<li> Set values in a mouse_info_t variable </li>
+<li> Call <i>rodent-&gt;update(&amp;(mouse_info_t variable))</i>
+</li>
+</ul>
+<h4><a name="id46161">Summary</a></h4>
+			Modules are meant to be simple to write. All you need to care about is
+			understanding the raw mouse data and push movement deltas up through
+			moused with the update function..
+		</div>

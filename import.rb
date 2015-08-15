@@ -24,7 +24,6 @@ class Importer < Clamp::Command
       key, value = line.split(" ", 2)
 
       if key == "#mdate"
-        p value
         value = Time.parse(value)
       end
       metadata[key] = value
@@ -32,6 +31,10 @@ class Importer < Clamp::Command
 
     # If no #mdate found, use file timestamp
     metadata["#mdate"] = input.stat.mtime if metadata["#mdate"].nil?
+
+
+    # dots in tags seem to mess up things with hugo.
+    metadata["#tags"].gsub!(".", "_") if metadata.include?("#tags")
 
     output_dir = File.join(destination, File.dirname(path))
     output_dir.tap { |x| FileUtils.mkdir_p(x) unless File.directory?(x) }
@@ -46,10 +49,19 @@ class Importer < Clamp::Command
     output.puts("# We learn over time, eh? :)")
     output.puts('draft = true')
 
-    output.puts('type = "blog"')
-    output.puts('categories = [ "blog" ]')
+    if path =~ /^(?:\.\/)articles/
+      output.puts('type = "article"')
+      output.puts('categories = [ "article" ]')
+    elsif path =~ /^(?:\.\/)projects/
+      output.puts('type = "projects"')
+      output.puts('categories = [ "projects" ]')
+    else
+      output.puts('type = "old"')
+      output.puts('categories = [ "old" ]')
+    end
+
     metadata["#tags"].tap do |tags|
-      p :tags => tags
+      #p :tags => tags
       output.puts("tags = " + tags.split(/\s*,\s*/).inspect) unless tags.nil?
     end
     output.puts('+++')

@@ -1,0 +1,28 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14
+date = "2006-03-26T01:38:51-08:00"
+title = "<h3> Solaris Audio Controller </h3>\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "projects"
+categories = [ "projects" ]
++++
+
+<p>
+I hate <code>sdtaudiocontrol</code>, so I wrote a command-line utility to allow
+me to control the volume levels. It was easy enough thanks to Sun's excellent
+documentation on their audio(7I) interface.
+
+<p>
+Compile it with your favorite compiler:
+<pre>
+cc -o mixer solaudio.c
+</pre>
+
+And voila, you have a command-line mixer utility for Solaris SPARC.
+
+<p>
+
+Source code here: <a href="/projects/solaudio/solaudio.c">solaudio.c</a>

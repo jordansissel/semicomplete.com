@@ -1,0 +1,126 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14
+date = "2005-12-27T21:00:00-08:00"
+title = "SSH Security and You - /bin/false is *not* security\n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "article"
+categories = [ "article" ]
++++
+
+      <p></p>
+
+      Simply using <code>/bin/false</code> as someone's shell does not keep
+      them from using said account to authenticate over ssh and using non-shell
+      tools such as port forwarding. A default configuration in sshd will often
+      allow tunneling and other non-shell activity.
+    <h4><a name="id54118">Hole #1: Potential Firewall Bypass</a></h4>
+<p>
+    So, to make things more interesting, there are two obvious holes I can
+    exploit here. The first, is firewall-bypass. ITS employs lots of ACLs
+    limiting access to machines by IP ranges. This is a normal practice
+    in the world. However, what if the machine I am port forwarding
+    through is one of these trusted machines? You just gave me access to
+    your supposedly locked-down network. Don't do that.
+    </p>
+<h4><a name="id54130">Hole #2: Anonymous traffic</a></h4>
+<p>
+      I can make my traffic far more anonymous by using ssh's port-forward
+      or SOCKS proxy feature. OpenSSH does not appear to log
+      port-forward-only sessions, so chances are you can get away with using
+      this half-secured server as a proxy. I haven't done all the research,
+      but ssh port-forward-only sessions only seem to show up in process
+      listings and not standard audit logs. This stuff needs to be logged if
+      you're going to allow it.
+    </p>
+<h4><a name="id54143">Hole #3: Resource Starvation</a></h4>
+<p>
+    The third one is less obvious, but quite easy. You setup a remote port
+    forward (<i>ssh -R</i>) pointed at "itself" (the machine you're logging into)
+    and then a local port forward (<i>ssh -L</i>) to the machine so you can just
+    touch it with telnet and walk away. This creates a large problem on the
+    end machine becuase you will eventually take up all the available file
+    descriptors, and since unix lives on file descriptors, you just DoS'd
+    the machine. So if some naughty person manages to guess a password of one of 
+    your 30000 users, he/she can happily perform resource starvation attacks 'till
+    the end of the day despite your wishes that I stay off your machine. Like
+    I said, <b>/bin/false is not security</b>.
+    </p>
+<h4><a name="id54169">Example DoS</a></h4>
+<p>
+      I used 3 xterms for this (wow, high-tech!). I could've used one shell,
+      but I like seeing debug output.
+    </p>
+<pre>
+(terminal 1) whack% ssh -vN -L4141:localhost:4141 kenya
+(terminal 2) whack% ssh -vN -R4141:localhost:4141 kenya
+(terminal 3) whack% telnet localhost 4141
+</pre>
+<p>
+    I use <i>ssh -v</i> because I want to see what's going on. As soon as I
+    execute the telnet command, the other two terminals are flooded with
+    debug information detailing new port forwarded connections happening,
+    etc. Since you've just created a loop, you can now kill the telnet
+    session and the loop maintains it's stability.
+    </p>
+<p>
+    Simply wait a few minutes and you'll fill up the openfiles table.
+    </p>
+<h4><a name="id54197">Why does the DoS work?</a></h4>
+<p>
+    How is this DoS accomplished? Well besides whoring CPU some and slowly
+    increasing in memory usage, you chew up entries on the system's open
+    file table. During this test, I checked the growth of the number of open
+    file descriptors on kenya (the "target" of our DoS):
+    </p>
+<pre>
+kenya(~) [1003] % while :; do sysctl kern.openfiles; sleep 1; done
+kern.openfiles: 242
+kern.openfiles: 242
+kern.openfiles: 278
+kern.openfiles: 652
+kern.openfiles: 896
+kern.openfiles: 1082
+kern.openfiles: 1246
+</pre>
+<p>
+    The number was stable at 242 before the attack began, and rose rapidly.
+    If you don't speak bourne, the numbers are printed one per second. So
+    the increase is something like 100-300 file descriptors per second. That
+    is quite significant, and will very quickly hose a host. Notably, there
+    is a rapid decelleration in the number of files opened per second, but it
+    steadies (for me) around 20-30 per second after about 7000 open sockets.
+    </p>
+<h4><a name="id54221">Fixing It</a></h4>
+<p>
+        The systems in question were old old Solaris 7 or Tru64 systems. Modern
+        systems will generally have a pam module that will help you here -
+        possibly allowing you to reject authentication requests over ssh simply
+        because the user's shell is set to /bin/false, or /usr/sbin/nologin (or
+        wherever that is on your system).
+      </p>
+<p>
+        Other solutions include fixing your sshd config to do any of the
+        following (assumes OpenSSH and possibly SSH.com sshd):
+        <ul>
+<li> Restrict which users are allowed via AllowUsers or AllowGroups </li>
+<li> Deny tunneling/forwarding: AllowTcpForwarding, X11Forwarding, PermitTunnel </li>
+</ul></p>
+<h4><a name="id54249">Mentionable Notes</a></h4>
+<p>
+    ssh sessions not requesting shells (<i>ssh -N</i>) do not show up in
+    utmp, therefore are not listed in w(1) output, and not in last(1), etc.
+    Unless there's a more in-depth audit log, you just made your traffic
+    atleast somewhat anonymous (assuming you're actually port-forwarding).
+    So go ahead and abuse that.
+    </p>
+<p>
+    Chance are, if someone gives you an account and tries to prevent ssh
+    access with only /bin/false, they probably don't know about ssh2 or
+    channels, or haven't thought about how it might not prevent all ssh
+    access. So there's a high probability that you'll get away with it
+    forwarding traffic or DoS'ing the server.
+    </p>
+</div>

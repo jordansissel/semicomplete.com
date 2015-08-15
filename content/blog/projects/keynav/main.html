@@ -1,0 +1,257 @@
++++
+# Imported from original pyblosxom .txt format at 2015-08-14
+date = "2010-10-14T23:49:21-07:00"
+title = " keynav  -  retire your mouse. \n"
+# Marked a draft because frankly my old writing may not be worth surfacing again.
+# I made bad word choices and had some strong-and-closed opinions years ago.
+# We learn over time, eh? :)
+draft = true
+type = "projects"
+categories = [ "projects" ]
++++
+
+    <p></p>
+
+    Enough marketing jargon. keynav is a piece of an on-going experiment to
+    make pointer-driven interfaces easier and faster for users to operate. It
+    lets you move the pointer quickly to most points on the screen with only a
+    few key strokes.
+
+    <p></p>
+
+    Note that I said pointer, not mouse. The mouse simply drives the pointer.
+    We can drive the pointer with other devices too. keynav turns your keyboard
+    into an fast pointer mover.
+  <h4><a name="id54130">What does it do?</a></h4>
+    You select a piece of the screen. The screen is initially wholely selected.
+    One move will cut that region by half. A move is a direction: up, down,
+    left, and right.
+
+    <p></p>
+
+    Once you're done moving, you simply indicate (with a key stroke) that you
+    want to move. Boom, cursor moves.
+
+  <h4><a name="id54140">Why it is fast?</a></h4>
+    keynav is geared towards selecting a piece of the screen very quickly.
+
+    <p></p>
+
+    Recall from above that you are selecting a region by cutting the previous
+    region by half. This gives us logarithmic scaling. High resolution screens
+    incur about the same number of moves to select an area as smaller screens
+    do.
+
+    <p></p>
+
+    For example, to select <i>any</i> pixel on a screen with resolution
+    1920x1200 it would take 21 moves. 21 moves is horrible. There is a bright side!
+
+    <p></p>
+
+    How often do you really want to click on a single specific pixel on your screen using your mouse? Never, right? Well, maybe almost never. Most of the time you want to:
+
+    <ul>
+<li> Raise a window and give it focus: 80x80 pixel target (worst: 9 moves) </li>
+<li> Click on an "OK" button: 60x25 pixels (worst: 11 moves) </li>
+<li> Click on a text widget to activate it: 80x25 or larger </li>
+</ul>
+<p></p>
+<h4><a name="id54176">Watch the demo!</a></h4>
+    Bored of reading? How about a screencast demonstration? Click <a href="/projects/keynav/keynav.html">here</a> or the image below.
+
+    <div style="text-align: center; margin: 15px;"><a href="/projects/keynav/keynav.html"><img src="/projects/keynav/demo-thumb.png"></a></div>
+
+    Hopefully the demo gives you a good idea of what keynav does.
+
+    <p></p>
+<h4><a name="id54202">Mailing list</a></h4>
+    The keynav users mailing list is: keynav-users@googlegroups.com
+
+    <p></p>
+
+    I'll be announcing new versions on this mailing list. Additionally, if you
+    want help or want to contribute patches to keynav, the mailing list is a
+    good place to go.
+  <h4><a name="id54212">Supported Platforms</a></h4>
+    keynav is currently written in C and only works in X11 (Unix graphics
+    environment). I am planning on porting keynav to both Windows and OS X. If
+    you are interested in helping me with this, please contact me!
+
+    Known working:
+    <ul>
+<li> FreeBSD + Xorg 6.9.0 </li>
+<li> FreeBSD + Xorg 7.2.0 </li>
+<li> Ubuntu Dapper + Xorg 7.0.0 </li>
+<li> Ubuntu Feisty + Xorg 7.2.0 </li>
+<li> Ubuntu Hardy + Xorg 7.2.0 </li>
+<li> Cygwin + Xorg 6.8.x </li>
+<li> Fedora 9 </li>
+</ul>
+
+    I've seen strong interest in this software working on other platforms, so
+    I'm doing the best I can. Again, if you're a .NET (or just Windows) or OS X
+    coder, and are willing to help port this, let me know. It's only 200 lines
+    of C in Xlib, so it can't be more than a one-day-long project.
+  <h4><a name="id54250">Download it!</a></h4>
+<a href="http://semicomplete.googlecode.com/files/keynav-0.20101014.3067.tar.gz">keynav-0.20101014.3067.tar.gz</a><p></p>
+
+    Looking for an older version? Try the
+    <a href="http://code.google.com/p/semicomplete/downloads/list?q=label:keynav">keynav releases archive</a><h4><a name="id54271">Dependencies</a></h4>
+<ul>
+<li> glib &gt;= 2.0 </li>
+<li> libxdo (from xdotool) (or, if you build static, libX11 libXtst and libXext) </li>
+<li> Xinerama (comes with xorg)  </li>
+<li> XSHAPE (comes with xorg)  </li>
+</ul>
+<h4><a name="id54294">Build instructions</a></h4>
+<i>make keynav </i><p></p>
+
+    The above should be all you need to do. Keynav comes with xdotool (required
+    library) and will build static if libxdo.so is not found on your system.
+
+    <p></p>
+<ul>
+<li> Debian users can install this package via apt-get install keynav </li>
+<li> FreeBSD users can install this from ports in x11/keynav </li>
+</ul>
+<h4><a name="id54320">How to use it</a></h4>
+    Run keynav, and activate it by pressing Control+Semicolon. You should see a
+    thin frame on the screen with a cross in it. 
+
+    <p></p>
+
+    The following is the default configuration:
+
+    <ul>
+<li>h : select the left half of the region </li>
+<li>j : select the bottom half of the region </li>
+<li>k : select the top half of the region </li>
+<li>l : select the right half of the region </li>
+<li>shift+h : move the region left </li>
+<li>shift+j : move the region down </li>
+<li>shift+k : move the region top </li>
+<li>shift+l : move the region right </li>
+<li>semicolon : Move the mouse to the center of the selected region </li>
+<li>spacebar : Move the mouse and left-click </li>
+<li>escape : Cancel the move </li>
+</ul>
+<h4><a name="id54372">Configuration file</a></h4>
+    Your config file must live in ~/.keynavrc. Such as /home/jls/.keynavrc
+
+    <p></p>
+
+    The config file format consists of a keysequence followed by a
+    comma-separated list of commands. For example:
+
+    <pre>space warp,click 1,end</pre>
+
+    This would move the mouse, click left mouse button, and finish (close the
+    keynav selector) when you hit spacebar while keynav was active. A sample
+    config file comes with the distribution as 'keynavrc'.
+
+    <p></p>
+
+    The following is a list of key modifiers: shift, ctrl, alt, or any valid X
+    Keysym, such as Shift_L, etc.
+
+    <p></p>
+
+    List of commands:
+    <dl>
+<dt> start </dt>
+<dd> Activate keynav </dd>
+<dt> end </dt>
+<dd> Deactivate keynav </dd>
+<dt> cut-left, cut-right, cut-up, and cut-down </dt>
+<dd> Cut half of the selection in a given direction. For example,
+      cut-left will select the left half of keynav selector region. If you
+      attempt to cut the window too small, the operation will abort. Cut can
+      take a percentage value to cut by. The default is ".5"</dd>
+<dt> move-left, move-right, move-up, move-down </dt>
+<dd> Move the selector window a given direction. The movement amount is
+      equal to the width or height of the selector depending on the direction.
+      You cannot move the window outside the bounds of the screen. Move can
+      take percentage value that specifies the distance relative to the size of
+      the window. The default is "1.0"</dd>
+<dt> warp </dt>
+<dd> Move the mouse to the center of the selector </dd>
+<dt> click &lt;button&gt; </dt>
+<dd> Click the given mouse button once. 1 == left, 2 == middle, 3 == right. </dd>
+<dt> doubleclick &lt;button&gt; </dt>
+<dd> Click the mouse button twice, quickly. This can also be achieved by
+      doing "click 1,click 1" in your command sequence.</dd>
+<dt> drag &lt;button&gt; [keyseq] </dt>
+<dd> Toggle dragging mode for the given button.  If <code>keyseq</code>
+      is given then that keysequence is held during the initial mouse button
+      down event. This is useful in invocations such as 'drag 1 alt' to do a
+      alt+click-drag on a window to move it.
+      </dd>
+<dt> grid &lt;rows&gt;x&lt;columns&gt; 
+          <i>[Added 20080509]</i>
+</dt>
+<dd> Change the grid layout of the selection. For example, specifying
+      'grid 3x3' will divde the screen selection into 9 cells, 3 rows and 3
+      columns. Specifying 'grid 2x3' will divide the screen selection into 6
+      cells, 2 rows and 3 columns.</dd>
+<dt> cell-select &lt;row&gt;x&lt;column&gt; OR cell-select &lt;cell&gt; 
+           <i>[Added 20080509]</i>
+</dt>
+<dd> Select a specific cell in the grid. The NxM syntax selects the
+      specific row and column. The single number syntax selects the cell
+      numbered counting from the top left to the bottom left. For example, a 3x3 grid would be numbered this way:
+      <pre>1 2 3
+4 5 6
+7 8 9</pre>
+</dd>
+<dt> grid-nav &lt;on or off&gt;</dt>
+<dd> Activates grid navigation. This is also describable as 'battleship
+        navigation' if you are familiar with that classic game. This will make all cells
+        visibly labeled by a two letters which are used as coordinates to type.
+        For example, 'grid 5x5,grid-nav on' will give you a 5x5 grid with grid
+        nav enabled, making all cells labeled starting AA, AB, AC ... AE, BA,
+        BB ... EE.
+      </dd>
+<dt> sh &lt;command&gt; </dt>
+<dd> Execute a command. This is run as /bin/sh -c &lt;command &gt;. For example:
+        <pre>run xterm,end</pre> This will start an xterm and end keynav selection.
+        This allows you to use keynav as a general-purpose key-binding tool.
+      </dd>
+<dt> history-back </dt>
+<dd> Go back one step in the movement history. Keynav keeps track of your
+        keynav activity and this command allows you to step backwards. For
+        example, if you cut-right, move-left, cut-up, then invoke history-back
+        3 times, your movements/cuts will be undone, in order.
+      </dd>
+<dt> quit </dt>
+<dd> Tell keynav to exit </dd>
+<dt> record [filename]</dt>
+<dd> Record activities and save it to a register. This is very similar to
+        vim's 'q' command which lets you record things.
+
+        <p>
+        Optional argument is a filename to save the recordings to for
+        persistence across keynav runs. A single file will hold multiple recordings.
+      </p>
+<p>
+            Example in keynavrc to bind 'q' to record to ~/.keynav_macros:
+            <code>q record ~/.keynav_macros</code></p>
+<p>
+            Works similar to vim recording.
+          </p>
+<ol>
+<li> Hit record once</li>
+<li> Type the key you want to record to</li>
+<li>Do things in keynav you want recorded.</li>
+<li> Any 'end' operation or hitting record again will terminate and save
+              this recording.</li>
+</ol>
+            Recordings only persist if you specify a file to save to, otherwise they are lost
+            across keynav restarts.
+        </dd>
+<dt> windowzoom </dt>
+<dd> Makes the keynav window the same size and position as the current active application window. </dd>
+<dt> cursorzoom &lt;width&gt; &lt;height&gt; </dt>
+<dd> Centers the keynav window on the cursor with the given size. </dd>
+</dl>
+</div>
