@@ -1,0 +1,8 @@
+baseurl = "http://www.semicomplete.com/"
+languageCode = "en-us"
+title = "www.semicomplete.com"
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+

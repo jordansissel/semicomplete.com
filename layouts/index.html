@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+    {{ range first 10 .Data.Pages }}
+      <article>
+        <header class="title">
+          <a href="{{ .Permalink }}"> {{ .Title }} </a>
+          <span class="publish-date">{{ .Date.Format "Jan 2, 2006" }}</span>
+        </header>
+        {{ .Content }}
+      </article>
+      <hr>
+    {{ end }}
+<html>
+<head>
+  <meta charset="utf-8">
+  <base href="{{ .Site.BaseURL }}">
+  <title>{{ .Site.Title }}</title>
+</head>
+<body>
+  <section class="labs">
+    <!--
+    {{ range .Site.Taxonomies.categories.lab.Pages }}
+      Lab: {{.Title}}
+    {{ end }}
+    -->
+    <hr>
+    {{ range first 10 .Data.Pages }}
+      <article>
+        <header class="title">
+          <a href="{{ .Permalink }}"> {{ .Title }} </a>
+          <span class="publish-date">{{ .Date.Format "Jan 2, 2006" }}</span>
+        </header>
+        {{ .Content }}
+      </article>
+      <hr>
+    {{ end }}
+  </section>
+</html>

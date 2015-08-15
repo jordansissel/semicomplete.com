@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base href="{{ .Site.BaseURL }}">
+  <title>{{ .Site.Title }}</title>
+</head>
+<body>
+  <section class="posts">
+    {{ range .Data.Pages }}
+      <article>
+        <header class="title">
+          <a href="{{ .Permalink }}"> {{ .Title }} </a>
+        </header>
+        <span class="post-date">{{ .Date.Format "Mon, Jan 2, 2006" }}</span>
+        {{ .Content }}
+      </article>
+    {{ end }}
+  </section>
+</html>
