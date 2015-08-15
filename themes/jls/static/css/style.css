@@ -1,0 +1,18 @@
+html,body { width: 100%; min-height: 100%; margin: auto; }
+section { margin: auto; }
+article { margin: auto; }
+
+.full-width { width: 100%; }
+.block { display: block; }
+.float-right { float: right; }
+.nowrap { white-space: nowrap; }
+
+.two-column {
+  width: 100%;
+}
+
+.two-column > * {
+  width: 45%;
+  float: left;
+}
+
