@@ -1,14 +1,4 @@
 <!DOCTYPE html>
-    {{ range first 10 .Data.Pages }}
-      <article>
-        <header class="title">
-          <a href="{{ .Permalink }}"> {{ .Title }} </a>
-          <span class="publish-date">{{ .Date.Format "Jan 2, 2006" }}</span>
-        </header>
-        {{ .Content }}
-      </article>
-      <hr>
-    {{ end }}
 <html>
 <head>
   <meta charset="utf-8">
@@ -16,20 +6,19 @@
   <title>{{ .Site.Title }}</title>
 </head>
 <body>
-  <section class="labs">
-    <!--
-    {{ range .Site.Taxonomies.categories.lab.Pages }}
-      Lab: {{.Title}}
-    {{ end }}
-    -->
-    <hr>
-    {{ range first 10 .Data.Pages }}
+  <section class="content-list">
+    {{ range first 10 .Site.Taxonomies.categories.blog.Pages }}
       <article>
         <header class="title">
           <a href="{{ .Permalink }}"> {{ .Title }} </a>
           <span class="publish-date">{{ .Date.Format "Jan 2, 2006" }}</span>
         </header>
-        {{ .Content }}
+        <div>
+          {{ .Summary }}
+        </div>
+        <p>
+          <a href="{{ .Permalink }}"> Read more... </a>
+        </p>
       </article>
       <hr>
     {{ end }}
