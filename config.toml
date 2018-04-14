@@ -1,4 +1,9 @@
-baseURL = "https://semicomplete.com/"
+#baseURL = "https://semicomplete.com/"
+baseURL = "https://jordansissel.github.io/semicomplete.com/"
 languageCode = "en-us"
 title = "semicomplete"
 theme = "whiteplain"
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
