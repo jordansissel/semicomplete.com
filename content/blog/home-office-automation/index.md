@@ -1,6 +1,7 @@
 ---
 title: "Home Office Automation"
 date: 2018-04-14T08:58:56-07:00
+tags: []
 ---
 
 I built a little digital Rube-Goldberg device for my office. When I turn my desk power switch on, a little microcontroller brings my workstation and stereo online.
@@ -38,7 +39,7 @@ I wasn't able to find any IPMI libraries for Arduino nor Mongoose OS. Further, I
 
 # Networking with Denon AVR
 
-Wireshark showed me that the iPhone Denon app uses SSDP (HTTP over UDP) to query for a local Denon AVR. Fortunately, the Mongoose OS HTTP API just works over UDP multicast! I don't know if this is intended, but I am thankful it works :)
+Wireshark showed me that the iPhone Denon app uses SSDP (HTTP over UDP) to discover a local Denon AVR. Fortunately, the Mongoose OS HTTP API just works over UDP multicast! I don't know if this is intended, but I am thankful it works :)
 
 ```c++
 mgos_connect_http("udp://239.255.255.250:1900", ssdpCallback, this);
@@ -72,11 +73,13 @@ Success! It required cooperation of two devices (Raspberry Pi and ESP32), though
 
 Fast-forward a few weeks, and I was itching to eliminate the two-device implementation.
 
-I downloaded the IPMI spec from Intel and started reading, as one does. If you are interested, the most relevant sections for power control are "6. IPMI Messaging Interfaces", "13. IPMI LAN Interface", and "22. IPMI Messaging Support Commands". 
+To do this, I needed to write an IPMI client implementation that could run on my ESP32. I looked at `ipmiutil` and `ipmitool` and both codebases gave me the feeling it would take too much effort to port to ESP32. Besides, all I wanted was to send power on/off signals.
+
+So, I download the IPMI spec from Intel and start reading, as one does. If you are interested, the most relevant sections for power control are "6. IPMI Messaging Interfaces", "13. IPMI LAN Interface", and "22. IPMI Messaging Support Commands". 
 
 Ultimately, I wanted to invoke the "Chassis Control Command" to tell the machine to boot, which requires setting up a session and authenticating.
 
-The most time I spent implementing this was in two places: MD5 authentication and misunderstanding byte order. Wireshark was *critical* in helping me understand the protocol. For byte order, it may please you to learn that IPMI uses both little and big endian, quoting the spec:
+The most time I spent implementing this was in two places: IPMI's bespoke MD5 authentication and misunderstanding byte order. Wireshark was *critical* in helping me understand the protocol. For byte order, it may please you to learn that IPMI uses both little and big endian, quoting the spec:
 
 > RMCP and ASF-specified fielsd are therefore transferred most-significant byte first.
 
@@ -90,7 +93,7 @@ After I read the spec more closely, I was able to resolve my wayward stumbling.
 
 As an aside, I knew implementing IPMI would be take serious effort. Deploying to a microcontroller is a slow process, and debugging them is hard, so I wanted to find a better way to implement this without losing energy to the microcontroller development tooling. (To be fair, Mongoose OS has some pretty good tooling for heap analysis and hooking into gdb)
 
-Mongoose OS uses a network library based on Mongoose, and Mongoose runs on multiple platforms. The APIs are similar enough that I could target Mongoose on Linux and have confidence that it would work well on Mongoose OS.
+Mongoose OS uses a network library based on Mongoose, and Mongoose runs on multiple platforms. The APIs are similar enough that I could target [Mongoose on Linux](https://github.com/jordansissel/ipmi/blob/master/linux/main.cpp) and have confidence that it would work well on Mongoose OS.
 
 # Adding a Display
 
