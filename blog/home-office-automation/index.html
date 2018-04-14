@@ -55,8 +55,8 @@ My desk has a keyboard and monitor, …">
 <ul>
 <li><a href="#complications-and-workarounds">Complications and Workarounds</a></li>
 </ul></li>
-<li><a href="#networking-with-ipmi-v1">Networking with IPMI v1</a></li>
-<li><a href="#networking-with-ipmi-v2">Networking with IPMI v2</a>
+<li><a href="#networking-with-ipmi-first-attempt">Networking with IPMI: First Attempt</a></li>
+<li><a href="#networking-with-ipmi-standalone">Networking with IPMI: Standalone</a>
 <ul>
 <li><a href="#improving-development-w-mongoose-os">Improving Development w/ Mongoose OS</a></li>
 </ul></li>
@@ -129,7 +129,7 @@ My desk has a keyboard and monitor, …">
 
 <p>To work around this softlock, I had to implement a queue with a 40ms delay between commands.</p>
 
-<h1 id="networking-with-ipmi-v1">Networking with IPMI v1</h1>
+<h1 id="networking-with-ipmi-first-attempt">Networking with IPMI: First Attempt</h1>
 
 <p>IPMI is a pretty complex protocol, and because I couldn&rsquo;t find any Arduino or Mongoose OS libraries, I thought I may have to write my own. When glancing at the <a href="https://www.intel.com/content/www/us/en/servers/ipmi/ipmi-second-gen-interface-spec-v2-rev1-1.html">IPMI spec</a>, I felt it wasn&rsquo;t worth my time to implement given the complexity.</p>
 
@@ -139,7 +139,7 @@ My desk has a keyboard and monitor, …">
 
 <p>Success! It required cooperation of two devices (Raspberry Pi and ESP32), though.</p>
 
-<h1 id="networking-with-ipmi-v2">Networking with IPMI v2</h1>
+<h1 id="networking-with-ipmi-standalone">Networking with IPMI: Standalone</h1>
 
 <p>Fast-forward a few weeks, and I was itching to eliminate the two-device implementation.</p>
 
@@ -161,11 +161,13 @@ My desk has a keyboard and monitor, …">
 
 <p>After I read the spec more closely, I was able to resolve my wayward stumbling.</p>
 
+<p>The spec is large, and my needs are small, so I have only the bare minimum to achieve &ldquo;Hey workstation, wake up!&rdquo;</p>
+
 <h2 id="improving-development-w-mongoose-os">Improving Development w/ Mongoose OS</h2>
 
 <p>As an aside, I knew implementing IPMI would be take serious effort. Deploying to a microcontroller is a slow process, and debugging them is hard, so I wanted to find a better way to implement this without losing energy to the microcontroller development tooling. (To be fair, Mongoose OS has some pretty good tooling for heap analysis and hooking into gdb)</p>
 
-<p>Mongoose OS uses a network library based on Mongoose, and Mongoose runs on multiple platforms. The APIs are similar enough that I could target Mongoose on Linux and have confidence that it would work well on Mongoose OS.</p>
+<p>Mongoose OS uses a network library based on Mongoose, and Mongoose runs on multiple platforms. The APIs are similar enough that I could target <a href="https://github.com/jordansissel/ipmi/blob/master/linux/main.cpp">Mongoose on Linux</a> and have confidence that it would work well on Mongoose OS.</p>
 
 <h1 id="adding-a-display">Adding a Display</h1>
 
