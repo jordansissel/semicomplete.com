@@ -143,11 +143,13 @@ My desk has a keyboard and monitor, …">
 
 <p>Fast-forward a few weeks, and I was itching to eliminate the two-device implementation.</p>
 
-<p>I downloaded the IPMI spec from Intel and started reading, as one does. If you are interested, the most relevant sections for power control are &ldquo;6. IPMI Messaging Interfaces&rdquo;, &ldquo;13. IPMI LAN Interface&rdquo;, and &ldquo;22. IPMI Messaging Support Commands&rdquo;.</p>
+<p>To do this, I needed to write an IPMI client implementation that could run on my ESP32. I looked at <code>ipmiutil</code> and <code>ipmitool</code> and both codebases gave me the feeling it would take too much effort to port to ESP32. Besides, all I wanted was to send power on/off signals.</p>
+
+<p>So, I download the IPMI spec from Intel and start reading, as one does. If you are interested, the most relevant sections for power control are &ldquo;6. IPMI Messaging Interfaces&rdquo;, &ldquo;13. IPMI LAN Interface&rdquo;, and &ldquo;22. IPMI Messaging Support Commands&rdquo;.</p>
 
 <p>Ultimately, I wanted to invoke the &ldquo;Chassis Control Command&rdquo; to tell the machine to boot, which requires setting up a session and authenticating.</p>
 
-<p>The most time I spent implementing this was in two places: MD5 authentication and misunderstanding byte order. Wireshark was <em>critical</em> in helping me understand the protocol. For byte order, it may please you to learn that IPMI uses both little and big endian, quoting the spec:</p>
+<p>The most time I spent implementing this was in two places: IPMI&rsquo;s bespoke MD5 authentication and misunderstanding byte order. Wireshark was <em>critical</em> in helping me understand the protocol. For byte order, it may please you to learn that IPMI uses both little and big endian, quoting the spec:</p>
 
 <blockquote>
 <p>RMCP and ASF-specified fielsd are therefore transferred most-significant byte first.</p>
