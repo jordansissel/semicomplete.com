@@ -59,7 +59,7 @@ I found I could softlock my stereo if I sent these control commands (power on, e
 
 To work around this softlock, I had to implement a queue with a 40ms delay between commands.
 
-# Networking with IPMI v1
+# Networking with IPMI: First Attempt
 
 IPMI is a pretty complex protocol, and because I couldn't find any Arduino or Mongoose OS libraries, I thought I may have to write my own. When glancing at the [IPMI spec](https://www.intel.com/content/www/us/en/servers/ipmi/ipmi-second-gen-interface-spec-v2-rev1-1.html), I felt it wasn't worth my time to implement given the complexity.
 
@@ -69,7 +69,7 @@ Using [Node-RED](https://nodered.org/), I glued together a workflow that would r
 
 Success! It required cooperation of two devices (Raspberry Pi and ESP32), though.
 
-# Networking with IPMI v2
+# Networking with IPMI: Standalone
 
 Fast-forward a few weeks, and I was itching to eliminate the two-device implementation.
 
@@ -88,6 +88,8 @@ The most time I spent implementing this was in two places: IPMI's bespoke MD5 au
 😭 Mixing both big- and little-endian 😭
 
 After I read the spec more closely, I was able to resolve my wayward stumbling.
+
+The spec is large, and my needs are small, so I have only the bare minimum to achieve "Hey workstation, wake up!"
 
 ## Improving Development w/ Mongoose OS
 
