@@ -1,0 +1,15 @@
+[submodule "themes/ananke"]
+	path = themes/ananke
+	url = https://github.com/budparr/gohugo-theme-ananke.git
+[submodule ".\\themes\\cocoah-eh"]
+	path = .\\themes\\cocoah-eh
+	url = https://github.com/fuegowolf/cocoa-eh-hugo-theme.git
+[submodule "themes\\kiss"]
+	path = themes\\kiss
+	url = https://github.com/ribice/kiss.git
+[submodule ".\\themes\\hugo-tranquilpeak-theme"]
+	path = .\\themes\\hugo-tranquilpeak-theme
+	url = https://github.com/kakawait/hugo-tranquilpeak-theme
+[submodule "themes/whiteplain"]
+	path = themes/whiteplain
+	url = https://github.com/taikii/whiteplain.git
