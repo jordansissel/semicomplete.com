@@ -1,8 +1,4 @@
-baseurl = "http://www.semicomplete.com/"
+baseURL = "https://semicomplete.com/"
 languageCode = "en-us"
-title = "www.semicomplete.com"
-
-[taxonomies]
-  category = "categories"
-  tag = "tags"
-
+title = "semicomplete"
+theme = "whiteplain"
