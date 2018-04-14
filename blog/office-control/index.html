@@ -61,7 +61,7 @@ My desk has a keyboard and monitor, …">
 <li><a href="#improving-development-w-mongoose-os">Improving Development w/ Mongoose OS</a></li>
 </ul></li>
 <li><a href="#adding-a-display">Adding a Display</a></li>
-<li><a href="#everything-together">Everything Together</a></li>
+<li><a href="#the-result">The Result</a></li>
 <li><a href="#code">Code</a></li>
 </ul>
 </nav>
@@ -77,9 +77,9 @@ My desk has a keyboard and monitor, …">
 <p>I now use IPMI and HTTP to control my devices. The journey to achieving this was pretty fun.</p>
 
 
-<figure>
+<figure class="inline">
     <a href="breadboard.jpg">
-        <img src="breadboard.jpg" alt="Breadboard with ESP32 and Display" width="30%" />
+        <img src="breadboard.jpg" alt="Breadboard with ESP32 and Display" />
     </a>
     
 </figure>
@@ -173,11 +173,13 @@ My desk has a keyboard and monitor, …">
 
 <p>For the display, I used the <a href="https://github.com/mongoose-os-libs/arduino-adafruit-ssd1306">Adafruit SSD1306 Arduino library (ported to Mongoose OS)</a>.</p>
 
-<h1 id="everything-together">Everything Together</h1>
+<h1 id="the-result">The Result</h1>
 
-<p>I have a power strip on the wall near my desk that drives my monitor and usb hub. When I turn it on, the ESP32 joins wifi and wakes my workstation and stereo. One switch now controls all the devices I use at my desk.</p>
+<p>I have a power strip on the wall near my desk that drives my monitor and usb hub. When I turn it on, the ESP32 joins wifi and wakes my workstation and stereo. One switch now controls makes my whole office come online.</p>
 
 <h1 id="code">Code</h1>
+
+<p>So far, the IPMI library is only able to do chassis control (power on, off, etc) and is ~1200LOC. The Denon AVR library is about ~140LOC. I haven&rsquo;t written any automated tests, unfortunately. I haven&rsquo;t really used C++ for anything significant before, and I&rsquo;m happy with the result.</p>
 
 <p>There are two repositories I wrote for this project. Both are C++:</p>
 

@@ -6,3 +6,10 @@ pre {
 pre, code {
     background-color: #EFE;
 }
+
+@media (orientation: landscape) {
+    .inline {
+        width: 30%;
+        float: right;
+    }
+}
