@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Blogs on semicomplete</title>
-    <link>https://semicomplete.com/blog/</link>
+    <link>https://jordansissel.github.io/semicomplete.com/blog/</link>
     <description>Recent content in Blogs on semicomplete</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 14 Apr 2018 08:58:56 -0700</lastBuildDate>
     
-	<atom:link href="https://semicomplete.com/blog/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://jordansissel.github.io/semicomplete.com/blog/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Home Office Automation</title>
-      <link>https://semicomplete.com/blog/office-control/</link>
+      <link>https://jordansissel.github.io/semicomplete.com/blog/office-control/</link>
       <pubDate>Sat, 14 Apr 2018 08:58:56 -0700</pubDate>
       
-      <guid>https://semicomplete.com/blog/office-control/</guid>
+      <guid>https://jordansissel.github.io/semicomplete.com/blog/office-control/</guid>
       <description>I built a little digital Rube-Goldberg device for my office. When I turn my desk power switch on, a little microcontroller brings my workstation and stereo online.
 My desk has a keyboard and monitor, but no computer. The computer lives in the closet a few feet away. Also in this closet is my stereo which drives audio to for the office. This makes my desk cleaner and quieter, but makes it hard to hit the power buttons.</description>
     </item>
