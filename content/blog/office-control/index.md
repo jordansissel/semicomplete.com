@@ -1,7 +1,6 @@
 ---
 title: "Home Office Automation"
 date: 2018-04-14T08:58:56-07:00
-draft: true
 ---
 
 I built a little digital Rube-Goldberg device for my office. When I turn my desk power switch on, a little microcontroller brings my workstation and stereo online.
@@ -12,8 +11,7 @@ When arranging devices in the closet, I install everything rear-facing for easie
 
 I now use IPMI and HTTP to control my devices. The journey to achieving this was pretty fun.
 
-{{< figure src="breadboard.jpg" alt="Breadboard with ESP32 and Display" width="30%" link="breadboard.jpg">}}
-
+{{< figure src="breadboard.jpg" alt="Breadboard with ESP32 and Display"  link="breadboard.jpg" class="inline">}} 
 # Workstation Power Control
 
 Having the control panels inaccessible is kind of annoying, but as I have been tinkering with electronics, I made a solution to my control panel problem.
@@ -102,11 +100,13 @@ You can get tiny, monochrome displays from ebay or aliexpress for about $2. The 
 
 For the display, I used the [Adafruit SSD1306 Arduino library (ported to Mongoose OS)](https://github.com/mongoose-os-libs/arduino-adafruit-ssd1306).
 
-# Everything Together
+# The Result
 
-I have a power strip on the wall near my desk that drives my monitor and usb hub. When I turn it on, the ESP32 joins wifi and wakes my workstation and stereo. One switch now controls all the devices I use at my desk.
+I have a power strip on the wall near my desk that drives my monitor and usb hub. When I turn it on, the ESP32 joins wifi and wakes my workstation and stereo. One switch now controls makes my whole office come online.
 
 # Code
+
+So far, the IPMI library is only able to do chassis control (power on, off, etc) and is ~1200LOC. The Denon AVR library is about ~140LOC. I haven't written any automated tests, unfortunately. I haven't really used C++ for anything significant before, and I'm happy with the result.
 
 There are two repositories I wrote for this project. Both are C++:
 
