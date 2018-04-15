@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Projects on semicomplete</title>
+    <link>https://semicomplete.com/projects/</link>
+    <description>Recent content in Projects on semicomplete</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 24 Apr 2015 21:46:35 -0700</lastBuildDate>
+    
+	<atom:link href="https://semicomplete.com/projects/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title> xdotool  -  fake keyboard/mouse input, window management, and more 
+</title>
+      <link>https://semicomplete.com/projects/xdotool/</link>
+      <pubDate>Fri, 24 Apr 2015 21:46:35 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/projects/xdotool/</guid>
+      <description>What is xdotool? This tool lets you simulate keyboard input and mouse activity, move and resize windows, etc. It does this using X11&amp;rsquo;s XTEST extension and other Xlib functions.
+Additionally, you can search for windows and move, resize, hide, and modify window properties like the title. If your window manager supports it, you can use xdotool to switch desktops, move windows between desktops, and change the number of desktops.</description>
+    </item>
+    
+  </channel>
+</rss>
