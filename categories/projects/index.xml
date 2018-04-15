@@ -22,5 +22,18 @@
 Additionally, you can search for windows and move, resize, hide, and modify window properties like the title. If your window manager supports it, you can use xdotool to switch desktops, move windows between desktops, and change the number of desktops.</description>
     </item>
     
+    <item>
+      <title> fex  -  flexible token-field extraction 
+</title>
+      <link>https://semicomplete.com/projects/fex/</link>
+      <pubDate>Wed, 19 May 2010 00:13:15 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/projects/fex/</guid>
+      <description>What is fex? Fex is a powerful field extraction tool. Fex provides a very concise language for tokenizeing strings and extracting fields.
+The basic usage model is that you provide a series of delimiter and field selection pairs. Tokens can be any character, while field selections have a specific syntax.
+Download Releases are available on GitHub.
+Sometimes simpler than cut and awk cut(1) from GNU coreutils (on Linux) does not support negative offsets, so you cannot ask cut to only show you the Nth field from the end.</description>
+    </item>
+    
   </channel>
 </rss>

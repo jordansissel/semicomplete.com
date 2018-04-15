@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title> fex  -  flexible token-field extraction 
+ - semicomplete</title>
+  <meta property="og:title" content=" fex  -  flexible token-field extraction 
+ - semicomplete" />
+  <meta name="twitter:title" content=" fex  -  flexible token-field extraction 
+ - semicomplete" />
+  <meta name="description" content="What is fex? Fex is a powerful field extraction tool. Fex provides a very concise language for tokenizeing strings and extracting fields.
+The basic usage model is that you provide a series of delimiter and field selection pairs. Tokens can be any character, while field selections have a specific syntax.
+Download Releases are available on GitHub.
+Sometimes simpler than cut and awk cut(1) from GNU coreutils (on Linux) does not support negative offsets, so you cannot ask cut to only show you the Nth field from the end.">
+  <meta property="og:description" content="What is fex? Fex is a powerful field extraction tool. Fex provides a very concise language for tokenizeing strings and extracting fields.
+The basic usage model is that you provide a series of delimiter and field selection pairs. Tokens can be any character, while field selections have a specific syntax.
+Download Releases are available on GitHub.
+Sometimes simpler than cut and awk cut(1) from GNU coreutils (on Linux) does not support negative offsets, so you cannot ask cut to only show you the Nth field from the end.">
+  <meta name="twitter:description" content="What is fex? Fex is a powerful field extraction tool. Fex provides a very concise language for tokenizeing strings and extracting fields.
+The basic usage model is that you provide a series of …">
+  <meta name="author" content=""/>
+  <meta property="og:site_name" content="semicomplete" />
+  <meta property="og:url" content="/projects/fex/" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.38.2" />
+  <link rel="stylesheet" href="/css/style.css" media="all" />
+  <link rel="stylesheet" href="/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="/css/custom.css" media="all" />
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <h1 class="site-title"><a href="/">semicomplete</a></h1>
+    <ul class="site-navi-items">
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+  <div class="main" role="main">
+    <article class="article">
+      
+      
+      <h1 class="article-title"> fex  -  flexible token-field extraction 
+</h1>
+      
+      <hr class="article-title-bottom">
+      <ul class="article-meta">
+        <li class="article-meta-date"><time>May 19, 2010</time></li>
+        <li class="article-meta-categories">
+          <a href="/categories/projects/">
+            <svg class="icon"><use xlink:href="/images/fa-solid.svg#folder"></use></svg>
+            projects
+          </a>&nbsp;
+        </li>
+      </ul>
+      
+<aside class="toc">
+  <nav id="TableOfContents">
+<ul>
+<li><a href="#what-is-fex">What is fex?</a></li>
+<li><a href="#download">Download</a></li>
+<li><a href="#sometimes-simpler-than-cut-and-awk">Sometimes simpler than cut and awk</a></li>
+<li><a href="#field-selection">Field selection</a></li>
+<li><a href="#tokenizing-behavior">Tokenizing behavior</a></li>
+<li><a href="#command-line-arguments">Command line arguments</a></li>
+<li><a href="#usage-examples">Usage Examples</a>
+<ul>
+<li><a href="#simple-splitting">Simple splitting</a></li>
+<li><a href="#greedy-vs-nongreedy-splitting">Greedy vs nongreedy splitting</a></li>
+</ul></li>
+<li><a href="#real-world-uses">Real world uses</a>
+<ul>
+<li><a href="#parse-ip-and-url-from-apache-logs">Parse IP and URL from apache logs</a></li>
+<li><a href="#show-paths-from-strace">Show paths from strace</a></li>
+<li><a href="#show-home-directory-root-paths">Show home directory root paths</a></li>
+</ul></li>
+</ul>
+</nav>
+</aside>
+      
+
+<h1 id="what-is-fex">What is fex?</h1>
+
+<p>Fex is a powerful field extraction tool. Fex provides a very concise
+language for tokenizeing strings and extracting fields.</p>
+
+<p>The basic usage model is that you provide a series of delimiter and field
+selection pairs. Tokens can be any character, while field selections have a
+specific syntax.</p>
+
+<h1 id="download">Download</h1>
+
+<p>Releases are available on <a href="https://github.com/jordansissel/fex/releases">GitHub</a>.</p>
+
+<h1 id="sometimes-simpler-than-cut-and-awk">Sometimes simpler than cut and awk</h1>
+
+<p>cut(1) from GNU coreutils (on Linux) does not support negative offsets, so
+you cannot ask cut to only show you the Nth field from the end.
+Additionally, to cut by multiple fields, you end up having to write
+<code>cut ... | cut ... | cut  ...</code></p>
+
+<p>awk lets you select negative offsets using the NF variable. Get the 2nd to
+last field with $(NF - 1). However, cutting multiple times still requires
+multiple awk invocations or using awk&rsquo;s split() function multiple times.</p>
+
+<h1 id="field-selection">Field selection</h1>
+
+<p>There are a few ways to specify field selections.
+* Just a number, picks the Nth field.
+* Comma-separated list inside curly braces selects individual fields: {1,3,7}
+* Colon-delimited range, inside curly braces: {N:M}. Examples: {1:3}, {1:}, or {:3}. If no M is specified, {N:}, then the range is from N to the end. If no N is specified, {:M}, then N is assumed to be 1 (start of the string). If no N or M is specified, {:}, it behaves as selecting the entire string
+* You can combine any of these together, such as this syntax: {1,4:7} picks field 1 and 4 through 7 inclusive</p>
+
+<p>Notes:
+* Negative numbers treated as a negative offset against the end of the string
+* The number &lsquo;0&rsquo; is special and means the entire string, as is {:}
+* Fields selected in multiple will be joined by the original field separator. That is, selecting /{1,4,7} will result in fields 1, 4, and 7 output with a &lsquo;/&rsquo; delimiter in between.</p>
+
+<h1 id="tokenizing-behavior">Tokenizing behavior</h1>
+
+<p>The default behavior is to ignore empty fields. That is, a string
+&ldquo;foo&hellip;bar&rdquo; would only have two fields when split by &ldquo;.&rdquo; rather than four.
+If you want fex to not ignore empty fields, you should prefix your field
+selection with &ldquo;?&rdquo;</p>
+
+<p>Greedy (default)</p>
+
+<pre><code>% echo &quot;foo.....bar..baz.fizz&quot; | fex .2
+bar
+</code></pre>
+
+<p>Nongreedy</p>
+
+<pre><code>% echo &quot;foo.....bar..baz.fizz&quot; | fex '.{?6}'
+bar
+</code></pre>
+
+<h1 id="command-line-arguments">Command line arguments</h1>
+
+<p>You can specify multiple, independent field selectors on the command line.
+Each argument is treated as a standalone field selector. Selectors are
+split by spaces on output (though I am open to changing this).</p>
+
+<p>For example, output the IP and URL from an apache request log:</p>
+
+<pre><code>echo '208.36.144.8 - - [22/Aug/2007:23:39:05 -0400] &quot;GET /svnweb/logwatch/tags/?pathrev=420 HTTP/1.0&quot; 200 3595' \
+| fex 1 '&quot;2 2'
+
+208.36.144.8 /svnweb/logwatch/tags/?pathrev=420 
+</code></pre>
+
+<h1 id="usage-examples">Usage Examples</h1>
+
+<h2 id="simple-splitting">Simple splitting</h2>
+
+<p>With input text: <code>/usr/local/bin/firefox</code></p>
+
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Result</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>fex /1</code></td>
+<td>&ldquo;usr&rdquo;</td>
+</tr>
+
+<tr>
+<td><code>fex /{2:3}</code></td>
+<td>&ldquo;local/bin&rdquo;</td>
+</tr>
+
+<tr>
+<td><code>fex /{1,-1}</code></td>
+<td>&ldquo;usr/firefox&rdquo;</td>
+</tr>
+
+<tr>
+<td><code>fex /-1</code></td>
+<td>&ldquo;firefox&rdquo;</td>
+</tr>
+
+<tr>
+<td><code>fex /{:}</code></td>
+<td>&rdquo;/usr/local/bin/firefox/</td>
+</tr>
+
+<tr>
+<td><code>fex /0</code></td>
+<td>&rdquo;/usr/local/bin/firefox/</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="greedy-vs-nongreedy-splitting">Greedy vs nongreedy splitting</h2>
+
+<p>Input text: <code>a:b::c:::d</code></p>
+
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Result</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>fex :{1:3}</code></td>
+<td>&ldquo;a:b:c&rdquo;</td>
+</tr>
+
+<tr>
+<td><code>fex :{?1:3}</code></td>
+<td>&ldquo;a:b:&rdquo;</td>
+</tr>
+
+<tr>
+<td><code>fex :{3}</code></td>
+<td>&ldquo;c&rdquo;</td>
+</tr>
+
+<tr>
+<td><code>fex :{?3}</code></td>
+<td>&rdquo;&rdquo; (empty result)</td>
+</tr>
+</tbody>
+</table>
+
+<h1 id="real-world-uses">Real world uses</h1>
+
+<h2 id="parse-ip-and-url-from-apache-logs">Parse IP and URL from apache logs</h2>
+
+<pre><code>% fex 1 '&quot;2 2' &amp;lt; /b/logs/access| head
+65.57.245.11 /
+65.57.245.11 /icons/blank.gif
+65.57.245.11 /icons/folder.gif
+65.57.245.11 /favicon.ico
+65.57.245.11 /semicomplete/
+65.57.245.11 /style.css
+65.57.245.11 /images/semicomplete.png
+65.57.245.11 /
+65.57.245.11 /style.css
+65.57.245.11 /images/semicomplete.png
+</code></pre>
+
+<h2 id="show-paths-from-strace">Show paths from strace</h2>
+
+<p>Show files found with strace:</p>
+
+<pre><code>% strace -e trace=file cat /etc/motd |&amp;amp; fex '&quot;2'
+/bin/cat
+/etc/ld.so.nohwcap
+/etc/ld.so.preload
+/etc/ld.so.cache
+/etc/ld.so.nohwcap
+/lib/libc.so.6
+/etc/motd
+</code></pre>
+
+<h2 id="show-home-directory-root-paths">Show home directory root paths</h2>
+
+<p>Here&rsquo;s a simple example, to find which root directories contain home directories:</p>
+
+<pre><code>% fex ':-2/1' &amp;lt; /etc/passwd | sort | uniq -c
+      3 bin
+      1 dev
+      4 home
+      2 nonexistent
+      1 root
+      2 usr
+     14 var
+</code></pre>
+
+<p>The string &lsquo;0:-<sup>2</sup>&frasl;<sub>1</sub>&rsquo; means:</p>
+
+<ul>
+<li>: - split by colons</li>
+<li>-2 - take the 2nd to last token, &ldquo;/root&rdquo;</li>
+<li>/ - split that by &ldquo;/&rdquo;</li>
+<li>1 - take the 1st token, &ldquo;root&rdquo;</li>
+</ul>
+
+<p>The output is essentially the root directory for everyone&rsquo;s home directories.
+Doing this in awk, cut, perl, or any other tool would be much more typing.</p>
+
+<p>You can also specify multiple field extractions on a single invocation:</p>
+
+<pre><code># Take the first and 2nd to last token split by colon
+% fex :1 :-2 &amp;lt; /etc/passwd
+root /root
+daemon /usr/sbin
+bin /bin
+
+# Alternatively, {x,y,z,...} syntax selects multiple tokens
+# note that the output is joined by colons.
+# Again, this is a feature unavailable in xapply's subfield extraction
+% fex ':{1,-2}' &amp;lt; /etc/passwd
+root:/root
+daemon:/usr/sbin
+bin:/bin
+</code></pre>
+
+    </article>
+
+    <ul class="pager article-pager">
+      <li class="pager-newer">
+          <a href="/projects/xdotool/" data-toggle="tooltip" data-placement="top" title=" xdotool  -  fake keyboard/mouse input, window management, and more 
+">&lt; Newer</a>
+      </li>
+      <li class="pager-older pager-noitem">Older &gt;</li>
+    </ul>
+  </div>
+
+
+<div class="site-footer">
+  <div class="copyright"></div>
+  <ul class="site-footer-items">
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a>
+  </div>
+</div>
+<script src="/js/script.js"></script>
+<script src="/js/custom.js"></script>
+
+
+</body>
+</html>

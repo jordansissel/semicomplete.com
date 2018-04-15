@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Puppet &#34;pure fact-driven&#34; nodeless configuration
+ - semicomplete</title>
+  <meta property="og:title" content="Puppet &#34;pure fact-driven&#34; nodeless configuration
+ - semicomplete" />
+  <meta name="twitter:title" content="Puppet &#34;pure fact-driven&#34; nodeless configuration
+ - semicomplete" />
+  <meta name="description" content="Truth should guide your configuration management tools.
+Truth in this case is: what machines you have, properties of those machines, roles for those machines, etc. For example &ldquo;foo-1.a.example.com is a webserver&rdquo; is a piece of truth. Where and how you store truth is up to you and out of scope for this post.
+My goal is to have truth steer everything about my infrastructure. Roles, jobs, and even long-term one-offs get put into the truth source (like a machine role, etc).">
+  <meta property="og:description" content="Truth should guide your configuration management tools.
+Truth in this case is: what machines you have, properties of those machines, roles for those machines, etc. For example &ldquo;foo-1.a.example.com is a webserver&rdquo; is a piece of truth. Where and how you store truth is up to you and out of scope for this post.
+My goal is to have truth steer everything about my infrastructure. Roles, jobs, and even long-term one-offs get put into the truth source (like a machine role, etc).">
+  <meta name="twitter:description" content="Truth should guide your configuration management tools.
+Truth in this case is: what machines you have, properties of those machines, roles for those machines, etc. For example …">
+  <meta name="author" content=""/>
+  <meta property="og:site_name" content="semicomplete" />
+  <meta property="og:url" content="/blog/geekery/puppet-nodeless-configuration/" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.38.2" />
+  <link rel="stylesheet" href="/css/style.css" media="all" />
+  <link rel="stylesheet" href="/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="/css/custom.css" media="all" />
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <h1 class="site-title"><a href="/">semicomplete</a></h1>
+    <ul class="site-navi-items">
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+  <div class="main" role="main">
+    <article class="article">
+      
+      
+      <h1 class="article-title">Puppet &#34;pure fact-driven&#34; nodeless configuration
+</h1>
+      
+      <hr class="article-title-bottom">
+      <ul class="article-meta">
+        <li class="article-meta-date"><time>November 27, 2010</time></li>
+        <li class="article-meta-categories">
+          <a href="/categories/old/">
+            <svg class="icon"><use xlink:href="/images/fa-solid.svg#folder"></use></svg>
+            old
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/puppet/">
+            <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+            puppet
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/nodeless/">
+            <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+            nodeless
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/nodes/">
+            <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+            nodes
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/classifier/">
+            <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+            classifier
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/truth/">
+            <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+            truth
+          </a>&nbsp;
+        </li>
+      </ul>
+      
+      <p>Truth should guide your configuration management tools.</p>
+
+<p>Truth in this case is: what machines you have, properties of those machines,
+roles for those machines, etc. For example &ldquo;foo-1.a.example.com is a webserver&rdquo;
+is a piece of truth. Where and how you store truth is up to you and out of
+scope for this post.</p>
+
+<p>My goal is to have truth steer everything about my infrastructure. Roles, jobs,
+and even long-term one-offs get put into the truth source (like a machine role,
+etc). That way, if the machine with a one-off dies, I can just add that
+machine role to another system and puppet will configure it - no pain and no
+fire to fight.</p>
+
+<p>A simple example of truth in puppet is puppet&rsquo;s &ldquo;node&rdquo; type. A simple example:</p>
+
+<pre><code>node &quot;foo-1.a.example.com&quot; {
+  include apache
+}
+</code></pre>
+
+<p>Specifying each node in puppet doesn&rsquo;t scale very well for many people.
+Further, you may already have your node information in another tool (ldap,
+mysql, etc).  To allow this, puppet lets you feed &lsquo;node&rsquo; information from an
+external tool (called an <a href="http://docs.puppetlabs.com/guides/external_nodes.html">external node classifier</a>). However, I found that using an external node classifier also
+has its drawbacks (also out of scope for this post).</p>
+
+<p>To avoid complex logic in a node classifier, I&rsquo;ve got with a pure fact-based
+puppet configuration which I call &ldquo;nodeless.&rdquo;</p>
+
+<p>My puppet site.pp looks basically like this:</p>
+
+<pre><code>node default {
+  include truth::enforcer
+}
+</code></pre>
+
+<p>That&rsquo;s it. No extra nodes, no &lsquo;include&rsquo; or conditionals randomly sprayed around.</p>
+
+<p>From there, I have the truth::enforcer class include other classes, do sanity
+checking, etc, all based on facts (and properties if you use external node
+classifier)</p>
+
+<p>Fully standalone example with code can be found in <a href="https://github.com/jordansissel/puppet-examples/tree/master/nodeless-puppet/">jordansissel/puppet-examples</a>.</p>
+
+    </article>
+
+    <ul class="pager article-pager">
+      <li class="pager-newer">
+          <a href="/blog/home-office-automation/" data-toggle="tooltip" data-placement="top" title="Home Office Automation">&lt; Newer</a>
+      </li>
+      <li class="pager-older pager-noitem">Older &gt;</li>
+    </ul>
+  </div>
+
+
+<div class="site-footer">
+  <div class="copyright"></div>
+  <ul class="site-footer-items">
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a>
+  </div>
+</div>
+<script src="/js/script.js"></script>
+<script src="/js/custom.js"></script>
+
+
+</body>
+</html>

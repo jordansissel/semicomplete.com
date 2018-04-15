@@ -13,6 +13,16 @@
   </url>
   
   <url>
+    <loc>https://semicomplete.com/blog/geekery/puppet-nodeless-configuration/</loc>
+    <lastmod>2010-11-27T01:14:37-08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://semicomplete.com/projects/fex/</loc>
+    <lastmod>2010-05-19T00:13:15-07:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://semicomplete.com/blog/</loc>
     <lastmod>2018-04-14T08:58:56-07:00</lastmod>
     <priority>0</priority>
@@ -20,6 +30,30 @@
   
   <url>
     <loc>https://semicomplete.com/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://semicomplete.com/tags/classifier/</loc>
+    <lastmod>2010-11-27T01:14:37-08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://semicomplete.com/tags/nodeless/</loc>
+    <lastmod>2010-11-27T01:14:37-08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://semicomplete.com/tags/nodes/</loc>
+    <lastmod>2010-11-27T01:14:37-08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://semicomplete.com/categories/old/</loc>
+    <lastmod>2010-11-27T01:14:37-08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -36,7 +70,20 @@
   </url>
   
   <url>
+    <loc>https://semicomplete.com/tags/puppet/</loc>
+    <lastmod>2010-11-27T01:14:37-08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://semicomplete.com/tags/</loc>
+    <lastmod>2010-11-27T01:14:37-08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://semicomplete.com/tags/truth/</loc>
+    <lastmod>2010-11-27T01:14:37-08:00</lastmod>
     <priority>0</priority>
   </url>
   
