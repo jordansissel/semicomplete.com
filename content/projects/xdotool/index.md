@@ -5,7 +5,6 @@ title = " xdotool  -  fake keyboard/mouse input, window management, and more \n"
 # Marked a draft because frankly my old writing may not be worth surfacing again.
 # I made bad word choices and had some strong-and-closed opinions years ago.
 # We learn over time, eh? :)
-draft = true
 type = "projects"
 categories = [ "projects" ]
 +++
