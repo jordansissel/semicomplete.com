@@ -57,5 +57,17 @@ Download Releases are available on GitHub.
 Sometimes simpler than cut and awk cut(1) from GNU coreutils (on Linux) does not support negative offsets, so you cannot ask cut to only show you the Nth field from the end.</description>
     </item>
     
+    <item>
+      <title>Dynamic DNS and DHCP - Easy to do, and you&#39;ll thank yourself later
+</title>
+      <link>https://semicomplete.com/articles/dynamic-dns-with-dhcp/</link>
+      <pubDate>Mon, 17 Apr 2006 02:42:39 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/articles/dynamic-dns-with-dhcp/</guid>
+      <description>Preface This article will cover how to setup dns with dynamic updates aswell as configuring your dhcp server to push updates to it aswell.
+I assume you already know how to setup plain old dns aswell as plain old dhcp. This is not an introduction to either of those. I used BIND 9 and ISC DHCPD v3 for this article.
+If there&amp;rsquo;s anything this article doesn&amp;rsquo;t cover with respect to what you are looking for, leave a comment and I&amp;rsquo;ll do what I can.</description>
+    </item>
+    
   </channel>
 </rss>
