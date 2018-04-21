@@ -23,6 +23,17 @@ Additionally, you can search for windows and move, resize, hide, and modify wind
     </item>
     
     <item>
+      <title> keynav  -  retire your mouse. 
+</title>
+      <link>https://semicomplete.com/projects/keynav/</link>
+      <pubDate>Thu, 14 Oct 2010 23:49:21 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/projects/keynav/</guid>
+      <description>Keynav is a piece of an on-going experiment to make pointer-driven interfaces easier and faster for users to operate. It lets you move the pointer quickly to most points on the screen with only a few key strokes.
+Note that I said pointer, not mouse. The mouse simply drives the pointer. We can drive the pointer with other devices too. keynav turns your keyboard into an fast pointer mover.</description>
+    </item>
+    
+    <item>
       <title> fex  -  flexible token-field extraction 
 </title>
       <link>https://semicomplete.com/projects/fex/</link>
