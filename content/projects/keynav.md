@@ -52,7 +52,7 @@ good place to go.
 # Supported Platforms
 
 keynav is currently written in C and only works in X11 (Unix graphics
-environment). It is unlikely to work on Wayland because the necessary functionality is missing in Wayland.
+environment).
 
 Known working:
 
