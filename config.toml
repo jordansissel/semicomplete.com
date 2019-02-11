@@ -13,6 +13,7 @@ theme = "whiteplain"
 
 [params.author]
   name = "Jordan Sissel"
+  gravatar = "jls@semicomplete.com"
   twitter = "jordansissel"
   github = "jordansissel"
 
