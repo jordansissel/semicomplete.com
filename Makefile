@@ -18,6 +18,7 @@ publish:
 	git -C $(workdir) commit -m "Generate."
 	git -C $(workdir) push
 	rm -fr "$(workdir)"
+	git push origin gh-pages
 
 .PHONY: serve
 serve:
