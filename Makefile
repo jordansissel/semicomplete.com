@@ -7,6 +7,18 @@ default: build
 build:
 	hugo
 
+.PHONY: publish
+publish: workdir := $(shell mktemp -d)
+publish:
+	git clone . $(workdir)
+	git -C $(workdir) checkout gh-pages
+	rsync -a ./public/ $(workdir)/
+	git -C $(workdir) st
+	git -C $(workdir) add .
+	git -C $(workdir) commit -m "Generate."
+	git -C $(workdir) push
+	rm -fr "$(workdir)"
+
 .PHONY: serve
 serve:
 	hugo server -t whiteplain
