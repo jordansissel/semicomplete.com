@@ -5,6 +5,9 @@ title = "Headless wrapper for ephemeral X servers\n"
 type = "old"
 categories = [ "old" ]
 tags = ["xorg", "x11", "headless", "automation", "webdriver", "xdotool"]
+aliases = [
+    "/blog/geekery/headless-wrapper-for-ephemeral-xservers.html"
+]
 +++
 
 For various projects I'm doing right now, I need an easy way to automatically
