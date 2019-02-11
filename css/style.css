@@ -21,13 +21,15 @@ hr {
   margin: 0;
 }
 pre, code {
-  font-family: monospace, serif;
-  background-color: lightgray;
-  padding-left: 4px;
-  padding-right: 4px;
+  font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
+  background-color: #F0F3F3;
 }
 pre {
-  padding: 4px;
+  padding: 4px 8px;
+}
+:not(pre) > code {
+  padding: 2px 4px;
+  margin: 0 2px;
 }
 blockquote {
   margin: 0;
@@ -300,15 +302,13 @@ blockquote blockquote blockquote blockquote {
 }
 
 /* About */
-.about {
-  text-align: center;
-}
 .author {
 }
 .author-name {
   font-size: 1.2em;
   font-weight: bold;
   margin-bottom: 10px;
+  text-align: center;
 }
 .author-avatar-wrapper {
   margin-left: auto;
@@ -349,17 +349,6 @@ blockquote blockquote blockquote blockquote {
 }
 .author-social a:hover, .author-social a:active {
   color: gray;
-}
-.about ul:not(.author-social)  {
-  margin-left: auto;
-  margin-right: auto;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  align-items: center;
-  padding: 0;
 }
 
 /* List page */
