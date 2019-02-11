@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Performance - semicomplete</title>
+  <meta property="og:title" content="Performance - semicomplete" />
+  <meta name="twitter:title" content="Performance - semicomplete" />
+  <meta name="author" content=""/>
+  <meta property="og:site_name" content="semicomplete" />
+  <meta property="og:url" content="/tags/performance/" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.54.0" />
+  <link href="/tags/performance/index.xml" rel="alternate" type="application/rss+xml" title="semicomplete" />
+  <link href="/tags/performance/index.xml" rel="feed" type="application/rss+xml" title="semicomplete" />
+  <link rel="stylesheet" href="/css/style.css" media="all" />
+  <link rel="stylesheet" href="/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="/css/custom.css" media="all" />
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <h1 class="site-title"><a href="/">semicomplete</a></h1>
+    <ul class="site-navi-items">
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+  <div class="breadcrumb">
+    <a href="/tags/">Tags</a> / Performance
+  </div>
+  <div class="main" role="main">
+    <section class="list taxonomy-list">
+      <article class="article">
+        <a href="/blog/geekery/ssl_latency/" class="article-titles">
+          <h2 class="article-title">SSL handshake latency and HTTPS optimizations.
+</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>June 4, 2010</time></li>
+          <li class="article-meta-categories">
+            <a href="/categories/old/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#folder"></use></svg>
+              old
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/ssl/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+              ssl
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/latency/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+              latency
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/web/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+              web
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/performance/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+              performance
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/latency/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+              latency
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          At work today, I started investigating the latency differences for similar requests between HTTP and HTTPS. Historically, I was running with the assumption that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes are more CPU intensive. I didn&rsquo;t really think about the network consequences of SSL until today.
+It&rsquo;s all in the handshake.
+TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 1.
+        </div>
+        <div class="article-readmore"><a href="/blog/geekery/ssl_latency/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
+    </section>
+    
+
+  </div>
+
+
+
+<div class="site-footer">
+  <div class="copyright"></div>
+  <ul class="site-footer-items">
+    <li class="site-footer-item-rsslink">
+      <a href="/tags/performance/index.xml" type="application/rss+xml" target="_blank" title="RSS">
+        <svg class="icon"><use xlink:href="/images/fa-solid.svg#rss"></use></svg>
+      </a>
+    </li>
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a>
+  </div>
+</div>
+<script src="/js/script.js"></script>
+<script src="/js/custom.js"></script>
+
+
+</body>
+</html>

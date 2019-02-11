@@ -11,12 +11,13 @@
   <meta property="og:url" content="/blog/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.38.2" />
+  <meta name="generator" content="Hugo 0.54.0" />
   <link href="/blog/index.xml" rel="alternate" type="application/rss+xml" title="semicomplete" />
   <link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="semicomplete" />
   <link rel="stylesheet" href="/css/style.css" media="all" />
   <link rel="stylesheet" href="/css/syntax.css" media="all" />
   <link rel="stylesheet" href="/css/custom.css" media="all" />
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -43,13 +44,6 @@
           <li class="article-meta-date"><time>April 14, 2018</time></li>
         </ul>
         <div class="article-content">
-          
-          
-          <figure class="inline">
-            <a href="/blog/home-office-automation/">
-              <img src="/blog/home-office-automation/breadboard.jpg">
-            </a>
-          </figure>
           I built a little digital Rube-Goldberg device for my office. When I turn my desk power switch on, a little microcontroller brings my workstation and stereo online.
 My desk has a keyboard and monitor, but no computer. The computer lives in the closet a few feet away. Also in this closet is my stereo which drives audio to for the office. This makes my desk cleaner and quieter, but makes it hard to hit the power buttons.
         </div>
@@ -102,18 +96,159 @@ My desk has a keyboard and monitor, but no computer. The computer lives in the c
           </li>
         </ul>
         <div class="article-content">
-          
-          
-          <figure class="inline">
-            <a href="/blog/geekery/puppet-nodeless-configuration/">
-              <img src="">
-            </a>
-          </figure>
           Truth should guide your configuration management tools.
 Truth in this case is: what machines you have, properties of those machines, roles for those machines, etc. For example &ldquo;foo-1.a.example.com is a webserver&rdquo; is a piece of truth. Where and how you store truth is up to you and out of scope for this post.
 My goal is to have truth steer everything about my infrastructure. Roles, jobs, and even long-term one-offs get put into the truth source (like a machine role, etc).
         </div>
         <div class="article-readmore"><a href="/blog/geekery/puppet-nodeless-configuration/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
+      <article class="article">
+        <a href="/blog/geekery/debugging-java-performance/" class="article-titles">
+          <h2 class="article-title">Debugging java threads with top(1) and jstack.
+</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>June 21, 2010</time></li>
+          <li class="article-meta-categories">
+            <a href="/categories/old/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#folder"></use></svg>
+              old
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/java/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+              java
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/debugging/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+              debugging
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          At work, we&rsquo;re testing some new real-time bidding on ADX and are working through some performance issues.
+Our server is jetty + our code, and we&rsquo;re seeing performance problems at relatively low QPS.
+The first profiling attempt used YJP, but when it was attached to our server, the system load went up quickly and looked like this:
+load average: 2671.04, 1653.95, 771.93
+Not good; the load average while running with the profiler attached jumps to a number roughly equal to the number of application threads (3000 jetty threads).
+        </div>
+        <div class="article-readmore"><a href="/blog/geekery/debugging-java-performance/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
+      <article class="article">
+        <a href="/blog/geekery/ssl_latency/" class="article-titles">
+          <h2 class="article-title">SSL handshake latency and HTTPS optimizations.
+</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>June 4, 2010</time></li>
+          <li class="article-meta-categories">
+            <a href="/categories/old/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#folder"></use></svg>
+              old
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/ssl/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+              ssl
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/latency/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+              latency
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/web/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+              web
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/performance/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+              performance
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/latency/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+              latency
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          At work today, I started investigating the latency differences for similar requests between HTTP and HTTPS. Historically, I was running with the assumption that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes are more CPU intensive. I didn&rsquo;t really think about the network consequences of SSL until today.
+It&rsquo;s all in the handshake.
+TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 1.
+        </div>
+        <div class="article-readmore"><a href="/blog/geekery/ssl_latency/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
+      <article class="article">
+        <a href="/blog/geekery/headless-wrapper-for-ephemeral-xservers/" class="article-titles">
+          <h2 class="article-title">Headless wrapper for ephemeral X servers
+</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>May 11, 2010</time></li>
+          <li class="article-meta-categories">
+            <a href="/categories/old/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#folder"></use></svg>
+              old
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/xorg/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+              xorg
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/x11/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+              x11
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/headless/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+              headless
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/automation/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+              automation
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/webdriver/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+              webdriver
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/xdotool/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+              xdotool
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          For various projects I&rsquo;m doing right now, I need an easy way to automatically run code in an X server that may not necessarily be the active display. This code may even run on servers in production that don&rsquo;t have video cards or monitors attached.
+For some history on this, check out this post on xvfb and firefox. You can solve the problem in that post by simply launching firefox with the tool below, and your X server will exit when firefox exits.
+        </div>
+        <div class="article-readmore"><a href="/blog/geekery/headless-wrapper-for-ephemeral-xservers/">Read more...</a></div>
         <div class="article-floatclear"></div>
       </article>
     </section>
@@ -136,6 +271,8 @@ My goal is to have truth steer everything about my infrastructure. Roles, jobs, 
     Powered by <a href="https://gohugo.io/">Hugo</a>
   </div>
 </div>
+<script src="/js/script.js"></script>
+<script src="/js/custom.js"></script>
 
 
 </body>

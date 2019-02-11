@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Headless wrapper for ephemeral X servers
+ - semicomplete</title>
+  <meta property="og:title" content="Headless wrapper for ephemeral X servers
+ - semicomplete" />
+  <meta name="twitter:title" content="Headless wrapper for ephemeral X servers
+ - semicomplete" />
+  <meta name="description" content="For various projects I&rsquo;m doing right now, I need an easy way to automatically run code in an X server that may not necessarily be the active display. This code may even run on servers in production that don&rsquo;t have video cards or monitors attached.
+For some history on this, check out this post on xvfb and firefox. You can solve the problem in that post by simply launching firefox with the tool below, and your X server will exit when firefox exits.">
+  <meta property="og:description" content="For various projects I&rsquo;m doing right now, I need an easy way to automatically run code in an X server that may not necessarily be the active display. This code may even run on servers in production that don&rsquo;t have video cards or monitors attached.
+For some history on this, check out this post on xvfb and firefox. You can solve the problem in that post by simply launching firefox with the tool below, and your X server will exit when firefox exits.">
+  <meta name="twitter:description" content="For various projects I&rsquo;m doing right now, I need an easy way to automatically run code in an X server that may not necessarily be the active display. This code may even run on servers in …">
+  <meta name="author" content=""/>
+  <meta property="og:site_name" content="semicomplete" />
+  <meta property="og:url" content="/blog/geekery/headless-wrapper-for-ephemeral-xservers/" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.54.0" />
+  <link rel="stylesheet" href="/css/style.css" media="all" />
+  <link rel="stylesheet" href="/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="/css/custom.css" media="all" />
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <h1 class="site-title"><a href="/">semicomplete</a></h1>
+    <ul class="site-navi-items">
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+  <div class="main" role="main">
+    <article class="article">
+      
+      
+      <h1 class="article-title">Headless wrapper for ephemeral X servers
+</h1>
+      
+      <hr class="article-title-bottom">
+      <ul class="article-meta">
+        <li class="article-meta-date"><time>May 11, 2010</time></li>
+        <li class="article-meta-categories">
+          <a href="/categories/old/">
+            <svg class="icon"><use xlink:href="/images/fa-solid.svg#folder"></use></svg>
+            old
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/xorg/">
+            <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+            xorg
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/x11/">
+            <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+            x11
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/headless/">
+            <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+            headless
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/automation/">
+            <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+            automation
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/webdriver/">
+            <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+            webdriver
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/xdotool/">
+            <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+            xdotool
+          </a>&nbsp;
+        </li>
+      </ul>
+      
+<aside class="toc">
+  
+</aside>
+      <p>For various projects I&rsquo;m doing right now, I need an easy way to automatically
+run code in an X server that may not necessarily be the active display. This code
+may even run on servers in production that don&rsquo;t have video cards or monitors
+attached.</p>
+
+<p>For some history on this, check out <a
+href="/blog/geekery/xvfb-firefox.html">this post on xvfb and firefox</a>. You
+can solve the problem in that post by simply launching firefox with the tool
+below, and your X server will exit when firefox exits.</p>
+
+<p>To solve my need for automated headless Xserver shenanigans, I wrote a script
+that will wrap execution with a temporary X server of your choosing. For
+xdotool tests I generally use Xephyr and Xvfb.</p>
+
+<p>What&rsquo;s so special about this script? It picks an unused display number
+reliably and runs your command with that set as DISPLAY. This is a major win
+because you don&rsquo;t have to pre-allocate X servers (headless or otherwise) before
+you start your programs. ephemeral-x.sh will pick the first unused display,
+just as binding a socket to port 0 will pick an unused port. Finally, when your process
+exits, the xserver and windowmanagers are killed. Example usage:</p>
+
+<pre><code>% ./ephemeral-x.sh firefox
+Trying :0
+
+Fatal server error:
+Server is already active for display 0
+        If this server is no longer running, remove /tmp/.X0-lock
+        and start again.
+
+Trying :1
+Xvfb looks healthy. Moving on.
+Using display: :1
+Running: firefox
+</code></pre>
+
+<p>It does health checks to make sure the X server is actually up and running
+before continuing.</p>
+
+<p>You can also specify a window manager to run:</p>
+
+<pre><code>% ./ephemeral-x.sh -w openbox-session firefox
+...
+Trying :1
+Xvfb looks healthy. Moving on.
+Using display: :1
+Starting window manager: openbox-session
+Waiting for window manager 'openbox-session' to be healthy.
+... startup messages from openbox ...
+openbox-session looks healthy. Moving on.
+Running: firefox
+</code></pre>
+
+<p>The default X server is Xvfb. You can use Xvnc, Xephyr, or any X server. Here
+we run Xephyr with some options:</p>
+
+<pre><code>% sh ephemeral-x.sh -x &quot;Xephyr -ac -screen 1280x720x24&quot; -w openbox-session firefox www.google.com
+...
+Xephyr looks healthy. Moving on.
+Using display: :1
+Starting window manager: openbox-session
+Waiting for window manager 'openbox-session' to be healthy.
+...
+openbox-session looks healthy. Moving on.
+Running: firefox www.google.com
+</code></pre>
+
+<p>Screenshot of what this looks like is here:
+<a href="/files/blogposts/20100511/xephyr-ephemeral-x-example.png">xephyr-ephemeral-x-example.png</a></p>
+
+<p>I use this script to run my xdotool tests. Additionally, parallelizing test
+execution can often lead to faster tests. Wrapping each test run with
+ephemeral-x.sh ensure that each test suite runs in a clean environment,
+untainted by any previous test, allowing me to run all test suites in parallel.
+Prior to writing this script, I would run each test suite in serial on the same
+X server instance.</p>
+
+<p>I use a similar technique at work to start ephemeral X servers for running
+WebDriver tests in hadoop. Each mapper starts its own X server, safely, and
+kills it when it is completed. This is implemented in java, instead of shell,
+since the mappers all launch from java and mapreduce launch differently than a
+standard command would in your shell.</p>
+
+<ul>
+<li>Code lives here: <a href="https://github.com/jordansissel/xdotool/blob/master/t/ephemeral-x.sh">ephemeral-x.sh</a></li>
+<li><a href="https://github.com/jordansissel/xdotool/blob/master/t">xdotool tests</a></li>
+</ul>
+
+    </article>
+
+    
+<ul class="article-share">
+  <li>
+    <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </li>
+  <li>
+    <div class="fb-share-button" data-href="https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers/" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.10";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+  </li>
+  <li>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <g:plus action="share"></g:plus>
+  </li>
+  <li>
+    <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label-counter" data-hatena-bookmark-lang="en" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+  </li>
+  <li>
+    <a data-pocket-label="pocket" data-pocket-count="horizontal" class="pocket-btn" data-lang="en"></a>
+    <script>!function(d,i){if(!d.getElementById(i)){var j=d.createElement("script");j.id=i;j.src="https://widgets.getpocket.com/v1/j/btn.js?v=1";var w=d.getElementById(i);d.body.appendChild(j);}}(document,"pocket-btn-js");</script>
+  </li>
+</ul>
+
+    <ul class="pager article-pager">
+      <li class="pager-newer">
+          <a href="/blog/geekery/ssl_latency/" data-toggle="tooltip" data-placement="top" title="SSL handshake latency and HTTPS optimizations.
+">&lt; Newer</a>
+      </li>
+      <li class="pager-older pager-noitem">Older &gt;</li>
+    </ul>
+  </div>
+
+
+<div class="site-footer">
+  <div class="copyright"></div>
+  <ul class="site-footer-items">
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a>
+  </div>
+</div>
+<script src="/js/script.js"></script>
+<script src="/js/custom.js"></script>
+
+
+</body>
+</html>

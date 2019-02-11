@@ -33,5 +33,42 @@ Truth in this case is: what machines you have, properties of those machines, rol
 My goal is to have truth steer everything about my infrastructure. Roles, jobs, and even long-term one-offs get put into the truth source (like a machine role, etc).</description>
     </item>
     
+    <item>
+      <title>Debugging java threads with top(1) and jstack.
+</title>
+      <link>https://semicomplete.com/blog/geekery/debugging-java-performance/</link>
+      <pubDate>Mon, 21 Jun 2010 19:24:23 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/blog/geekery/debugging-java-performance/</guid>
+      <description>At work, we&amp;rsquo;re testing some new real-time bidding on ADX and are working through some performance issues.
+Our server is jetty + our code, and we&amp;rsquo;re seeing performance problems at relatively low QPS.
+The first profiling attempt used YJP, but when it was attached to our server, the system load went up quickly and looked like this:
+load average: 2671.04, 1653.95, 771.93
+Not good; the load average while running with the profiler attached jumps to a number roughly equal to the number of application threads (3000 jetty threads).</description>
+    </item>
+    
+    <item>
+      <title>SSL handshake latency and HTTPS optimizations.
+</title>
+      <link>https://semicomplete.com/blog/geekery/ssl_latency/</link>
+      <pubDate>Fri, 04 Jun 2010 02:33:15 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/blog/geekery/ssl_latency/</guid>
+      <description>At work today, I started investigating the latency differences for similar requests between HTTP and HTTPS. Historically, I was running with the assumption that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes are more CPU intensive. I didn&amp;rsquo;t really think about the network consequences of SSL until today.
+It&amp;rsquo;s all in the handshake.
+TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 1.</description>
+    </item>
+    
+    <item>
+      <title>Headless wrapper for ephemeral X servers
+</title>
+      <link>https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers/</link>
+      <pubDate>Tue, 11 May 2010 01:59:47 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers/</guid>
+      <description>For various projects I&amp;rsquo;m doing right now, I need an easy way to automatically run code in an X server that may not necessarily be the active display. This code may even run on servers in production that don&amp;rsquo;t have video cards or monitors attached.
+For some history on this, check out this post on xvfb and firefox. You can solve the problem in that post by simply launching firefox with the tool below, and your X server will exit when firefox exits.</description>
+    </item>
+    
   </channel>
 </rss>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Performance on semicomplete</title>
+    <link>https://semicomplete.com/tags/performance/</link>
+    <description>Recent content in Performance on semicomplete</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 04 Jun 2010 02:33:15 -0700</lastBuildDate>
+    
+	<atom:link href="https://semicomplete.com/tags/performance/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>SSL handshake latency and HTTPS optimizations.
+</title>
+      <link>https://semicomplete.com/blog/geekery/ssl_latency/</link>
+      <pubDate>Fri, 04 Jun 2010 02:33:15 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/blog/geekery/ssl_latency/</guid>
+      <description>At work today, I started investigating the latency differences for similar requests between HTTP and HTTPS. Historically, I was running with the assumption that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes are more CPU intensive. I didn&amp;rsquo;t really think about the network consequences of SSL until today.
+It&amp;rsquo;s all in the handshake.
+TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 1.</description>
+    </item>
+    
+  </channel>
+</rss>

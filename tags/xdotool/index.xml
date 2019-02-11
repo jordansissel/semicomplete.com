@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Xdotool on semicomplete</title>
+    <link>https://semicomplete.com/tags/xdotool/</link>
+    <description>Recent content in Xdotool on semicomplete</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 11 May 2010 01:59:47 -0700</lastBuildDate>
+    
+	<atom:link href="https://semicomplete.com/tags/xdotool/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Headless wrapper for ephemeral X servers
+</title>
+      <link>https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers/</link>
+      <pubDate>Tue, 11 May 2010 01:59:47 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers/</guid>
+      <description>For various projects I&amp;rsquo;m doing right now, I need an easy way to automatically run code in an X server that may not necessarily be the active display. This code may even run on servers in production that don&amp;rsquo;t have video cards or monitors attached.
+For some history on this, check out this post on xvfb and firefox. You can solve the problem in that post by simply launching firefox with the tool below, and your X server will exit when firefox exits.</description>
+    </item>
+    
+  </channel>
+</rss>

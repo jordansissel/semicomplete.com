@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Debugging on semicomplete</title>
+    <link>https://semicomplete.com/tags/debugging/</link>
+    <description>Recent content in Debugging on semicomplete</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 21 Jun 2010 19:24:23 -0700</lastBuildDate>
+    
+	<atom:link href="https://semicomplete.com/tags/debugging/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Debugging java threads with top(1) and jstack.
+</title>
+      <link>https://semicomplete.com/blog/geekery/debugging-java-performance/</link>
+      <pubDate>Mon, 21 Jun 2010 19:24:23 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/blog/geekery/debugging-java-performance/</guid>
+      <description>At work, we&amp;rsquo;re testing some new real-time bidding on ADX and are working through some performance issues.
+Our server is jetty + our code, and we&amp;rsquo;re seeing performance problems at relatively low QPS.
+The first profiling attempt used YJP, but when it was attached to our server, the system load went up quickly and looked like this:
+load average: 2671.04, 1653.95, 771.93
+Not good; the load average while running with the profiler attached jumps to a number roughly equal to the number of application threads (3000 jetty threads).</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -6,10 +6,19 @@
     <description>Recent content in Tags on semicomplete</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 27 Nov 2010 01:14:37 -0800</lastBuildDate>
+    <lastBuildDate>Tue, 11 May 2010 01:59:47 -0700</lastBuildDate>
     
 	<atom:link href="https://semicomplete.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Automation</title>
+      <link>https://semicomplete.com/tags/automation/</link>
+      <pubDate>Tue, 11 May 2010 01:59:47 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/automation/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Classifier</title>
@@ -17,6 +26,42 @@
       <pubDate>Sat, 27 Nov 2010 01:14:37 -0800</pubDate>
       
       <guid>https://semicomplete.com/tags/classifier/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Debugging</title>
+      <link>https://semicomplete.com/tags/debugging/</link>
+      <pubDate>Mon, 21 Jun 2010 19:24:23 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/debugging/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Headless</title>
+      <link>https://semicomplete.com/tags/headless/</link>
+      <pubDate>Tue, 11 May 2010 01:59:47 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/headless/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Java</title>
+      <link>https://semicomplete.com/tags/java/</link>
+      <pubDate>Mon, 21 Jun 2010 19:24:23 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/java/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Latency</title>
+      <link>https://semicomplete.com/tags/latency/</link>
+      <pubDate>Fri, 04 Jun 2010 02:33:15 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/latency/</guid>
       <description></description>
     </item>
     
@@ -39,6 +84,15 @@
     </item>
     
     <item>
+      <title>Performance</title>
+      <link>https://semicomplete.com/tags/performance/</link>
+      <pubDate>Fri, 04 Jun 2010 02:33:15 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/performance/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Puppet</title>
       <link>https://semicomplete.com/tags/puppet/</link>
       <pubDate>Sat, 27 Nov 2010 01:14:37 -0800</pubDate>
@@ -48,11 +102,65 @@
     </item>
     
     <item>
+      <title>Ssl</title>
+      <link>https://semicomplete.com/tags/ssl/</link>
+      <pubDate>Fri, 04 Jun 2010 02:33:15 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/ssl/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Truth</title>
       <link>https://semicomplete.com/tags/truth/</link>
       <pubDate>Sat, 27 Nov 2010 01:14:37 -0800</pubDate>
       
       <guid>https://semicomplete.com/tags/truth/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Web</title>
+      <link>https://semicomplete.com/tags/web/</link>
+      <pubDate>Fri, 04 Jun 2010 02:33:15 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/web/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Webdriver</title>
+      <link>https://semicomplete.com/tags/webdriver/</link>
+      <pubDate>Tue, 11 May 2010 01:59:47 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/webdriver/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>X11</title>
+      <link>https://semicomplete.com/tags/x11/</link>
+      <pubDate>Tue, 11 May 2010 01:59:47 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/x11/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Xdotool</title>
+      <link>https://semicomplete.com/tags/xdotool/</link>
+      <pubDate>Tue, 11 May 2010 01:59:47 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/xdotool/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Xorg</title>
+      <link>https://semicomplete.com/tags/xorg/</link>
+      <pubDate>Tue, 11 May 2010 01:59:47 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/xorg/</guid>
       <description></description>
     </item>
     

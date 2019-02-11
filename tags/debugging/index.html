@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Debugging - semicomplete</title>
+  <meta property="og:title" content="Debugging - semicomplete" />
+  <meta name="twitter:title" content="Debugging - semicomplete" />
+  <meta name="author" content=""/>
+  <meta property="og:site_name" content="semicomplete" />
+  <meta property="og:url" content="/tags/debugging/" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.54.0" />
+  <link href="/tags/debugging/index.xml" rel="alternate" type="application/rss+xml" title="semicomplete" />
+  <link href="/tags/debugging/index.xml" rel="feed" type="application/rss+xml" title="semicomplete" />
+  <link rel="stylesheet" href="/css/style.css" media="all" />
+  <link rel="stylesheet" href="/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="/css/custom.css" media="all" />
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <h1 class="site-title"><a href="/">semicomplete</a></h1>
+    <ul class="site-navi-items">
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+  <div class="breadcrumb">
+    <a href="/tags/">Tags</a> / Debugging
+  </div>
+  <div class="main" role="main">
+    <section class="list taxonomy-list">
+      <article class="article">
+        <a href="/blog/geekery/debugging-java-performance/" class="article-titles">
+          <h2 class="article-title">Debugging java threads with top(1) and jstack.
+</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>June 21, 2010</time></li>
+          <li class="article-meta-categories">
+            <a href="/categories/old/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#folder"></use></svg>
+              old
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/java/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+              java
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/debugging/">
+              <svg class="icon"><use xlink:href="/images/fa-solid.svg#tag"></use></svg>
+              debugging
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          At work, we&rsquo;re testing some new real-time bidding on ADX and are working through some performance issues.
+Our server is jetty + our code, and we&rsquo;re seeing performance problems at relatively low QPS.
+The first profiling attempt used YJP, but when it was attached to our server, the system load went up quickly and looked like this:
+load average: 2671.04, 1653.95, 771.93
+Not good; the load average while running with the profiler attached jumps to a number roughly equal to the number of application threads (3000 jetty threads).
+        </div>
+        <div class="article-readmore"><a href="/blog/geekery/debugging-java-performance/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
+    </section>
+    
+
+  </div>
+
+
+
+<div class="site-footer">
+  <div class="copyright"></div>
+  <ul class="site-footer-items">
+    <li class="site-footer-item-rsslink">
+      <a href="/tags/debugging/index.xml" type="application/rss+xml" target="_blank" title="RSS">
+        <svg class="icon"><use xlink:href="/images/fa-solid.svg#rss"></use></svg>
+      </a>
+    </li>
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a>
+  </div>
+</div>
+<script src="/js/script.js"></script>
+<script src="/js/custom.js"></script>
+
+
+</body>
+</html>
