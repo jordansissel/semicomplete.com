@@ -10,6 +10,3 @@
 [submodule ".\\themes\\hugo-tranquilpeak-theme"]
 	path = .\\themes\\hugo-tranquilpeak-theme
 	url = https://github.com/kakawait/hugo-tranquilpeak-theme
-[submodule "themes/whiteplain"]
-	path = themes/whiteplain
-	url = https://github.com/taikii/whiteplain.git
