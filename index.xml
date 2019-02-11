@@ -118,5 +118,17 @@ I assume you already know how to setup plain old dns aswell as plain old dhcp. T
 If there&amp;rsquo;s anything this article doesn&amp;rsquo;t cover with respect to what you are looking for, leave a comment and I&amp;rsquo;ll do what I can.</description>
     </item>
     
+    <item>
+      <title>Xvfb &#43; Firefox
+</title>
+      <link>https://semicomplete.com/blog/geekery/xvfb-firefox/</link>
+      <pubDate>Sat, 08 Apr 2006 03:53:00 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/blog/geekery/xvfb-firefox/</guid>
+      <description>Resig has a bunch of unit tests he does to make sure jQuery works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&amp;rsquo;s automate this.
+Update (May 2010): See this post for more details on automating xserver startup without having to worry about display numbers (:1, :2, etc).
+Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&amp;rsquo;ve got a simple way to run Firefox without a visible display.</description>
+    </item>
+    
   </channel>
 </rss>

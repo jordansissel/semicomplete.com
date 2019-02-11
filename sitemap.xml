@@ -48,6 +48,11 @@
   </url>
   
   <url>
+    <loc>https://semicomplete.com/blog/geekery/xvfb-firefox/</loc>
+    <lastmod>2006-04-08T03:53:00-07:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://semicomplete.com/about/</loc>
   </url>
   
@@ -94,8 +99,20 @@
   </url>
   
   <url>
+    <loc>https://semicomplete.com/tags/firefox/</loc>
+    <lastmod>2006-04-08T03:53:00-07:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://semicomplete.com/tags/headless/</loc>
     <lastmod>2010-05-11T01:59:47-07:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://semicomplete.com/tags/ideas/</loc>
+    <lastmod>2006-04-08T03:53:00-07:00</lastmod>
     <priority>0</priority>
   </url>
   

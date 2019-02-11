@@ -1,28 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Web on semicomplete</title>
-    <link>https://semicomplete.com/tags/web/</link>
-    <description>Recent content in Web on semicomplete</description>
+    <title>Ideas on semicomplete</title>
+    <link>https://semicomplete.com/tags/ideas/</link>
+    <description>Recent content in Ideas on semicomplete</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Fri, 04 Jun 2010 02:33:15 -0700</lastBuildDate>
+    <lastBuildDate>Sat, 08 Apr 2006 03:53:00 -0700</lastBuildDate>
     
-	<atom:link href="https://semicomplete.com/tags/web/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://semicomplete.com/tags/ideas/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>SSL handshake latency and HTTPS optimizations.
-</title>
-      <link>https://semicomplete.com/blog/geekery/ssl-latency/</link>
-      <pubDate>Fri, 04 Jun 2010 02:33:15 -0700</pubDate>
-      
-      <guid>https://semicomplete.com/blog/geekery/ssl-latency/</guid>
-      <description>At work today, I started investigating the latency differences for similar requests between HTTP and HTTPS. Historically, I was running with the assumption that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes are more CPU intensive. I didn&amp;rsquo;t really think about the network consequences of SSL until today.
-It&amp;rsquo;s all in the handshake.
-TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 1.</description>
-    </item>
     
     <item>
       <title>Xvfb &#43; Firefox
