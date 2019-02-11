@@ -14,10 +14,10 @@
     <item>
       <title>SSL handshake latency and HTTPS optimizations.
 </title>
-      <link>https://semicomplete.com/blog/geekery/ssl_latency/</link>
+      <link>https://semicomplete.com/blog/geekery/ssl-latency/</link>
       <pubDate>Fri, 04 Jun 2010 02:33:15 -0700</pubDate>
       
-      <guid>https://semicomplete.com/blog/geekery/ssl_latency/</guid>
+      <guid>https://semicomplete.com/blog/geekery/ssl-latency/</guid>
       <description>At work today, I started investigating the latency differences for similar requests between HTTP and HTTPS. Historically, I was running with the assumption that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes are more CPU intensive. I didn&amp;rsquo;t really think about the network consequences of SSL until today.
 It&amp;rsquo;s all in the handshake.
 TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 1.</description>
@@ -26,10 +26,10 @@ TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 
     <item>
       <title>SSL handshake latency and HTTPS optimizations.
 </title>
-      <link>https://semicomplete.com/blog/geekery/ssl_latency/</link>
+      <link>https://semicomplete.com/blog/geekery/ssl-latency/</link>
       <pubDate>Fri, 04 Jun 2010 02:33:15 -0700</pubDate>
       
-      <guid>https://semicomplete.com/blog/geekery/ssl_latency/</guid>
+      <guid>https://semicomplete.com/blog/geekery/ssl-latency/</guid>
       <description>At work today, I started investigating the latency differences for similar requests between HTTP and HTTPS. Historically, I was running with the assumption that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes are more CPU intensive. I didn&amp;rsquo;t really think about the network consequences of SSL until today.
 It&amp;rsquo;s all in the handshake.
 TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 1.</description>
