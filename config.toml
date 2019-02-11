@@ -6,3 +6,41 @@ theme = "whiteplain"
 [taxonomies]
   category = "categories"
   tag = "tags"
+
+[params]
+  showShareIcons = false
+  dateFormat = "2 January, 2006"
+
+[params.author]
+  name = "Jordan Sissel"
+  twitter = "jordansissel"
+  github = "jordansissel"
+
+# Header Menu
+[[menu.main]]
+  name = "Categories"
+  identifier = "categories"
+  url = "/categories/"
+  weight = 1
+[[menu.main]]
+  name = "Tags"
+  identifier = "tags"
+  url = "/tags/"
+  weight = 2
+[[menu.main]]
+  name = "Archives"
+  identifier = "archives"
+  url = "/archives/"
+  weight = 3
+[[menu.main]]
+  name = "About"
+  identifier = "about"
+  url = "/about/"
+  weight = 4
+
+# Footer Menu
+[[menu.footer]]
+  name = "About"
+  weight = 1
+  identifier = "about"
+  url = "/about/"
