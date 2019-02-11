@@ -9,7 +9,7 @@ build:
 
 .PHONY: publish
 publish: workdir := $(shell mktemp -d)
-publish:
+publish: build
 	git clone . $(workdir)
 	git -C $(workdir) checkout gh-pages
 	git -C $(workdir) pull --ff-only
