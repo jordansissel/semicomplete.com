@@ -12,6 +12,7 @@ publish: workdir := $(shell mktemp -d)
 publish:
 	git clone . $(workdir)
 	git -C $(workdir) checkout gh-pages
+	git -C $(workdir) pull --ff-only
 	rsync -a ./public/ $(workdir)/
 	git -C $(workdir) st
 	git -C $(workdir) add .
