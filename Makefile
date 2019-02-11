@@ -1,8 +1,17 @@
 SHELL=/bin/bash
 
 .PHONY: default
-default:
-	$(MAKE) oldlinks
+default: build
+
+.PHONY: build
+build:
+	hugo
+
+.PHONY: serve
+serve:
+	hugo server -t whiteplain
+
+
 
 .PHONY: oldlinks
 oldlinks:
