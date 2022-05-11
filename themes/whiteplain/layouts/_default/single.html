@@ -53,6 +53,14 @@
     </section>
     {{- end }}
 
+    {{ partial "share.html" . }}
+
+    {{- if and .Site.DisqusShortname (or (not (isset .Params "comments")) (eq .Params.comments nil) .Params.comments) }}
+    <div class="disqus-comments">
+      {{ template "_internal/disqus.html" . }}
+    </div>
+    {{- end }}
+
     <ul class="pager article-pager">
       {{- if .NextInSection }}
       <li class="pager-newer">
