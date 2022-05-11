@@ -22,11 +22,14 @@ Truth in this case is: what machines you have, properties of those machines, rol
   <meta property="og:url" content="https://semicomplete.com/blog/geekery/puppet-nodeless-configuration/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.54.0" />
+  <meta name="generator" content="Hugo 0.98.0" />
 
   <link rel="stylesheet" href="/css/style.css" media="all" />
   <link rel="stylesheet" href="/css/syntax.css" media="all" />
   <link rel="stylesheet" href="/css/custom.css" media="all" />
+
+  <script src="/js/script.js"></script>
+  <script src="/js/custom.js"></script>
   <script defer src="/js/fontawesome.js"></script>
 </head>
 
@@ -94,50 +97,40 @@ Truth in this case is: what machines you have, properties of those machines, rol
       </ul>
       
       <p>Truth should guide your configuration management tools.</p>
-
 <p>Truth in this case is: what machines you have, properties of those machines,
 roles for those machines, etc. For example &ldquo;foo-1.a.example.com is a webserver&rdquo;
 is a piece of truth. Where and how you store truth is up to you and out of
 scope for this post.</p>
-
 <p>My goal is to have truth steer everything about my infrastructure. Roles, jobs,
 and even long-term one-offs get put into the truth source (like a machine role,
 etc). That way, if the machine with a one-off dies, I can just add that
 machine role to another system and puppet will configure it - no pain and no
 fire to fight.</p>
-
 <p>A simple example of truth in puppet is puppet&rsquo;s &ldquo;node&rdquo; type. A simple example:</p>
-
-<pre><code>node &quot;foo-1.a.example.com&quot; {
+<pre tabindex="0"><code>node &#34;foo-1.a.example.com&#34; {
   include apache
 }
-</code></pre>
-
-<p>Specifying each node in puppet doesn&rsquo;t scale very well for many people.
+</code></pre><p>Specifying each node in puppet doesn&rsquo;t scale very well for many people.
 Further, you may already have your node information in another tool (ldap,
-mysql, etc).  To allow this, puppet lets you feed &lsquo;node&rsquo; information from an
+mysql, etc).  To allow this, puppet lets you feed &rsquo;node&rsquo; information from an
 external tool (called an <a href="http://docs.puppetlabs.com/guides/external_nodes.html">external node classifier</a>). However, I found that using an external node classifier also
 has its drawbacks (also out of scope for this post).</p>
-
 <p>To avoid complex logic in a node classifier, I&rsquo;ve got with a pure fact-based
 puppet configuration which I call &ldquo;nodeless.&rdquo;</p>
-
 <p>My puppet site.pp looks basically like this:</p>
-
-<pre><code>node default {
+<pre tabindex="0"><code>node default {
   include truth::enforcer
 }
-</code></pre>
-
-<p>That&rsquo;s it. No extra nodes, no &lsquo;include&rsquo; or conditionals randomly sprayed around.</p>
-
+</code></pre><p>That&rsquo;s it. No extra nodes, no &lsquo;include&rsquo; or conditionals randomly sprayed around.</p>
 <p>From there, I have the truth::enforcer class include other classes, do sanity
 checking, etc, all based on facts (and properties if you use external node
 classifier)</p>
-
 <p>Fully standalone example with code can be found in <a href="https://github.com/jordansissel/puppet-examples/tree/master/nodeless-puppet/">jordansissel/puppet-examples</a>.</p>
 
     </article>
+
+    
+
 
     <ul class="pager article-pager">
       <li class="pager-newer">

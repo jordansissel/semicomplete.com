@@ -3,21 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <title>Latency - semicomplete</title>
-  <meta property="og:title" content="Latency - semicomplete" />
-  <meta name="twitter:title" content="Latency - semicomplete" />
+  <title>latency - semicomplete</title>
+  <meta property="og:title" content="latency - semicomplete" />
+  <meta name="twitter:title" content="latency - semicomplete" />
   <meta name="author" content="Jordan Sissel"/>
   <meta property="og:site_name" content="semicomplete" />
   <meta property="og:url" content="https://semicomplete.com/tags/latency/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.54.0" />
+  <meta name="generator" content="Hugo 0.98.0" />
   <link href="/tags/latency/index.xml" rel="alternate" type="application/rss+xml" title="semicomplete" />
   <link href="/tags/latency/index.xml" rel="feed" type="application/rss+xml" title="semicomplete" />
 
   <link rel="stylesheet" href="/css/style.css" media="all" />
   <link rel="stylesheet" href="/css/syntax.css" media="all" />
   <link rel="stylesheet" href="/css/custom.css" media="all" />
+
+  <script src="/js/script.js"></script>
+  <script src="/js/custom.js"></script>
   <script defer src="/js/fontawesome.js"></script>
 </head>
 
@@ -36,64 +39,8 @@
 </header>
 <hr class="site-header-bottom">
 
-  <div class="breadcrumb">
-    <a href="/tags/">Tags</a> / Latency
-  </div>
   <div class="main" role="main">
-    <section class="list taxonomy-list">
-      <article class="article">
-        <a href="/blog/geekery/ssl-latency/" class="article-titles">
-          <h2 class="article-title">SSL handshake latency and HTTPS optimizations.
-</h2>
-          
-        </a>
-        <ul class="article-meta">
-          <li class="article-meta-date"><time>4 June, 2010</time></li>
-          <li class="article-meta-categories">
-            <a href="/categories/old/">
-              <i class="fas fa-folder"></i>
-              old
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/ssl/">
-              <i class="fas fa-tag"></i>
-              ssl
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/latency/">
-              <i class="fas fa-tag"></i>
-              latency
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/web/">
-              <i class="fas fa-tag"></i>
-              web
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/performance/">
-              <i class="fas fa-tag"></i>
-              performance
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/latency/">
-              <i class="fas fa-tag"></i>
-              latency
-            </a>&nbsp;
-          </li>
-        </ul>
-        <div class="article-content">
-          At work today, I started investigating the latency differences for similar requests between HTTP and HTTPS. Historically, I was running with the assumption that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes are more CPU intensive. I didn&rsquo;t really think about the network consequences of SSL until today.
-It&rsquo;s all in the handshake.
-TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 1.
-        </div>
-        <div class="article-readmore"><a href="/blog/geekery/ssl-latency/">Read more...</a></div>
-        <div class="article-floatclear"></div>
-      </article>
+    <section class="list term-list">
       <article class="article">
         <a href="/blog/geekery/ssl-latency/" class="article-titles">
           <h2 class="article-title">SSL handshake latency and HTTPS optimizations.
@@ -149,7 +96,6 @@ TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 
       </article>
     </section>
     
-
   </div>
 
 

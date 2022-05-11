@@ -1,17 +1,13 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Old on semicomplete</title>
+    <title>old on semicomplete</title>
     <link>https://semicomplete.com/categories/old/</link>
-    <description>Recent content in Old on semicomplete</description>
+    <description>Recent content in old on semicomplete</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Sat, 27 Nov 2010 01:14:37 -0800</lastBuildDate>
-    
-	<atom:link href="https://semicomplete.com/categories/old/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 27 Nov 2010 01:14:37 -0800</lastBuildDate><atom:link href="https://semicomplete.com/categories/old/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Puppet &#34;pure fact-driven&#34; nodeless configuration
 </title>
@@ -68,9 +64,9 @@ For some history on this, check out this post on xvfb and firefox. You can solve
       <pubDate>Sat, 08 Apr 2006 03:53:00 -0700</pubDate>
       
       <guid>https://semicomplete.com/blog/geekery/xvfb-firefox/</guid>
-      <description>Resig has a bunch of unit tests he does to make sure jQuery works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&amp;rsquo;s automate this.
-Update (May 2010): See this post for more details on automating xserver startup without having to worry about display numbers (:1, :2, etc).
-Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&amp;rsquo;ve got a simple way to run Firefox without a visible display.</description>
+      <description>Resighas a bunch of unit tests he does to make sure jQueryworks properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&amp;rsquo;s automate this.
+Update (May 2010): See this postfor more details on automating xserver startup without having to worry about display numbers (:1, :2, etc).
+ Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&amp;rsquo;ve got a simple way to run Firefox without a visible display.</description>
     </item>
     
   </channel>

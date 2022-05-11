@@ -1,227 +1,155 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
-  <url>
-    <loc>https://semicomplete.com/blog/home-office-automation/</loc>
-    <lastmod>2018-04-14T08:58:56-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/projects/xdotool/</loc>
-    <lastmod>2015-04-24T21:46:35-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/blog/geekery/puppet-nodeless-configuration/</loc>
-    <lastmod>2010-11-27T01:14:37-08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/projects/keynav/</loc>
-    <lastmod>2010-10-14T23:49:21-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/blog/geekery/debugging-java-performance/</loc>
-    <lastmod>2010-06-21T19:24:23-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/blog/geekery/ssl-latency/</loc>
-    <lastmod>2010-06-04T02:33:15-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/projects/fex/</loc>
-    <lastmod>2010-05-19T00:13:15-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers/</loc>
-    <lastmod>2010-05-11T01:59:47-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/articles/dynamic-dns-with-dhcp/</loc>
-    <lastmod>2006-04-17T02:42:39-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/blog/geekery/xvfb-firefox/</loc>
-    <lastmod>2006-04-08T03:53:00-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/about/</loc>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/categories/article/</loc>
-    <lastmod>2006-04-17T02:42:39-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/articles/</loc>
-    <lastmod>2006-04-17T02:42:39-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/tags/automation/</loc>
-    <lastmod>2010-05-11T01:59:47-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
   <url>
     <loc>https://semicomplete.com/blog/</loc>
-    <lastmod>2018-04-14T08:58:56-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
+    <lastmod>2022-05-10T22:55:00-07:00</lastmod>
+  </url><url>
     <loc>https://semicomplete.com/categories/</loc>
-    <lastmod>2006-04-17T02:42:39-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/tags/classifier/</loc>
-    <lastmod>2010-11-27T01:14:37-08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/tags/debugging/</loc>
-    <lastmod>2010-06-21T19:24:23-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/tags/firefox/</loc>
-    <lastmod>2006-04-08T03:53:00-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/tags/headless/</loc>
-    <lastmod>2010-05-11T01:59:47-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/tags/ideas/</loc>
-    <lastmod>2006-04-08T03:53:00-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/tags/java/</loc>
-    <lastmod>2010-06-21T19:24:23-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/tags/latency/</loc>
-    <lastmod>2010-06-04T02:33:15-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/tags/nodeless/</loc>
-    <lastmod>2010-11-27T01:14:37-08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/tags/nodes/</loc>
-    <lastmod>2010-11-27T01:14:37-08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/categories/old/</loc>
-    <lastmod>2010-11-27T01:14:37-08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/tags/performance/</loc>
-    <lastmod>2010-06-04T02:33:15-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/projects/</loc>
+    <lastmod>2022-05-10T22:55:00-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/tags/flickr/</loc>
+    <lastmod>2022-05-10T22:55:00-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/categories/hacks/</loc>
+    <lastmod>2022-05-10T22:55:00-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/tags/json/</loc>
+    <lastmod>2022-05-10T22:55:00-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/blog/migrating-flickr-to-smugmug/</loc>
+    <lastmod>2022-05-10T22:55:00-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/tags/photography/</loc>
+    <lastmod>2022-05-10T22:55:00-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/categories/photography/</loc>
+    <lastmod>2022-05-10T22:55:00-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/</loc>
+    <lastmod>2022-05-10T22:55:00-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/tags/smugmug/</loc>
+    <lastmod>2022-05-10T22:55:00-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/tags/</loc>
+    <lastmod>2022-05-10T22:55:00-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/tags/esp8266/</loc>
+    <lastmod>2021-05-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/tags/esphome/</loc>
+    <lastmod>2021-05-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/blog/geekery/genie-gps1200ic-home-assistant/</loc>
+    <lastmod>2021-05-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/categories/home-automation/</loc>
+    <lastmod>2021-05-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/blog/home-office-automation/</loc>
+    <lastmod>2018-04-14T08:58:56-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/projects/xdotool/</loc>
     <lastmod>2015-04-24T21:46:35-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://semicomplete.com/categories/projects/</loc>
     <lastmod>2015-04-24T21:46:35-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
+  </url><url>
+    <loc>https://semicomplete.com/projects/</loc>
+    <lastmod>2015-04-24T21:46:35-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/tags/classifier/</loc>
+    <lastmod>2010-11-27T01:14:37-08:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/tags/nodeless/</loc>
+    <lastmod>2010-11-27T01:14:37-08:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/tags/nodes/</loc>
+    <lastmod>2010-11-27T01:14:37-08:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/categories/old/</loc>
+    <lastmod>2010-11-27T01:14:37-08:00</lastmod>
+  </url><url>
     <loc>https://semicomplete.com/tags/puppet/</loc>
     <lastmod>2010-11-27T01:14:37-08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/tags/ssl/</loc>
-    <lastmod>2010-06-04T02:33:15-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://semicomplete.com/tags/</loc>
-    <lastmod>2010-05-11T01:59:47-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
+  </url><url>
+    <loc>https://semicomplete.com/blog/geekery/puppet-nodeless-configuration/</loc>
+    <lastmod>2010-11-27T01:14:37-08:00</lastmod>
+  </url><url>
     <loc>https://semicomplete.com/tags/truth/</loc>
     <lastmod>2010-11-27T01:14:37-08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
+  </url><url>
+    <loc>https://semicomplete.com/projects/keynav/</loc>
+    <lastmod>2010-10-14T23:49:21-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/tags/debugging/</loc>
+    <lastmod>2010-06-21T19:24:23-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/blog/geekery/debugging-java-performance/</loc>
+    <lastmod>2010-06-21T19:24:23-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/tags/java/</loc>
+    <lastmod>2010-06-21T19:24:23-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/tags/latency/</loc>
+    <lastmod>2010-06-04T02:33:15-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/tags/performance/</loc>
+    <lastmod>2010-06-04T02:33:15-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/tags/ssl/</loc>
+    <lastmod>2010-06-04T02:33:15-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/blog/geekery/ssl-latency/</loc>
+    <lastmod>2010-06-04T02:33:15-07:00</lastmod>
+  </url><url>
     <loc>https://semicomplete.com/tags/web/</loc>
     <lastmod>2010-06-04T02:33:15-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
+  </url><url>
+    <loc>https://semicomplete.com/projects/fex/</loc>
+    <lastmod>2010-05-19T00:13:15-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/tags/automation/</loc>
+    <lastmod>2010-05-11T01:59:47-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/tags/headless/</loc>
+    <lastmod>2010-05-11T01:59:47-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers/</loc>
+    <lastmod>2010-05-11T01:59:47-07:00</lastmod>
+  </url><url>
     <loc>https://semicomplete.com/tags/webdriver/</loc>
     <lastmod>2010-05-11T01:59:47-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://semicomplete.com/tags/x11/</loc>
     <lastmod>2010-05-11T01:59:47-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://semicomplete.com/tags/xdotool/</loc>
     <lastmod>2010-05-11T01:59:47-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://semicomplete.com/tags/xorg/</loc>
     <lastmod>2010-05-11T01:59:47-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/categories/article/</loc>
+    <lastmod>2006-04-17T02:42:39-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/articles/</loc>
+    <lastmod>2006-04-17T02:42:39-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/articles/dynamic-dns-with-dhcp/</loc>
+    <lastmod>2006-04-17T02:42:39-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/tags/firefox/</loc>
+    <lastmod>2006-04-08T03:53:00-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/tags/ideas/</loc>
+    <lastmod>2006-04-08T03:53:00-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/blog/geekery/xvfb-firefox/</loc>
+    <lastmod>2006-04-08T03:53:00-07:00</lastmod>
+  </url><url>
+    <loc>https://semicomplete.com/about/</loc>
     <priority>0</priority>
   </url>
-  
-  <url>
-    <loc>https://semicomplete.com/</loc>
-    <lastmod>2018-04-14T08:58:56-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
 </urlset>

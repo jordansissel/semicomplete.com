@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>semicomplete</title>
@@ -7,10 +7,31 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Sat, 14 Apr 2018 08:58:56 -0700</lastBuildDate>
+    <lastBuildDate>Tue, 10 May 2022 22:55:00 -0700</lastBuildDate><atom:link href="https://semicomplete.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Moving from Flickr to SmugMug</title>
+      <link>https://semicomplete.com/blog/migrating-flickr-to-smugmug/</link>
+      <pubDate>Tue, 10 May 2022 22:55:00 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/blog/migrating-flickr-to-smugmug/</guid>
+      <description>[ This post is a work in progress as I work towards solutions ]
+I received an email from Flickr on May 9.
+ Subject: Your Flickr account is in violation of our free account limits.
+You have more than 50 non-public photos on your free account.
+ They gave me 8 days to resolve it &amp;ndash; with the threat of deleting photos. It&amp;rsquo;s been a long time since I&amp;rsquo;ve used Flickr, but I don&amp;rsquo;t want to lose the content I had uploaded.</description>
+    </item>
     
-	<atom:link href="https://semicomplete.com/index.xml" rel="self" type="application/rss+xml" />
-    
+    <item>
+      <title>Genie GPS1200IC automation with ESP8266</title>
+      <link>https://semicomplete.com/blog/geekery/genie-gps1200ic-home-assistant/</link>
+      <pubDate>Mon, 03 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://semicomplete.com/blog/geekery/genie-gps1200ic-home-assistant/</guid>
+      <description>My garage has two doors. I&amp;rsquo;d like to be able to say &amp;ldquo;Open the garage door&amp;rdquo; to Siri.
+To get there, I&amp;rsquo;m going to try using Home Assistant and ESPHome. First, though, I need to know how to tell the garage door to operate.
+Both door openers are Genie GPS1200IC. Based on some brief research, these appear to have been made between 1996-2000.
+Hack a remote? My first attempt was to buy a remote and hook a microcontroller to it.</description>
+    </item>
     
     <item>
       <title>Home Office Automation</title>
@@ -30,7 +51,8 @@ My desk has a keyboard and monitor, but no computer. The computer lives in the c
       
       <guid>https://semicomplete.com/projects/xdotool/</guid>
       <description>What is xdotool? This tool lets you simulate keyboard input and mouse activity, move and resize windows, etc. It does this using X11&amp;rsquo;s XTEST extension and other Xlib functions.
-Additionally, you can search for windows and move, resize, hide, and modify window properties like the title. If your window manager supports it, you can use xdotool to switch desktops, move windows between desktops, and change the number of desktops.</description>
+Additionally, you can search for windows and move, resize, hide, and modify window properties like the title. If your window manager supports it, you can use xdotool to switch desktops, move windows between desktops, and change the number of desktops.
+Mailing List The xdotool users mailing list is: xdotool-users@googlegroups.</description>
     </item>
     
     <item>
@@ -53,7 +75,8 @@ My goal is to have truth steer everything about my infrastructure. Roles, jobs, 
       
       <guid>https://semicomplete.com/projects/keynav/</guid>
       <description>Keynav is a piece of an on-going experiment to make pointer-driven interfaces easier and faster for users to operate. It lets you move the pointer quickly to most points on the screen with only a few key strokes.
-Note that I said pointer, not mouse. The mouse simply drives the pointer. We can drive the pointer with other devices too. keynav turns your keyboard into an fast pointer mover.</description>
+Note that I said pointer, not mouse. The mouse simply drives the pointer. We can drive the pointer with other devices too. keynav turns your keyboard into an fast pointer mover.
+What does it do?</description>
     </item>
     
     <item>
@@ -125,9 +148,9 @@ If there&amp;rsquo;s anything this article doesn&amp;rsquo;t cover with respect 
       <pubDate>Sat, 08 Apr 2006 03:53:00 -0700</pubDate>
       
       <guid>https://semicomplete.com/blog/geekery/xvfb-firefox/</guid>
-      <description>Resig has a bunch of unit tests he does to make sure jQuery works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&amp;rsquo;s automate this.
-Update (May 2010): See this post for more details on automating xserver startup without having to worry about display numbers (:1, :2, etc).
-Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&amp;rsquo;ve got a simple way to run Firefox without a visible display.</description>
+      <description>Resighas a bunch of unit tests he does to make sure jQueryworks properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&amp;rsquo;s automate this.
+Update (May 2010): See this postfor more details on automating xserver startup without having to worry about display numbers (:1, :2, etc).
+ Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&amp;rsquo;ve got a simple way to run Firefox without a visible display.</description>
     </item>
     
   </channel>

@@ -11,13 +11,16 @@
   <meta property="og:url" content="https://semicomplete.com/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.54.0" />
+  <meta name="generator" content="Hugo 0.98.0" />
   <link href="/index.xml" rel="alternate" type="application/rss+xml" title="semicomplete" />
   <link href="/index.xml" rel="feed" type="application/rss+xml" title="semicomplete" />
 
   <link rel="stylesheet" href="/css/style.css" media="all" />
   <link rel="stylesheet" href="/css/syntax.css" media="all" />
   <link rel="stylesheet" href="/css/custom.css" media="all" />
+
+  <script src="/js/script.js"></script>
+  <script src="/js/custom.js"></script>
   <script defer src="/js/fontawesome.js"></script>
 </head>
 
@@ -38,6 +41,95 @@
 
   <div class="main" role="main">
     <section class="list home-list">
+      <article class="article">
+        <a href="/blog/migrating-flickr-to-smugmug/" class="article-titles">
+          <h2 class="article-title">Moving from Flickr to SmugMug</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>10 May, 2022</time></li>
+          <li class="article-meta-categories">
+            <a href="/categories/hacks/">
+              <i class="fas fa-folder"></i>
+              hacks
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-categories">
+            <a href="/categories/photography/">
+              <i class="fas fa-folder"></i>
+              photography
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/smugmug/">
+              <i class="fas fa-tag"></i>
+              smugmug
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/flickr/">
+              <i class="fas fa-tag"></i>
+              flickr
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/json/">
+              <i class="fas fa-tag"></i>
+              json
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/photography/">
+              <i class="fas fa-tag"></i>
+              photography
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          [ This post is a work in progress as I work towards solutions ]
+I received an email from Flickr on May 9.
+ Subject: Your Flickr account is in violation of our free account limits.
+You have more than 50 non-public photos on your free account.
+ They gave me 8 days to resolve it &ndash; with the threat of deleting photos. It&rsquo;s been a long time since I&rsquo;ve used Flickr, but I don&rsquo;t want to lose the content I had uploaded.
+        </div>
+        <div class="article-readmore"><a href="/blog/migrating-flickr-to-smugmug/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
+      <article class="article">
+        <a href="/blog/geekery/genie-gps1200ic-home-assistant/" class="article-titles">
+          <h2 class="article-title">Genie GPS1200IC automation with ESP8266</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>3 May, 2021</time></li>
+          <li class="article-meta-categories">
+            <a href="/categories/home-automation/">
+              <i class="fas fa-folder"></i>
+              home automation
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/esphome/">
+              <i class="fas fa-tag"></i>
+              esphome
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/esp8266/">
+              <i class="fas fa-tag"></i>
+              esp8266
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          My garage has two doors. I&rsquo;d like to be able to say &ldquo;Open the garage door&rdquo; to Siri.
+To get there, I&rsquo;m going to try using Home Assistant and ESPHome. First, though, I need to know how to tell the garage door to operate.
+Both door openers are Genie GPS1200IC. Based on some brief research, these appear to have been made between 1996-2000.
+Hack a remote? My first attempt was to buy a remote and hook a microcontroller to it.
+        </div>
+        <div class="article-readmore"><a href="/blog/geekery/genie-gps1200ic-home-assistant/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
       <article class="article">
         <a href="/blog/home-office-automation/" class="article-titles">
           <h2 class="article-title">Home Office Automation</h2>
@@ -71,6 +163,7 @@ My desk has a keyboard and monitor, but no computer. The computer lives in the c
         <div class="article-content">
           What is xdotool? This tool lets you simulate keyboard input and mouse activity, move and resize windows, etc. It does this using X11&rsquo;s XTEST extension and other Xlib functions.
 Additionally, you can search for windows and move, resize, hide, and modify window properties like the title. If your window manager supports it, you can use xdotool to switch desktops, move windows between desktops, and change the number of desktops.
+Mailing List The xdotool users mailing list is: xdotool-users@googlegroups.
         </div>
         <div class="article-readmore"><a href="/projects/xdotool/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -146,6 +239,7 @@ My goal is to have truth steer everything about my infrastructure. Roles, jobs, 
         <div class="article-content">
           Keynav is a piece of an on-going experiment to make pointer-driven interfaces easier and faster for users to operate. It lets you move the pointer quickly to most points on the screen with only a few key strokes.
 Note that I said pointer, not mouse. The mouse simply drives the pointer. We can drive the pointer with other devices too. keynav turns your keyboard into an fast pointer mover.
+What does it do?
         </div>
         <div class="article-readmore"><a href="/projects/keynav/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -322,79 +416,28 @@ For some history on this, check out this post on xvfb and firefox. You can solve
         <div class="article-readmore"><a href="/blog/geekery/headless-wrapper-for-ephemeral-xservers/">Read more...</a></div>
         <div class="article-floatclear"></div>
       </article>
-      <article class="article">
-        <a href="/articles/dynamic-dns-with-dhcp/" class="article-titles">
-          <h2 class="article-title">Dynamic DNS and DHCP - Easy to do, and you&#39;ll thank yourself later
-</h2>
-          
-        </a>
-        <ul class="article-meta">
-          <li class="article-meta-date"><time>17 April, 2006</time></li>
-          <li class="article-meta-categories">
-            <a href="/categories/article/">
-              <i class="fas fa-folder"></i>
-              article
-            </a>&nbsp;
-          </li>
-        </ul>
-        <div class="article-content">
-          Preface This article will cover how to setup dns with dynamic updates aswell as configuring your dhcp server to push updates to it aswell.
-I assume you already know how to setup plain old dns aswell as plain old dhcp. This is not an introduction to either of those. I used BIND 9 and ISC DHCPD v3 for this article.
-If there&rsquo;s anything this article doesn&rsquo;t cover with respect to what you are looking for, leave a comment and I&rsquo;ll do what I can.
-        </div>
-        <div class="article-readmore"><a href="/articles/dynamic-dns-with-dhcp/">Read more...</a></div>
-        <div class="article-floatclear"></div>
-      </article>
-      <article class="article">
-        <a href="/blog/geekery/xvfb-firefox/" class="article-titles">
-          <h2 class="article-title">Xvfb &#43; Firefox
-</h2>
-          
-        </a>
-        <ul class="article-meta">
-          <li class="article-meta-date"><time>8 April, 2006</time></li>
-          <li class="article-meta-categories">
-            <a href="/categories/old/">
-              <i class="fas fa-folder"></i>
-              old
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/web/">
-              <i class="fas fa-tag"></i>
-              web
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/firefox/">
-              <i class="fas fa-tag"></i>
-              firefox
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/x11/">
-              <i class="fas fa-tag"></i>
-              X11
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/ideas/">
-              <i class="fas fa-tag"></i>
-              ideas
-            </a>&nbsp;
-          </li>
-        </ul>
-        <div class="article-content">
-          Resig has a bunch of unit tests he does to make sure jQuery works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&rsquo;s automate this.
-Update (May 2010): See this post for more details on automating xserver startup without having to worry about display numbers (:1, :2, etc).
-Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&rsquo;ve got a simple way to run Firefox without a visible display.
-        </div>
-        <div class="article-readmore"><a href="/blog/geekery/xvfb-firefox/">Read more...</a></div>
-        <div class="article-floatclear"></div>
-      </article>
     </section>
     
-
+    <ul class="pagination pagination-default">
+      <li class="page-item disabled">
+        <a aria-disabled="true" aria-label="First" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&laquo;&laquo;</span></a>
+      </li>
+      <li class="page-item disabled">
+        <a aria-disabled="true" aria-label="Previous" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&laquo;</span></a>
+      </li>
+      <li class="page-item active">
+        <a aria-current="page" aria-label="Page 1" class="page-link" role="button">1</a>
+      </li>
+      <li class="page-item">
+        <a href="/page/2/" aria-label="Page 2" class="page-link" role="button">2</a>
+      </li>
+      <li class="page-item">
+        <a href="/page/2/" aria-label="Next" class="page-link" role="button"><span aria-hidden="true">&raquo;</span></a>
+      </li>
+      <li class="page-item">
+        <a href="/page/2/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
+      </li>
+    </ul>
   </div>
 
 

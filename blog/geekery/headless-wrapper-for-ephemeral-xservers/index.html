@@ -19,11 +19,14 @@ For some history on this, check out this post on xvfb and firefox. You can solve
   <meta property="og:url" content="https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.54.0" />
+  <meta name="generator" content="Hugo 0.98.0" />
 
   <link rel="stylesheet" href="/css/style.css" media="all" />
   <link rel="stylesheet" href="/css/syntax.css" media="all" />
   <link rel="stylesheet" href="/css/custom.css" media="all" />
+
+  <script src="/js/script.js"></script>
+  <script src="/js/custom.js"></script>
   <script defer src="/js/fontawesome.js"></script>
 </head>
 
@@ -97,30 +100,25 @@ For some history on this, check out this post on xvfb and firefox. You can solve
       </ul>
       
 <aside class="toc">
-  
+  <nav id="TableOfContents"></nav>
 </aside>
       <p>For various projects I&rsquo;m doing right now, I need an easy way to automatically
 run code in an X server that may not necessarily be the active display. This code
 may even run on servers in production that don&rsquo;t have video cards or monitors
 attached.</p>
-
-<p>For some history on this, check out <a
-href="/blog/geekery/xvfb-firefox.html">this post on xvfb and firefox</a>. You
+<p>For some history on this, check out <!-- raw HTML omitted -->this post on xvfb and firefox<!-- raw HTML omitted -->. You
 can solve the problem in that post by simply launching firefox with the tool
 below, and your X server will exit when firefox exits.</p>
-
 <p>To solve my need for automated headless Xserver shenanigans, I wrote a script
 that will wrap execution with a temporary X server of your choosing. For
 xdotool tests I generally use Xephyr and Xvfb.</p>
-
 <p>What&rsquo;s so special about this script? It picks an unused display number
 reliably and runs your command with that set as DISPLAY. This is a major win
 because you don&rsquo;t have to pre-allocate X servers (headless or otherwise) before
 you start your programs. ephemeral-x.sh will pick the first unused display,
 just as binding a socket to port 0 will pick an unused port. Finally, when your process
 exits, the xserver and windowmanagers are killed. Example usage:</p>
-
-<pre><code>% ./ephemeral-x.sh firefox
+<pre tabindex="0"><code>% ./ephemeral-x.sh firefox
 Trying :0
 
 Fatal server error:
@@ -132,61 +130,52 @@ Trying :1
 Xvfb looks healthy. Moving on.
 Using display: :1
 Running: firefox
-</code></pre>
-
-<p>It does health checks to make sure the X server is actually up and running
+</code></pre><p>It does health checks to make sure the X server is actually up and running
 before continuing.</p>
-
 <p>You can also specify a window manager to run:</p>
-
-<pre><code>% ./ephemeral-x.sh -w openbox-session firefox
+<pre tabindex="0"><code>% ./ephemeral-x.sh -w openbox-session firefox
 ...
 Trying :1
 Xvfb looks healthy. Moving on.
 Using display: :1
 Starting window manager: openbox-session
-Waiting for window manager 'openbox-session' to be healthy.
+Waiting for window manager &#39;openbox-session&#39; to be healthy.
 ... startup messages from openbox ...
 openbox-session looks healthy. Moving on.
 Running: firefox
-</code></pre>
-
-<p>The default X server is Xvfb. You can use Xvnc, Xephyr, or any X server. Here
+</code></pre><p>The default X server is Xvfb. You can use Xvnc, Xephyr, or any X server. Here
 we run Xephyr with some options:</p>
-
-<pre><code>% sh ephemeral-x.sh -x &quot;Xephyr -ac -screen 1280x720x24&quot; -w openbox-session firefox www.google.com
+<pre tabindex="0"><code>% sh ephemeral-x.sh -x &#34;Xephyr -ac -screen 1280x720x24&#34; -w openbox-session firefox www.google.com
 ...
 Xephyr looks healthy. Moving on.
 Using display: :1
 Starting window manager: openbox-session
-Waiting for window manager 'openbox-session' to be healthy.
+Waiting for window manager &#39;openbox-session&#39; to be healthy.
 ...
 openbox-session looks healthy. Moving on.
 Running: firefox www.google.com
-</code></pre>
-
-<p>Screenshot of what this looks like is here:
+</code></pre><p>Screenshot of what this looks like is here:
 <a href="/files/blogposts/20100511/xephyr-ephemeral-x-example.png">xephyr-ephemeral-x-example.png</a></p>
-
 <p>I use this script to run my xdotool tests. Additionally, parallelizing test
 execution can often lead to faster tests. Wrapping each test run with
 ephemeral-x.sh ensure that each test suite runs in a clean environment,
 untainted by any previous test, allowing me to run all test suites in parallel.
 Prior to writing this script, I would run each test suite in serial on the same
 X server instance.</p>
-
 <p>I use a similar technique at work to start ephemeral X servers for running
 WebDriver tests in hadoop. Each mapper starts its own X server, safely, and
 kills it when it is completed. This is implemented in java, instead of shell,
 since the mappers all launch from java and mapreduce launch differently than a
 standard command would in your shell.</p>
-
 <ul>
 <li>Code lives here: <a href="https://github.com/jordansissel/xdotool/blob/master/t/ephemeral-x.sh">ephemeral-x.sh</a></li>
 <li><a href="https://github.com/jordansissel/xdotool/blob/master/t">xdotool tests</a></li>
 </ul>
 
     </article>
+
+    
+
 
     <ul class="pager article-pager">
       <li class="pager-newer">

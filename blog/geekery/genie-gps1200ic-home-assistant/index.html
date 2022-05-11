@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Genie GPS1200IC automation with ESP8266 - semicomplete</title>
+  <meta property="og:title" content="Genie GPS1200IC automation with ESP8266 - semicomplete" />
+  <meta name="twitter:title" content="Genie GPS1200IC automation with ESP8266 - semicomplete" />
+  <meta name="description" content="My garage has two doors. I&rsquo;d like to be able to say &ldquo;Open the garage door&rdquo; to Siri.
+To get there, I&rsquo;m going to try using Home Assistant and ESPHome. First, though, I need to know how to tell the garage door to operate.
+Both door openers are Genie GPS1200IC. Based on some brief research, these appear to have been made between 1996-2000.
+Hack a remote? My first attempt was to buy a remote and hook a microcontroller to it.">
+  <meta property="og:description" content="My garage has two doors. I&rsquo;d like to be able to say &ldquo;Open the garage door&rdquo; to Siri.
+To get there, I&rsquo;m going to try using Home Assistant and ESPHome. First, though, I need to know how to tell the garage door to operate.
+Both door openers are Genie GPS1200IC. Based on some brief research, these appear to have been made between 1996-2000.
+Hack a remote? My first attempt was to buy a remote and hook a microcontroller to it.">
+  <meta name="twitter:description" content="My garage has two doors. I&rsquo;d like to be able to say &ldquo;Open the garage door&rdquo; to Siri.
+To get there, I&rsquo;m going to try using Home Assistant and ESPHome. First, though, I need to …">
+  <meta name="author" content="Jordan Sissel"/>
+  <meta property="og:site_name" content="semicomplete" />
+  <meta property="og:url" content="https://semicomplete.com/blog/geekery/genie-gps1200ic-home-assistant/" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.98.0" />
+
+  <link rel="stylesheet" href="/css/style.css" media="all" />
+  <link rel="stylesheet" href="/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="/css/custom.css" media="all" />
+
+  <script src="/js/script.js"></script>
+  <script src="/js/custom.js"></script>
+  <script defer src="/js/fontawesome.js"></script>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <h1 class="site-title"><a href="/">semicomplete</a></h1>
+    <ul class="site-navi-items">
+      <li class="site-navi-item-categories"><a href="/categories/" title="Categories">Categories</a></li>
+      <li class="site-navi-item-tags"><a href="/tags/" title="Tags">Tags</a></li>
+      <li class="site-navi-item-archives"><a href="/archives/" title="Archives">Archives</a></li>
+      <li class="site-navi-item-about"><a href="/about/" title="About">About</a></li>
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+  <div class="main" role="main">
+    <article class="article">
+      
+      
+      <h1 class="article-title">Genie GPS1200IC automation with ESP8266</h1>
+      
+      <hr class="article-title-bottom">
+      <ul class="article-meta">
+        <li class="article-meta-date"><time>3 May, 2021</time></li>
+        <li class="article-meta-categories">
+          <a href="/categories/home-automation/">
+            <i class="fas fa-folder"></i>
+            home automation
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/esphome/">
+            <i class="fas fa-tag"></i>
+            esphome
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/esp8266/">
+            <i class="fas fa-tag"></i>
+            esp8266
+          </a>&nbsp;
+        </li>
+      </ul>
+      
+      <p>My garage has two doors. I&rsquo;d like to be able to say &ldquo;Open the garage door&rdquo; to Siri.</p>
+<p>To get there, I&rsquo;m going to try using Home Assistant and ESPHome.
+First, though, I need to know how to tell the garage door to operate.</p>
+<p>Both door openers are Genie GPS1200IC. Based on some brief research, these appear to have been made between 1996-2000.</p>
+<h2 id="hack-a-remote">Hack a remote?</h2>
+<p>My first attempt was to buy a remote and hook a microcontroller to it.
+I bought a Genie GITR-3 remote. This remote has 3 buttons.
+The plan was to wire an ESP8266 to the buttons of this remote.</p>
+<p>Unfortunately, this remote doesn&rsquo;t work correctly on my garage doors.
+In the manual, this remote says &ldquo;For models made prior to 1996, only the right-most button works&rdquo;</p>
+<p>Welp.
+Turns out, only the right-most button works on my garage doors.
+I have two doors, and spending another $30 for <em>another</em> remote for this project doesn&rsquo;t feel that great.</p>
+<h2 id="hack-the-wall-buttons">Hack the wall buttons?</h2>
+<p>On the wall of my garage are your typical garage door open buttons. These panels are typically wired directly to the garage motor controller on the garage ceiling.</p>
+<p>My panel has two buttons.
+Pulling the panel apart shows a very simple circuit.
+Two buttons, two resistors, one LED, and a switch.</p>
+<!-- raw HTML omitted -->
+<p>Making some guesses and measurements, this seems to use some kind of voltage
+division circuit. I&rsquo;m not well-trained on electronics, but I&rsquo;m assuming the
+second resistor in the voltage divider is inside the garage opener motor
+itself. Anyway, the voltage changes depending on the state of the buttons.</p>
+<p>The &ldquo;door&rdquo; button uses an 82.5ohm resistor. I didn&rsquo;t have any of those, so I
+tried a few different ones. Shorting the garage opener contacts with a 47ohm
+resistor does indeed open the door. Using a 480ohm resistor will toggle the light on the garage door opener.</p>
+
+    </article>
+
+    
+
+
+    <ul class="pager article-pager">
+      <li class="pager-newer">
+          <a href="/blog/migrating-flickr-to-smugmug/" data-toggle="tooltip" data-placement="top" title="Moving from Flickr to SmugMug">&lt; Newer</a>
+      </li>
+      <li class="pager-older">
+        <a href="/blog/home-office-automation/" data-toggle="tooltip" data-placement="top" title="Home Office Automation">Older &gt;</a>
+      </li>
+    </ul>
+  </div>
+
+
+<div class="site-footer">
+  <div class="copyright">&copy; Copyright 2006-2019 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
+  <ul class="site-footer-items">
+    <li class="site-footer-item-about"><a href="/about/" title="About">About</a></li>
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a> and <a href="https://github.com/taikii/whiteplain">Whiteplain</a>
+  </div>
+</div>
+
+
+</body>
+</html>

@@ -1,17 +1,13 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Projects on semicomplete</title>
+    <title>projects on semicomplete</title>
     <link>https://semicomplete.com/categories/projects/</link>
-    <description>Recent content in Projects on semicomplete</description>
+    <description>Recent content in projects on semicomplete</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Fri, 24 Apr 2015 21:46:35 -0700</lastBuildDate>
-    
-	<atom:link href="https://semicomplete.com/categories/projects/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 24 Apr 2015 21:46:35 -0700</lastBuildDate><atom:link href="https://semicomplete.com/categories/projects/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title> xdotool  -  fake keyboard/mouse input, window management, and more 
 </title>
@@ -20,7 +16,8 @@
       
       <guid>https://semicomplete.com/projects/xdotool/</guid>
       <description>What is xdotool? This tool lets you simulate keyboard input and mouse activity, move and resize windows, etc. It does this using X11&amp;rsquo;s XTEST extension and other Xlib functions.
-Additionally, you can search for windows and move, resize, hide, and modify window properties like the title. If your window manager supports it, you can use xdotool to switch desktops, move windows between desktops, and change the number of desktops.</description>
+Additionally, you can search for windows and move, resize, hide, and modify window properties like the title. If your window manager supports it, you can use xdotool to switch desktops, move windows between desktops, and change the number of desktops.
+Mailing List The xdotool users mailing list is: xdotool-users@googlegroups.</description>
     </item>
     
     <item>
@@ -31,7 +28,8 @@ Additionally, you can search for windows and move, resize, hide, and modify wind
       
       <guid>https://semicomplete.com/projects/keynav/</guid>
       <description>Keynav is a piece of an on-going experiment to make pointer-driven interfaces easier and faster for users to operate. It lets you move the pointer quickly to most points on the screen with only a few key strokes.
-Note that I said pointer, not mouse. The mouse simply drives the pointer. We can drive the pointer with other devices too. keynav turns your keyboard into an fast pointer mover.</description>
+Note that I said pointer, not mouse. The mouse simply drives the pointer. We can drive the pointer with other devices too. keynav turns your keyboard into an fast pointer mover.
+What does it do?</description>
     </item>
     
     <item>

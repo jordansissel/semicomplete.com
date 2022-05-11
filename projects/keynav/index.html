@@ -10,20 +10,25 @@
   <meta name="twitter:title" content=" keynav  -  retire your mouse. 
  - semicomplete" />
   <meta name="description" content="Keynav is a piece of an on-going experiment to make pointer-driven interfaces easier and faster for users to operate. It lets you move the pointer quickly to most points on the screen with only a few key strokes.
-Note that I said pointer, not mouse. The mouse simply drives the pointer. We can drive the pointer with other devices too. keynav turns your keyboard into an fast pointer mover.">
+Note that I said pointer, not mouse. The mouse simply drives the pointer. We can drive the pointer with other devices too. keynav turns your keyboard into an fast pointer mover.
+What does it do?">
   <meta property="og:description" content="Keynav is a piece of an on-going experiment to make pointer-driven interfaces easier and faster for users to operate. It lets you move the pointer quickly to most points on the screen with only a few key strokes.
-Note that I said pointer, not mouse. The mouse simply drives the pointer. We can drive the pointer with other devices too. keynav turns your keyboard into an fast pointer mover.">
+Note that I said pointer, not mouse. The mouse simply drives the pointer. We can drive the pointer with other devices too. keynav turns your keyboard into an fast pointer mover.
+What does it do?">
   <meta name="twitter:description" content="Keynav is a piece of an on-going experiment to make pointer-driven interfaces easier and faster for users to operate. It lets you move the pointer quickly to most points on the screen with only a few …">
   <meta name="author" content="Jordan Sissel"/>
   <meta property="og:site_name" content="semicomplete" />
   <meta property="og:url" content="https://semicomplete.com/projects/keynav/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.54.0" />
+  <meta name="generator" content="Hugo 0.98.0" />
 
   <link rel="stylesheet" href="/css/style.css" media="all" />
   <link rel="stylesheet" href="/css/syntax.css" media="all" />
   <link rel="stylesheet" href="/css/custom.css" media="all" />
+
+  <script src="/js/script.js"></script>
+  <script src="/js/custom.js"></script>
   <script defer src="/js/fontawesome.js"></script>
 </head>
 
@@ -61,74 +66,43 @@ Note that I said pointer, not mouse. The mouse simply drives the pointer. We can
       </ul>
       
 <aside class="toc">
-  <nav id="TableOfContents">
-<ul>
-<li><a href="#what-does-it-do">What does it do?</a></li>
-<li><a href="#why-it-is-fast">Why it is fast?</a></li>
-<li><a href="#mailing-list">Mailing list</a></li>
-<li><a href="#supported-platforms">Supported Platforms</a></li>
-<li><a href="#download-it">Download it!</a></li>
-<li><a href="#dependencies">Dependencies</a></li>
-<li><a href="#build-instructions">Build instructions</a></li>
-<li><a href="#how-to-use-it">How to use it</a></li>
-<li><a href="#documentation">Documentation</a></li>
-</ul>
-</nav>
+  <nav id="TableOfContents"></nav>
 </aside>
-      
-
-<p>Keynav is a piece of an on-going experiment to
+      <p>Keynav is a piece of an on-going experiment to
 make pointer-driven interfaces easier and faster for users to operate. It
 lets you move the pointer quickly to most points on the screen with only a
 few key strokes.</p>
-
 <p>Note that I said pointer, not mouse. The mouse simply drives the pointer.
 We can drive the pointer with other devices too. keynav turns your keyboard
 into an fast pointer mover.</p>
-
 <h1 id="what-does-it-do">What does it do?</h1>
-
 <p>You select a piece of the screen. The screen is initially wholely selected.
 One move will cut that region by half. A move is a direction: up, down,
 left, and right.</p>
-
 <p>Once you&rsquo;re done moving, you simply indicate (with a key stroke) that you
 want to move. Boom, cursor moves.</p>
-
 <h1 id="why-it-is-fast">Why it is fast?</h1>
-
 <p>keynav is geared towards selecting a piece of the screen very quickly.</p>
-
 <p>Recall from above that you are selecting a region by cutting the previous
 region by half. This gives us logarithmic scaling. High resolution screens
 incur about the same number of moves to select an area as smaller screens do.</p>
-
-<p>For example, to select <i>any</i> pixel on a screen with resolution
+<p>For example, to select <!-- raw HTML omitted -->any<!-- raw HTML omitted --> pixel on a screen with resolution
 1920x1200 it would take 21 moves. 21 moves is horrible. There is a bright side!</p>
-
 <p>How often do you really want to click on a single specific pixel on your screen using your mouse? Never, right? Well, maybe almost never. Most of the time you want to:</p>
-
 <ul>
 <li>Raise a window and give it focus: 80x80 pixel target (worst: 9 moves)</li>
 <li>Click on an &ldquo;OK&rdquo; button: 60x25 pixels (worst: 11 moves)</li>
 <li>Click on a text widget to activate it: 80x25 or larger</li>
 </ul>
-
 <h1 id="mailing-list">Mailing list</h1>
-
-<p>The keynav users mailing list is: keynav-users@googlegroups.com</p>
-
+<p>The keynav users mailing list is: <a href="mailto:keynav-users@googlegroups.com">keynav-users@googlegroups.com</a></p>
 <p>I&rsquo;ll be announcing new versions on this mailing list. Additionally, if you
 want help or want to contribute patches to keynav, the mailing list is a
 good place to go.</p>
-
 <h1 id="supported-platforms">Supported Platforms</h1>
-
 <p>keynav is currently written in C and only works in X11 (Unix graphics
 environment).</p>
-
 <p>Known working:</p>
-
 <ul>
 <li>FreeBSD + Xorg 6.9.0</li>
 <li>FreeBSD + Xorg 7.2.0</li>
@@ -138,79 +112,83 @@ environment).</p>
 <li>Cygwin + Xorg 6.8.x</li>
 <li>Fedora 9</li>
 </ul>
-
 <h1 id="download-it">Download it!</h1>
-
-<p><a href="https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/semicomplete/keynav-0.20110708.0.tar.gz">keynav-0.20110708.0.tar.gz</a><p></p></p>
-
+<p><!-- raw HTML omitted -->keynav-0.20110708.0.tar.gz<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
 <p>Looking for an older version? Try the
-<a href="http://code.google.com/p/semicomplete/downloads/list?q=label:keynav">keynav releases archive</a></p>
-
+<!-- raw HTML omitted -->keynav releases archive<!-- raw HTML omitted --></p>
 <h1 id="dependencies">Dependencies</h1>
-
 <ul>
 <li>glib &gt;= 2.0</li>
 <li>libxdo (from xdotool) (or, if you build static, libX11 libXtst and libXext)</li>
 <li>Xinerama (comes with xorg)</li>
 <li>XSHAPE (comes with xorg)</li>
 </ul>
-
 <h1 id="build-instructions">Build instructions</h1>
-
 <p><code>make keynav</code></p>
-
 <p>The above should be all you need to do. Keynav comes with xdotool (required
 library) and will build static if libxdo.so is not found on your system.</p>
-
 <ul>
 <li>Debian users can install this package via apt-get install keynav</li>
 <li>FreeBSD users can install this from ports in x11/keynav</li>
 </ul>
-
 <h1 id="how-to-use-it">How to use it</h1>
-
 <p>Run keynav, and activate it by pressing Control+Semicolon. You should see a
 thin frame on the screen with a cross in it.</p>
-
 <p>The following is the default configuration:</p>
-
 <ul>
-<li>h : select the left half of the region</li>
-<li>j : select the bottom half of the region</li>
-<li>k : select the top half of the region</li>
-<li>l : select the right half of the region</li>
-<li>shift+h : move the region left</li>
-<li>shift+j : move the region down</li>
-<li>shift+k : move the region top</li>
-<li>shift+l : move the region right</li>
-<li>semicolon : Move the mouse to the center of the selected region</li>
-<li>spacebar : Move the mouse and left-click</li>
-
-<li><p>escape : Cancel the move</p></li>
-
-<li><p>Configuration file</p></li>
+<li>
+<p>h : select the left half of the region</p>
+</li>
+<li>
+<p>j : select the bottom half of the region</p>
+</li>
+<li>
+<p>k : select the top half of the region</p>
+</li>
+<li>
+<p>l : select the right half of the region</p>
+</li>
+<li>
+<p>shift+h : move the region left</p>
+</li>
+<li>
+<p>shift+j : move the region down</p>
+</li>
+<li>
+<p>shift+k : move the region top</p>
+</li>
+<li>
+<p>shift+l : move the region right</p>
+</li>
+<li>
+<p>semicolon : Move the mouse to the center of the selected region</p>
+</li>
+<li>
+<p>spacebar : Move the mouse and left-click</p>
+</li>
+<li>
+<p>escape : Cancel the move</p>
+</li>
+<li>
+<p>Configuration file</p>
+</li>
 </ul>
-
 <p>Your config file must live in ~/.keynavrc. Such as /home/jls/.keynavrc</p>
-
 <p>The config file format consists of a keysequence followed by a
 comma-separated list of commands. For example:</p>
-
-<pre><code>space warp,click 1,end
-</code></pre>
-
-<p>This would move the mouse, click left mouse button, and finish (close the
+<pre tabindex="0"><code>space warp,click 1,end
+</code></pre><p>This would move the mouse, click left mouse button, and finish (close the
 keynav selector) when you hit spacebar while keynav was active. A sample
 config file comes with the distribution as &lsquo;keynavrc&rsquo;.</p>
-
 <p>The following is a list of key modifiers: shift, ctrl, alt, or any valid X
 Keysym, such as Shift_L, etc.</p>
-
 <h1 id="documentation">Documentation</h1>
-
 <p>You can find the documentation for keynav as <code>keynav.pod</code> in the source, or by <a href="https://github.com/jordansissel/keynav/blob/master/keynav.pod">viewing it online</a></p>
 
     </article>
+
+    
+
 
     <ul class="pager article-pager">
       <li class="pager-newer">

@@ -17,11 +17,14 @@ My desk has a keyboard and monitor, …">
   <meta property="og:url" content="https://semicomplete.com/blog/home-office-automation/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.54.0" />
+  <meta name="generator" content="Hugo 0.98.0" />
 
   <link rel="stylesheet" href="/css/style.css" media="all" />
   <link rel="stylesheet" href="/css/syntax.css" media="all" />
   <link rel="stylesheet" href="/css/custom.css" media="all" />
+
+  <script src="/js/script.js"></script>
+  <script src="/js/custom.js"></script>
   <script defer src="/js/fontawesome.js"></script>
 </head>
 
@@ -53,143 +56,76 @@ My desk has a keyboard and monitor, …">
       
 <aside class="toc">
   <nav id="TableOfContents">
-<ul>
-<li><a href="#workstation-power-control">Workstation Power Control</a></li>
-<li><a href="#stereo-remote-control">Stereo Remote Control</a></li>
-<li><a href="#office-control">Office Control</a></li>
-<li><a href="#networking-with-denon-avr">Networking with Denon AVR</a>
-<ul>
-<li><a href="#complications-and-workarounds">Complications and Workarounds</a></li>
-</ul></li>
-<li><a href="#networking-with-ipmi-first-attempt">Networking with IPMI: First Attempt</a></li>
-<li><a href="#networking-with-ipmi-standalone">Networking with IPMI: Standalone</a>
-<ul>
-<li><a href="#improving-development-w-mongoose-os">Improving Development w/ Mongoose OS</a></li>
-</ul></li>
-<li><a href="#adding-a-display">Adding a Display</a></li>
-<li><a href="#the-result">The Result</a></li>
-<li><a href="#code">Code</a></li>
-</ul>
+  <ul>
+    <li><a href="#complications-and-workarounds">Complications and Workarounds</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#improving-development-w-mongoose-os">Improving Development w/ Mongoose OS</a></li>
+  </ul>
 </nav>
 </aside>
-      
-
-<p>I built a little digital Rube-Goldberg device for my office. When I turn my desk power switch on, a little microcontroller brings my workstation and stereo online.</p>
-
+      <p>I built a little digital Rube-Goldberg device for my office. When I turn my desk power switch on, a little microcontroller brings my workstation and stereo online.</p>
 <p>My desk has a keyboard and monitor, but no computer. The computer lives in the closet a few feet away. Also in this closet is my stereo which drives audio to for the office. This makes my desk cleaner and quieter, but makes it hard to hit the power buttons.</p>
-
 <p>When arranging devices in the closet, I install everything rear-facing for easier cable access. This presents a problem, though, because most devices have their control panels on the front, not the back, and are now facing the rear of the closet and are inaccessible.</p>
-
 <p>I now use IPMI and HTTP to control my devices. The journey to achieving this was pretty fun.</p>
-
-<figure class="inline"><a href="breadboard.jpg">
-    <img src="breadboard.jpg"
-         alt="Breadboard with ESP32 and Display"/> </a>
+<figure class="inline"><a href="breadboard.jpg"><img src="breadboard.jpg"
+         alt="Breadboard with ESP32 and Display"/></a>
 </figure>
 
-
 <h1 id="workstation-power-control">Workstation Power Control</h1>
-
 <p>Having the control panels inaccessible is kind of annoying, but as I have been tinkering with electronics, I made a solution to my control panel problem.</p>
-
 <p>A story for another time is how I managed to ruin two desktop motherboards trying to add remote power switching to my workstation. My current workstation has an <a href="https://ark.intel.com/products/66133/Intel-Server-Board-S2600CP2J">old server board</a> inspired by <a href="https://polyfractal.com/post/4-node-open-compute-cluster/">my coworker&rsquo;s setup using old Xeons</a>.</p>
-
 <p>For controlling power over IPMI, I found two decent options. First, there are IPMI mobile apps. Second, running <code>ipmiutil</code> on another computer. I used a mobile app for a few days, but I still felt it was lacking. For context, my stereo is also network-connected and can be controlled by a different mobile app. My start-work routine became fumbling around doing a few dozen taps across two apps to bring my office online.</p>
-
 <h1 id="stereo-remote-control">Stereo Remote Control</h1>
-
 <p>My stereo is mounted in the closet above my workstation, also rear-facing, and has similar challenges to my workstation: the control panel is in the front.</p>
-
 <p>Fortunately, my stereo (Denon AVR-720w) is networked and can be controlled remotely. In researching, I found two network control methods: First, the <a href="https://duckduckgo.com/?q=denon+avr+control+protocol+pdf&amp;t=hf&amp;ia=web">Denon AVR control protocol</a> which is over a telnet/tcp interface. Second, the mobile app, which uses HTTP calls. The HTTP API appears to be undocumented, but <a href="https://www.wireshark.org/">Wireshark</a> made it easy to study.</p>
-
 <p>After gathering an understanding of the Denon HTTP API, it was time to start writing code.</p>
-
 <h1 id="office-control">Office Control</h1>
-
 <p>Objective: When I turn on my desk power switch, I want my workstation and stereo to come online.</p>
-
 <p>I purchased an ESP32 development board and got to work. As for platforms, I find Arduino to be the most common, but ESP32 and ESP8266 boards support other development platforms. I found <a href="https://mongoose-os.com/">Mongoose OS</a> suited my needs pretty well as it let me write C++ and had an event-driven execution model - both of which I found useful when writing complex (for an MCU) programs later.</p>
-
 <p>I wasn&rsquo;t able to find any IPMI libraries for Arduino nor Mongoose OS. Further, I couldn&rsquo;t find any Denon AVR control libraries, either.</p>
-
 <h1 id="networking-with-denon-avr">Networking with Denon AVR</h1>
-
 <p>Wireshark showed me that the iPhone Denon app uses SSDP (HTTP over UDP) to discover a local Denon AVR. Fortunately, the Mongoose OS HTTP API just works over UDP multicast! I don&rsquo;t know if this is intended, but I am thankful it works :)</p>
-
-<pre><code class="language-c++">mgos_connect_http(&quot;udp://239.255.255.250:1900&quot;, ssdpCallback, this);
-</code></pre>
-
-<p>Once discovered, we can use normal HTTP (over TCP) to talk to the Denon AVR. There&rsquo;s an HTTP endpoint that accepts the same commands as described in the Denon AVR control protocol:</p>
-
-<pre><code>http://&lt;address&gt;:80/goform/formiPhoneAppDirect.xml?&lt;command&gt;
-</code></pre>
-
-<p>I had 3 commands I wanted to run: power on (PWON), set input to my workstation (SIGAME), and set volume to 50 (MV50).</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>mgos_connect_http(<span style="color:#e6db74">&#34;udp://239.255.255.250:1900&#34;</span>, ssdpCallback, <span style="color:#66d9ef">this</span>);
+</span></span></code></pre></div><p>Once discovered, we can use normal HTTP (over TCP) to talk to the Denon AVR. There&rsquo;s an HTTP endpoint that accepts the same commands as described in the Denon AVR control protocol:</p>
+<pre tabindex="0"><code>http://&lt;address&gt;:80/goform/formiPhoneAppDirect.xml?&lt;command&gt;
+</code></pre><p>I had 3 commands I wanted to run: power on (PWON), set input to my workstation (SIGAME), and set volume to 50 (MV50).</p>
 <h2 id="complications-and-workarounds">Complications and Workarounds</h2>
-
 <p>I found I could softlock my stereo if I sent these control commands (power on, etc) too quickly. Recovering from softlock required me to reseat the power plug in order to reset the network system on the stereo :(</p>
-
 <p>To work around this softlock, I had to implement a queue with a 40ms delay between commands.</p>
-
 <h1 id="networking-with-ipmi-first-attempt">Networking with IPMI: First Attempt</h1>
-
 <p>IPMI is a pretty complex protocol, and because I couldn&rsquo;t find any Arduino or Mongoose OS libraries, I thought I may have to write my own. When glancing at the <a href="https://www.intel.com/content/www/us/en/servers/ipmi/ipmi-second-gen-interface-spec-v2-rev1-1.html">IPMI spec</a>, I felt it wasn&rsquo;t worth my time to implement given the complexity.</p>
-
 <p>Without direct IPMI access, what to do? Well, I have a Raspberry Pi monitoring my house&rsquo;s power usage, and there is a well-maintained <code>ipmiutil</code> tool which runs on Linux. Additionally, Mongoose OS has MQTT support which makes this easy to glue together.</p>
-
 <p>Using <a href="https://nodered.org/">Node-RED</a>, I glued together a workflow that would receive a &ldquo;power on&rdquo; message from an ESP32 over MQTT to the Rasbperry Pi which runs <code>ipmiutil</code> to boot my workstation.</p>
-
 <p>Success! It required cooperation of two devices (Raspberry Pi and ESP32), though.</p>
-
 <h1 id="networking-with-ipmi-standalone">Networking with IPMI: Standalone</h1>
-
 <p>Fast-forward a few weeks, and I was itching to eliminate the two-device implementation.</p>
-
 <p>To do this, I needed to write an IPMI client implementation that could run on my ESP32. I looked at <code>ipmiutil</code> and <code>ipmitool</code> and both codebases gave me the feeling it would take too much effort to port to ESP32. Besides, all I wanted was to send power on/off signals.</p>
-
 <p>So, I download the IPMI spec from Intel and start reading, as one does. If you are interested, the most relevant sections for power control are &ldquo;6. IPMI Messaging Interfaces&rdquo;, &ldquo;13. IPMI LAN Interface&rdquo;, and &ldquo;22. IPMI Messaging Support Commands&rdquo;.</p>
-
 <p>Ultimately, I wanted to invoke the &ldquo;Chassis Control Command&rdquo; to tell the machine to boot, which requires setting up a session and authenticating.</p>
-
 <p>The most time I spent implementing this was in two places: IPMI&rsquo;s bespoke MD5 authentication and misunderstanding byte order. Wireshark was <em>critical</em> in helping me understand the protocol. For byte order, it may please you to learn that IPMI uses both little and big endian, quoting the spec:</p>
-
 <blockquote>
 <p>RMCP and ASF-specified fielsd are therefore transferred most-significant byte first.</p>
-
+</blockquote>
+<blockquote>
 <p>IPMI Session Header and IPMI Message fields are transmitted least-significant byte first.</p>
 </blockquote>
-
 <p>😭 Mixing both big- and little-endian 😭</p>
-
 <p>After I read the spec more closely, I was able to resolve my wayward stumbling.</p>
-
 <p>The spec is large, and my needs are small, so I have only the bare minimum to achieve &ldquo;Hey workstation, wake up!&rdquo;</p>
-
 <h2 id="improving-development-w-mongoose-os">Improving Development w/ Mongoose OS</h2>
-
 <p>As an aside, I knew implementing IPMI would be take serious effort. Deploying to a microcontroller is a slow process, and debugging them is hard, so I wanted to find a better way to implement this without losing energy to the microcontroller development tooling. (To be fair, Mongoose OS has some pretty good tooling for heap analysis and hooking into gdb)</p>
-
 <p>Mongoose OS uses a network library based on Mongoose, and Mongoose runs on multiple platforms. The APIs are similar enough that I could target <a href="https://github.com/jordansissel/ipmi/blob/master/linux/main.cpp">Mongoose on Linux</a> and have confidence that it would work well on Mongoose OS.</p>
-
 <h1 id="adding-a-display">Adding a Display</h1>
-
 <p>With all the activity this little MCU was doing, I felt it needed a display to give me status.</p>
-
 <p>You can get tiny, monochrome displays from ebay or aliexpress for about $2. The one I have uses I2C.</p>
-
 <p>For the display, I used the <a href="https://github.com/mongoose-os-libs/arduino-adafruit-ssd1306">Adafruit SSD1306 Arduino library (ported to Mongoose OS)</a>.</p>
-
 <h1 id="the-result">The Result</h1>
-
 <p>I have a power strip on the wall near my desk that drives my monitor and usb hub. When I turn it on, the ESP32 joins wifi and wakes my workstation and stereo. One switch now controls makes my whole office come online.</p>
-
 <h1 id="code">Code</h1>
-
 <p>So far, the IPMI library is only able to do chassis control (power on, off, etc) and is ~1200LOC. The Denon AVR library is about ~140LOC. I haven&rsquo;t written any automated tests, unfortunately. I haven&rsquo;t really used C++ for anything significant before, and I&rsquo;m happy with the result.</p>
-
 <p>There are two repositories I wrote for this project. Both are C++:</p>
-
 <ul>
 <li><a href="https://github.com/jordansissel/ipmi">My IPMI library</a></li>
 <li><a href="https://github.com/jordansissel/officecontrol">The MCU code <code>officecontrol</code></a></li>
@@ -197,8 +133,13 @@ My desk has a keyboard and monitor, …">
 
     </article>
 
+    
+
+
     <ul class="pager article-pager">
-      <li class="pager-newer pager-noitem">&lt; Newer</li>
+      <li class="pager-newer">
+          <a href="/blog/geekery/genie-gps1200ic-home-assistant/" data-toggle="tooltip" data-placement="top" title="Genie GPS1200IC automation with ESP8266">&lt; Newer</a>
+      </li>
       <li class="pager-older">
         <a href="/blog/geekery/puppet-nodeless-configuration/" data-toggle="tooltip" data-placement="top" title="Puppet &#34;pure fact-driven&#34; nodeless configuration
 ">Older &gt;</a>

@@ -9,9 +9,11 @@
  - semicomplete" />
   <meta name="twitter:title" content=" xdotool  -  fake keyboard/mouse input, window management, and more …" />
   <meta name="description" content="What is xdotool? This tool lets you simulate keyboard input and mouse activity, move and resize windows, etc. It does this using X11&rsquo;s XTEST extension and other Xlib functions.
-Additionally, you can search for windows and move, resize, hide, and modify window properties like the title. If your window manager supports it, you can use xdotool to switch desktops, move windows between desktops, and change the number of desktops.">
+Additionally, you can search for windows and move, resize, hide, and modify window properties like the title. If your window manager supports it, you can use xdotool to switch desktops, move windows between desktops, and change the number of desktops.
+Mailing List The xdotool users mailing list is: xdotool-users@googlegroups.">
   <meta property="og:description" content="What is xdotool? This tool lets you simulate keyboard input and mouse activity, move and resize windows, etc. It does this using X11&rsquo;s XTEST extension and other Xlib functions.
-Additionally, you can search for windows and move, resize, hide, and modify window properties like the title. If your window manager supports it, you can use xdotool to switch desktops, move windows between desktops, and change the number of desktops.">
+Additionally, you can search for windows and move, resize, hide, and modify window properties like the title. If your window manager supports it, you can use xdotool to switch desktops, move windows between desktops, and change the number of desktops.
+Mailing List The xdotool users mailing list is: xdotool-users@googlegroups.">
   <meta name="twitter:description" content="What is xdotool? This tool lets you simulate keyboard input and mouse activity, move and resize windows, etc. It does this using X11&rsquo;s XTEST extension and other Xlib functions.
 Additionally, you …">
   <meta name="author" content="Jordan Sissel"/>
@@ -19,11 +21,14 @@ Additionally, you …">
   <meta property="og:url" content="https://semicomplete.com/projects/xdotool/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.54.0" />
+  <meta name="generator" content="Hugo 0.98.0" />
 
   <link rel="stylesheet" href="/css/style.css" media="all" />
   <link rel="stylesheet" href="/css/syntax.css" media="all" />
   <link rel="stylesheet" href="/css/custom.css" media="all" />
+
+  <script src="/js/script.js"></script>
+  <script src="/js/custom.js"></script>
   <script defer src="/js/fontawesome.js"></script>
 </head>
 
@@ -60,39 +65,27 @@ Additionally, you …">
         </li>
       </ul>
       
-      
-
-<h1 id="what-is-xdotool">What is xdotool?</h1>
-
+      <h1 id="what-is-xdotool">What is xdotool?</h1>
 <p>This tool lets you simulate keyboard input and mouse activity, move and
 resize windows, etc. It does this using X11&rsquo;s XTEST extension and other
 Xlib functions.</p>
-
 <p>Additionally, you can search for windows and move, resize, hide, and modify
 window properties like the title. If your window manager supports it, you
 can use xdotool to switch desktops, move windows between desktops, and
 change the number of
 desktops.</p>
-
 <h1 id="mailing-list">Mailing List</h1>
-
-<p>The xdotool users mailing list is: <a href="mailto:xdotool-users@googlegroups.com">xdotool-users@googlegroups.com</a></p>
-
+<p>The xdotool users mailing list is: <!-- raw HTML omitted --><a href="mailto:xdotool-users@googlegroups.com">xdotool-users@googlegroups.com</a><!-- raw HTML omitted --></p>
 <p>I&rsquo;ll be announcing new versions on this mailing list. Additionally, if you
 want help or want to contribute patches to xdotool, the mailing list is a
 good place to go.</p>
-
 <p>If you want to file a bug, you can do that on the <a href="https://github.com/jordansissel/xdotool/issues">issue tracker</a>.</p>
-
 <h1 id="prerequisites">Prerequisites</h1>
-
 <ul>
 <li>xlib (pkg-config xlib) - Standard Xlib library</li>
 <li>xtst (pkg-config xtest) - XTEST library</li>
 </ul>
-
 <h1 id="installing">Installing</h1>
-
 <table>
 <thead>
 <tr>
@@ -100,85 +93,68 @@ good place to go.</p>
 <th>Install Method</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>Debian and Ubuntu</td>
 <td>apt-get install xdotool</td>
 </tr>
-
 <tr>
 <td>FreeBSD</td>
 <td>pkg install xdotool</td>
 </tr>
-
 <tr>
 <td>Fedora</td>
 <td>dnf install xdotool</td>
 </tr>
-
 <tr>
 <td>OSX</td>
 <td>brew install xdotool</td>
 </tr>
-
 <tr>
 <td>OpenSUSE</td>
 <td>zypper install xdotool</td>
 </tr>
-
 <tr>
 <td>Source Code</td>
 <td><a href="https://github.com/jordansissel/xdotool/releases">on GitHub</a></td>
 </tr>
 </tbody>
 </table>
-
 <h1 id="building-from-source">Building From Source</h1>
-
 <ul>
 <li><code>make all install</code></li>
 <li><code>make test</code> (optional, requires ruby and Xvfb)</li>
 </ul>
-
 <p>If the build fails, it might be because you don&rsquo;t have the required
 libraries and header files installed. You will need to set install them,
 and if you don&rsquo;t have pkg-config for x11 and xtst, set DEFAULT_LIBS and
 DEFAULT_INC (see the Makefile) correctly.</p>
-
 <p>If all else fails, please email the mailing list or file a bug.</p>
-
 <h1 id="using-xdotool">Using xdotool</h1>
-
 <p>Basic usage is: <code>xdotool &lt;cmd&gt; [args]</code>.</p>
-
 <p>See <code>man xdotool</code> for more detailed usage.</p>
-
 <h1 id="examples">Examples</h1>
-
 <h2 id="example-focus-the-firefox-url-bar">Example: focus the firefox url bar</h2>
-
-<pre><code>WID=`xdotool search &quot;Mozilla Firefox&quot; | head -1`
+<pre tabindex="0"><code>WID=`xdotool search &#34;Mozilla Firefox&#34; | head -1`
 xdotool windowactivate --sync $WID
 xdotool key --clearmodifiers ctrl+l
 
 # As of version 2.20100623, you can do this simpler version of above:
-xdotool search &quot;Mozilla Firefox&quot; windowactivate --sync key --clearmodifiers ctrl+l
-</code></pre>
-
-<h2 id="example-resize-all-visible-gnome-terminal-windows">Example: Resize all visible gnome-terminal windows</h2>
-
-<pre><code>WIDS=`xdotool search --onlyvisible --name &quot;gnome-terminal&quot;`
+xdotool search &#34;Mozilla Firefox&#34; windowactivate --sync key --clearmodifiers ctrl+l
+</code></pre><h2 id="example-resize-all-visible-gnome-terminal-windows">Example: Resize all visible gnome-terminal windows</h2>
+<pre tabindex="0"><code>WIDS=`xdotool search --onlyvisible --name &#34;gnome-terminal&#34;`
 for id in $WIDS; do
   xdotool windowsize $id 500 500
 done
 
 # As of version 2.20100623, you can do this simpler version of above:
-xdotool search --onlyvisible --classname &quot;gnome-terminal&quot; windowsize %@ 500
+xdotool search --onlyvisible --classname &#34;gnome-terminal&#34; windowsize %@ 500
 500
 </code></pre>
-
     </article>
+
+    
+
 
     <ul class="pager article-pager">
       <li class="pager-newer pager-noitem">&lt; Newer</li>

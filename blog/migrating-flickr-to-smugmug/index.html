@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Moving from Flickr to SmugMug - semicomplete</title>
+  <meta property="og:title" content="Moving from Flickr to SmugMug - semicomplete" />
+  <meta name="twitter:title" content="Moving from Flickr to SmugMug - semicomplete" />
+  <meta name="description" content="[ This post is a work in progress as I work towards solutions ]
+I received an email from Flickr on May 9.
+ Subject: Your Flickr account is in violation of our free account limits.
+You have more than 50 non-public photos on your free account.
+ They gave me 8 days to resolve it &ndash; with the threat of deleting photos. It&rsquo;s been a long time since I&rsquo;ve used Flickr, but I don&rsquo;t want to lose the content I had uploaded.">
+  <meta property="og:description" content="[ This post is a work in progress as I work towards solutions ]
+I received an email from Flickr on May 9.
+ Subject: Your Flickr account is in violation of our free account limits.
+You have more than 50 non-public photos on your free account.
+ They gave me 8 days to resolve it &ndash; with the threat of deleting photos. It&rsquo;s been a long time since I&rsquo;ve used Flickr, but I don&rsquo;t want to lose the content I had uploaded.">
+  <meta name="twitter:description" content="[ This post is a work in progress as I work towards solutions ]
+I received an email from Flickr on May 9.
+ Subject: Your Flickr account is in violation of our free account limits.
+You have more than …">
+  <meta name="author" content="Jordan Sissel"/>
+  <meta property="og:site_name" content="semicomplete" />
+  <meta property="og:url" content="https://semicomplete.com/blog/migrating-flickr-to-smugmug/" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.98.0" />
+
+  <link rel="stylesheet" href="/css/style.css" media="all" />
+  <link rel="stylesheet" href="/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="/css/custom.css" media="all" />
+
+  <script src="/js/script.js"></script>
+  <script src="/js/custom.js"></script>
+  <script defer src="/js/fontawesome.js"></script>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <h1 class="site-title"><a href="/">semicomplete</a></h1>
+    <ul class="site-navi-items">
+      <li class="site-navi-item-categories"><a href="/categories/" title="Categories">Categories</a></li>
+      <li class="site-navi-item-tags"><a href="/tags/" title="Tags">Tags</a></li>
+      <li class="site-navi-item-archives"><a href="/archives/" title="Archives">Archives</a></li>
+      <li class="site-navi-item-about"><a href="/about/" title="About">About</a></li>
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+  <div class="main" role="main">
+    <article class="article">
+      
+      
+      <h1 class="article-title">Moving from Flickr to SmugMug</h1>
+      
+      <hr class="article-title-bottom">
+      <ul class="article-meta">
+        <li class="article-meta-date"><time>10 May, 2022</time></li>
+        <li class="article-meta-categories">
+          <a href="/categories/hacks/">
+            <i class="fas fa-folder"></i>
+            hacks
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-categories">
+          <a href="/categories/photography/">
+            <i class="fas fa-folder"></i>
+            photography
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/smugmug/">
+            <i class="fas fa-tag"></i>
+            smugmug
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/flickr/">
+            <i class="fas fa-tag"></i>
+            flickr
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/json/">
+            <i class="fas fa-tag"></i>
+            json
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/photography/">
+            <i class="fas fa-tag"></i>
+            photography
+          </a>&nbsp;
+        </li>
+      </ul>
+      
+<aside class="toc">
+  <nav id="TableOfContents"></nav>
+</aside>
+      <p>[ This post is a work in progress as I work towards solutions ]</p>
+<p>I received an email from Flickr on May 9.</p>
+<blockquote>
+<p>Subject: Your Flickr account is in violation of our free account limits.</p>
+<p>You have more than 50 non-public photos on your free account.</p>
+</blockquote>
+<p>They gave me 8 days to resolve it &ndash; with the threat of deleting photos.
+It&rsquo;s been a long time since I&rsquo;ve used Flickr, but I don&rsquo;t want to lose the content I had uploaded.</p>
+<p>It was difficult to even find out what photos, if any, were non-public.
+I found a total count on Flickr&rsquo;s photo organizer and the number was in the thousands.
+I didn&rsquo;t want to make thousands of decisions today.</p>
+<p>I would probably have payed for Flickr.
+It&rsquo;s cheap and a nice service.
+However, I&rsquo;ve been using SmugMug already for two years for all my bug photos, and maybe it&rsquo;ll be worth moving my photos to SmugMug?
+I don&rsquo;t know, but I wanted to try.</p>
+<p>What do I want?
+I want all my photos, photo data (image title, descriptions, etc), albums, etc, and to put them into the same organization in SmugMug.</p>
+<p>First, I asked Flickr for <a href="https://www.flickrhelp.com/hc/en-us/articles/4404079675156-Downloading-content-from-Flickr"><em>all</em> of my data</a>.
+This process took a few hours, and once done, showed 18 .zip files to download.
+18 felt like a lot of files to download manually, and I was sure I would make errors, so I script my way to victory.</p>
+<p>At the time of writing, Flickr posts the .zip file links in my account settings page.
+From this page, I use my browser&rsquo;s Developer Tools console to list all the download links:</p>
+<pre tabindex="0"><code>&gt;&gt; Array.from(document.querySelectorAll(&#34;a&#34;)).filter(el =&gt; el.textContent.includes(&#34;Download zip file&#34;) &amp;&amp; el.href.includes(&#34;downloads.flickr.com&#34;)).join(&#34; &#34;)
+</code></pre><p>This prints all the &ldquo;Download zip file&rdquo; link URLs to the console, separated by spaces.
+I then pasted this list into a terminal for <code>wget</code> to download each one.
+It just <em>happened</em> to work because Flickr does not use any authentication on these links, so anonymous access via wget downloads them happily.</p>
+<p>After downloading, I had  18 <code>.zip</code> files.
+One file was for my account information and included albums data.
+The account information is many different files and all of them are in JSON format.
+The other 17 files were all photos and videos.</p>
+<p>I am thinking that I will need to create albums on SmugMug with the same structure as on Flickr and with the same photos. For each photo, It should have the same title and description as was on Flickr.</p>
+<p>Some quick research found that SmugMug has a <a href="https://smugmug.atlassian.net/wiki/spaces/API/overview">published API</a>, but maybe I don&rsquo;t have to write any code.
+I found a <a href="https://github.com/graveljp/smugcli">command-line tool, smugcli</a> which seems promising. It could let me create galleries on SmugMug and upload photos as needed.</p>
+<p>Maybe I can accomplish this with a bit of json parsing and smugcli?</p>
+<p>To be continued&hellip; ?</p>
+
+    </article>
+
+    
+
+
+    <ul class="pager article-pager">
+      <li class="pager-newer pager-noitem">&lt; Newer</li>
+      <li class="pager-older">
+        <a href="/blog/geekery/genie-gps1200ic-home-assistant/" data-toggle="tooltip" data-placement="top" title="Genie GPS1200IC automation with ESP8266">Older &gt;</a>
+      </li>
+    </ul>
+  </div>
+
+
+<div class="site-footer">
+  <div class="copyright">&copy; Copyright 2006-2019 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
+  <ul class="site-footer-items">
+    <li class="site-footer-item-about"><a href="/about/" title="About">About</a></li>
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a> and <a href="https://github.com/taikii/whiteplain">Whiteplain</a>
+  </div>
+</div>
+
+
+</body>
+</html>

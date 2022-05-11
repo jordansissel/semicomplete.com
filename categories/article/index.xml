@@ -1,17 +1,13 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Article on semicomplete</title>
+    <title>article on semicomplete</title>
     <link>https://semicomplete.com/categories/article/</link>
-    <description>Recent content in Article on semicomplete</description>
+    <description>Recent content in article on semicomplete</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Mon, 17 Apr 2006 02:42:39 -0700</lastBuildDate>
-    
-	<atom:link href="https://semicomplete.com/categories/article/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 17 Apr 2006 02:42:39 -0700</lastBuildDate><atom:link href="https://semicomplete.com/categories/article/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Dynamic DNS and DHCP - Easy to do, and you&#39;ll thank yourself later
 </title>

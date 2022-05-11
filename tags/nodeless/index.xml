@@ -1,17 +1,13 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Nodeless on semicomplete</title>
+    <title>nodeless on semicomplete</title>
     <link>https://semicomplete.com/tags/nodeless/</link>
-    <description>Recent content in Nodeless on semicomplete</description>
+    <description>Recent content in nodeless on semicomplete</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Sat, 27 Nov 2010 01:14:37 -0800</lastBuildDate>
-    
-	<atom:link href="https://semicomplete.com/tags/nodeless/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 27 Nov 2010 01:14:37 -0800</lastBuildDate><atom:link href="https://semicomplete.com/tags/nodeless/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Puppet &#34;pure fact-driven&#34; nodeless configuration
 </title>

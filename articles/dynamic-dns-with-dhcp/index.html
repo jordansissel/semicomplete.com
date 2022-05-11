@@ -22,11 +22,14 @@ I assume you already know how to setup plain old dns aswell …">
   <meta property="og:url" content="https://semicomplete.com/articles/dynamic-dns-with-dhcp/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.54.0" />
+  <meta name="generator" content="Hugo 0.98.0" />
 
   <link rel="stylesheet" href="/css/style.css" media="all" />
   <link rel="stylesheet" href="/css/syntax.css" media="all" />
   <link rel="stylesheet" href="/css/custom.css" media="all" />
+
+  <script src="/js/script.js"></script>
+  <script src="/js/custom.js"></script>
   <script defer src="/js/fontawesome.js"></script>
 </head>
 
@@ -65,143 +68,93 @@ I assume you already know how to setup plain old dns aswell …">
       
 <aside class="toc">
   <nav id="TableOfContents">
-<ul>
-<li><a href="#preface">Preface</a></li>
-<li><a href="#what-is-dynamic-dns">What is Dynamic DNS?</a></li>
-<li><a href="#dynamic-dns">Dynamic DNS</a></li>
-<li><a href="#create-a-dnssec-key">Create a dnssec key</a></li>
-<li><a href="#named-conf-changes">named.conf changes</a></li>
-<li><a href="#testing-with-nsupdate">Testing with nsupdate</a></li>
-<li><a href="#dhcpd">DHCPD</a>
-<ul>
-<li><a href="#sample-entry-without-fixed-address-roamer">Sample entry without fixed-address (roamer)</a></li>
-<li><a href="#sample-entry-set-with-group">Sample entry set with &lsquo;group&rsquo;</a></li>
-<li><a href="#sample-fixed-address">Sample fixed-address</a></li>
-</ul></li>
-<li><a href="#dhcpd-conf-caveats">dhcpd.conf caveats</a></li>
-</ul>
+  <ul>
+    <li><a href="#sample-entry-without-fixed-address-roamer">Sample entry without fixed-address (roamer)</a></li>
+    <li><a href="#sample-entry-set-with-group">Sample entry set with &lsquo;group&rsquo;</a></li>
+    <li><a href="#sample-fixed-address">Sample fixed-address</a></li>
+  </ul>
 </nav>
 </aside>
-      
-
-<h1 id="preface">Preface</h1>
-
+      <h1 id="preface">Preface</h1>
 <p>This article will cover how to setup dns with dynamic updates aswell as
 configuring your dhcp server to push updates to it aswell.</p>
-
 <p>I assume you already know how to setup plain old dns aswell as plain old
 dhcp. This is not an introduction to either of those. I used BIND 9 and
 ISC DHCPD v3 for this article.</p>
-
 <p>If there&rsquo;s anything this article doesn&rsquo;t cover with respect to what you
 are looking for, leave a comment and I&rsquo;ll do what I can.</p>
-
 <h1 id="what-is-dynamic-dns">What is Dynamic DNS?</h1>
-
 <p>Dynamic DNS is the means by which to push new records into your dns
 server while it is running, without having to edit any zone files. It is
 quite often coupled with dhcp to provide dynamic network services that
 have hostnames follow the appropriate machines around.</p>
-
 <h1 id="dynamic-dns">Dynamic DNS</h1>
-
 <p>Setting up dynamic dns is pretty straight forward. To do it securely, you
 need to first create a secret key. This secret key will be used to
 authenticate our dns update clients with the dns server. Luckily for us,
 there&rsquo;s a tool that&rsquo;ll do that for us.</p>
-
 <h1 id="create-a-dnssec-key">Create a dnssec key</h1>
-
 <p>That tool is called <code>dnssec-keygen</code>. Don&rsquo;t feel like reading
 the manpage? Fine. <code>dnssec-keygen</code> is a tool to create dnssec
 keys, much like ssh-keygen creates ssh keys. Pick a name for your key,
 it can be any name. I usually name it appropriately. For this example, I
-will call our key <i>dhcpupdate</i>.</p>
-
+will call our key <!-- raw HTML omitted -->dhcpupdate<!-- raw HTML omitted -->.</p>
 <p>Create the key as such:</p>
-
-<pre><code>% dnssec-keygen -a hmac-md5 -b 128 -n USER dhcpupdate
+<pre tabindex="0"><code>% dnssec-keygen -a hmac-md5 -b 128 -n USER dhcpupdate
 Kdhcpupdate.+157+14638
-</code></pre>
-
-<p>This will create a 128bit HMAC-MD5 keyfile called <i>dhcpupdate</i>.</p>
-
+</code></pre><p>This will create a 128bit HMAC-MD5 keyfile called <!-- raw HTML omitted -->dhcpupdate<!-- raw HTML omitted -->.</p>
 <p>The output is the file prefix. If you do <code>ls Kdhcpupdate*</code>
 you will see two files. The .key file is most useful, in my opinion.
 Looking at the .key file:</p>
-
-<pre>
-dhcpupdate. IN KEY 0 3 157 N8Hk2RUFO84bEVl3uGTD2A==
-</pre>
-
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
 <p>No, that is not the key I use. No, you shouldn&rsquo;t use that key for your
 server ;)</p>
-
-<p>The last token in that file is the key (<i>N8Hk&hellip;</i>). Keep that
+<p>The last token in that file is the key (<!-- raw HTML omitted -->N8Hk&hellip;<!-- raw HTML omitted -->). Keep that
 secret.  Forever.</p>
-
-<h1 id="named-conf-changes">named.conf changes</h1>
-
+<h1 id="namedconf-changes">named.conf changes</h1>
 <p>The updates to named.conf are pretty straightforward. For every zone you
 want to allow dynamic updates (for this specific key), you need to add
 an <code>allow-update</code> section. First, you&rsquo;ll want to add a
 <code>key</code> section. The following goes in the global portion of
 your <code>named.conf</code>:</p>
-
-<pre><code>key dhcpupdate {
+<pre tabindex="0"><code>key dhcpupdate {
 algorithm hmac-md5;
-secret &quot;YOURKEYGOESHERE&quot;;
+secret &#34;YOURKEYGOESHERE&#34;;
 # example:
-# secret &quot;N8Hk2RUFO84bEVl3uGTD2A==&quot;;
+# secret &#34;N8Hk2RUFO84bEVl3uGTD2A==&#34;;
 };
-</code></pre>
-
-<p>Simple enough. Just remember that it goes in quotes!</p>
-
+</code></pre><p>Simple enough. Just remember that it goes in quotes!</p>
 <p>Next, we need to add <code>allow-update</code> entries to all zones we
 would like to update. Let&rsquo;s say I have two zones:</p>
-
 <ul>
 <li>home</li>
 <li>0.168.192.in-addr.arpa</li>
 </ul>
-
 <p>In my named.conf, I&rsquo;ll want to add the following to those zone
 declarations:</p>
-
-<pre><code>allow-update { key dhcpupdate; };
-</code></pre>
-
-<p>For example:</p>
-
-<pre><code>zone &quot;home&quot; {
+<pre tabindex="0"><code>allow-update { key dhcpupdate; };
+</code></pre><p>For example:</p>
+<pre tabindex="0"><code>zone &#34;home&#34; {
     type master;
-    file &quot;master/db-home&quot;
+    file &#34;master/db-home&#34;
     allow-update { key dhcpupdate; };
 };
 
-zone &quot;0.168.192.in-addr.arpa&quot; {
+zone &#34;0.168.192.in-addr.arpa&#34; {
     type master;
-    file &quot;master/db-home_rev&quot;;
+    file &#34;master/db-home_rev&#34;;
     allow-update { key dhcpupdate; };
 };
-</code></pre>
-
-<p>That&rsquo;s all we have to do. Restart named and you should be able to push
+</code></pre><p>That&rsquo;s all we have to do. Restart named and you should be able to push
 updates dynamically to the dns server.</p>
-
 <h1 id="testing-with-nsupdate">Testing with nsupdate</h1>
-
 <p>nsupdate is the tool we&rsquo;ll be using to test if we have setup the server
 correctly. nsupdate takes commands like nslookup does, if run without
 arguments:</p>
-
-<pre><code>% nsupdate
+<pre tabindex="0"><code>% nsupdate
 &gt;
-</code></pre>
-
-<p>The following commands are good to know:</p>
-
+</code></pre><p>The following commands are good to know:</p>
 <ul>
 <li><code>server [server address]</code> Sets the target server for who to send updates</li>
 <li><code>key [keyname] [secret]</code> Tell nsupdate what your key is</li>
@@ -210,12 +163,9 @@ arguments:</p>
 <li><code>send</code> Send updates</li>
 <li><code>show</code> Show updates that haven&rsquo;t been sent</li>
 </ul>
-
 <p><code>update</code> will not update the dns server automatically. It will queue the update request until you tell nsupdate to <code>send</code>.</p>
-
 <p>For this example, my dns server is <code>dns.home</code>:</p>
-
-<pre><code>% nsupdate
+<pre tabindex="0"><code>% nsupdate
 &gt; server dns.home
 &gt; key dhcpupdate N8Hk2RUFO84bEVl3uGTD2A==
 &gt; zone home
@@ -223,56 +173,33 @@ arguments:</p>
 &gt; send
 &gt; update add happynode.home. 600 IN A 192.168.0.50
 &gt; send
-</code></pre>
-
-<p>If all goes well, there will be nothing printed after you type
+</code></pre><p>If all goes well, there will be nothing printed after you type
 <code>send</code>. Let&rsquo;s check that we&rsquo;ve added it!</p>
-
-<pre><code>% host happynode.home
+<pre tabindex="0"><code>% host happynode.home
 happynode.home has address 192.168.0.50
 % host 192.168.0.50
 50.0.168.192.in-addr.arpa domain name pointer happynode.home.
-</code></pre>
-
-<p>You can delete entries from dns with (for example):</p>
-
-<pre><code>update delete happynode.home
-</code></pre>
-
-<p>However, if something went wrong:</p>
-
+</code></pre><p>You can delete entries from dns with (for example):</p>
+<pre tabindex="0"><code>update delete happynode.home
+</code></pre><p>However, if something went wrong:</p>
 <p><code>update failed: NOTZONE</code></p>
-
-<p>The above message means you didn&rsquo;t specify a hostname the dns server has zone information for. Make sure you&rsquo;re using a full domain name. That is, do not use <i>happynode</i>. Use <i>happynode.home.</i></p>
-
-<pre><code>; TSIG error with server: tsig indicates error&lt;br&gt;
+<p>The above message means you didn&rsquo;t specify a hostname the dns server has zone information for. Make sure you&rsquo;re using a full domain name. That is, do not use <!-- raw HTML omitted -->happynode<!-- raw HTML omitted -->. Use <!-- raw HTML omitted -->happynode.home.<!-- raw HTML omitted --></p>
+<pre tabindex="0"><code>; TSIG error with server: tsig indicates error&lt;br&gt;
 update failed: NOTAUTH(BADSIG)
-</code></pre>
-
-<p>The above message means you are providing the wrong key, or the server is refusing your key for another reason.</p>
-
-<pre><code>update failed: SERVFAIL
-</code></pre>
-
-<p>The number one cause for this error (for me) is permissions in the directory of your zonefile. Dynamic updates will create a journal file as: <code>/etc/namedb/home/home.jnl</code> (or wherever your zonefile is). If the user named is running as cannot create files in <code>/etc/namedb/home</code> then it will fail. This error should show up as &lsquo;permission denied&rsquo; errors in the logs with a reference to what file it is trying to create.</p>
-
+</code></pre><p>The above message means you are providing the wrong key, or the server is refusing your key for another reason.</p>
+<pre tabindex="0"><code>update failed: SERVFAIL
+</code></pre><p>The number one cause for this error (for me) is permissions in the directory of your zonefile. Dynamic updates will create a journal file as: <code>/etc/namedb/home/home.jnl</code> (or wherever your zonefile is). If the user named is running as cannot create files in <code>/etc/namedb/home</code> then it will fail. This error should show up as &lsquo;permission denied&rsquo; errors in the logs with a reference to what file it is trying to create.</p>
 <p>Worst case, run named with a high debug level. Also, don&rsquo;t reload
 named, restart named when debugging. Reloading doesn&rsquo;t reinitialize
 some things.</p>
-
 <h1 id="dhcpd">DHCPD</h1>
-
 <p>A few minor changes are necesary to your dhcpd.conf (isc dhcp3 server). First, in the global portion:</p>
-
-<pre><code>ddns-update-style interim;
+<pre tabindex="0"><code>ddns-update-style interim;
 
 # If you have fixed-address entries you want to use dynamic dns
 update-static-leases on;
-</code></pre>
-
-<p>Furthermore, you need to tell dhcpd.conf about the dnssec key and zone information. The following still goes in your dhcpd.conf:</p>
-
-<pre><code>key dhcpupdate {
+</code></pre><p>Furthermore, you need to tell dhcpd.conf about the dnssec key and zone information. The following still goes in your dhcpd.conf:</p>
+<pre tabindex="0"><code>key dhcpupdate {
     algorithm hmac-md5
     secret N8Hk2RUFO84bEVl3uGTD2A==;
 }
@@ -291,71 +218,57 @@ zone home {
     primary dns;
     key dhcpupdate;
 }
-</code></pre>
-
-<p><em>NOTE!</em> Notice that the secret is entered WITHOUT QUOTES. Doing so with quotes is a syntax error. If you see errors about invalid base64 characters, this is likely the reason.</p>
-
+</code></pre><p><em>NOTE!</em> Notice that the secret is entered WITHOUT QUOTES. Doing so with quotes is a syntax error. If you see errors about invalid base64 characters, this is likely the reason.</p>
 <p>The <code>primary</code> values are the primary dns server entries so dhcpd knows where to send updates. In this case, my primary dns is <code>dns.home</code>. Yours will obviously vary, as your key should vary.</p>
-
 <p>Next, I&rsquo;ll show you a few different examples.</p>
-
 <h2 id="sample-entry-without-fixed-address-roamer">Sample entry without fixed-address (roamer)</h2>
-
-<pre><code>host happylaptop {
+<pre tabindex="0"><code>host happylaptop {
     hardware ethernet 00:0a:39:22:da:39;
-    option host-name &quot;happylaptop&quot;;
-    option domain-name &quot;home&quot;;
-    ddns-hostname &quot;happylaptop&quot;;
-    ddns-domain-name &quot;home&quot;;
+    option host-name &#34;happylaptop&#34;;
+    option domain-name &#34;home&#34;;
+    ddns-hostname &#34;happylaptop&#34;;
+    ddns-domain-name &#34;home&#34;;
 }
-</code></pre>
-
-<p>When <code>happylaptop</code> requests an address via dhcp, the dhcp server will tell the dns server. Specifically, it will push forward (A) and reverse (PTR) lookup entries. Excellent. Now I can access my laptop from the network without having to lookup, find, or discover it&rsquo;s IP address, becuase I can simply point at <code>happylaptop.home</code> and it resolves to my laptop, wherever it is.</p>
-
+</code></pre><p>When <code>happylaptop</code> requests an address via dhcp, the dhcp server will tell the dns server. Specifically, it will push forward (A) and reverse (PTR) lookup entries. Excellent. Now I can access my laptop from the network without having to lookup, find, or discover it&rsquo;s IP address, becuase I can simply point at <code>happylaptop.home</code> and it resolves to my laptop, wherever it is.</p>
 <h2 id="sample-entry-set-with-group">Sample entry set with &lsquo;group&rsquo;</h2>
-
-<pre><code>group {
-    option domain-name &quot;home&quot;;
-    ddns-domainname &quot;home&quot;;
+<pre tabindex="0"><code>group {
+    option domain-name &#34;home&#34;;
+    ddns-domainname &#34;home&#34;;
 
     host happylaptop {
         hardware ethernet 00:0a:39:22:da:39;
-        option host-name &quot;happylaptop&quot;;
-        ddns-hostname &quot;happylaptop&quot;;
+        option host-name &#34;happylaptop&#34;;
+        ddns-hostname &#34;happylaptop&#34;;
     }
 
     host dellstation  {
         hardware ethernet 00:b1:48:2a:ad:9c;
-        option host-name &quot;dellstation&quot;;
-        ddns-hostname &quot;dellstation&quot;;
+        option host-name &#34;dellstation&#34;;
+        ddns-hostname &#34;dellstation&#34;;
     }
 }
-</code></pre>
-
-<h2 id="sample-fixed-address">Sample fixed-address</h2>
-
-<pre><code>host jukebox {
+</code></pre><h2 id="sample-fixed-address">Sample fixed-address</h2>
+<pre tabindex="0"><code>host jukebox {
     hardware ethernet 01:d0:06:b8:68:34;
     fixed-address 192.168.0.5;
-    ddns-hostname &quot;jukebox&quot;;
-    ddns-domain-name &quot;home&quot;;
-    option host-name &quot;jukebox&quot;;
-    option domain-name &quot;home&quot;;
+    ddns-hostname &#34;jukebox&#34;;
+    ddns-domain-name &#34;home&#34;;
+    option host-name &#34;jukebox&#34;;
+    option domain-name &#34;home&#34;;
 }
-</code></pre>
-
-<p>That should be a decent set of examples.</p>
-
-<h1 id="dhcpd-conf-caveats">dhcpd.conf caveats</h1>
-
+</code></pre><p>That should be a decent set of examples.</p>
+<h1 id="dhcpdconf-caveats">dhcpd.conf caveats</h1>
 <ol>
 <li>The option, <code>use-host-decl-names</code> does <strong>NOTHING</strong> (it seems?) to aid in automatic specification of <code>ddns-hostname</code>. This is weird. If you find otherwise, let me know.</li>
 <li>You must specify ddns-hostname and ddns-domainame. dhcpd will not &ldquo;figure it
 out&rdquo; if you just specify host-name and domain-name.</li>
-<li>I don&rsquo;t know how to get dynamic-generated roamer addresses working, if it&rsquo;s possible. That is, I want to specify a range of roamers in 192.168.0.<sup>160</sup>&frasl;<sub>27</sub>, and want dhcpd to autogenerate dns names for those based on a given pattern. Possible? Perhaps not.</li>
+<li>I don&rsquo;t know how to get dynamic-generated roamer addresses working, if it&rsquo;s possible. That is, I want to specify a range of roamers in 192.168.0.160/27, and want dhcpd to autogenerate dns names for those based on a given pattern. Possible? Perhaps not.</li>
 </ol>
 
     </article>
+
+    
+
 
     <ul class="pager article-pager">
       <li class="pager-newer pager-noitem">&lt; Newer</li>

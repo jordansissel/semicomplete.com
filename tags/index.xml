@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on semicomplete</title>
@@ -7,22 +7,63 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Tue, 11 May 2010 01:59:47 -0700</lastBuildDate>
-    
-	<atom:link href="https://semicomplete.com/tags/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 10 May 2022 22:55:00 -0700</lastBuildDate><atom:link href="https://semicomplete.com/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Automation</title>
-      <link>https://semicomplete.com/tags/automation/</link>
-      <pubDate>Tue, 11 May 2010 01:59:47 -0700</pubDate>
+      <title>flickr</title>
+      <link>https://semicomplete.com/tags/flickr/</link>
+      <pubDate>Tue, 10 May 2022 22:55:00 -0700</pubDate>
       
-      <guid>https://semicomplete.com/tags/automation/</guid>
+      <guid>https://semicomplete.com/tags/flickr/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Classifier</title>
+      <title>json</title>
+      <link>https://semicomplete.com/tags/json/</link>
+      <pubDate>Tue, 10 May 2022 22:55:00 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/json/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>photography</title>
+      <link>https://semicomplete.com/tags/photography/</link>
+      <pubDate>Tue, 10 May 2022 22:55:00 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/photography/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>smugmug</title>
+      <link>https://semicomplete.com/tags/smugmug/</link>
+      <pubDate>Tue, 10 May 2022 22:55:00 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/smugmug/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>esp8266</title>
+      <link>https://semicomplete.com/tags/esp8266/</link>
+      <pubDate>Mon, 03 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://semicomplete.com/tags/esp8266/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>esphome</title>
+      <link>https://semicomplete.com/tags/esphome/</link>
+      <pubDate>Mon, 03 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://semicomplete.com/tags/esphome/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>classifier</title>
       <link>https://semicomplete.com/tags/classifier/</link>
       <pubDate>Sat, 27 Nov 2010 01:14:37 -0800</pubDate>
       
@@ -31,61 +72,7 @@
     </item>
     
     <item>
-      <title>Debugging</title>
-      <link>https://semicomplete.com/tags/debugging/</link>
-      <pubDate>Mon, 21 Jun 2010 19:24:23 -0700</pubDate>
-      
-      <guid>https://semicomplete.com/tags/debugging/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Firefox</title>
-      <link>https://semicomplete.com/tags/firefox/</link>
-      <pubDate>Sat, 08 Apr 2006 03:53:00 -0700</pubDate>
-      
-      <guid>https://semicomplete.com/tags/firefox/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Headless</title>
-      <link>https://semicomplete.com/tags/headless/</link>
-      <pubDate>Tue, 11 May 2010 01:59:47 -0700</pubDate>
-      
-      <guid>https://semicomplete.com/tags/headless/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Ideas</title>
-      <link>https://semicomplete.com/tags/ideas/</link>
-      <pubDate>Sat, 08 Apr 2006 03:53:00 -0700</pubDate>
-      
-      <guid>https://semicomplete.com/tags/ideas/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Java</title>
-      <link>https://semicomplete.com/tags/java/</link>
-      <pubDate>Mon, 21 Jun 2010 19:24:23 -0700</pubDate>
-      
-      <guid>https://semicomplete.com/tags/java/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Latency</title>
-      <link>https://semicomplete.com/tags/latency/</link>
-      <pubDate>Fri, 04 Jun 2010 02:33:15 -0700</pubDate>
-      
-      <guid>https://semicomplete.com/tags/latency/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Nodeless</title>
+      <title>nodeless</title>
       <link>https://semicomplete.com/tags/nodeless/</link>
       <pubDate>Sat, 27 Nov 2010 01:14:37 -0800</pubDate>
       
@@ -94,7 +81,7 @@
     </item>
     
     <item>
-      <title>Nodes</title>
+      <title>nodes</title>
       <link>https://semicomplete.com/tags/nodes/</link>
       <pubDate>Sat, 27 Nov 2010 01:14:37 -0800</pubDate>
       
@@ -103,16 +90,7 @@
     </item>
     
     <item>
-      <title>Performance</title>
-      <link>https://semicomplete.com/tags/performance/</link>
-      <pubDate>Fri, 04 Jun 2010 02:33:15 -0700</pubDate>
-      
-      <guid>https://semicomplete.com/tags/performance/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Puppet</title>
+      <title>puppet</title>
       <link>https://semicomplete.com/tags/puppet/</link>
       <pubDate>Sat, 27 Nov 2010 01:14:37 -0800</pubDate>
       
@@ -121,16 +99,7 @@
     </item>
     
     <item>
-      <title>Ssl</title>
-      <link>https://semicomplete.com/tags/ssl/</link>
-      <pubDate>Fri, 04 Jun 2010 02:33:15 -0700</pubDate>
-      
-      <guid>https://semicomplete.com/tags/ssl/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Truth</title>
+      <title>truth</title>
       <link>https://semicomplete.com/tags/truth/</link>
       <pubDate>Sat, 27 Nov 2010 01:14:37 -0800</pubDate>
       
@@ -139,7 +108,52 @@
     </item>
     
     <item>
-      <title>Web</title>
+      <title>debugging</title>
+      <link>https://semicomplete.com/tags/debugging/</link>
+      <pubDate>Mon, 21 Jun 2010 19:24:23 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/debugging/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>java</title>
+      <link>https://semicomplete.com/tags/java/</link>
+      <pubDate>Mon, 21 Jun 2010 19:24:23 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/java/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>latency</title>
+      <link>https://semicomplete.com/tags/latency/</link>
+      <pubDate>Fri, 04 Jun 2010 02:33:15 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/latency/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>performance</title>
+      <link>https://semicomplete.com/tags/performance/</link>
+      <pubDate>Fri, 04 Jun 2010 02:33:15 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/performance/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ssl</title>
+      <link>https://semicomplete.com/tags/ssl/</link>
+      <pubDate>Fri, 04 Jun 2010 02:33:15 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/ssl/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>web</title>
       <link>https://semicomplete.com/tags/web/</link>
       <pubDate>Fri, 04 Jun 2010 02:33:15 -0700</pubDate>
       
@@ -148,7 +162,25 @@
     </item>
     
     <item>
-      <title>Webdriver</title>
+      <title>automation</title>
+      <link>https://semicomplete.com/tags/automation/</link>
+      <pubDate>Tue, 11 May 2010 01:59:47 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/automation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>headless</title>
+      <link>https://semicomplete.com/tags/headless/</link>
+      <pubDate>Tue, 11 May 2010 01:59:47 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/headless/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>webdriver</title>
       <link>https://semicomplete.com/tags/webdriver/</link>
       <pubDate>Tue, 11 May 2010 01:59:47 -0700</pubDate>
       
@@ -157,7 +189,7 @@
     </item>
     
     <item>
-      <title>X11</title>
+      <title>x11</title>
       <link>https://semicomplete.com/tags/x11/</link>
       <pubDate>Tue, 11 May 2010 01:59:47 -0700</pubDate>
       
@@ -166,7 +198,7 @@
     </item>
     
     <item>
-      <title>Xdotool</title>
+      <title>xdotool</title>
       <link>https://semicomplete.com/tags/xdotool/</link>
       <pubDate>Tue, 11 May 2010 01:59:47 -0700</pubDate>
       
@@ -175,11 +207,29 @@
     </item>
     
     <item>
-      <title>Xorg</title>
+      <title>xorg</title>
       <link>https://semicomplete.com/tags/xorg/</link>
       <pubDate>Tue, 11 May 2010 01:59:47 -0700</pubDate>
       
       <guid>https://semicomplete.com/tags/xorg/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>firefox</title>
+      <link>https://semicomplete.com/tags/firefox/</link>
+      <pubDate>Sat, 08 Apr 2006 03:53:00 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/firefox/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ideas</title>
+      <link>https://semicomplete.com/tags/ideas/</link>
+      <pubDate>Sat, 08 Apr 2006 03:53:00 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/tags/ideas/</guid>
       <description></description>
     </item>
     

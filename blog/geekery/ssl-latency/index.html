@@ -21,11 +21,14 @@ TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 
   <meta property="og:url" content="https://semicomplete.com/blog/geekery/ssl-latency/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.54.0" />
+  <meta name="generator" content="Hugo 0.98.0" />
 
   <link rel="stylesheet" href="/css/style.css" media="all" />
   <link rel="stylesheet" href="/css/syntax.css" media="all" />
   <link rel="stylesheet" href="/css/custom.css" media="all" />
+
+  <script src="/js/script.js"></script>
+  <script src="/js/custom.js"></script>
   <script defer src="/js/fontawesome.js"></script>
 </head>
 
@@ -93,60 +96,45 @@ TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 
       </ul>
       
 <aside class="toc">
-  
+  <nav id="TableOfContents"></nav>
 </aside>
       <p>At work today, I started investigating the latency differences for similar
 requests between HTTP and HTTPS. Historically, I was running with the assumption
 that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes
 are more CPU intensive. I didn&rsquo;t really think about the network consequences of
 SSL until today.</p>
-
 <p>It&rsquo;s all in the handshake.</p>
-
 <p><a href="http://www.google.com/search?q=tcp+handshake">TCP handshake</a> is a
 3-packet event. The client sends 2 packets, the server sends 1. Best case,
 you&rsquo;re looking at one round-trip for establishing your connection. We can show
 this empirically by comparing ping and tcp connect times:</p>
-
-<pre><code>% fping -q -c 5 www.csh.rit.edu
+<pre tabindex="0"><code>% fping -q -c 5 www.csh.rit.edu
 www.csh.rit.edu : xmt/rcv/%loss = 5/5/0%, min/avg/max = 112/115/123
-</code></pre>
-
-<p>Average is 115ms for ping round-trip. How about TCP? Let&rsquo;s ask curl how long tcp connect takes:</p>
-
-<pre><code>% seq 5 | xargs -I@ -n1 curl -so /dev/null -w &quot;%{time_connect}\n&quot; http://www.csh.rit.edu
+</code></pre><p>Average is 115ms for ping round-trip. How about TCP? Let&rsquo;s ask curl how long tcp connect takes:</p>
+<pre tabindex="0"><code>% seq 5 | xargs -I@ -n1 curl -so /dev/null -w &#34;%{time_connect}\n&#34; http://www.csh.rit.edu
 0.117
 0.116
 0.117
 0.116
 0.116
-</code></pre>
-
-<p>There&rsquo;s your best case. This is because when you (the client) receive the 2nd
+</code></pre><p>There&rsquo;s your best case. This is because when you (the client) receive the 2nd
 packet in the handshake (SYN+ACK), you reply with ACK and consider the
 connection open. Exactly 1 round-trip is required before you can send your http
 request.</p>
-
 <p>What about when using SSL? Let&rsquo;s ask curl again:</p>
-
-<pre><code>% curl -kso /dev/null -w &quot;tcp:%{time_connect}, ssldone:%{time_appconnect}\n&quot; https://www.csh.rit.edu
+<pre tabindex="0"><code>% curl -kso /dev/null -w &#34;tcp:%{time_connect}, ssldone:%{time_appconnect}\n&#34; https://www.csh.rit.edu
 tcp:0.117, ssldone:0.408
 
 # How about to google?
-% curl -kso /dev/null -w &quot;tcp:%{time_connect}, ssldone:%{time_appconnect}\n&quot; https://www.google.com
+% curl -kso /dev/null -w &#34;tcp:%{time_connect}, ssldone:%{time_appconnect}\n&#34; https://www.google.com
 tcp:0.021, ssldone:0.068
-
-</code></pre>
-
-<p>3.5x jump in latency just for adding SSL to the mix, and this is before we sent
+</code></pre><p>3.5x jump in latency just for adding SSL to the mix, and this is before we sent
 the http request.</p>
-
 <p>The reason for this is easily shown with tcpdump. For this test, I&rsquo;ll use
 tcpdump to sniff https traffic and then use openssl s_client to simply connect
 to the http server over ssl and do nothing else. Start tcpdump first, then run
 openssl s_client.</p>
-
-<pre><code>terminal1 % sudo tcpdump -ttttt -i any 'port 443 and host www.csh.rit.edu'
+<pre tabindex="0"><code>terminal1 % sudo tcpdump -ttttt -i any &#39;port 443 and host www.csh.rit.edu&#39;
 ...
 
 terminal2 % openssl s_client -connect www.csh.rit.edu:443
@@ -174,11 +162,7 @@ Tcpdump output trimmed for content:
 # SSL handshake complete, ready to send HTTP request. 
 # At this point, openssl s_client is sitting waiting for you to type something
 # into stdin.
-
-</code></pre>
-
-<p>Summarizing the above tcpdump data for this ssl handshake:</p>
-
+</code></pre><p>Summarizing the above tcpdump data for this ssl handshake:</p>
 <ul>
 <li>12 packets for SSL, vs 3 for TCP alone</li>
 <li>TCP handshake took 114ms</li>
@@ -186,37 +170,28 @@ Tcpdump output trimmed for content:
 <li>Number of network round-trips was 3.</li>
 <li>SSL portion took 322ms (network and crypto)</li>
 </ul>
-
 <p>The server tested above has a 2048 bit ssl cert. Running &lsquo;openssl speed rsa&rsquo; on
 the webserver shows it can do a signature in 22ms:</p>
-
-<pre><code>                  sign    verify    sign/s verify/s
+<pre tabindex="0"><code>                  sign    verify    sign/s verify/s
 rsa 2048 bits 0.022382s 0.000542s     44.7   1845.4
-</code></pre>
-
-<p>Anyway. The point is, no matter how fast your SSL accelerators (hardware
+</code></pre><p>Anyway. The point is, no matter how fast your SSL accelerators (hardware
 loadbalancer, etc), if your SSL end points aren&rsquo;t near the user, then your
 first connect will be slow. As shown above, 22ms for the crypto piece of SSL
 handshake, which means 300ms of the SSL portion above was likely network
 latency and some other overhead.</p>
-
 <p>Once SSL is established, though, it switches to a block cipher (3DES, etc)
 which is much faster and the resource (network, cpu) overhead is pretty tiny by
 comparison.</p>
-
 <p>Summarizing from above: Using SSL incurs a 3.5x latency overhead for each
 handshake, but afterwards it&rsquo;s generally fast like plain TCP. If you accept
 this conclusion, let&rsquo;s examine how this can affect website performance.</p>
-
 <p>Got firebug? Open any website. Seriously. Watch the network activity. How many
 HTTP requests are made? Can you tell how many of those that go to the same
 domain use http pipelining (or keepalive)? How many initiate new requests each
 time? You can track this with tcpdump by looking for &lsquo;syn&rsquo; packets if you want
 (<code>tcpdump 'tcp[tcpflags] == tcp-syn'</code>).</p>
-
 <p>What about the street wisdom for high-performance web servers? HAProxy&rsquo;s site
 says:</p>
-
 <blockquote>
 <p>&ldquo;If a site needs keep-alive, there is a real problem. Highly loaded sites
 often disable keep-alive to support the maximum number of simultaneous
@@ -224,14 +199,12 @@ clients. The real downside of not having keep-alive is a slightly increased
 latency to fetch objects. Browsers double the number of concurrent connections
 on non-keepalive sites to compensate for this.&rdquo;</p>
 </blockquote>
-
 <p>Disabling keep-alive on SSL connections means every single http request is
 going to take 3 round-trips before even asking for data. If your server is
 100ms away, and you have 10 resources to serve on a single page, that&rsquo;s 3
 seconds of network latency before you include SSL crypto or resource transfer
 time. With keep alive, you could eat that handshake cost only once instead of
 10 times.</p>
-
 <p>Many browsers will open multiple simultaneous connections to any given
 webserver if it needs to fetch multiple resources. Idea is that parallelism
 gets you more tasty http resources in a shorter time. If the browser opens
@@ -241,47 +214,37 @@ higher CPU burden, too, and ultimately memory (per open connection) scales more
 cheaply than does CPU time - think: above, one active connection cost 22ms of
 time (most of which is spent in CPU) and costs much more than that connection
 holds in memory resources and scales better (easier to grow memory than cpu).</p>
-
 <p>For some data, Google and Facebook both permit keep-alive:</p>
-
-<pre><code>% URL=https://s-static.ak.facebook.com/rsrc.php/zPET4/hash/9e65hu86.js
-% curl  -w &quot;tcp: %{time_connect} ssl:%{time_appconnect}\n&quot; -sk -o /dev/null $URL -o /dev/null $URL
+<pre tabindex="0"><code>% URL=https://s-static.ak.facebook.com/rsrc.php/zPET4/hash/9e65hu86.js
+% curl  -w &#34;tcp: %{time_connect} ssl:%{time_appconnect}\n&#34; -sk -o /dev/null $URL -o /dev/null $URL
 tcp: 0.038 ssl:0.088
 tcp: 0.000 ssl:0.000
 
 % URL=https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js
-% curl  -w &quot;tcp: %{time_connect} ssl:%{time_appconnect}\n&quot; -sk -o /dev/null $URL -o /dev/null $URL
+% curl  -w &#34;tcp: %{time_connect} ssl:%{time_appconnect}\n&#34; -sk -o /dev/null $URL -o /dev/null $URL
 tcp: 0.054 ssl:0.132
 tcp: 0.000 ssl:0.000
-</code></pre>
-
-<p>The 2nd line of output reports zero time spent in tcp and ssl handshaking.
+</code></pre><p>The 2nd line of output reports zero time spent in tcp and ssl handshaking.
 Further, if you tell curl to output response headers (curl -D -) you&rsquo;ll see
 &ldquo;Connection: keep-alive&rdquo;. This is data showing that at least some of big folks
 with massive qps are using keep alive.</p>
-
 <p>Remember that new handshakes are high cpu usage, but existing SSL connections
 generally aren&rsquo;t as they are using a cheaper block cipher after the handshake.
 Disabling keep alive ensures that every request will incur an SSL handshake
 which can quickly overload a moderately-used server without SSL acceleration
 hardware if you have a large ssl key (2048 or 4096bit key).</p>
-
 <p>Even if you have SSL offloading to special hardware, you&rsquo;re still
 incuring the higher network latency that can&rsquo;t be compensated by faster
 hardware. Frankly, in most cases it&rsquo;s more cost effective to buy a weaker SSL
 certificate (1024 bit) than it is to buy SSL hardware - See
 <a href="http://en.oreilly.com/velocity2010/public/schedule/detail/14217">Google&rsquo;s Velocity 2010 talk on SSL</a></p>
-
 <p>By the way, on modern hardware you can do a decent number of SSL handshakes per
 second with 1024bit keys, but 2048bit and 4096bit keys are much harder:</p>
-
-<pre><code># 'openssl speed rsa' done on an Intel X5550 (2.66gHz)
+<pre tabindex="0"><code># &#39;openssl speed rsa&#39; done on an Intel X5550 (2.66gHz)
 rsa 1024 bits 0.000496s 0.000027s   2016.3  36713.2
 rsa 2048 bits 0.003095s 0.000093s    323.1  10799.2
 rsa 4096 bits 0.021688s 0.000345s     46.1   2901.5
-</code></pre>
-
-<p>Fixing SSL latency is not totally trivial. The CPU intensive part can be
+</code></pre><p>Fixing SSL latency is not totally trivial. The CPU intensive part can be
 handled by special hardware if you can afford it, but the only way sure way to
 solve network round-trip latency is to be closer to your user and/or to work on
 minimizing the total number of round-trips. You can be further from your users
@@ -289,6 +252,9 @@ if you don&rsquo;t force things like keep-alive to be off, which can save you mo
 in the long run by letting you have better choices of datacenter locations.</p>
 
     </article>
+
+    
+
 
     <ul class="pager article-pager">
       <li class="pager-newer">
