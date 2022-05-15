@@ -99,7 +99,13 @@ You have more than …">
       </ul>
       
 <aside class="toc">
-  <nav id="TableOfContents"></nav>
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#downloading-my-photos-and-albums">Downloading My Photos and Albums</a></li>
+    <li><a href="#sorting-into-albums">Sorting into Albums</a></li>
+    <li><a href="#uploading-to-smugmug">Uploading to SmugMug</a></li>
+  </ul>
+</nav>
 </aside>
       <p>[ This post is a work in progress as I work towards solutions ]</p>
 <p>I received an email from Flickr on May 9.</p>
@@ -116,21 +122,58 @@ I didn&rsquo;t want to make thousands of decisions today.</p>
 It&rsquo;s cheap and a nice service.
 However, I&rsquo;ve been using SmugMug already for two years for all my bug photos, and maybe it&rsquo;ll be worth moving my photos to SmugMug?
 I don&rsquo;t know, but I wanted to try.</p>
-<p>What do I want?
-I want all my photos, photo data (image title, descriptions, etc), albums, etc, and to put them into the same organization in SmugMug.</p>
+<p>Here&rsquo;s what I ended up doing:</p>
+<ol>
+<li>Login to Flickr and request <a href="https://www.flickrhelp.com/hc/en-us/articles/4404079675156-Downloading-content-from-Flickr">my data</a>.</li>
+<li>Wait a while for Flickr to process this. You&rsquo;ll get an email when it&rsquo;s done.</li>
+<li>Download all the files!</li>
+<li>Create one directory per Flickr album and sorting photos into their correct albums. To do this, I wrote a script.</li>
+</ol>
+<p>Note about the files downloaded:</p>
+<ul>
+<li>&ldquo;Account files&rdquo; include your profile, comments, and album data. This also contains photo title, description, and other information as one file per photo.</li>
+<li>&ldquo;Photos and videos&rdquo; links will be a .zip file each containing some of your photos+videos. You&rsquo;ll want to download all of the zip files.</li>
+</ul>
+<hr>
+<h2 id="downloading-my-photos-and-albums">Downloading My Photos and Albums</h2>
+<p>I want all my photos, photo data (image title, descriptions, etc), albums, etc, and to put them into the same organization in SmugMug.</p>
 <p>First, I asked Flickr for <a href="https://www.flickrhelp.com/hc/en-us/articles/4404079675156-Downloading-content-from-Flickr"><em>all</em> of my data</a>.
 This process took a few hours, and once done, showed 18 .zip files to download.
-18 felt like a lot of files to download manually, and I was sure I would make errors, so I script my way to victory.</p>
+18 felt like a lot of files to download manually, and I was sure I would make a mistake and miss one, so I script my way to victory.</p>
 <p>At the time of writing, Flickr posts the .zip file links in my account settings page.
 From this page, I use my browser&rsquo;s Developer Tools console to list all the download links:</p>
 <pre tabindex="0"><code>&gt;&gt; Array.from(document.querySelectorAll(&#34;a&#34;)).filter(el =&gt; el.textContent.includes(&#34;Download zip file&#34;) &amp;&amp; el.href.includes(&#34;downloads.flickr.com&#34;)).join(&#34; &#34;)
 </code></pre><p>This prints all the &ldquo;Download zip file&rdquo; link URLs to the console, separated by spaces.
-I then pasted this list into a terminal for <code>wget</code> to download each one.
-It just <em>happened</em> to work because Flickr does not use any authentication on these links, so anonymous access via wget downloads them happily.</p>
+I copied this list and wrote <code>wget </code> into my shell and pasted the URL list.
+It just <em>happened</em> to work because Flickr does not(*) use any authentication on these links, so anonymous access via wget downloads them happily.</p>
+<p>(*) At time of writing, May 2022</p>
 <p>After downloading, I had  18 <code>.zip</code> files.
 One file was for my account information and included albums data.
 The account information is many different files and all of them are in JSON format.
 The other 17 files were all photos and videos.</p>
+<h2 id="sorting-into-albums">Sorting into Albums</h2>
+<p>After unpacking the zip files, I started looking at the contents.</p>
+<p>I couldn&rsquo;t find any documentation about the JSON files provided by Flickr.
+I found a few Flickr forum posts where folks asked about the data inside these zip files, how to process them, etc.
+After reading a few forum threads, I assumed I was on my own.
+It was time to make some guesses about the structure!
+Some guesses were easy, like a file called &ldquo;albums.json&rdquo; which contains album information :)</p>
+<p>The structure of the &ldquo;albums.json&rdquo; file is basically <code>{ &quot;albums&quot;: [ ... ] }</code> with one entry in the albums list for each album. For me, the interesting fields were &ldquo;id&rdquo;, &ldquo;title&rdquo;, &ldquo;description&rdquo;, and &ldquo;photos&rdquo;. The &ldquo;photos&rdquo; entry is a list of photo IDs as strings.</p>
+<p>I thought, this would be easy! I assumed that for each photo ID there would be an obviously-named photo file like &ldquo;ID.jpg&rdquo;, but it wasn&rsquo;t simple.
+I found it was kind of difficult to predict the filename of the photo.</p>
+<p>I had hoped that the file named <code>photo_ID.json</code> would tell me the exact filename, but nope! For example, for a photo with ID &ldquo;23604932919&rdquo;, the photo metadata is in a predictable file named <code>photo_23604932919.json</code> but the photo itself is a file named <code>making-a-toddler-play-board_23604932919_o.jpg</code> &ndash; and no, the photo file name doesn&rsquo;t appear anywhere in the json file.</p>
+<p>After some trial and error, I made this method for finding a given photo file with a given ID:</p>
+<ol>
+<li>The photo ID from the album list could be zero &ldquo;0&rdquo; which isn&rsquo;t a valid photo ID. There&rsquo;s nothing else to do but skip this photo entry.</li>
+<li>The photo file could be a filename matching these wildcards <code>*ID_o.jpg</code>, <code>*ID.mov</code>, <code>*ID_o.png</code>, <code>*ID.m2ts</code>, <code>*ID.mp4</code>, or <code>*ID.avi</code></li>
+<li>Otherwise, we have to open <code>photo_ID.json</code> and read the &ldquo;original&rdquo; field which is a URL to the photo location on flickr.</li>
+<li>The URL might point to a placeholder representing a <a href="https://combo.staticflickr.com/pw/images/en-us/video-failure/k.png">video processing failure</a> which means you don&rsquo;t have any photo or video included for this photo ID. Something failed on Flickr&rsquo;s side.</li>
+<li>If the URL points to a real photo, the last part of the URL will be the filename in your photos zip files. For example, if the url was <code>https://live.staticflickr.com/123/12345678901_0ab23f2345_o.jpg</code>, then the real filename in the photos zip is going to be <code>12345678901_0ab23f2345_o.jpg</code></li>
+</ol>
+<p>This whole discovery process was kind of fun, actually.
+It reminded me of early web scraping tasks where there was basically no documentation about relationships between pages and content, and you had to make guesses and have somewhat complex checks in order to navigate.</p>
+<p>I wrote a small script to process the albums and copy photos and photo metadata into one directory per album to take into account all of these weird scenarios.</p>
+<h2 id="uploading-to-smugmug">Uploading to SmugMug</h2>
 <p>I am thinking that I will need to create albums on SmugMug with the same structure as on Flickr and with the same photos. For each photo, It should have the same title and description as was on Flickr.</p>
 <p>Some quick research found that SmugMug has a <a href="https://smugmug.atlassian.net/wiki/spaces/API/overview">published API</a>, but maybe I don&rsquo;t have to write any code.
 I found a <a href="https://github.com/graveljp/smugcli">command-line tool, smugcli</a> which seems promising. It could let me create galleries on SmugMug and upload photos as needed.</p>
