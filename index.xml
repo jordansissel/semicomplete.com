@@ -56,6 +56,16 @@ Mailing List The xdotool users mailing list is: xdotool-users@googlegroups.</des
     </item>
     
     <item>
+      <title>Growing logstash&#39;s value</title>
+      <link>https://semicomplete.com/blog/growing-logstash-value/</link>
+      <pubDate>Sun, 29 Jul 2012 23:00:08 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/blog/growing-logstash-value/</guid>
+      <description>I spent a while today thinking about nerdy stuff - logstash, etc. I want to grow logstash in terms of performance, use case, deployment instances, happy users, and community.
+While musing about on my mental roadmap of logstash, I found most things boil down to costs and returns on investment, even with open source software. Money, time, energy, and patience are all costs. Just because something doesn&amp;rsquo;t cost any money doesn&amp;rsquo;t mean it won&amp;rsquo;t consume any time or energy.</description>
+    </item>
+    
+    <item>
       <title>Puppet &#34;pure fact-driven&#34; nodeless configuration
 </title>
       <link>https://semicomplete.com/blog/geekery/puppet-nodeless-configuration/</link>

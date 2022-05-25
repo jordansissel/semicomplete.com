@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Growing logstash&#39;s value - semicomplete</title>
+  <meta property="og:title" content="Growing logstash&#39;s value - semicomplete" />
+  <meta name="twitter:title" content="Growing logstash&#39;s value - semicomplete" />
+  <meta name="description" content="I spent a while today thinking about nerdy stuff - logstash, etc. I want to grow logstash in terms of performance, use case, deployment instances, happy users, and community.
+While musing about on my mental roadmap of logstash, I found most things boil down to costs and returns on investment, even with open source software. Money, time, energy, and patience are all costs. Just because something doesn&rsquo;t cost any money doesn&rsquo;t mean it won&rsquo;t consume any time or energy.">
+  <meta property="og:description" content="I spent a while today thinking about nerdy stuff - logstash, etc. I want to grow logstash in terms of performance, use case, deployment instances, happy users, and community.
+While musing about on my mental roadmap of logstash, I found most things boil down to costs and returns on investment, even with open source software. Money, time, energy, and patience are all costs. Just because something doesn&rsquo;t cost any money doesn&rsquo;t mean it won&rsquo;t consume any time or energy.">
+  <meta name="twitter:description" content="I spent a while today thinking about nerdy stuff - logstash, etc. I want to grow logstash in terms of performance, use case, deployment instances, happy users, and community.
+While musing about on my …">
+  <meta name="author" content="Jordan Sissel"/>
+  <meta property="og:site_name" content="semicomplete" />
+  <meta property="og:url" content="https://semicomplete.com/blog/growing-logstash-value/" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.98.0" />
+
+  <link rel="stylesheet" href="/css/style.css" media="all" />
+  <link rel="stylesheet" href="/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="/css/custom.css" media="all" />
+
+  <script src="/js/script.js"></script>
+  <script src="/js/custom.js"></script>
+  <script defer src="/js/fontawesome.js"></script>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <h1 class="site-title"><a href="/">semicomplete</a></h1>
+    <ul class="site-navi-items">
+      <li class="site-navi-item-categories"><a href="/categories/" title="Categories">Categories</a></li>
+      <li class="site-navi-item-tags"><a href="/tags/" title="Tags">Tags</a></li>
+      <li class="site-navi-item-archives"><a href="/archives/" title="Archives">Archives</a></li>
+      <li class="site-navi-item-about"><a href="/about/" title="About">About</a></li>
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+  <div class="main" role="main">
+    <article class="article">
+      
+      
+      <h1 class="article-title">Growing logstash&#39;s value</h1>
+      
+      <hr class="article-title-bottom">
+      <ul class="article-meta">
+        <li class="article-meta-date"><time>29 July, 2012</time></li>
+        <li class="article-meta-tags">
+          <a href="/tags/logstash/">
+            <i class="fas fa-tag"></i>
+            logstash
+          </a>&nbsp;
+        </li>
+      </ul>
+      
+<aside class="toc">
+  <nav id="TableOfContents"></nav>
+</aside>
+      <p>I spent a while today thinking about nerdy stuff - logstash, etc. I want to
+grow logstash in terms of performance, use case, deployment instances, happy
+users, and community.</p>
+<p>While musing about on my mental roadmap of logstash, I found most things boil
+down to costs and returns on investment, even with open source software.
+Money, time, energy, and patience are all costs. Just because something
+doesn&rsquo;t cost any money doesn&rsquo;t mean it won&rsquo;t consume any time or energy.</p>
+<p>I see two distinct groups of users, with respect to cost. New users and current
+users. In terms of inputs and outputs, the phrase &lsquo;return on investment&rsquo; comes
+to mind. New users are likely in the evaluation and investigation phase, mainly
+estimating ROI or judging &ldquo;is this solution useful to me?&rdquo; Existing users are
+likely in the maintenance and integration phases, mainly trying to improve or
+maintain ROI or pushing towards improving value provided by a tool.</p>
+<p>These two user groups are, in my observation and from a seller&rsquo;s perspective,
+quite distinct in terms of strategy. How you acquire happy new users is not
+necessarily how you maintain and energize existing users.</p>
+<h1 id="targeting-new-users">Targeting New Users</h1>
+<p>New users easily stumble on bad documentation, complex architectures, and excessive steps.</p>
+<p>I have a few goals regarding minimization for new users: reducing mean time to
+demo and mean time to deploy are critical. Reducing &rsquo;time to demo&rsquo; requires
+that I focus on minimizing steps required to answer &lsquo;is logstash useful?&rsquo;.
+Additionally, ensuring each required step in &rsquo;time to demo&rsquo; is as simple as
+possible. Reducing time to deploy means publishing high quality init scripts
+(upstart, systemd, sysv init) as well as high quality puppet, chef, and
+cfengine modules.</p>
+<p>The time someone spends as what I consider a &rsquo;new user&rsquo; is actually quite
+short. My goal with users in this stage are to help them quickly and accurately
+answer, &ldquo;will this tool benefit me?&rdquo;</p>
+<h1 id="targeting-existing-users">Targeting Existing Users</h1>
+<p>As an existing user of a tool, I&rsquo;m often looking for how to reduce operational,
+maintenance, and integration costs. Operational costs appear as physical
+resource usage (servers, or fuel-like resources). Maintenance costs appear as
+bugs and related investigations, monitoring, etc. Integration costs appear as
+time and energy spent making the tool work well with your infrastructure.</p>
+<p>These kind of users are usually a bit more invested in use of the tool, but I
+want to avoid abusing that fact. Time and energy investments in a free tool
+can cause as much vendor trappings as monetary investments. Don&rsquo;t treat
+your existing users like dirt, right?</p>
+<p>My goal for the next few months is to become one of these existing users of
+logstash (to date, as I&rsquo;ve confessed, I&rsquo;ve never run logstash in production).
+I&rsquo;ll be able to do that at DreamHost (starting tomorrow!).</p>
+<p>Additionally, I will be focusing strongly on improving logstash new user
+experience. Happier new users should reflect nicely on community growth and
+activity. That&rsquo;s my goal, anyway!</p>
+
+    </article>
+
+    
+
+
+    <ul class="pager article-pager">
+      <li class="pager-newer">
+          <a href="/blog/home-office-automation/" data-toggle="tooltip" data-placement="top" title="Home Office Automation">&lt; Newer</a>
+      </li>
+      <li class="pager-older">
+        <a href="/blog/geekery/puppet-nodeless-configuration/" data-toggle="tooltip" data-placement="top" title="Puppet &#34;pure fact-driven&#34; nodeless configuration
+">Older &gt;</a>
+      </li>
+    </ul>
+  </div>
+
+
+<div class="site-footer">
+  <div class="copyright">&copy; Copyright 2006-2019 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
+  <ul class="site-footer-items">
+    <li class="site-footer-item-about"><a href="/about/" title="About">About</a></li>
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a> and <a href="https://github.com/taikii/whiteplain">Whiteplain</a>
+  </div>
+</div>
+
+
+</body>
+</html>

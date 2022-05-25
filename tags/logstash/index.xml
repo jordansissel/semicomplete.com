@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>logstash on semicomplete</title>
+    <link>https://semicomplete.com/tags/logstash/</link>
+    <description>Recent content in logstash on semicomplete</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
+    <lastBuildDate>Sun, 29 Jul 2012 23:00:08 -0700</lastBuildDate><atom:link href="https://semicomplete.com/tags/logstash/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Growing logstash&#39;s value</title>
+      <link>https://semicomplete.com/blog/growing-logstash-value/</link>
+      <pubDate>Sun, 29 Jul 2012 23:00:08 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/blog/growing-logstash-value/</guid>
+      <description>I spent a while today thinking about nerdy stuff - logstash, etc. I want to grow logstash in terms of performance, use case, deployment instances, happy users, and community.
+While musing about on my mental roadmap of logstash, I found most things boil down to costs and returns on investment, even with open source software. Money, time, energy, and patience are all costs. Just because something doesn&amp;rsquo;t cost any money doesn&amp;rsquo;t mean it won&amp;rsquo;t consume any time or energy.</description>
+    </item>
+    
+  </channel>
+</rss>
