@@ -1,28 +1,16 @@
-+++
-# Imported from original pyblosxom .txt format at 2015-08-14
-date = "2012-07-29T23:00:08-07:00"
-title = "Growing logstash's value\n"
-# Marked a draft because frankly my old writing may not be worth surfacing again.
-# I made bad word choices and had some strong-and-closed opinions years ago.
-# We learn over time, eh? :)
-draft = true
-type = "old"
-categories = [ "old" ]
-tags = ["logstash", "open source"]
-+++
-
+---
+title: "Growing logstash's value"
+date: 2012-07-29T23:00:08-07:00
+tags: ["logstash"]
+---
 I spent a while today thinking about nerdy stuff - logstash, etc. I want to
 grow logstash in terms of performance, use case, deployment instances, happy
 users, and community.
-
-<p>
 
 While musing about on my mental roadmap of logstash, I found most things boil
 down to costs and returns on investment, even with open source software.
 Money, time, energy, and patience are all costs. Just because something
 doesn't cost any money doesn't mean it won't consume any time or energy.
-
-<p>
 
 I see two distinct groups of users, with respect to cost. New users and current
 users. In terms of inputs and outputs, the phrase 'return on investment' comes
@@ -31,19 +19,13 @@ estimating ROI or judging "is this solution useful to me?" Existing users are
 likely in the maintenance and integration phases, mainly trying to improve or
 maintain ROI or pushing towards improving value provided by a tool.
 
-<p>
-
 These two user groups are, in my observation and from a seller's perspective,
 quite distinct in terms of strategy. How you acquire happy new users is not
 necessarily how you maintain and energize existing users.
 
-<p>
-
-<h4> Targeting New Users </h4>
+# Targeting New Users
 
 New users easily stumble on bad documentation, complex architectures, and excessive steps.
-
-<p>
 
 I have a few goals regarding minimization for new users: reducing mean time to
 demo and mean time to deploy are critical. Reducing 'time to demo' requires
@@ -53,13 +35,11 @@ possible. Reducing time to deploy means publishing high quality init scripts
 (upstart, systemd, sysv init) as well as high quality puppet, chef, and
 cfengine modules.
 
-<p>
-
 The time someone spends as what I consider a 'new user' is actually quite
 short. My goal with users in this stage are to help them quickly and accurately
 answer, "will this tool benefit me?" 
 
-<h4> Targeting Existing Users </h4>
+# Targeting Existing Users
 
 As an existing user of a tool, I'm often looking for how to reduce operational,
 maintenance, and integration costs. Operational costs appear as physical
@@ -67,20 +47,14 @@ resource usage (servers, or fuel-like resources). Maintenance costs appear as
 bugs and related investigations, monitoring, etc. Integration costs appear as
 time and energy spent making the tool work well with your infrastructure.
 
-<p>
-
 These kind of users are usually a bit more invested in use of the tool, but I
 want to avoid abusing that fact. Time and energy investments in a free tool
 can cause as much vendor trappings as monetary investments. Don't treat
 your existing users like dirt, right?
 
-<p>
-
 My goal for the next few months is to become one of these existing users of
 logstash (to date, as I've confessed, I've never run logstash in production).
 I'll be able to do that at DreamHost (starting tomorrow!).
-
-<p>
 
 Additionally, I will be focusing strongly on improving logstash new user
 experience. Happier new users should reflect nicely on community growth and
