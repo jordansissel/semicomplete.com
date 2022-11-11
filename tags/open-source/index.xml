@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>open source on semicomplete</title>
+    <link>https://semicomplete.com/tags/open-source/</link>
+    <description>Recent content in open source on semicomplete</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
+    <lastBuildDate>Thu, 22 Sep 2022 21:00:00 -0700</lastBuildDate><atom:link href="https://semicomplete.com/tags/open-source/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OpenSSF Scorecard evaluates my projects</title>
+      <link>https://semicomplete.com/blog/openssf-scorecard-results/</link>
+      <pubDate>Thu, 22 Sep 2022 21:00:00 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/blog/openssf-scorecard-results/</guid>
+      <description>Like so many things in business, it feels inevitable that we reduce everything to some numerical value through a kind of lossy information compression. Revenue, margins, etc. Risk gets quantized. Vulnerabilities get quantized. Once it&amp;rsquo;s a quantity, there becomes an urge to monitor it, optimize it, and game it. At the speed of business these days(1), who has time to evaluate a vulnerability&amp;rsquo;s impact on your operations when we can simply say &amp;ldquo;If it&amp;rsquo;s got a score of 8 or higher, we take immediate action!</description>
+    </item>
+    
+  </channel>
+</rss>

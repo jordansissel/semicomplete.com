@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>github on semicomplete</title>
+    <link>https://semicomplete.com/tags/github/</link>
+    <description>Recent content in github on semicomplete</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
+    <lastBuildDate>Wed, 09 Nov 2022 21:00:00 -0700</lastBuildDate><atom:link href="https://semicomplete.com/tags/github/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GitHub: Finding changes since last release</title>
+      <link>https://semicomplete.com/blog/geekery/finding-changes-since-last-release/</link>
+      <pubDate>Wed, 09 Nov 2022 21:00:00 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/blog/geekery/finding-changes-since-last-release/</guid>
+      <description>Time for release! It&amp;rsquo;s an exciting time. Or, it should be. I want to do a release of fpm! However, there&amp;rsquo;s some preparation I need to do before I can publish.
+I need to make sure the changelog file is updated and accurate, and that means I need to know all of the changes made since the previous release. I don&amp;rsquo;t mean the code changes, though. I mean what behaviors were changed?</description>
+    </item>
+    
+  </channel>
+</rss>

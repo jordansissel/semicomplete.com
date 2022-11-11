@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://semicomplete.com/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.98.0" />
+  <meta name="generator" content="Hugo 0.105.0">
   <link href="/index.xml" rel="alternate" type="application/rss+xml" title="semicomplete" />
   <link href="/index.xml" rel="feed" type="application/rss+xml" title="semicomplete" />
 
@@ -41,6 +41,59 @@
 
   <div class="main" role="main">
     <section class="list home-list">
+      <article class="article">
+        <a href="/blog/geekery/finding-changes-since-last-release/" class="article-titles">
+          <h2 class="article-title">GitHub: Finding changes since last release</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>9 November, 2022</time></li>
+          <li class="article-meta-tags">
+            <a href="/tags/project-management/">
+              <i class="fas fa-tag"></i>
+              project management
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/github/">
+              <i class="fas fa-tag"></i>
+              github
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          Time for release! It&rsquo;s an exciting time. Or, it should be. I want to do a release of fpm! However, there&rsquo;s some preparation I need to do before I can publish.
+I need to make sure the changelog file is updated and accurate, and that means I need to know all of the changes made since the previous release. I don&rsquo;t mean the code changes, though. I mean what behaviors were changed?
+        </div>
+        <div class="article-readmore"><a href="/blog/geekery/finding-changes-since-last-release/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
+      <article class="article">
+        <a href="/blog/openssf-scorecard-results/" class="article-titles">
+          <h2 class="article-title">OpenSSF Scorecard evaluates my projects</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>22 September, 2022</time></li>
+          <li class="article-meta-tags">
+            <a href="/tags/infosec/">
+              <i class="fas fa-tag"></i>
+              infosec
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/open-source/">
+              <i class="fas fa-tag"></i>
+              open source
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          Like so many things in business, it feels inevitable that we reduce everything to some numerical value through a kind of lossy information compression. Revenue, margins, etc. Risk gets quantized. Vulnerabilities get quantized. Once it&rsquo;s a quantity, there becomes an urge to monitor it, optimize it, and game it. At the speed of business these days(1), who has time to evaluate a vulnerability&rsquo;s impact on your operations when we can simply say &ldquo;If it&rsquo;s got a score of 8 or higher, we take immediate action!
+        </div>
+        <div class="article-readmore"><a href="/blog/openssf-scorecard-results/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
       <article class="article">
         <a href="/blog/migrating-flickr-to-smugmug/" class="article-titles">
           <h2 class="article-title">Moving from Flickr to SmugMug</h2>
@@ -88,9 +141,9 @@
         <div class="article-content">
           [ This post is a work in progress as I work towards solutions ]
 I received an email from Flickr on May 9.
- Subject: Your Flickr account is in violation of our free account limits.
+Subject: Your Flickr account is in violation of our free account limits.
 You have more than 50 non-public photos on your free account.
- They gave me 8 days to resolve it &ndash; with the threat of deleting photos. It&rsquo;s been a long time since I&rsquo;ve used Flickr, but I don&rsquo;t want to lose the content I had uploaded.
+They gave me 8 days to resolve it &ndash; with the threat of deleting photos. It&rsquo;s been a long time since I&rsquo;ve used Flickr, but I don&rsquo;t want to lose the content I had uploaded.
         </div>
         <div class="article-readmore"><a href="/blog/migrating-flickr-to-smugmug/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -300,83 +353,6 @@ load average: 2671.04, 1653.95, 771.93
 Not good; the load average while running with the profiler attached jumps to a number roughly equal to the number of application threads (3000 jetty threads).
         </div>
         <div class="article-readmore"><a href="/blog/geekery/debugging-java-performance/">Read more...</a></div>
-        <div class="article-floatclear"></div>
-      </article>
-      <article class="article">
-        <a href="/blog/geekery/ssl-latency/" class="article-titles">
-          <h2 class="article-title">SSL handshake latency and HTTPS optimizations.
-</h2>
-          
-        </a>
-        <ul class="article-meta">
-          <li class="article-meta-date"><time>4 June, 2010</time></li>
-          <li class="article-meta-categories">
-            <a href="/categories/old/">
-              <i class="fas fa-folder"></i>
-              old
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/ssl/">
-              <i class="fas fa-tag"></i>
-              ssl
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/latency/">
-              <i class="fas fa-tag"></i>
-              latency
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/web/">
-              <i class="fas fa-tag"></i>
-              web
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/performance/">
-              <i class="fas fa-tag"></i>
-              performance
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/latency/">
-              <i class="fas fa-tag"></i>
-              latency
-            </a>&nbsp;
-          </li>
-        </ul>
-        <div class="article-content">
-          At work today, I started investigating the latency differences for similar requests between HTTP and HTTPS. Historically, I was running with the assumption that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes are more CPU intensive. I didn&rsquo;t really think about the network consequences of SSL until today.
-It&rsquo;s all in the handshake.
-TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 1.
-        </div>
-        <div class="article-readmore"><a href="/blog/geekery/ssl-latency/">Read more...</a></div>
-        <div class="article-floatclear"></div>
-      </article>
-      <article class="article">
-        <a href="/projects/fex/" class="article-titles">
-          <h2 class="article-title"> fex  -  flexible token-field extraction 
-</h2>
-          
-        </a>
-        <ul class="article-meta">
-          <li class="article-meta-date"><time>19 May, 2010</time></li>
-          <li class="article-meta-categories">
-            <a href="/categories/projects/">
-              <i class="fas fa-folder"></i>
-              projects
-            </a>&nbsp;
-          </li>
-        </ul>
-        <div class="article-content">
-          What is fex? Fex is a powerful field extraction tool. Fex provides a very concise language for tokenizeing strings and extracting fields.
-The basic usage model is that you provide a series of delimiter and field selection pairs. Tokens can be any character, while field selections have a specific syntax.
-Download Releases are available on GitHub.
-Sometimes simpler than cut and awk cut(1) from GNU coreutils (on Linux) does not support negative offsets, so you cannot ask cut to only show you the Nth field from the end.
-        </div>
-        <div class="article-readmore"><a href="/projects/fex/">Read more...</a></div>
         <div class="article-floatclear"></div>
       </article>
     </section>

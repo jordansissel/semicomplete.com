@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://semicomplete.com/blog/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.98.0" />
+  <meta name="generator" content="Hugo 0.105.0">
   <link href="/blog/index.xml" rel="alternate" type="application/rss+xml" title="semicomplete" />
   <link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="semicomplete" />
 
@@ -44,6 +44,59 @@
   </div>
   <div class="main" role="main">
     <section class="list section-list">
+      <article class="article">
+        <a href="/blog/geekery/finding-changes-since-last-release/" class="article-titles">
+          <h2 class="article-title">GitHub: Finding changes since last release</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>9 November, 2022</time></li>
+          <li class="article-meta-tags">
+            <a href="/tags/project-management/">
+              <i class="fas fa-tag"></i>
+              project management
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/github/">
+              <i class="fas fa-tag"></i>
+              github
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          Time for release! It&rsquo;s an exciting time. Or, it should be. I want to do a release of fpm! However, there&rsquo;s some preparation I need to do before I can publish.
+I need to make sure the changelog file is updated and accurate, and that means I need to know all of the changes made since the previous release. I don&rsquo;t mean the code changes, though. I mean what behaviors were changed?
+        </div>
+        <div class="article-readmore"><a href="/blog/geekery/finding-changes-since-last-release/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
+      <article class="article">
+        <a href="/blog/openssf-scorecard-results/" class="article-titles">
+          <h2 class="article-title">OpenSSF Scorecard evaluates my projects</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>22 September, 2022</time></li>
+          <li class="article-meta-tags">
+            <a href="/tags/infosec/">
+              <i class="fas fa-tag"></i>
+              infosec
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/open-source/">
+              <i class="fas fa-tag"></i>
+              open source
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          Like so many things in business, it feels inevitable that we reduce everything to some numerical value through a kind of lossy information compression. Revenue, margins, etc. Risk gets quantized. Vulnerabilities get quantized. Once it&rsquo;s a quantity, there becomes an urge to monitor it, optimize it, and game it. At the speed of business these days(1), who has time to evaluate a vulnerability&rsquo;s impact on your operations when we can simply say &ldquo;If it&rsquo;s got a score of 8 or higher, we take immediate action!
+        </div>
+        <div class="article-readmore"><a href="/blog/openssf-scorecard-results/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
       <article class="article">
         <a href="/blog/migrating-flickr-to-smugmug/" class="article-titles">
           <h2 class="article-title">Moving from Flickr to SmugMug</h2>
@@ -91,9 +144,9 @@
         <div class="article-content">
           [ This post is a work in progress as I work towards solutions ]
 I received an email from Flickr on May 9.
- Subject: Your Flickr account is in violation of our free account limits.
+Subject: Your Flickr account is in violation of our free account limits.
 You have more than 50 non-public photos on your free account.
- They gave me 8 days to resolve it &ndash; with the threat of deleting photos. It&rsquo;s been a long time since I&rsquo;ve used Flickr, but I don&rsquo;t want to lose the content I had uploaded.
+They gave me 8 days to resolve it &ndash; with the threat of deleting photos. It&rsquo;s been a long time since I&rsquo;ve used Flickr, but I don&rsquo;t want to lose the content I had uploaded.
         </div>
         <div class="article-readmore"><a href="/blog/migrating-flickr-to-smugmug/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -370,55 +423,28 @@ For some history on this, check out this post on xvfb and firefox. You can solve
         <div class="article-readmore"><a href="/blog/geekery/headless-wrapper-for-ephemeral-xservers/">Read more...</a></div>
         <div class="article-floatclear"></div>
       </article>
-      <article class="article">
-        <a href="/blog/geekery/xvfb-firefox/" class="article-titles">
-          <h2 class="article-title">Xvfb &#43; Firefox
-</h2>
-          
-        </a>
-        <ul class="article-meta">
-          <li class="article-meta-date"><time>8 April, 2006</time></li>
-          <li class="article-meta-categories">
-            <a href="/categories/old/">
-              <i class="fas fa-folder"></i>
-              old
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/web/">
-              <i class="fas fa-tag"></i>
-              web
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/firefox/">
-              <i class="fas fa-tag"></i>
-              firefox
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/x11/">
-              <i class="fas fa-tag"></i>
-              X11
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/ideas/">
-              <i class="fas fa-tag"></i>
-              ideas
-            </a>&nbsp;
-          </li>
-        </ul>
-        <div class="article-content">
-          Resighas a bunch of unit tests he does to make sure jQueryworks properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&rsquo;s automate this.
-Update (May 2010): See this postfor more details on automating xserver startup without having to worry about display numbers (:1, :2, etc).
- Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&rsquo;ve got a simple way to run Firefox without a visible display.
-        </div>
-        <div class="article-readmore"><a href="/blog/geekery/xvfb-firefox/">Read more...</a></div>
-        <div class="article-floatclear"></div>
-      </article>
     </section>
     
+    <ul class="pagination pagination-default">
+      <li class="page-item disabled">
+        <a aria-disabled="true" aria-label="First" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&laquo;&laquo;</span></a>
+      </li>
+      <li class="page-item disabled">
+        <a aria-disabled="true" aria-label="Previous" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&laquo;</span></a>
+      </li>
+      <li class="page-item active">
+        <a aria-current="page" aria-label="Page 1" class="page-link" role="button">1</a>
+      </li>
+      <li class="page-item">
+        <a href="/blog/page/2/" aria-label="Page 2" class="page-link" role="button">2</a>
+      </li>
+      <li class="page-item">
+        <a href="/blog/page/2/" aria-label="Next" class="page-link" role="button"><span aria-hidden="true">&raquo;</span></a>
+      </li>
+      <li class="page-item">
+        <a href="/blog/page/2/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
+      </li>
+    </ul>
   </div>
 
 

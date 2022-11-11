@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>GitHub: Finding changes since last release - semicomplete</title>
+  <meta property="og:title" content="GitHub: Finding changes since last release - semicomplete" />
+  <meta name="twitter:title" content="GitHub: Finding changes since last release - semicomplete" />
+  <meta name="description" content="Time for release! It&rsquo;s an exciting time. Or, it should be. I want to do a release of fpm! However, there&rsquo;s some preparation I need to do before I can publish.
+I need to make sure the changelog file is updated and accurate, and that means I need to know all of the changes made since the previous release. I don&rsquo;t mean the code changes, though. I mean what behaviors were changed?">
+  <meta property="og:description" content="Time for release! It&rsquo;s an exciting time. Or, it should be. I want to do a release of fpm! However, there&rsquo;s some preparation I need to do before I can publish.
+I need to make sure the changelog file is updated and accurate, and that means I need to know all of the changes made since the previous release. I don&rsquo;t mean the code changes, though. I mean what behaviors were changed?">
+  <meta name="twitter:description" content="Time for release! It&rsquo;s an exciting time. Or, it should be. I want to do a release of fpm! However, there&rsquo;s some preparation I need to do before I can publish.
+I need to make sure the …">
+  <meta name="author" content="Jordan Sissel"/>
+  <meta property="og:site_name" content="semicomplete" />
+  <meta property="og:url" content="https://semicomplete.com/blog/geekery/finding-changes-since-last-release/" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.105.0">
+
+  <link rel="stylesheet" href="/css/style.css" media="all" />
+  <link rel="stylesheet" href="/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="/css/custom.css" media="all" />
+
+  <script src="/js/script.js"></script>
+  <script src="/js/custom.js"></script>
+  <script defer src="/js/fontawesome.js"></script>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <h1 class="site-title"><a href="/">semicomplete</a></h1>
+    <ul class="site-navi-items">
+      <li class="site-navi-item-categories"><a href="/categories/" title="Categories">Categories</a></li>
+      <li class="site-navi-item-tags"><a href="/tags/" title="Tags">Tags</a></li>
+      <li class="site-navi-item-archives"><a href="/archives/" title="Archives">Archives</a></li>
+      <li class="site-navi-item-about"><a href="/about/" title="About">About</a></li>
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+  <div class="main" role="main">
+    <article class="article">
+      
+      
+      <h1 class="article-title">GitHub: Finding changes since last release</h1>
+      
+      <hr class="article-title-bottom">
+      <ul class="article-meta">
+        <li class="article-meta-date"><time>9 November, 2022</time></li>
+        <li class="article-meta-tags">
+          <a href="/tags/project-management/">
+            <i class="fas fa-tag"></i>
+            project management
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/github/">
+            <i class="fas fa-tag"></i>
+            github
+          </a>&nbsp;
+        </li>
+      </ul>
+      
+<aside class="toc">
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#doing-it-by-hand">Doing it by hand</a></li>
+    <li><a href="#let-github-generate-it">Let GitHub generate it?</a></li>
+    <li><a href="#what-next">What next?</a></li>
+    <li><a href="#next-steps">Next steps</a></li>
+  </ul>
+</nav>
+</aside>
+      <h1 id="time-for-release">Time for release!</h1>
+<p>It&rsquo;s an exciting time. Or, it should be. I want to do a release of fpm! However, there&rsquo;s some preparation I need to do before I can publish.</p>
+<p>I need to make sure the changelog file is updated and accurate, and that means I need to know all of the changes made since the previous release. I don&rsquo;t mean the code changes, though. I mean what behaviors were changed? Who contributed to the change? Is a given change related to one or more open issues?</p>
+<h2 id="doing-it-by-hand">Doing it by hand</h2>
+<p>For years, I&rsquo;ve managed the fpm changelog by hand. I would use <code>git log</code> to show me all git commits from the previous release until now. For today, I would use <code>git log v1.14.2..main</code> to show me all git commits between the v1.14.2 release and main.</p>
+<p>Now, a &ldquo;git commit&rdquo; isn&rsquo;t necessarily a meaningful unit of change. A pull request on GitHub may contain many commits! Further, a single git commit often has no reference to the issue it may have been solving, nor do they have a reference to the pull request that they are a part of.</p>
+<p>So, I slowly travel the git history and take notes. After that&rsquo;s done, I will cross-reference with GitHub issues and PRs (pull requests) to improve those notes. In any given change, I will try to document a few things:</p>
+<ul>
+<li>what behavior has changed (a new capability? a bug fix?)</li>
+<li>what github issue and PR numbers are related to the change</li>
+<li>who contributed to the change</li>
+</ul>
+<p>The &ldquo;who&rdquo; is important to me, and my definition of &ldquo;contribute&rdquo; is different than what GitHub uses. This will become important in the next section.</p>
+<p>To me, a contributor is anyone who participated in the issue or PR.</p>
+<ul>
+<li>Did you file the issue? That&rsquo;s a contribution.</li>
+<li>Did you find the issue and comment on it? That&rsquo;s a contribution.</li>
+<li>Did you send a code or documentation change that resolves the issue? That&rsquo;s a contribution.</li>
+<li>Did you test the change? That&rsquo;s a contribution.</li>
+</ul>
+<h2 id="let-github-generate-it">Let GitHub generate it?</h2>
+<p>In 2021, GitHub announced a way to <a href="https://github.blog/2021-10-04-beta-github-releases-improving-release-experience/">automatically generate release notes</a>. From the GitHub blog:</p>
+<blockquote>
+<p>Throughout the year, we spoke with maintainers about what they wanted to see improved in the release process. Without hesitation, every maintainer said the same thing, “Release notes.”</p>
+</blockquote>
+<p>Also? Without hesistation, I would say &ldquo;release notes&rdquo; is high on my list of
+things I&rsquo;d love help with.</p>
+<p>GitHub has documentation about <a href="https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes">automating release notes</a> if you&rsquo;d like to learn more.</p>
+<p>The defaults seem pretty reasonable with two major sections, &ldquo;What&rsquo;s changed&rdquo; and &ldquo;New contributors&rdquo;. The &ldquo;What&rsquo;s changed&rdquo; seems to be all PRs merged into the release branch (&ldquo;main&rdquo; in my case) since the previous release which, by default, GitHub uses  the &ldquo;previous tag&rdquo; which in most cases is likely the correct choice. &ldquo;New contributors&rdquo; is a nice way to welcome and highlight first-timer contributors.</p>
+<p>An example &ldquo;What&rsquo;s changed&rdquo; looks like this:</p>
+<pre tabindex="0"><code>* Call ERB.new correctly depending on the RUBY_VERSION by @jordansissel in https://github.com/jordansissel/fpm/pull/1897
+</code></pre><p>This format seems to be, roughly: The PR title, the person who opened the PR, and a link to the PR. In cases of single-commit PRs, the PR title defaults to the first line of the git commit message.</p>
+<p>Unfortunately, this doesn&rsquo;t make for a good changelog entry. For tools like fpm, the changelog should focus on the users, not developers. Developer-centric language is quite common in places developers might visit &ndash; like git commit messages.</p>
+<p>A significant part of fpm&rsquo;s release notes process is to represent every change in a language familiar and useful to the target audience, fpm&rsquo;s users. In many cases, individual changelog entries are quite long. Far longer than the you&rsquo;d see in a git commit message&rsquo;s first line, in many cases, because Git and its ecosystem put strong pressure on having the first line of the commit be treated similar to an email subject line &ndash; it should be very short.</p>
+<p>This means that if we use GitHub&rsquo;s default release notes, I would have to edit every PR to replace the title with a user-centric language describing the change, impact, etc, which probably wouldn&rsquo;t even fit in a PR title.</p>
+<p>Futher, GitHub&rsquo;s automatic release notes only credits the PR author, and, in a way, erases the contributions of everyone else who helped make that change happen.</p>
+<p>Lastly, I try to include links to all related issues, not just the PR, and GitHub doesn&rsquo;t link to any of these in the generated notes.</p>
+<p>I did like that automatic release notes can <a href="https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes#configuring-automatically-generated-release-notes">be configured to</a> generate sections (like breaking changes) depending on your PR labelling</p>
+<p>GitHub&rsquo;s <em>close</em> to something that works really well, but where it misses, for me:</p>
+<ul>
+<li>To GitHub, contributors are only people who make commits to git. This is incorrect.</li>
+<li>Git commit messages are not substitutes for user-focused writing</li>
+<li>It doesn&rsquo;t list related issues in the changelog</li>
+</ul>
+<h2 id="what-next">What next?</h2>
+<p>With the idea that I might have to roll my own, or at least, I&rsquo;d like to explore what rolling my own release notes tooling might cost me (in time and energy)&hellip; I&rsquo;ve written a script that uses the GitHub API to fetch all pull requests merged since the previous release.</p>
+<p>It&rsquo;s in ruby and uses the <a href="https://github.com/octokit/octokit.rb">octokit</a> library. To start, I wanted to know all pull requests merged since the last release.</p>
+<p>I wasn&rsquo;t able to figure out how to query a tag in GitHub&rsquo;s api. I was specifically looking for the date related to the tag (that is, the commit pointed to by the tag, what date it was committed). GitHub has a &ldquo;get tags&rdquo; API but you have to provide a git sha which isn&rsquo;t a predictable thing like a version number.</p>
+<ol start="0">
+<li>First step is local to my git repo. I need the timestamp of the git tag&rsquo;s commit. I do this with the <code>git</code> command line:</li>
+</ol>
+<pre tabindex="0"><code>% git show -s --pretty=%cI v1.14.2
+2022-03-31T00:09:25-07:00
+</code></pre><p>In ruby, we can use the Time class to parse this format and get us a Time object.</p>
+<pre tabindex="0"><code>after_date = Time.parse(&#34;2022-03-31T00:09:25-07:00&#34;)
+</code></pre><ol>
+<li>First, we need to setup the octokit client.</li>
+</ol>
+<pre tabindex="0"><code>client = Octokit::Client.new
+client.access_token = ... # your github auth token
+client.login
+</code></pre><p>Note: Octokit has a feature called &ldquo;autopaginate&rdquo; where it will fetch all records for a given query. In this scenario, I do not enable auto-pagination because I don&rsquo;t need <em>all</em> pull requests, just the most recent ones matching my criteria &ndash; ones merged since the last release. Running with auto-pagination is much slower especially when I don&rsquo;t need all that data.</p>
+<ol start="2">
+<li>Now we can list pull requests</li>
+</ol>
+<p>List all pull requests which are closed; sorted by &ldquo;updated&rdquo; date, descending.</p>
+<pre tabindex="0"><code>result = client.pulls(repository, state: &#34;closed&#34;, sort: &#34;updated&#34;, direc    tion: &#34;desc&#34;)
+</code></pre><p>The <code>result</code> is an array of a weird class called &ldquo;Sawyer::Resource&rdquo;. We can treat it as a hash. The actual content of this result seems undocumented by octokit, but we can read the GitHub API docs for the API call for <a href="https://docs.github.com/en/rest/pulls/pulls#list-pull-requests">listing pull requests</a> which GitHub calls, slightly confusingly, the &ldquo;pulls&rdquo; api</p>
+<ol start="3">
+<li>Only show merged pull requests</li>
+</ol>
+<p>GitHub &ldquo;state&rdquo; for a pull request is only &ldquo;closed&rdquo; or &ldquo;open&rdquo;, there is no &ldquo;merged&rdquo; state, unfortunately. However, we&rsquo;re in luck that the pull request object has a &ldquo;merged_at&rdquo; field which contains an ISO8601 timestamp for when it was merged.</p>
+<pre tabindex="0"><code>
+done = false
+while !done
+  result.each do |pr|
+    # Only look at merged PRs
+    next unless pr.merged_at.to_i &gt; 0
+
+    if pr.merged_at &gt; after_date
+      puts &#34;#{pr.html_url}    # #{pr.merged_at}&#34;
+    else
+      done = true
+      break
+    end
+  end
+
+  break if done
+
+  result = client.get(client.last_response.rels[:next].href)
+end
+</code></pre><p>It&rsquo;s not fancy, but it&rsquo;ll do. The rough steps were:</p>
+<ul>
+<li>Make sure the PR is merged. Not all closed PRs are merged.</li>
+<li>Check if the PR was merged after the previous release date</li>
+<li>If we aren&rsquo;t done, query the next page of results</li>
+</ul>
+<ol start="4">
+<li>Run it!</li>
+</ol>
+<pre tabindex="0"><code>https://github.com/jordansissel/fpm/pull/1909    # 2022-11-10 06:43:35 UTC
+https://github.com/jordansissel/fpm/pull/1946    # 2022-10-26 21:48:13 UTC
+https://github.com/jordansissel/fpm/pull/1950    # 2022-11-03 04:49:17 UTC
+https://github.com/jordansissel/fpm/pull/1948    # 2022-10-31 22:17:48 UTC
+... [ output shortened for brevity ] ...
+</code></pre><p>This printed out a url and timestamp for each PR. Nice.</p>
+<h2 id="next-steps">Next steps</h2>
+<p>At a minimum, this exploration helped me bypass the <code>git log ...</code> process which I very much did not enjoy. Using either GitHub&rsquo;s generator or my script, I now have a list of all relevant PRs for the project release.</p>
+<p>I&rsquo;ll probably continue to do the changelog by hand, but at least it&rsquo;ll be less work! In the meantime, I&rsquo;ll look around for more tools which could help me automate some of this.</p>
+
+    </article>
+
+    
+
+
+    <ul class="pager article-pager">
+      <li class="pager-newer pager-noitem">&lt; Newer</li>
+      <li class="pager-older">
+        <a href="/blog/openssf-scorecard-results/" data-toggle="tooltip" data-placement="top" title="OpenSSF Scorecard evaluates my projects">Older &gt;</a>
+      </li>
+    </ul>
+  </div>
+
+
+<div class="site-footer">
+  <div class="copyright">&copy; Copyright 2006-2019 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
+  <ul class="site-footer-items">
+    <li class="site-footer-item-about"><a href="/about/" title="About">About</a></li>
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a> and <a href="https://github.com/taikii/whiteplain">Whiteplain</a>
+  </div>
+</div>
+
+
+</body>
+</html>

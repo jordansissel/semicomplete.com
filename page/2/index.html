@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://semicomplete.com/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.98.0" />
+  <meta name="generator" content="Hugo 0.105.0">
   <link href="/index.xml" rel="alternate" type="application/rss+xml" title="semicomplete" />
   <link href="/index.xml" rel="feed" type="application/rss+xml" title="semicomplete" />
 
@@ -41,6 +41,83 @@
 
   <div class="main" role="main">
     <section class="list home-list">
+      <article class="article">
+        <a href="/blog/geekery/ssl-latency/" class="article-titles">
+          <h2 class="article-title">SSL handshake latency and HTTPS optimizations.
+</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>4 June, 2010</time></li>
+          <li class="article-meta-categories">
+            <a href="/categories/old/">
+              <i class="fas fa-folder"></i>
+              old
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/ssl/">
+              <i class="fas fa-tag"></i>
+              ssl
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/latency/">
+              <i class="fas fa-tag"></i>
+              latency
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/web/">
+              <i class="fas fa-tag"></i>
+              web
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/performance/">
+              <i class="fas fa-tag"></i>
+              performance
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/latency/">
+              <i class="fas fa-tag"></i>
+              latency
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          At work today, I started investigating the latency differences for similar requests between HTTP and HTTPS. Historically, I was running with the assumption that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes are more CPU intensive. I didn&rsquo;t really think about the network consequences of SSL until today.
+It&rsquo;s all in the handshake.
+TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 1.
+        </div>
+        <div class="article-readmore"><a href="/blog/geekery/ssl-latency/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
+      <article class="article">
+        <a href="/projects/fex/" class="article-titles">
+          <h2 class="article-title"> fex  -  flexible token-field extraction 
+</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>19 May, 2010</time></li>
+          <li class="article-meta-categories">
+            <a href="/categories/projects/">
+              <i class="fas fa-folder"></i>
+              projects
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          What is fex? Fex is a powerful field extraction tool. Fex provides a very concise language for tokenizeing strings and extracting fields.
+The basic usage model is that you provide a series of delimiter and field selection pairs. Tokens can be any character, while field selections have a specific syntax.
+Download Releases are available on GitHub.
+Sometimes simpler than cut and awk cut(1) from GNU coreutils (on Linux) does not support negative offsets, so you cannot ask cut to only show you the Nth field from the end.
+        </div>
+        <div class="article-readmore"><a href="/projects/fex/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
       <article class="article">
         <a href="/blog/geekery/headless-wrapper-for-ephemeral-xservers/" class="article-titles">
           <h2 class="article-title">Headless wrapper for ephemeral X servers
@@ -162,9 +239,9 @@ If there&rsquo;s anything this article doesn&rsquo;t cover with respect to what 
           </li>
         </ul>
         <div class="article-content">
-          Resighas a bunch of unit tests he does to make sure jQueryworks properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&rsquo;s automate this.
-Update (May 2010): See this postfor more details on automating xserver startup without having to worry about display numbers (:1, :2, etc).
- Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&rsquo;ve got a simple way to run Firefox without a visible display.
+          Resig has a bunch of unit tests he does to make sure jQuery works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&rsquo;s automate this.
+Update (May 2010): See this post for more details on automating xserver startup without having to worry about display numbers (:1, :2, etc).
+Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&rsquo;ve got a simple way to run Firefox without a visible display.
         </div>
         <div class="article-readmore"><a href="/blog/geekery/xvfb-firefox/">Read more...</a></div>
         <div class="article-floatclear"></div>

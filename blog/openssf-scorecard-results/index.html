@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>OpenSSF Scorecard evaluates my projects - semicomplete</title>
+  <meta property="og:title" content="OpenSSF Scorecard evaluates my projects - semicomplete" />
+  <meta name="twitter:title" content="OpenSSF Scorecard evaluates my projects - semicomplete" />
+  <meta name="description" content="Like so many things in business, it feels inevitable that we reduce everything to some numerical value through a kind of lossy information compression. Revenue, margins, etc. Risk gets quantized. Vulnerabilities get quantized. Once it&rsquo;s a quantity, there becomes an urge to monitor it, optimize it, and game it. At the speed of business these days(1), who has time to evaluate a vulnerability&rsquo;s impact on your operations when we can simply say &ldquo;If it&rsquo;s got a score of 8 or higher, we take immediate action!">
+  <meta property="og:description" content="Like so many things in business, it feels inevitable that we reduce everything to some numerical value through a kind of lossy information compression. Revenue, margins, etc. Risk gets quantized. Vulnerabilities get quantized. Once it&rsquo;s a quantity, there becomes an urge to monitor it, optimize it, and game it. At the speed of business these days(1), who has time to evaluate a vulnerability&rsquo;s impact on your operations when we can simply say &ldquo;If it&rsquo;s got a score of 8 or higher, we take immediate action!">
+  <meta name="twitter:description" content="Like so many things in business, it feels inevitable that we reduce everything to some numerical value through a kind of lossy information compression. Revenue, margins, etc. Risk gets quantized. …">
+  <meta name="author" content="Jordan Sissel"/>
+  <meta property="og:site_name" content="semicomplete" />
+  <meta property="og:url" content="https://semicomplete.com/blog/openssf-scorecard-results/" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.105.0">
+
+  <link rel="stylesheet" href="/css/style.css" media="all" />
+  <link rel="stylesheet" href="/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="/css/custom.css" media="all" />
+
+  <script src="/js/script.js"></script>
+  <script src="/js/custom.js"></script>
+  <script defer src="/js/fontawesome.js"></script>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <h1 class="site-title"><a href="/">semicomplete</a></h1>
+    <ul class="site-navi-items">
+      <li class="site-navi-item-categories"><a href="/categories/" title="Categories">Categories</a></li>
+      <li class="site-navi-item-tags"><a href="/tags/" title="Tags">Tags</a></li>
+      <li class="site-navi-item-archives"><a href="/archives/" title="Archives">Archives</a></li>
+      <li class="site-navi-item-about"><a href="/about/" title="About">About</a></li>
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+  <div class="main" role="main">
+    <article class="article">
+      
+      
+      <h1 class="article-title">OpenSSF Scorecard evaluates my projects</h1>
+      
+      <hr class="article-title-bottom">
+      <ul class="article-meta">
+        <li class="article-meta-date"><time>22 September, 2022</time></li>
+        <li class="article-meta-tags">
+          <a href="/tags/infosec/">
+            <i class="fas fa-tag"></i>
+            infosec
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/open-source/">
+            <i class="fas fa-tag"></i>
+            open source
+          </a>&nbsp;
+        </li>
+      </ul>
+      
+<aside class="toc">
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#inactivity-in-past-90-dayshttpsgithubcomossfscorecardblob2231d1f722454c6c9aa6ad77377d2936803216ffdocschecksmdmaintained"><a href="https://github.com/ossf/scorecard/blob/2231d1f722454c6c9aa6ad77377d2936803216ff/docs/checks.md#maintained">Inactivity in past 90 days</a></a></li>
+    <li><a href="#static-application-security-testing-tool-is-not-runhttpsgithubcomossfscorecardblob2231d1f722454c6c9aa6ad77377d2936803216ffdocschecksmdsast"><a href="https://github.com/ossf/scorecard/blob/2231d1f722454c6c9aa6ad77377d2936803216ff/docs/checks.md#sast">Static Application Security Testing tool is not run</a></a></li>
+  </ul>
+</nav>
+</aside>
+      <p>Like so many things in business, it feels inevitable that we reduce everything to some numerical value through a kind of lossy information compression. Revenue, margins, etc. Risk gets quantized. Vulnerabilities get quantized. Once it&rsquo;s a quantity, there becomes an urge to monitor it, optimize it, and game it. At the speed of business these days(1), who has time to evaluate a vulnerability&rsquo;s impact on your operations when we can simply say &ldquo;If it&rsquo;s got a score of 8 or higher, we take immediate action!&rdquo;</p>
+<p>In infosec lately, it&rsquo;s hard to not notice the focus by major corporations and security vendors on the &ldquo;software supply chain&rdquo; and this area is no more resistant to quantizing than any other.</p>
+<p>Let&rsquo;s take a look at OpenSSF&rsquo;s Scorecard which aims to quantize risk of a software project.
+I will be using their scorecard software tool to evaluate my own projects specifically from the viewpoint of myself as a mostly-solo project maintainer.</p>
+<p>In this evaluation, I used image id <code>621e8cfa2d59</code> from gcr.io/openssf/scorecard which at this time is 9 days old. I ran the following command to evaluate each repository:</p>
+<pre tabindex="0"><code>docker run -e GITHUB_AUTH_TOKEN=... gcr.io/openssf/scorecard:stable --repo=github.com/jordansissel/&lt;repo-name&gt;
+</code></pre><p>Here are the overall scores for each project:</p>
+<ul>
+<li><a href="https://github.com/jordansissel/eventmachine-tail">eventmachine-tail</a>:  4.4 / 10</li>
+<li><a href="https://github.com/jordansissel/fex">fex</a>:  4.5 / 10</li>
+<li><a href="https://github.com/jordansissel/fingerpoken">fingerpoken</a>:  4.5 / 10</li>
+<li><a href="https://github.com/jordansissel/fpm">fpm</a>:  5.4 / 10</li>
+<li><a href="https://github.com/jordansissel/keynav">keynav</a>:  4.8 / 10</li>
+<li><a href="https://github.com/jordansissel/pleaserun">pleaserun</a>:  4.7 / 10</li>
+<li><a href="https://github.com/jordansissel/ruby-arr-pm">ruby-arr-pm</a>:  5.2 / 10</li>
+<li><a href="https://github.com/jordansissel/ruby-cabin">ruby-cabin</a>:  4.6 / 10</li>
+<li><a href="https://github.com/jordansissel/ruby-flores">ruby-flores</a>:  4.6 / 10</li>
+<li><a href="https://github.com/jordansissel/ruby-ftw">ruby-ftw</a>:  4.2 / 10</li>
+<li><a href="https://github.com/jordansissel/ruby-grok">ruby-grok</a>:  4.4 / 10</li>
+<li><a href="https://github.com/jordansissel/ruby-insist">ruby-insist</a>:  4.5 / 10</li>
+<li><a href="https://github.com/jordansissel/ruby-stud">ruby-stud</a>:  4.5 / 10</li>
+<li><a href="https://github.com/jordansissel/xdotool">xdotool</a>:  5.2 / 10</li>
+</ul>
+<p>The most common complaints by this tool are as follows:</p>
+<h2 id="inactivity-in-past-90-dayshttpsgithubcomossfscorecardblob2231d1f722454c6c9aa6ad77377d2936803216ffdocschecksmdmaintained"><a href="https://github.com/ossf/scorecard/blob/2231d1f722454c6c9aa6ad77377d2936803216ff/docs/checks.md#maintained">Inactivity in past 90 days</a></h2>
+<p>Does this correlate to risk? I&rsquo;m guessing there&rsquo;s papers supporting this assumption, but I haven&rsquo;t read them at this time.</p>
+<p>I&rsquo;m not sure that modification rates are strongly correlated to risk especially for small projects which may aim to solve a problem and then simply become completed.</p>
+<p>Inactivity is certainly something that feels easy to measure, but is it the right metric? Do we wish we were measuring response times instead?</p>
+<h2 id="static-application-security-testing-tool-is-not-runhttpsgithubcomossfscorecardblob2231d1f722454c6c9aa6ad77377d2936803216ffdocschecksmdsast"><a href="https://github.com/ossf/scorecard/blob/2231d1f722454c6c9aa6ad77377d2936803216ff/docs/checks.md#sast">Static Application Security Testing tool is not run</a></h2>
+<p>Ok, I had to look up what &ldquo;static application security testing&rdquo; means in this context because I wasn&rsquo;t sure what it meant. Static code analysis? Ahh, makes sense now.</p>
+<p>The scorecard docs mention it can check for CodeQL, LGTM, and SonarCloud.</p>
+<p>I glanced at CodeQL and honestly couldn&rsquo;t even figure out how I would use it on my own projects. Some kind of query language for finding vulnerabilities? But you have to write your own queries? This feels much more like a tool a dedicated product security team would use &ndash; writing queries based on infosec policy and handing the tooling to the develper team? Hard to tell exactly.</p>
+<p>I looked at LGTM, and the top of the website says &ldquo;LGTM.com will be shut down in December 2022&rdquo;, so I suppose that&rsquo;s as far as I need to go on that tool.</p>
+<p>SonarCloud has a free tier that says &ldquo;your IDE and programming language covered&rdquo;, but the fool(?) that I am, I still use vim, and vim is not listed.</p>
+<ul>
+<li><a href="https://github.com/ossf/scorecard/blob/2231d1f722454c6c9aa6ad77377d2936803216ff/docs/checks.md#branch-protection">Branch protection not enabled</a></li>
+<li><a href="https://github.com/ossf/scorecard/blob/2231d1f722454c6c9aa6ad77377d2936803216ff/docs/checks.md#cii-best-practices">No CII &ldquo;Best Practices&rdquo; badge detected</a></li>
+<li><a href="https://github.com/ossf/scorecard/blob/2231d1f722454c6c9aa6ad77377d2936803216ff/docs/checks.md#dependency-update-tool">No dependency update tool detected</a></li>
+<li><a href="https://github.com/ossf/scorecard/blob/2231d1f722454c6c9aa6ad77377d2936803216ff/docs/checks.md#fuzzing">Project is not fuzzed</a></li>
+<li><a href="https://github.com/ossf/scorecard/blob/2231d1f722454c6c9aa6ad77377d2936803216ff/docs/checks.md#security-policy">Security policy file not</a></li>
+</ul>
+
+    </article>
+
+    
+
+
+    <ul class="pager article-pager">
+      <li class="pager-newer">
+          <a href="/blog/geekery/finding-changes-since-last-release/" data-toggle="tooltip" data-placement="top" title="GitHub: Finding changes since last release">&lt; Newer</a>
+      </li>
+      <li class="pager-older">
+        <a href="/blog/migrating-flickr-to-smugmug/" data-toggle="tooltip" data-placement="top" title="Moving from Flickr to SmugMug">Older &gt;</a>
+      </li>
+    </ul>
+  </div>
+
+
+<div class="site-footer">
+  <div class="copyright">&copy; Copyright 2006-2019 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
+  <ul class="site-footer-items">
+    <li class="site-footer-item-about"><a href="/about/" title="About">About</a></li>
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a> and <a href="https://github.com/taikii/whiteplain">Whiteplain</a>
+  </div>
+</div>
+
+
+</body>
+</html>

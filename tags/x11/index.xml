@@ -26,9 +26,9 @@ For some history on this, check out this post on xvfb and firefox. You can solve
       <pubDate>Sat, 08 Apr 2006 03:53:00 -0700</pubDate>
       
       <guid>https://semicomplete.com/blog/geekery/xvfb-firefox/</guid>
-      <description>Resighas a bunch of unit tests he does to make sure jQueryworks properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&amp;rsquo;s automate this.
-Update (May 2010): See this postfor more details on automating xserver startup without having to worry about display numbers (:1, :2, etc).
- Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&amp;rsquo;ve got a simple way to run Firefox without a visible display.</description>
+      <description>Resig has a bunch of unit tests he does to make sure jQuery works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&amp;rsquo;s automate this.
+Update (May 2010): See this post for more details on automating xserver startup without having to worry about display numbers (:1, :2, etc).
+Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&amp;rsquo;ve got a simple way to run Firefox without a visible display.</description>
     </item>
     
   </channel>

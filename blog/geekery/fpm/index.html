@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Introducing FPM - Effing Package Management
+ - semicomplete</title>
+  <meta property="og:title" content="Introducing FPM - Effing Package Management
+ - semicomplete" />
+  <meta name="twitter:title" content="Introducing FPM - Effing Package Management
+ - semicomplete" />
+  <meta name="description" content="Having become fed up with dealing with rpmbuild, spec files, debian control files, dh_make, debuild, and the whole lot, I automated my way back to sanity.
+The result is a tool I call &ldquo;fpm&rdquo; which aims to help you make and mangle packages however you choose, all (ideally) without having to care about the internals of your particular native package format.
+The goal of this project is not to undermine upstream packaging but to grant everyone the ability to trivially build and edit packages.">
+  <meta property="og:description" content="Having become fed up with dealing with rpmbuild, spec files, debian control files, dh_make, debuild, and the whole lot, I automated my way back to sanity.
+The result is a tool I call &ldquo;fpm&rdquo; which aims to help you make and mangle packages however you choose, all (ideally) without having to care about the internals of your particular native package format.
+The goal of this project is not to undermine upstream packaging but to grant everyone the ability to trivially build and edit packages.">
+  <meta name="twitter:description" content="Having become fed up with dealing with rpmbuild, spec files, debian control files, dh_make, debuild, and the whole lot, I automated my way back to sanity.
+The result is a tool I call &ldquo;fpm&rdquo; …">
+  <meta name="author" content="Jordan Sissel"/>
+  <meta property="og:site_name" content="semicomplete" />
+  <meta property="og:url" content="https://semicomplete.com/blog/geekery/fpm/" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.105.0">
+
+  <link rel="stylesheet" href="/css/style.css" media="all" />
+  <link rel="stylesheet" href="/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="/css/custom.css" media="all" />
+
+  <script src="/js/script.js"></script>
+  <script src="/js/custom.js"></script>
+  <script defer src="/js/fontawesome.js"></script>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <h1 class="site-title"><a href="/">semicomplete</a></h1>
+    <ul class="site-navi-items">
+      <li class="site-navi-item-categories"><a href="/categories/" title="Categories">Categories</a></li>
+      <li class="site-navi-item-tags"><a href="/tags/" title="Tags">Tags</a></li>
+      <li class="site-navi-item-archives"><a href="/archives/" title="Archives">Archives</a></li>
+      <li class="site-navi-item-about"><a href="/about/" title="About">About</a></li>
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+  <div class="main" role="main">
+    <article class="article">
+      
+      
+      <h1 class="article-title">Introducing FPM - Effing Package Management
+</h1>
+      
+      <hr class="article-title-bottom">
+      <ul class="article-meta">
+        <li class="article-meta-date"><time>1 March, 2011</time></li>
+        <li class="article-meta-tags">
+          <a href="/tags/fpm/">
+            <i class="fas fa-tag"></i>
+            fpm
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/ruby/">
+            <i class="fas fa-tag"></i>
+            ruby
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/packaging/">
+            <i class="fas fa-tag"></i>
+            packaging
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/sysadmin/">
+            <i class="fas fa-tag"></i>
+            sysadmin
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/rpm/">
+            <i class="fas fa-tag"></i>
+            rpm
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="/tags/deb/">
+            <i class="fas fa-tag"></i>
+            deb
+          </a>&nbsp;
+        </li>
+      </ul>
+      
+<aside class="toc">
+  <nav id="TableOfContents"></nav>
+</aside>
+      <p>Having become fed up with dealing with rpmbuild, spec files, debian control
+files, dh_make, debuild, and the whole lot, I automated my way back to sanity.</p>
+<p>The result is a tool I call &ldquo;fpm&rdquo; which aims to help you make and mangle
+packages however you choose, all (ideally) without having to care about the
+internals of your particular native package format.</p>
+<p>The goal of this project is not to undermine upstream packaging but to grant
+everyone the ability to trivially build and edit packages. Why? Not all software
+is packaged. Not all software of the version you want is packaged. And further,
+not all users are willing or able to take the time to learn all the ins and
+outs of their package build tools.</p>
+<p>For example, you can package up your /etc/init.d directory as an RPM by doing
+simply this:</p>
+<pre tabindex="0"><code>% fpm -s dir -t rpm -n myinitfiles -v 1.0 /etc/init.d
+...
+Created /home/jls/rpm/myinitfiles-1.0.x86_64.rpm
+</code></pre><p>fpm will create a simple package for you and put it in your current directory.
+The result:</p>
+<pre tabindex="0"><code>% rpm -qp myinitfiles-1.0.x86_64.rpm -l
+/etc/init.d
+/etc/init.d/.legacy-bootordering
+/etc/init.d/NetworkManager.dpkg-backup
+...
+
+% rpm -qp myinitfiles-1.0.x86_64.rpm --provides
+myinitfiles = 1.0-1
+% rpm -qp myinitfiles-1.0.x86_64.rpm --requires
+rpmlib(PayloadFilesHavePrefix) &lt;= 4.0-1
+rpmlib(CompressedFileNames) &lt;= 3.0.4-1
+</code></pre><p>You can package up any directory. But there&rsquo;s more.</p>
+<p>Above, I didn&rsquo;t specify a package summary, so how about fixing the rpm to
+include the description? You can use RPMs as the source (-s flag) in fpm.
+There&rsquo;s also a helpful &lsquo;-e&rsquo; (&ndash;edit) flag that&rsquo;ll let you edit the rpm spec (or debian control) file before building.</p>
+<pre tabindex="0"><code>% rpm -qp myinitfiles-1.0.x86_64.rpm --info | grep Summary
+Summary     : no summary given
+
+% fpm -s rpm -t rpm -e myinitfiles-1.0.x86_64.rpm
+... this opens up $EDITOR so you can edit the spec file it generated ...
+... make some changes to the spec, including adding a proper &#39;Summary&#39; ...
+Created /home/jls/rpm/myinitfiles-1.0-1.x86_64.rpm
+
+% rpm -qp myinitfiles-1.0-1.x86_64.rpm --info | grep Summary
+Summary     : my /etc/init.d directory
+</code></pre><p>The &lsquo;-s dir&rsquo; flag says the source of the package is a directory. There&rsquo;s also
+support for other package sources like rubygems, other rpms, debs, and more on
+the way.</p>
+<p>With FPM, you can specify dependencies, architecture, maintainer, etc. All from
+a simple command line, and never forcing you to learn the pain and suffering
+that can come with rpm spec files or debian package building.</p>
+<p>You can install fpm with: gem install fpm</p>
+<p>The project page is here: [https://github.com/jordansissel/fpm]</p>
+<!-- raw HTML omitted -->
+<p>The wiki is here (has more examples): [https://github.com/jordansissel/fpm/wiki]</p>
+
+    </article>
+
+    
+
+
+    <ul class="pager article-pager">
+      <li class="pager-newer">
+          <a href="/blog/growing-logstash-value/" data-toggle="tooltip" data-placement="top" title="Growing logstash&#39;s value">&lt; Newer</a>
+      </li>
+      <li class="pager-older">
+        <a href="/blog/geekery/puppet-nodeless-configuration/" data-toggle="tooltip" data-placement="top" title="Puppet &#34;pure fact-driven&#34; nodeless configuration
+">Older &gt;</a>
+      </li>
+    </ul>
+  </div>
+
+
+<div class="site-footer">
+  <div class="copyright">&copy; Copyright 2006-2019 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
+  <ul class="site-footer-items">
+    <li class="site-footer-item-about"><a href="/about/" title="About">About</a></li>
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a> and <a href="https://github.com/taikii/whiteplain">Whiteplain</a>
+  </div>
+</div>
+
+
+</body>
+</html>

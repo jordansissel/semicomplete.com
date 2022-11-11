@@ -7,7 +7,26 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Tue, 10 May 2022 22:55:00 -0700</lastBuildDate><atom:link href="https://semicomplete.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 09 Nov 2022 21:00:00 -0700</lastBuildDate><atom:link href="https://semicomplete.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GitHub: Finding changes since last release</title>
+      <link>https://semicomplete.com/blog/geekery/finding-changes-since-last-release/</link>
+      <pubDate>Wed, 09 Nov 2022 21:00:00 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/blog/geekery/finding-changes-since-last-release/</guid>
+      <description>Time for release! It&amp;rsquo;s an exciting time. Or, it should be. I want to do a release of fpm! However, there&amp;rsquo;s some preparation I need to do before I can publish.
+I need to make sure the changelog file is updated and accurate, and that means I need to know all of the changes made since the previous release. I don&amp;rsquo;t mean the code changes, though. I mean what behaviors were changed?</description>
+    </item>
+    
+    <item>
+      <title>OpenSSF Scorecard evaluates my projects</title>
+      <link>https://semicomplete.com/blog/openssf-scorecard-results/</link>
+      <pubDate>Thu, 22 Sep 2022 21:00:00 -0700</pubDate>
+      
+      <guid>https://semicomplete.com/blog/openssf-scorecard-results/</guid>
+      <description>Like so many things in business, it feels inevitable that we reduce everything to some numerical value through a kind of lossy information compression. Revenue, margins, etc. Risk gets quantized. Vulnerabilities get quantized. Once it&amp;rsquo;s a quantity, there becomes an urge to monitor it, optimize it, and game it. At the speed of business these days(1), who has time to evaluate a vulnerability&amp;rsquo;s impact on your operations when we can simply say &amp;ldquo;If it&amp;rsquo;s got a score of 8 or higher, we take immediate action!</description>
+    </item>
+    
     <item>
       <title>Moving from Flickr to SmugMug</title>
       <link>https://semicomplete.com/blog/migrating-flickr-to-smugmug/</link>
@@ -16,9 +35,9 @@
       <guid>https://semicomplete.com/blog/migrating-flickr-to-smugmug/</guid>
       <description>[ This post is a work in progress as I work towards solutions ]
 I received an email from Flickr on May 9.
- Subject: Your Flickr account is in violation of our free account limits.
+Subject: Your Flickr account is in violation of our free account limits.
 You have more than 50 non-public photos on your free account.
- They gave me 8 days to resolve it &amp;ndash; with the threat of deleting photos. It&amp;rsquo;s been a long time since I&amp;rsquo;ve used Flickr, but I don&amp;rsquo;t want to lose the content I had uploaded.</description>
+They gave me 8 days to resolve it &amp;ndash; with the threat of deleting photos. It&amp;rsquo;s been a long time since I&amp;rsquo;ve used Flickr, but I don&amp;rsquo;t want to lose the content I had uploaded.</description>
     </item>
     
     <item>
@@ -158,9 +177,9 @@ If there&amp;rsquo;s anything this article doesn&amp;rsquo;t cover with respect 
       <pubDate>Sat, 08 Apr 2006 03:53:00 -0700</pubDate>
       
       <guid>https://semicomplete.com/blog/geekery/xvfb-firefox/</guid>
-      <description>Resighas a bunch of unit tests he does to make sure jQueryworks properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&amp;rsquo;s automate this.
-Update (May 2010): See this postfor more details on automating xserver startup without having to worry about display numbers (:1, :2, etc).
- Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&amp;rsquo;ve got a simple way to run Firefox without a visible display.</description>
+      <description>Resig has a bunch of unit tests he does to make sure jQuery works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&amp;rsquo;s automate this.
+Update (May 2010): See this post for more details on automating xserver startup without having to worry about display numbers (:1, :2, etc).
+Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&amp;rsquo;ve got a simple way to run Firefox without a visible display.</description>
     </item>
     
   </channel>

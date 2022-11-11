@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>packaging on semicomplete</title>
+    <link>https://semicomplete.com/tags/packaging/</link>
+    <description>Recent content in packaging on semicomplete</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
+    <lastBuildDate>Tue, 01 Mar 2011 17:41:18 -0800</lastBuildDate><atom:link href="https://semicomplete.com/tags/packaging/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Introducing FPM - Effing Package Management
+</title>
+      <link>https://semicomplete.com/blog/geekery/fpm/</link>
+      <pubDate>Tue, 01 Mar 2011 17:41:18 -0800</pubDate>
+      
+      <guid>https://semicomplete.com/blog/geekery/fpm/</guid>
+      <description>Having become fed up with dealing with rpmbuild, spec files, debian control files, dh_make, debuild, and the whole lot, I automated my way back to sanity.
+The result is a tool I call &amp;ldquo;fpm&amp;rdquo; which aims to help you make and mangle packages however you choose, all (ideally) without having to care about the internals of your particular native package format.
+The goal of this project is not to undermine upstream packaging but to grant everyone the ability to trivially build and edit packages.</description>
+    </item>
+    
+  </channel>
+</rss>
