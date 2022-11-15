@@ -2,11 +2,12 @@
 title= "OpenSSF Scorecard evaluates my projects"
 date= 2022-09-22T21:00:00-07:00
 tags= ["infosec", "open source"]
+draft= true
 +++
 
 Like so many things in business, it feels inevitable that we reduce everything to some numerical value through a kind of lossy information compression. Revenue, margins, etc. Risk gets quantized. Vulnerabilities get quantized. Once it's a quantity, there becomes an urge to monitor it, optimize it, and game it. At the speed of business these days(1), who has time to evaluate a vulnerability's impact on your operations when we can simply say "If it's got a score of 8 or higher, we take immediate action!"
 
-In infosec lately, it's hard to not notice the focus by major corporations and security vendors on the "software supply chain" and this area is no more resistant to quantizing than any other. 
+In infosec lately, it's hard to not notice the focus by major corporations and security vendors on the "software supply chain" and this area is no more resistant than any other to being turned into a numbers game.
 
 Let's take a look at OpenSSF's Scorecard which aims to quantize risk of a software project.
 I will be using their scorecard software tool to evaluate my own projects specifically from the viewpoint of myself as a mostly-solo project maintainer.
@@ -40,7 +41,7 @@ The most common complaints by this tool are as follows:
 
 Does this correlate to risk? I'm guessing there's papers supporting this assumption, but I haven't read them at this time.
 
-I'm not sure that modification rates are strongly correlated to risk especially for small projects which may aim to solve a problem and then simply become completed.
+I'm not sure that modification rates are strongly correlated to risk especially for small projects which may aim to solve a problem, do so, and then become stable with low rates of change.
 
 Inactivity is certainly something that feels easy to measure, but is it the right metric? Do we wish we were measuring response times instead?
 
@@ -55,8 +56,6 @@ I glanced at CodeQL and honestly couldn't even figure out how I would use it on 
 I looked at LGTM, and the top of the website says "LGTM.com will be shut down in December 2022", so I suppose that's as far as I need to go on that tool.
 
 SonarCloud has a free tier that says "your IDE and programming language covered", but the fool(?) that I am, I still use vim, and vim is not listed.
-
-
 
 * [Branch protection not enabled](https://github.com/ossf/scorecard/blob/2231d1f722454c6c9aa6ad77377d2936803216ff/docs/checks.md#branch-protection)
 * [No CII "Best Practices" badge detected](https://github.com/ossf/scorecard/blob/2231d1f722454c6c9aa6ad77377d2936803216ff/docs/checks.md#cii-best-practices)
