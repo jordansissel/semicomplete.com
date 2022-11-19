@@ -19,15 +19,6 @@ I need to make sure the changelog file is updated and accurate, and that means I
     </item>
     
     <item>
-      <title>OpenSSF Scorecard evaluates my projects</title>
-      <link>https://semicomplete.com/blog/openssf-scorecard-results/</link>
-      <pubDate>Thu, 22 Sep 2022 21:00:00 -0700</pubDate>
-      
-      <guid>https://semicomplete.com/blog/openssf-scorecard-results/</guid>
-      <description>Like so many things in business, it feels inevitable that we reduce everything to some numerical value through a kind of lossy information compression. Revenue, margins, etc. Risk gets quantized. Vulnerabilities get quantized. Once it&amp;rsquo;s a quantity, there becomes an urge to monitor it, optimize it, and game it. At the speed of business these days(1), who has time to evaluate a vulnerability&amp;rsquo;s impact on your operations when we can simply say &amp;ldquo;If it&amp;rsquo;s got a score of 8 or higher, we take immediate action!</description>
-    </item>
-    
-    <item>
       <title>Moving from Flickr to SmugMug</title>
       <link>https://semicomplete.com/blog/migrating-flickr-to-smugmug/</link>
       <pubDate>Tue, 10 May 2022 22:55:00 -0700</pubDate>
