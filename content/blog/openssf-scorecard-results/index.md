@@ -1,8 +1,8 @@
 +++
-title= "OpenSSF Scorecard evaluates my projects"
-date= 2022-09-22T21:00:00-07:00
-tags= ["infosec", "open source"]
-draft= true
+title = "OpenSSF Scorecard evaluates my projects"
+date = 2022-09-22T21:00:00-07:00
+tags = ["infosec", "open source"]
+draft = true
 +++
 
 Like so many things in business, it feels inevitable that we reduce everything to some numerical value through a kind of lossy information compression. Revenue, margins, etc. Risk gets quantized. Vulnerabilities get quantized. Once it's a quantity, there becomes an urge to monitor it, optimize it, and game it. At the speed of business these days(1), who has time to evaluate a vulnerability's impact on your operations when we can simply say "If it's got a score of 8 or higher, we take immediate action!"
