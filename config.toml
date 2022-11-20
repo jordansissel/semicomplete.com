@@ -47,3 +47,7 @@ copyright = "&copy; Copyright 2006-2022 Jordan Sissel - Content licensed as <a h
   weight = 1
   identifier = "about"
   url = "/about/"
+
+[markup.goldmark.renderer]
+  unsafe = true
+  
