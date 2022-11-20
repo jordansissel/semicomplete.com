@@ -89,11 +89,11 @@ Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you
         </li>
       </ul>
       
-      <p><!-- raw HTML omitted -->Resig<!-- raw HTML omitted --> has a bunch of unit tests he does to make sure <!-- raw HTML omitted -->jQuery<!-- raw HTML omitted --> works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&rsquo;s automate this.</p>
+      <p><a href="http://www.ejohn.org">Resig</a> has a bunch of unit tests he does to make sure <a href="http://www.jquery.com">jQuery</a> works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&rsquo;s automate this.</p>
 <h2 id="update-may-2010">Update (May 2010):</h2>
 <p>See
-<!-- raw HTML omitted -->this
-post<!-- raw HTML omitted --> for more details on automating xserver startup without having to worry
+<a href="/blog/geekery/headless-wrapper-for-ephemeral-xservers.html">this
+post</a> for more details on automating xserver startup without having to worry
 about display numbers (:1, :2, etc).</p>
 <hr>
 <p>Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&rsquo;ve got a simple way to run Firefox without a visible display.</p>
@@ -114,7 +114,7 @@ env DISPLAY=:1 firefox
 <pre tabindex="0"><code>DISPLAY=:1 firefox-remote http://www.google.com/
 </code></pre><p>Now, let&rsquo;s take a screenshot (requires ImageMagick&rsquo;s import command):</p>
 <pre tabindex="0"><code>DISPLAY=:1 import -window root googledotcom.png
-</code></pre><p>Lets see what that looks like: <!-- raw HTML omitted -->googledotcom.png<!-- raw HTML omitted --></p>
+</code></pre><p>Lets see what that looks like: <a href="http://www.semicomplete.com/images/googledotcom.png">googledotcom.png</a></p>
 <p>While this isn&rsquo;t complicated, we could very easily automate lots of magic using
 something like the Selenium extension, all without requiring the use of a
 visual display (Monitor). Hopefully I&rsquo;ll find time to work on something cool
@@ -123,7 +123,9 @@ using this soon.</p>
 it almost always needs to be done without a browser. For instance, all of my
 screen scraping adventures have been using Perl. Browsers already know how to
 speak to the web, so why reinvent the wheel?</p>
-<p>Firefox has lots of javascript-magic extensions such as <!-- raw HTML omitted -->greasemonkey<!-- raw HTML omitted --> and <!-- raw HTML omitted -->Selenium<!-- raw HTML omitted --> to let you execute
+<p>Firefox has lots of javascript-magic extensions such as <a
+href="http://greasemonkey.mozdev.org/">greasemonkey</a> and <a
+href="http://www.openqa.org/selenium/">Selenium</a> to let you execute
 browser-side javascript and activity automatically. Combine these together with
 Xvfb, and you can automate lots of things behind the scenes.</p>
 <p>Tie this back to unit tests. Instead of simply displaying results of unit tests,
@@ -147,7 +149,7 @@ automatically report the results back to a server.</p>
 
 
 <div class="site-footer">
-  <div class="copyright">&copy; Copyright 2006-2019 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
+  <div class="copyright">&copy; Copyright 2006-2022 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
   <ul class="site-footer-items">
     <li class="site-footer-item-about"><a href="/about/" title="About">About</a></li>
   </ul>

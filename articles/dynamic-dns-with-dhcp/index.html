@@ -98,19 +98,20 @@ there&rsquo;s a tool that&rsquo;ll do that for us.</p>
 the manpage? Fine. <code>dnssec-keygen</code> is a tool to create dnssec
 keys, much like ssh-keygen creates ssh keys. Pick a name for your key,
 it can be any name. I usually name it appropriately. For this example, I
-will call our key <!-- raw HTML omitted -->dhcpupdate<!-- raw HTML omitted -->.</p>
+will call our key <i>dhcpupdate</i>.</p>
 <p>Create the key as such:</p>
 <pre tabindex="0"><code>% dnssec-keygen -a hmac-md5 -b 128 -n USER dhcpupdate
 Kdhcpupdate.+157+14638
-</code></pre><p>This will create a 128bit HMAC-MD5 keyfile called <!-- raw HTML omitted -->dhcpupdate<!-- raw HTML omitted -->.</p>
+</code></pre><p>This will create a 128bit HMAC-MD5 keyfile called <i>dhcpupdate</i>.</p>
 <p>The output is the file prefix. If you do <code>ls Kdhcpupdate*</code>
 you will see two files. The .key file is most useful, in my opinion.
 Looking at the .key file:</p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
+<pre>
+dhcpupdate. IN KEY 0 3 157 N8Hk2RUFO84bEVl3uGTD2A==
+</pre>
 <p>No, that is not the key I use. No, you shouldn&rsquo;t use that key for your
 server ;)</p>
-<p>The last token in that file is the key (<!-- raw HTML omitted -->N8Hk&hellip;<!-- raw HTML omitted -->). Keep that
+<p>The last token in that file is the key (<i>N8Hk&hellip;</i>). Keep that
 secret.  Forever.</p>
 <h1 id="namedconf-changes">named.conf changes</h1>
 <p>The updates to named.conf are pretty straightforward. For every zone you
@@ -183,7 +184,7 @@ happynode.home has address 192.168.0.50
 <pre tabindex="0"><code>update delete happynode.home
 </code></pre><p>However, if something went wrong:</p>
 <p><code>update failed: NOTZONE</code></p>
-<p>The above message means you didn&rsquo;t specify a hostname the dns server has zone information for. Make sure you&rsquo;re using a full domain name. That is, do not use <!-- raw HTML omitted -->happynode<!-- raw HTML omitted -->. Use <!-- raw HTML omitted -->happynode.home.<!-- raw HTML omitted --></p>
+<p>The above message means you didn&rsquo;t specify a hostname the dns server has zone information for. Make sure you&rsquo;re using a full domain name. That is, do not use <i>happynode</i>. Use <i>happynode.home.</i></p>
 <pre tabindex="0"><code>; TSIG error with server: tsig indicates error&lt;br&gt;
 update failed: NOTAUTH(BADSIG)
 </code></pre><p>The above message means you are providing the wrong key, or the server is refusing your key for another reason.</p>
@@ -278,7 +279,7 @@ out&rdquo; if you just specify host-name and domain-name.</li>
 
 
 <div class="site-footer">
-  <div class="copyright">&copy; Copyright 2006-2019 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
+  <div class="copyright">&copy; Copyright 2006-2022 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
   <ul class="site-footer-items">
     <li class="site-footer-item-about"><a href="/about/" title="About">About</a></li>
   </ul>
