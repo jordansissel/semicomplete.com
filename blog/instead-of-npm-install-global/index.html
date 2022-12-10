@@ -7,9 +7,9 @@
   <meta property="og:title" content="Instead of `npm install -g`... - semicomplete" />
   <meta name="twitter:title" content="Instead of `npm install -g`... - semicomplete" />
   <meta name="description" content="We have some Sonos speakers at home, and I&rsquo;d like my kids to be able to choose music when/where they like. The iOS Sonos app is somewhat labyrinthian, so I think, can I make a simple version of this? I figured a simple-ish web interface with buttons for their favorite albums and playlists. Could be fun?
-With my eager eyes set on a goal to make a silly web app. I was reading through the Ionic&#43;Vue tutorial.">
+With my eager eyes set on a goal to make a silly web app, I began reading through the Ionic&#43;Vue tutorial.">
   <meta property="og:description" content="We have some Sonos speakers at home, and I&rsquo;d like my kids to be able to choose music when/where they like. The iOS Sonos app is somewhat labyrinthian, so I think, can I make a simple version of this? I figured a simple-ish web interface with buttons for their favorite albums and playlists. Could be fun?
-With my eager eyes set on a goal to make a silly web app. I was reading through the Ionic&#43;Vue tutorial.">
+With my eager eyes set on a goal to make a silly web app, I began reading through the Ionic&#43;Vue tutorial.">
   <meta name="twitter:description" content="We have some Sonos speakers at home, and I&rsquo;d like my kids to be able to choose music when/where they like. The iOS Sonos app is somewhat labyrinthian, so I think, can I make a simple version of …">
   <meta name="author" content="Jordan Sissel"/>
   <meta property="og:site_name" content="semicomplete" />
@@ -57,7 +57,7 @@ With my eager eyes set on a goal to make a silly web app. I was reading through 
   <nav id="TableOfContents"></nav>
 </aside>
       <p>We have some Sonos speakers at home, and I&rsquo;d like my kids to be able to choose music when/where they like. The iOS Sonos app is somewhat labyrinthian, so I think, can I make a simple version of this? I figured a simple-ish web interface with buttons for their favorite albums and playlists. Could be fun?</p>
-<p>With my eager eyes set on a goal to make a silly web app. I was reading through the <a href="https://ionicframework.com/docs/vue/your-first-app">Ionic+Vue tutorial</a>. I still have that goal, but I got very delayed by a small side quest. Hello! With ADHD, side quests are my entire life. :)</p>
+<p>With my eager eyes set on a goal to make a silly web app, I began reading through the <a href="https://ionicframework.com/docs/vue/your-first-app">Ionic+Vue tutorial</a>. Then I got very delayed by a small side quest. Hello! With ADHD, side quests are my entire life. :)</p>
 <p>The Ionic tutorial provide the command to install the ionic command-line tool, nice! I am offered this:</p>
 <blockquote>
 <p><code>npm install -g @ionic/cli@latest native-run cordova-res</code></p>
@@ -78,6 +78,7 @@ With my eager eyes set on a goal to make a silly web app. I was reading through 
 <p>The fact that we have to call this out in our documentation? It&rsquo;s bad! &ldquo;This is the recommended install technique, and we know it doesn&rsquo;t work most of the time&rdquo;</p>
 <p>I applaud this <em>being</em> documented, but I do not applaud this being necessary.</p>
 <p>I&rsquo;ve used a little bit of Node.js for a decade, and this error feels so common! The documentation says &ldquo;Install with <code>npm install -g ...</code>&rdquo; which then fails.</p>
+<p>I call this kind of thing &ldquo;enshrined misery&rdquo; because there&rsquo;s this implicit acceptance that this point of confusion and difficulty exists because it must exist. Even the upstream <a href="https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally">npm documentation makes the same or similar recommendation</a>.</p>
 <p>Workarounds are offered, for example, to use a node version manager [screaming intensifies] or <code>chown</code> some directories to be owned by you instead of root. They don&rsquo;t feel like good workarounds. Ruby has this problem too (bundler, rvm), as does Python (virtualenv, venv, etc). It&rsquo;s hardly unique to any particular system.</p>
 <p>I hope we can move forward to a better position for ourselves as developers and for others as developers and users.</p>
 <h1 id="a-workaround-i-suppose">A workaround, I suppose</h1>
@@ -101,7 +102,7 @@ With my eager eyes set on a goal to make a silly web app. I was reading through 
 
 6.20.4
 </code></pre><p>Feels better? I think?</p>
-<p>Zero side quests. No pitfalls to document. Hopefully it&rsquo;s a more successful path to travel?</p>
+<p>No side quests. No pitfalls to document. Less side effects?</p>
 <h1 id="why-do-we-do-this">Why do we do this</h1>
 <p>I feel like we (developers, sysadmins, etc) get comfortable with tools such that we no longer notice the things which, to a newbie, are obvious miseries and confusions. The frustrating parts of our common tools start to feel normal.  We&rsquo;ll call it a &ldquo;learning curve&rdquo; and laugh at how steep the walls are.</p>
 <p>When this happens, we forget the frustration and confusion that is baked into the tool or system.</p>
@@ -110,7 +111,7 @@ With my eager eyes set on a goal to make a silly web app. I was reading through 
 <p>Over my 20+ years in open source, I&rsquo;ve run into countless scenarios where I am the new user. I bump into something confusing or frustrating. I think, &ldquo;Maybe I&rsquo;ll ask for help or report that this is frustrating?&rdquo; The next thing happens with predictability &ndash; Community folk or maintainers, who have already internally normalized and forgotten about the frustrating aspects, will shape their answers to point blame at me for the failure. I am using a thing for the wrong purpose, or for the wrong reason, or if I just read the documentation one more time it&rsquo;ll all become clear, or that it works for them and can&rsquo;t fathom why it doesn&rsquo;t work for me.</p>
 <p>That&rsquo;s why I keep telling folks: <strong>If a new user has a bad time, it&rsquo;s a bug.</strong></p>
 <p>I&rsquo;ve had this exact phrase as a guide in Logstash and fpm, and I know that it&rsquo;s helped reduce frictions. This phrase is an invitation to a newbie that, before they can even ask a question or report a problem, a bad time is a bug, with that implicit acceptance that bugs are something we endeavour to resolve and improve. It matters.</p>
-<p>If you assume this mindset and broadcast an invitation &ndash; that the stumbling of a new user is a sign of something that needs improvement &ndash; you open yourself to a world of opportunities to improve onboarding for new folks as well as reducing day-to-day frustrations that a system causes to even those who are fluent in a given system.</p>
+<p>If you use this mindset and broadcast an invitation &ndash; that the stumbling of a new user is a sign of something that needs improvement &ndash; you open yourself to a world of opportunities to improve onboarding for new folks as well as reducing day-to-day frustrations that a system causes to even those who are fluent in a given system.</p>
 
     </article>
 
