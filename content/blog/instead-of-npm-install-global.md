@@ -39,6 +39,8 @@ I applaud this *being* documented, but I do not applaud this being necessary.
 
 I've used a little bit of Node.js for a decade, and this error feels so common! The documentation says "Install with `npm install -g ...`" which then fails.
 
+I call this kind of thing "enshrined misery" because there's this implicit acceptance that this point of confusion and difficulty exists because it must exist. Even the upstream [npm documentation makes the same or similar recommendation](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally).
+
 Workarounds are offered, for example, to use a node version manager \[screaming intensifies\] or `chown` some directories to be owned by you instead of root. They don't feel like good workarounds. Ruby has this problem too (bundler, rvm), as does Python (virtualenv, venv, etc). It's hardly unique to any particular system.
 
 I hope we can move forward to a better position for ourselves as developers and for others as developers and users.
@@ -83,7 +85,7 @@ And now, we can run ionic via npm:
 
 Feels better? I think? 
 
-Zero side quests. No pitfalls to document. Hopefully it's a more successful path to travel?
+No side quests. No pitfalls to document. Less side effects?
 
 # Why do we do this
 
@@ -101,4 +103,4 @@ That's why I keep telling folks: **If a new user has a bad time, it's a bug.**
 
 I've had this exact phrase as a guide in Logstash and fpm, and I know that it's helped reduce frictions. This phrase is an invitation to a newbie that, before they can even ask a question or report a problem, a bad time is a bug, with that implicit acceptance that bugs are something we endeavour to resolve and improve. It matters.
 
-If you assume this mindset and broadcast an invitation -- that the stumbling of a new user is a sign of something that needs improvement -- you open yourself to a world of opportunities to improve onboarding for new folks as well as reducing day-to-day frustrations that a system causes to even those who are fluent in a given system.
+If you use this mindset and broadcast an invitation -- that the stumbling of a new user is a sign of something that needs improvement -- you open yourself to a world of opportunities to improve onboarding for new folks as well as reducing day-to-day frustrations that a system causes to even those who are fluent in a given system.
