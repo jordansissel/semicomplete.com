@@ -5,7 +5,7 @@ date: 2022-12-09
 
 We have some Sonos speakers at home, and I'd like my kids to be able to choose music when/where they like. The iOS Sonos app is somewhat labyrinthian, so I think, can I make a simple version of this? I figured a simple-ish web interface with buttons for their favorite albums and playlists. Could be fun?
 
-With my eager eyes set on a goal to make a silly web app, I began reading through the [Ionic+Vue tutorial](https://ionicframework.com/docs/vue/your-first-app). Then I got very delayed by a small side quest. Hello! With ADHD, side quests are my entire life. :)
+I've been doing light web development since the late 90s, and I love learning new stuff, so I'll pick something newer to use. With my eager eyes set on a goal to make a silly web app, I began reading through the [Ionic+Vue tutorial](https://ionicframework.com/docs/vue/your-first-app). Then I got very delayed by a small side quest. Hello! With ADHD, side quests are my entire life. :)
 
 The Ionic tutorial provide the command to install the ionic command-line tool, nice! I am offered this:
 
