@@ -43,6 +43,8 @@ I call this kind of thing "enshrined misery" because there's this implicit accep
 
 Workarounds are offered, for example, to use a node version manager \[screaming intensifies\] or `chown` some directories to be owned by you instead of root. They don't feel like good workarounds. Ruby has this problem too (bundler, rvm), as does Python (virtualenv, venv, etc). It's hardly unique to any particular system.
 
+As a sysadmin, reading [npm's recommendations](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally) gives me some super bad vibes. When I read "1. Backup your computer" I immediately wonder how much absolute damage we're about to cause, kinda like those times you're right about to go fight the Big Bad Boss in a game and you quick save *right before* because you know it's going to be bad for you. I went from "I will maybe learn Ionic+Vue!" and three minutes later am deep into extreme-danger territory. Oof.
+
 I hope we can move forward to a better position for ourselves as developers and for others as developers and users.
 
 # A workaround, I suppose
