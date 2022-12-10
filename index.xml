@@ -9,16 +9,13 @@
     <copyright>&amp;copy; Copyright 2006-2022 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
     <lastBuildDate>Fri, 09 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://semicomplete.com/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Alternative to `npm install -g`</title>
-      <link>https://semicomplete.com/blog/alternative-to-npm-install-global/</link>
+      <title>Instead of `npm install -g`...</title>
+      <link>https://semicomplete.com/blog/instead-of-npm-install-global/</link>
       <pubDate>Fri, 09 Dec 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://semicomplete.com/blog/alternative-to-npm-install-global/</guid>
-      <description>Alternative to npm install -g I was reading through the Ionic+Vue tutorial with eager eyes set on a goal of making a silly webapp. I still have that goal, but I took a small side quest.
-The docs explain that you&amp;rsquo;ll need to install the Ionic command-line tool, and offers this:
-npm install -g @ionic/cli@latest native-run cordova-res
-Immediately after this line, it has a warning that reads:
-The -g option means install globally.</description>
+      <guid>https://semicomplete.com/blog/instead-of-npm-install-global/</guid>
+      <description>We have some Sonos speakers at home, and I&amp;rsquo;d like my kids to be able to choose music when/where they like. The iOS Sonos app is somewhat labyrinthian, so I think, can I make a simple version of this? I figured a simple-ish web interface with buttons for their favorite albums and playlists. Could be fun?
+With my eager eyes set on a goal to make a silly web app. I was reading through the Ionic+Vue tutorial.</description>
     </item>
     
     <item>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Instead of `npm install -g`... - semicomplete</title>
+  <meta property="og:title" content="Instead of `npm install -g`... - semicomplete" />
+  <meta name="twitter:title" content="Instead of `npm install -g`... - semicomplete" />
+  <meta name="description" content="We have some Sonos speakers at home, and I&rsquo;d like my kids to be able to choose music when/where they like. The iOS Sonos app is somewhat labyrinthian, so I think, can I make a simple version of this? I figured a simple-ish web interface with buttons for their favorite albums and playlists. Could be fun?
+With my eager eyes set on a goal to make a silly web app. I was reading through the Ionic&#43;Vue tutorial.">
+  <meta property="og:description" content="We have some Sonos speakers at home, and I&rsquo;d like my kids to be able to choose music when/where they like. The iOS Sonos app is somewhat labyrinthian, so I think, can I make a simple version of this? I figured a simple-ish web interface with buttons for their favorite albums and playlists. Could be fun?
+With my eager eyes set on a goal to make a silly web app. I was reading through the Ionic&#43;Vue tutorial.">
+  <meta name="twitter:description" content="We have some Sonos speakers at home, and I&rsquo;d like my kids to be able to choose music when/where they like. The iOS Sonos app is somewhat labyrinthian, so I think, can I make a simple version of …">
+  <meta name="author" content="Jordan Sissel"/>
+  <meta property="og:site_name" content="semicomplete" />
+  <meta property="og:url" content="https://semicomplete.com/blog/instead-of-npm-install-global/" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.108.0">
+
+  <link rel="stylesheet" href="/css/style.css" media="all" />
+  <link rel="stylesheet" href="/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="/css/custom.css" media="all" />
+
+  <script src="/js/script.js"></script>
+  <script src="/js/custom.js"></script>
+  <script defer src="/js/fontawesome.js"></script>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <h1 class="site-title"><a href="/">semicomplete</a></h1>
+    <ul class="site-navi-items">
+      <li class="site-navi-item-categories"><a href="/categories/" title="Categories">Categories</a></li>
+      <li class="site-navi-item-tags"><a href="/tags/" title="Tags">Tags</a></li>
+      <li class="site-navi-item-archives"><a href="/archives/" title="Archives">Archives</a></li>
+      <li class="site-navi-item-about"><a href="/about/" title="About">About</a></li>
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+  <div class="main" role="main">
+    <article class="article">
+      
+      
+      <h1 class="article-title">Instead of `npm install -g`...</h1>
+      
+      <hr class="article-title-bottom">
+      <ul class="article-meta">
+        <li class="article-meta-date"><time>9 December, 2022</time></li>
+      </ul>
+      
+<aside class="toc">
+  <nav id="TableOfContents"></nav>
+</aside>
+      <p>We have some Sonos speakers at home, and I&rsquo;d like my kids to be able to choose music when/where they like. The iOS Sonos app is somewhat labyrinthian, so I think, can I make a simple version of this? I figured a simple-ish web interface with buttons for their favorite albums and playlists. Could be fun?</p>
+<p>With my eager eyes set on a goal to make a silly web app. I was reading through the <a href="https://ionicframework.com/docs/vue/your-first-app">Ionic+Vue tutorial</a>. I still have that goal, but I got very delayed by a small side quest. Hello! With ADHD, side quests are my entire life. :)</p>
+<p>The Ionic tutorial provide the command to install the ionic command-line tool, nice! I am offered this:</p>
+<blockquote>
+<p><code>npm install -g @ionic/cli@latest native-run cordova-res</code></p>
+</blockquote>
+<p>Immediately after this line, it has a long warning that reads:</p>
+<blockquote>
+<p>The -g option means install globally. When packages are installed globally, EACCES permission errors can occur.</p>
+<p>Consider setting up npm to operate globally without elevated permissions. See <a href="https://ionicframework.com/docs/developing/tips#resolving-permission-errors">Resolving Permission Errors</a> for more information.</p>
+</blockquote>
+<p>At this point, I&rsquo;m barely done reading one page of text, and already, it&rsquo;s telling us that a command will fail! Not only that, it&rsquo;s saying I need to go embark on a side quest on a <em>different page</em>. This particular side quest has multiple choices, and of the choices, all will have side effects that impact things outside of my project, even non-ionic projects! Wild! What a challenge!</p>
+<p>This scenario is hardly unique to any particular technology project, but I want to share how I think this is a problem, how we end up with documentation like this, and maybe how to solve it.</p>
+<h1 id="bad-habits">Bad Habits</h1>
+<p>We (software developers) have a history of writing tooling that is bad specifically in that it often does not meet the expectations of the users and it also can mislead them. The experienced among us will have memorized ways to travel through the confusing or difficult parts of the system, and that memorization makes things feel normal. We forget how hard the system actually is to navigate.</p>
+<p>I&rsquo;m following a tutorial. I&rsquo;m copy-pasting the commands. I shouldn&rsquo;t be failing!</p>
+<p>And yet, here we are.</p>
+<p>And I&rsquo;m here, having a bad time, because instead of learning Ionic and Vue, my first step takes me deep in the historical entanglement of weird software issues.</p>
+<p>If a new user has a bad time, it&rsquo;s a bug.</p>
+<p>The fact that we have to call this out in our documentation? It&rsquo;s bad! &ldquo;This is the recommended install technique, and we know it doesn&rsquo;t work most of the time&rdquo;</p>
+<p>I applaud this <em>being</em> documented, but I do not applaud this being necessary.</p>
+<p>I&rsquo;ve used a little bit of Node.js for a decade, and this error feels so common! The documentation says &ldquo;Install with <code>npm install -g ...</code>&rdquo; which then fails.</p>
+<p>Workarounds are offered, for example, to use a node version manager [screaming intensifies] or <code>chown</code> some directories to be owned by you instead of root. They don&rsquo;t feel like good workarounds. Ruby has this problem too (bundler, rvm), as does Python (virtualenv, venv, etc). It&rsquo;s hardly unique to any particular system.</p>
+<p>I hope we can move forward to a better position for ourselves as developers and for others as developers and users.</p>
+<h1 id="a-workaround-i-suppose">A workaround, I suppose</h1>
+<p>Since <code>npm install</code> defaults (I think? always?) to installing to <code>node_modules</code> in the current directory, we can install ionic like this, almost exactly the way the docs suggest, except we omit <code>-g</code>:</p>
+<pre tabindex="0"><code>% npm install @ionic/cli@latest native-run cordova-res
+</code></pre><p>Now, the <code>ionic</code> command line tool will be in a path like <code>node_modules/&lt;name&gt;/bin/ionic</code> and in this case, it&rsquo;s <code>node_modules/@ionic/cli/bin/ionic</code>. We can run it:</p>
+<pre tabindex="0"><code>% ./node_modules/@ionic/cli/bin/ionic version
+6.20.4
+</code></pre><p>It might not <em>feel</em> good to write this full path in the documentation, but I do feel it&rsquo;s better (and with zero side quests!) than the offered <code>npm install -g</code>-plus-caveats approach.</p>
+<p>If we want to type less, we can add an npm script to our package.json:</p>
+<pre tabindex="0"><code>{
+  &#34;scripts&#34;: {
+    &#34;ionic&#34;: &#34;node_modules/@ionic/cli/bin/ionic&#34;
+  }
+}
+</code></pre><p>And now, we can run ionic via npm:</p>
+<pre tabindex="0"><code>% npm run ionic version
+
+&gt; ionic
+&gt; node_modules/@ionic/cli/bin/ionic version
+
+6.20.4
+</code></pre><p>Feels better? I think?</p>
+<p>Zero side quests. No pitfalls to document. Hopefully it&rsquo;s a more successful path to travel?</p>
+<h1 id="why-do-we-do-this">Why do we do this</h1>
+<p>I feel like we (developers, sysadmins, etc) get comfortable with tools such that we no longer notice the things which, to a newbie, are obvious miseries and confusions. The frustrating parts of our common tools start to feel normal.  We&rsquo;ll call it a &ldquo;learning curve&rdquo; and laugh at how steep the walls are.</p>
+<p>When this happens, we forget the frustration and confusion that is baked into the tool or system.</p>
+<p>I certainly am guilty of this habit of ignoring sharp edges that I&rsquo;ve simply become accustomed to dodging them. It&rsquo;s this exact phemonenon which causes me to highly value newbies. Newbies have a special sensitivity to the rough edges, confusing aspects, and incomplete parts. This is a super power, and to squander it is a tragedy.</p>
+<h1 id="lets-improve-things">Let&rsquo;s improve things.</h1>
+<p>Over my 20+ years in open source, I&rsquo;ve run into countless scenarios where I am the new user. I bump into something confusing or frustrating. I think, &ldquo;Maybe I&rsquo;ll ask for help or report that this is frustrating?&rdquo; The next thing happens with predictability &ndash; Community folk or maintainers, who have already internally normalized and forgotten about the frustrating aspects, will shape their answers to point blame at me for the failure. I am using a thing for the wrong purpose, or for the wrong reason, or if I just read the documentation one more time it&rsquo;ll all become clear, or that it works for them and can&rsquo;t fathom why it doesn&rsquo;t work for me.</p>
+<p>That&rsquo;s why I keep telling folks: <strong>If a new user has a bad time, it&rsquo;s a bug.</strong></p>
+<p>I&rsquo;ve had this exact phrase as a guide in Logstash and fpm, and I know that it&rsquo;s helped reduce frictions. This phrase is an invitation to a newbie that, before they can even ask a question or report a problem, a bad time is a bug, with that implicit acceptance that bugs are something we endeavour to resolve and improve. It matters.</p>
+<p>If you assume this mindset and broadcast an invitation &ndash; that the stumbling of a new user is a sign of something that needs improvement &ndash; you open yourself to a world of opportunities to improve onboarding for new folks as well as reducing day-to-day frustrations that a system causes to even those who are fluent in a given system.</p>
+
+    </article>
+
+    
+
+
+    <ul class="pager article-pager">
+      <li class="pager-newer pager-noitem">&lt; Newer</li>
+      <li class="pager-older">
+        <a href="/blog/geekery/finding-changes-since-last-release/" data-toggle="tooltip" data-placement="top" title="GitHub: Finding changes since last release">Older &gt;</a>
+      </li>
+    </ul>
+  </div>
+
+
+<div class="site-footer">
+  <div class="copyright">&copy; Copyright 2006-2022 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
+  <ul class="site-footer-items">
+    <li class="site-footer-item-about"><a href="/about/" title="About">About</a></li>
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a> and <a href="https://github.com/taikii/whiteplain">Whiteplain</a>
+  </div>
+</div>
+
+
+</body>
+</html>
