@@ -103,6 +103,6 @@ Over my 20+ years in open source, I've run into countless scenarios where I am t
 
 That's why I keep telling folks: **If a new user has a bad time, it's a bug.**
 
-I've had this exact phrase as a guide in Logstash and fpm, and I know that it's helped reduce frictions. This phrase is an invitation to a newbie that, before they can even ask a question or report a problem, a bad time is a bug, with that implicit acceptance that bugs are something we endeavour to resolve and improve. It matters.
+I've had this exact phrase as a guide in [Logstash](https://github.com/elastic/logstash) and [fpm](https://github.com/jordansissel/fpm), and I know that it's helped reduce frictions. This phrase is an invitation to a newbie that, before they can even ask a question or report a problem, a bad time is a bug, with that implicit acceptance that bugs are something we endeavour to resolve and improve. It matters.
 
 If you use this mindset and broadcast an invitation -- that the stumbling of a new user is a sign of something that needs improvement -- you open yourself to a world of opportunities to improve onboarding for new folks as well as reducing day-to-day frustrations that a system causes to even those who are fluent in a given system.
