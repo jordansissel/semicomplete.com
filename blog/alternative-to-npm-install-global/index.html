@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Alternative to `npm install -g` - semicomplete</title>
+  <meta property="og:title" content="Alternative to `npm install -g` - semicomplete" />
+  <meta name="twitter:title" content="Alternative to `npm install -g` - semicomplete" />
+  <meta name="description" content="Alternative to npm install -g I was reading through the Ionic&#43;Vue tutorial with eager eyes set on a goal of making a silly webapp. I still have that goal, but I took a small side quest.
+The docs explain that you&rsquo;ll need to install the Ionic command-line tool, and offers this:
+npm install -g @ionic/cli@latest native-run cordova-res
+Immediately after this line, it has a warning that reads:
+The -g option means install globally.">
+  <meta property="og:description" content="Alternative to npm install -g I was reading through the Ionic&#43;Vue tutorial with eager eyes set on a goal of making a silly webapp. I still have that goal, but I took a small side quest.
+The docs explain that you&rsquo;ll need to install the Ionic command-line tool, and offers this:
+npm install -g @ionic/cli@latest native-run cordova-res
+Immediately after this line, it has a warning that reads:
+The -g option means install globally.">
+  <meta name="twitter:description" content="Alternative to npm install -g I was reading through the Ionic&#43;Vue tutorial with eager eyes set on a goal of making a silly webapp. I still have that goal, but I took a small side quest.
+The docs …">
+  <meta name="author" content="Jordan Sissel"/>
+  <meta property="og:site_name" content="semicomplete" />
+  <meta property="og:url" content="https://semicomplete.com/blog/alternative-to-npm-install-global/" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.105.0">
+
+  <link rel="stylesheet" href="/css/style.css" media="all" />
+  <link rel="stylesheet" href="/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="/css/custom.css" media="all" />
+
+  <script src="/js/script.js"></script>
+  <script src="/js/custom.js"></script>
+  <script defer src="/js/fontawesome.js"></script>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <h1 class="site-title"><a href="/">semicomplete</a></h1>
+    <ul class="site-navi-items">
+      <li class="site-navi-item-categories"><a href="/categories/" title="Categories">Categories</a></li>
+      <li class="site-navi-item-tags"><a href="/tags/" title="Tags">Tags</a></li>
+      <li class="site-navi-item-archives"><a href="/archives/" title="Archives">Archives</a></li>
+      <li class="site-navi-item-about"><a href="/about/" title="About">About</a></li>
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+  <div class="main" role="main">
+    <article class="article">
+      
+      
+      <h1 class="article-title">Alternative to `npm install -g`</h1>
+      
+      <hr class="article-title-bottom">
+      <ul class="article-meta">
+        <li class="article-meta-date"><time>9 December, 2022</time></li>
+      </ul>
+      
+<aside class="toc">
+  <nav id="TableOfContents"></nav>
+</aside>
+      <h1 id="alternative-to-npm-install--g">Alternative to <code>npm install -g</code></h1>
+<p>I was reading through the <a href="https://ionicframework.com/docs/vue/your-first-app">Ionic+Vue tutorial</a> with eager eyes set on a goal of making a silly webapp. I still have that goal, but I took a small side quest.</p>
+<p>The docs explain that you&rsquo;ll need to install the Ionic command-line tool, and offers this:</p>
+<blockquote>
+<p><code>npm install -g @ionic/cli@latest native-run cordova-res</code></p>
+</blockquote>
+<p>Immediately after this line, it has a warning that reads:</p>
+<blockquote>
+<p>The -g option means install globally. When packages are installed globally, EACCES permission errors can occur.</p>
+<p>Consider setting up npm to operate globally without elevated permissions. See <a href="https://ionicframework.com/docs/developing/tips#resolving-permission-errors">Resolving Permission Errors</a> for more information.</p>
+</blockquote>
+<p>We&rsquo;re barely done reading one page of text in the docs and already it&rsquo;s telling us that a command will fail and to begin a side quest to go solve that command, that they told us to use that they also say will fail.</p>
+<h1 id="bad-habits">Bad Habits</h1>
+<p>We (software developers) have a history of writing tooling that is bad specifically in that it often does not meet the expectations of the users and it also can mislead them.</p>
+<p>I&rsquo;m following a tutorial. I&rsquo;m copy-pasting the commands. I shouldn&rsquo;t be failing!</p>
+<p>And yet, here we are.</p>
+<p>And I&rsquo;m here, having a bad time, because I&rsquo;m now on a side quest 10 seconds into this new game.</p>
+<p>If a new user has a bad time, it&rsquo;s a bug.</p>
+<p>The fact that we have to call this out in our documentation? It&rsquo;s bad! &ldquo;This is the recommended install technique, and we know it doesn&rsquo;t work most of the time&rdquo;</p>
+<p>I applaud this <em>being</em> documented, but I do not applaud this being necessary.</p>
+<p>I&rsquo;ve used a little bit of Node.js for a decade, and this error feels so common! The documentation says &ldquo;Install with <code>npm install -g ...</code>&rdquo; which then fails.</p>
+<p>Workarounds are offered, for example, to use a node version manager [screaming intensifies] or <code>chown</code> some directories to be owned by you instead of root. They don&rsquo;t feel like good workarounds. Ruby has this problem too (bundler, rvm), as does Python (virtualenv, venv, etc). It&rsquo;s hardly unique to any particular system.</p>
+<h1 id="a-workaround-i-suppose">A workaround, I suppose</h1>
+<p>Since <code>npm install</code> defaults (I think? always?) to installing to <code>node_modules</code> in the current directory, we can install ionic like this, almost exactly the way the docs suggest, except we omit <code>-g</code>:</p>
+<pre tabindex="0"><code>% npm install @ionic/cli@latest native-run cordova-res
+</code></pre><p>Now, the <code>ionic</code> command line tool will be in a path like <code>node_modules/&lt;name&gt;/bin/ionic</code> and in this case, it&rsquo;s <code>node_modules/@ionic/cli/bin/ionic</code>. We can run it:</p>
+<pre tabindex="0"><code>% ./node_modules/@ionic/cli/bin/ionic version
+6.20.4
+</code></pre><p>It might not <em>feel</em> good to write this full path in the documentation, but I do feel it&rsquo;s better (and with zero side quests!) than the offered <code>npm install -g</code>-plus-caveats approach.</p>
+<p>If we want to type less, we can add an npm script to our package.json:</p>
+<pre tabindex="0"><code>{
+  &#34;scripts&#34;: {
+    &#34;ionic&#34;: &#34;node_modules/@ionic/cli/bin/ionic&#34;
+  }
+}
+</code></pre><p>And now, we can run ionic via npm:</p>
+<pre tabindex="0"><code>% npm run ionic version
+
+&gt; ionic
+&gt; node_modules/@ionic/cli/bin/ionic version
+
+6.20.4
+</code></pre><p>Feels better? I think? Zero side quests. No warning of failures to document? Could be cool.</p>
+<h1 id="why-do-we-do-this">Why do we do this</h1>
+<p>I feel like we (developers, sysadmins, etc) get comfortable with tools such that we no longer notice the things which, to a newbie, are obvious miseries and confusions.</p>
+<p>I certainly am guilty of this habit of ignoring sharp edges that we&rsquo;ve simply become accustomed to dodging.</p>
+<p>That&rsquo;s why I keep telling folks: <strong>If a new user has a bad time, it&rsquo;s a bug.</strong></p>
+<p>If you assume this mindset and broadcast an invitation &ndash; that the stumbling of a new user is a sign of something that needs improvement &ndash; you open yourself to a world of opportunities to improve onboarding for new folks as well as reducing day-to-day frustrations that a system causes to even those who are fluent in a given system.</p>
+
+    </article>
+
+    
+
+
+    <ul class="pager article-pager">
+      <li class="pager-newer pager-noitem">&lt; Newer</li>
+      <li class="pager-older">
+        <a href="/blog/geekery/finding-changes-since-last-release/" data-toggle="tooltip" data-placement="top" title="GitHub: Finding changes since last release">Older &gt;</a>
+      </li>
+    </ul>
+  </div>
+
+
+<div class="site-footer">
+  <div class="copyright">&copy; Copyright 2006-2022 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
+  <ul class="site-footer-items">
+    <li class="site-footer-item-about"><a href="/about/" title="About">About</a></li>
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a> and <a href="https://github.com/taikii/whiteplain">Whiteplain</a>
+  </div>
+</div>
+
+
+</body>
+</html>

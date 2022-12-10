@@ -6,8 +6,21 @@
     <description>Recent content on semicomplete</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Wed, 09 Nov 2022 21:00:00 -0700</lastBuildDate><atom:link href="https://semicomplete.com/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>&amp;copy; Copyright 2006-2022 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
+    <lastBuildDate>Fri, 09 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://semicomplete.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Alternative to `npm install -g`</title>
+      <link>https://semicomplete.com/blog/alternative-to-npm-install-global/</link>
+      <pubDate>Fri, 09 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://semicomplete.com/blog/alternative-to-npm-install-global/</guid>
+      <description>Alternative to npm install -g I was reading through the Ionic+Vue tutorial with eager eyes set on a goal of making a silly webapp. I still have that goal, but I took a small side quest.
+The docs explain that you&amp;rsquo;ll need to install the Ionic command-line tool, and offers this:
+npm install -g @ionic/cli@latest native-run cordova-res
+Immediately after this line, it has a warning that reads:
+The -g option means install globally.</description>
+    </item>
+    
     <item>
       <title>GitHub: Finding changes since last release</title>
       <link>https://semicomplete.com/blog/geekery/finding-changes-since-last-release/</link>
