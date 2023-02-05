@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>In which LastPass gifts us a Sisyphean task - semicomplete</title>
+  <meta property="og:title" content="In which LastPass gifts us a Sisyphean task - semicomplete" />
+  <meta name="twitter:title" content="In which LastPass gifts us a Sisyphean task - semicomplete" />
+  <meta name="description" content="With recent news of LastPass having a significant security breach and also handling the public response poorly, there&rsquo;s been calls to ditch LastPass.
+From LastPass&rsquo; blog post:
+The threat actor was also able to copy a backup of customer vault data from the encrypted storage container
+This is encouragement to migrate. Bitwarden and 1Password seem like reasonable alternatives, at least for now, until fate comes for them as well.
+Because the LastPass breach creates a threat that customer password vaults were copied, it means that any migration isn&rsquo;t complete without changing passwords.">
+  <meta property="og:description" content="With recent news of LastPass having a significant security breach and also handling the public response poorly, there&rsquo;s been calls to ditch LastPass.
+From LastPass&rsquo; blog post:
+The threat actor was also able to copy a backup of customer vault data from the encrypted storage container
+This is encouragement to migrate. Bitwarden and 1Password seem like reasonable alternatives, at least for now, until fate comes for them as well.
+Because the LastPass breach creates a threat that customer password vaults were copied, it means that any migration isn&rsquo;t complete without changing passwords.">
+  <meta name="twitter:description" content="With recent news of LastPass having a significant security breach and also handling the public response poorly, there&rsquo;s been calls to ditch LastPass.
+From LastPass&rsquo; blog post:
+The threat …">
+  <meta name="author" content="Jordan Sissel"/>
+  <meta property="og:site_name" content="semicomplete" />
+  <meta property="og:url" content="https://semicomplete.com/blog/in-which-lastpass-gifts-us-a-sisyphean-task/" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.108.0">
+
+  <link rel="stylesheet" href="/css/style.css" media="all" />
+  <link rel="stylesheet" href="/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="/css/custom.css" media="all" />
+
+  <script src="/js/script.js"></script>
+  <script src="/js/custom.js"></script>
+  <script defer src="/js/fontawesome.js"></script>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <h1 class="site-title"><a href="/">semicomplete</a></h1>
+    <ul class="site-navi-items">
+      <li class="site-navi-item-categories"><a href="/categories/" title="Categories">Categories</a></li>
+      <li class="site-navi-item-tags"><a href="/tags/" title="Tags">Tags</a></li>
+      <li class="site-navi-item-archives"><a href="/archives/" title="Archives">Archives</a></li>
+      <li class="site-navi-item-about"><a href="/about/" title="About">About</a></li>
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+  <div class="main" role="main">
+    <article class="article">
+      
+      
+      <h1 class="article-title">In which LastPass gifts us a Sisyphean task</h1>
+      
+      <hr class="article-title-bottom">
+      <ul class="article-meta">
+        <li class="article-meta-date"><time>4 February, 2023</time></li>
+      </ul>
+      
+<aside class="toc">
+  <nav id="TableOfContents"></nav>
+</aside>
+      <p>With recent news of LastPass having a <a href="https://techcrunch.com/2022/12/22/lastpass-customer-password-vaults-stolen/">significant security breach and also handling the public response poorly</a>, there&rsquo;s been <a href="https://www.wired.com/story/lastpass-breach-vaults-password-managers/">calls to ditch LastPass</a>.</p>
+<p>From LastPass&rsquo; <a href="https://blog.lastpass.com/2022/12/notice-of-recent-security-incident/">blog post</a>:</p>
+<blockquote>
+<p>The threat actor was also able to copy a backup of customer vault data from the encrypted storage container</p>
+</blockquote>
+<p>This is encouragement to migrate. Bitwarden and 1Password seem like reasonable alternatives, at least for now, until fate comes for them as well.</p>
+<p>Because the LastPass breach creates a threat that customer password vaults were copied, it means that any migration isn&rsquo;t complete without changing passwords.</p>
+<p>All of them. A boulder suddenly appears.</p>
+<p>I have more than 200 entries in my password vault and rotating every single one is going to be a huge, boring chore. The tools don&rsquo;t help, either, as far as I can tell. Bitwarden, for example, doesn&rsquo;t have an easy way for a normal human to do this password change task. Every website has their own unique and often terrible password change process, and Bitwarden is happy to add even more steps.</p>
+<p>Most password change workflows, in my experience, ask you for your current password and your desired new password at the same time.</p>
+<p>In Bitwarden, changing a password is fairly easy, but it&rsquo;s not obvious how to find the old one. I can edit a vault entry and click the &ldquo;🔄 Generate Password&rdquo; button, but as soon as that process is done, the old password is put into the password history which is kind of hidden behind small text that doesn&rsquo;t even look like something I can click on.  I&rsquo;d love to see a kind of password change workflow in password managers where both the old and new password are available at the same time without hassle.</p>
+<p>What does this password change process look like with Bitwarden?</p>
+<p>Steps:</p>
+<ol>
+<li>Choose a vault entry and visit the site</li>
+<li>Login</li>
+<li>Find the password change feature on the site (good luck!)</li>
+<li>Open the vault again</li>
+<li>Edit the entry for the current site</li>
+<li>Click 🔄 to generate a new password</li>
+<li>Save</li>
+<li>Scroll to the bottom of the vault entry to find, in small font, &ldquo;Password history&rdquo; and click the number (probably <code>1</code>).</li>
+<li>Copy the old password</li>
+<li>Paste into &ldquo;old password&rdquo; field on the site</li>
+<li>Go back into the vault, copy the new password</li>
+<li>Paste it again, probably twice, into the site</li>
+<li>Finish!</li>
+</ol>
+<p>This is too many steps, and it&rsquo;s needed each time for every entry in the vault. I want to scream.</p>
+<p>Doing this on mobile is even worse because switching back and forth between apps makes this process way slower. It&rsquo;s extremely reasonable to expect that very few people will even attempt to change all of their passwords.</p>
+<p>This whole process is made even more difficult because I can&rsquo;t find any way to ask the Bitwarden mobile or desktop apps for help doing this &ndash; even just giving me a list of passwords I haven&rsquo;t changed recently would help, but there&rsquo;s no &ldquo;sort&rdquo; in the vault. I&rsquo;d love to sort by something contextual and intelligent like risk or impact &ndash; like show me financial logins and major communication tools first, etc. I have to settle for sorting things by the last time they were changed, which, again, the Bitwarden mobile and desktop apps do not help with.</p>
+<p>Fortunately, there&rsquo;s a <a href="https://bitwarden.com/help/cli/">command-line tool for Bitwarden</a> that prints JSON, and I can use that. The following shell command will sort vault entries by &ldquo;revisionDate&rdquo;, oldest first.</p>
+<pre tabindex="0"><code>bw list items | jq -r &#39;. | sort_by(.revisionDate) | .[] | &#34;\(.name) - \(.revisionDate)&#34;&#39;
+</code></pre><p>This will output the site name and the revision date.</p>
+<p>If I can find the energy, maybe I can do 5 to 10 of these per day? I don&rsquo;t know. Pipe this output to <code>| head -n 5</code> to give 5 sites that need changing.</p>
+<p>I am certain, however, with the current trend of public information security posture among large corporations, that if I don&rsquo;t go through this boring, solitary, and extremely tedious task, then whatever negative happens afterwards must be surely my fault.</p>
+<p>This boulder isn&rsquo;t going to push itself.</p>
+
+    </article>
+
+    
+
+
+    <ul class="pager article-pager">
+      <li class="pager-newer pager-noitem">&lt; Newer</li>
+      <li class="pager-older">
+        <a href="/blog/instead-of-npm-install-global/" data-toggle="tooltip" data-placement="top" title="Instead of `npm install -g`...">Older &gt;</a>
+      </li>
+    </ul>
+  </div>
+
+
+<div class="site-footer">
+  <div class="copyright">&copy; Copyright 2006-2022 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
+  <ul class="site-footer-items">
+    <li class="site-footer-item-about"><a href="/about/" title="About">About</a></li>
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a> and <a href="https://github.com/taikii/whiteplain">Whiteplain</a>
+  </div>
+</div>
+
+
+</body>
+</html>

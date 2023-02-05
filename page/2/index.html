@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://semicomplete.com/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.105.0">
+  <meta name="generator" content="Hugo 0.108.0">
   <link href="/index.xml" rel="alternate" type="application/rss+xml" title="semicomplete" />
   <link href="/index.xml" rel="feed" type="application/rss+xml" title="semicomplete" />
 
@@ -41,6 +41,43 @@
 
   <div class="main" role="main">
     <section class="list home-list">
+      <article class="article">
+        <a href="/blog/geekery/debugging-java-performance/" class="article-titles">
+          <h2 class="article-title">Debugging java threads with top(1) and jstack.
+</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>21 June, 2010</time></li>
+          <li class="article-meta-categories">
+            <a href="/categories/old/">
+              <i class="fas fa-folder"></i>
+              old
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/java/">
+              <i class="fas fa-tag"></i>
+              java
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/debugging/">
+              <i class="fas fa-tag"></i>
+              debugging
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          At work, we&rsquo;re testing some new real-time bidding on ADX and are working through some performance issues.
+Our server is jetty + our code, and we&rsquo;re seeing performance problems at relatively low QPS.
+The first profiling attempt used YJP, but when it was attached to our server, the system load went up quickly and looked like this:
+load average: 2671.04, 1653.95, 771.93
+Not good; the load average while running with the profiler attached jumps to a number roughly equal to the number of application threads (3000 jetty threads).
+        </div>
+        <div class="article-readmore"><a href="/blog/geekery/debugging-java-performance/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
       <article class="article">
         <a href="/blog/geekery/ssl-latency/" class="article-titles">
           <h2 class="article-title">SSL handshake latency and HTTPS optimizations.

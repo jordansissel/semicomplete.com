@@ -7,7 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; Copyright 2006-2022 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Fri, 09 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://semicomplete.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 04 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://semicomplete.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>In which LastPass gifts us a Sisyphean task</title>
+      <link>https://semicomplete.com/blog/in-which-lastpass-gifts-us-a-sisyphean-task/</link>
+      <pubDate>Sat, 04 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://semicomplete.com/blog/in-which-lastpass-gifts-us-a-sisyphean-task/</guid>
+      <description>With recent news of LastPass having a significant security breach and also handling the public response poorly, there&amp;rsquo;s been calls to ditch LastPass.
+From LastPass&amp;rsquo; blog post:
+The threat actor was also able to copy a backup of customer vault data from the encrypted storage container
+This is encouragement to migrate. Bitwarden and 1Password seem like reasonable alternatives, at least for now, until fate comes for them as well.
+Because the LastPass breach creates a threat that customer password vaults were copied, it means that any migration isn&amp;rsquo;t complete without changing passwords.</description>
+    </item>
+    
     <item>
       <title>Instead of `npm install -g`...</title>
       <link>https://semicomplete.com/blog/instead-of-npm-install-global/</link>
