@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Exploring the Fragmentation of Wayland, an xdotool adventure - semicomplete</title>
+  <meta property="og:title" content="Exploring the Fragmentation of Wayland, an xdotool adventure - semicomplete" />
+  <meta name="twitter:title" content="Exploring the Fragmentation of Wayland, an xdotool adventure - …" />
+  <meta name="description" content="In 2007, I was spending a my summer experimeting with UI automation. In June 207, I started xdotool by splitting it from another project, called navmacro at the time. The goal was modest - write some scripts that execute common keyboard, mouse, and window management tasks.
+The first commit had only a few basic commands - basic mouse and keyboard actions, plus a few window management actions like movement, focus, and searching. Xdotool sprouted new features as time rolled on. Today, the project is 18 years old, and still going!">
+  <meta property="og:description" content="In 2007, I was spending a my summer experimeting with UI automation. In June 207, I started xdotool by splitting it from another project, called navmacro at the time. The goal was modest - write some scripts that execute common keyboard, mouse, and window management tasks.
+The first commit had only a few basic commands - basic mouse and keyboard actions, plus a few window management actions like movement, focus, and searching. Xdotool sprouted new features as time rolled on. Today, the project is 18 years old, and still going!">
+  <meta name="twitter:description" content="In 2007, I was spending a my summer experimeting with UI automation. In June 207, I started xdotool by splitting it from another project, called navmacro at the time. The goal was modest - write some …">
+  <meta name="author" content="Jordan Sissel"/>
+  <meta property="og:site_name" content="semicomplete" />
+  <meta property="og:url" content="https://semicomplete.com/blog/xdotool-and-exploring-wayland-fragmentation/" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.142.0">
+
+  <link rel="stylesheet" href="/css/style.css" media="all" />
+  <link rel="stylesheet" href="/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="/css/custom.css" media="all" />
+
+  <script src="/js/script.js"></script>
+  <script src="/js/custom.js"></script>
+  <script defer src="/js/fontawesome.js"></script>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <h1 class="site-title"><a href="/">semicomplete</a></h1>
+    <ul class="site-navi-items">
+      <li class="site-navi-item-categories"><a href="/categories/" title="Categories">Categories</a></li>
+      <li class="site-navi-item-tags"><a href="/tags/" title="Tags">Tags</a></li>
+      <li class="site-navi-item-archives"><a href="/archives/" title="Archives">Archives</a></li>
+      <li class="site-navi-item-about"><a href="/about/" title="About">About</a></li>
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+  <div class="main" role="main">
+    <article class="article">
+      
+      
+      <h1 class="article-title">Exploring the Fragmentation of Wayland, an xdotool adventure</h1>
+      
+      <hr class="article-title-bottom">
+      <ul class="article-meta">
+        <li class="article-meta-date"><time>15 November, 2025</time></li>
+      </ul>
+      
+<aside class="toc">
+  <nav id="TableOfContents"></nav>
+</aside>
+      <p>In 2007, I was spending a my summer experimeting with UI automation. In June 207, I <a href="https://github.com/jordansissel/xdotool/commit/ccae4e3b75551608dde6ba3b9e2aa0264f7a4ac5">started xdotool</a> by splitting it from another project, called <code>navmacro</code> at the time. The goal was modest - write some scripts that execute common keyboard, mouse, and window management tasks.</p>
+<p>The first commit had only a few basic commands - basic mouse and keyboard actions, plus a few window management actions like movement, focus, and searching. Xdotool sprouted new features as time rolled on. Today, the project is 18 years old, and still going!</p>
+<p>Time&rsquo;s forward progress also brought external changes: Wayland came along hoping to replace X11, and later Ubuntu tried to take a bite by launching Mir. Noise about Wayland, both good and bad, floated around for years before major distros began shipping it. It wasn&rsquo;t until 2016 when <a href="https://en.wikipedia.org/wiki/Wayland_(protocol)#Desktop_Linux_distributions">Fedora became the first distribution to ship it at all</a> and even then, it was only for GNOME. It would be another five years before Fedora shipped <a href="https://fedoraproject.org/wiki/Releases/34/ChangeSet#Wayland_by_Default_for_KDE_Plasma_Desktop">KDE support for Wayland</a>. Ubuntu defaulted to Wayland it in 2017, almost a decade after Wayland began, but switched back to X11 on the next release because screen sharing and remote desktop weren&rsquo;t available.</p>
+<p>Screen sharing and remote desktop. Features that have existed for decades on other systems, that we all knew would be needed? They weren&rsquo;t available and distros were shipping a default Wayland experience without them. It was a long time before you could join a Zoom call and share your screen. Awkward.</p>
+<p>All this to say, Wayland has been a long, bumpy road.</p>
+<p>Back to xdotool: xdotool relies on a few X11 features that have existed since before I even started using Linux:</p>
+<ul>
+<li>Standard X11 operations - Searching for windows by their title, moving windows, resizing them, closing, etc.</li>
+<li>XTest - A means to &ldquo;test&rdquo; things on X11 without requiring user action. This provides a way to perform mouse and keyboard actions from your code. You can type, you can move the mouse, you can click.</li>
+<li>EWMH - &ldquo;Extended Window Manager Hints&rdquo; - A specification for how to communicate with the window manager. This allows xdotool to switch virtual desktops, move windows to other desktops, find processes that own a window, etc.</li>
+</ul>
+<p>All of the above is old, stable, and well supported.</p>
+<p>Wayland comes along and eliminates <em>everything</em> xdotool can do. Some of that elimination is given excuses that it is &ldquo;for security&rdquo; with little found to acknowledge what is being elided and why. It&rsquo;s fine, I guess&hellip; but we ended up with linux distros shipping without significant features that, have, over time, been somewhat addressed. For example, I can share my screen on video calls, now.</p>
+<p>So what happened to all of the features elided in the name of security?</p>
+<p>Fragmentation is what happened. Buckle up. Almost 10 years into Fedora&rsquo;s first Wayland release and those elided features are still missing or have multiple implementation proposals with very few maintainers agreeing on what to support. I miss EWMH.</p>
+<p>Do you want to send keystrokes and mouse actions?</p>
+<ul>
+<li>GNOME 48:
+<ul>
+<li>Xwayland can send keystrokes to the compositor using XTEST. That&rsquo;s kinda nice, but every few minutes get a popup with almost zero context stating &ldquo;Allow remote interaction&rdquo; with a toggle switch. It&rsquo;s confusing, because sending keystrokes from a local command does not feel like &ldquo;remote interaction&rdquo;</li>
+<li>You can write code that uses XDG Portal&rsquo;s RemoteDesktop session to request access and then use libei to send keystrokes and mouse actions. Documentation is sparse as this is still quite new. However, it still prompts you as above and there appears no permanent way to grant permission, despite the portal api documenting such an option.</li>
+</ul>
+</li>
+<li>KDE
+<ul>
+<li>Xwayland performs similarly when XTEST is used. This time, it pops up &ldquo;Remote control requested. transient requested access to remotely control: input devices&rdquo; &ndash; It&rsquo;s confusingly written with hardly any context especially since these popups are new.</li>
+</ul>
+</li>
+<li>Some other compositors support wayland protocol extensions which permit things like <a href="https://wayland.app/protocols/virtual-keyboard-unstable-v1">virtual keyboard input</a>. Fragmentation continues as there are many protocol extension proposals which add virtual text input, keyboard actions, and mouse/pointer actions. Which ones work, or don&rsquo;t, depend entirely on what window manager / compositor you are using.</li>
+</ul>
+<p>Outside of Wayland, Linux has uinput which allows a program to create virtual keyboard and mouse devices and send actions using those, but it requires root. Further, a keyboard device sends key codes, not symbols, which makes for another layer of difficulty. In order to send the key symbol &lsquo;a&rsquo; we need to know what keycode (or key sequence) sends that symbol. In order to do that, you need the keyboard mapping. There are several ways to do this, and it&rsquo;s not clear which one (Wayland&rsquo;s wl_keyboard, X11&rsquo;s XkbGetMap via Xwayland, or XDG RemoteDesktop&rsquo;s ConnectToEIS which allows you to fetch the keyboard mapping with libei but will cause the confusing Remote Desktop access prompt).</p>
+<p>Window management is also quite weird. Wayland appears to have no built-in protocol for one program (like xdotool) asking a window to do anything - be moved, resized, maximized, or closed.</p>
+<ul>
+<li>GNOME offers window management only through GNOME Shell Extensions. Javascript apps you install in GNOME and have access to a GNOME-specific Javascript API. Invoking any of these from a shell command isn&rsquo;t possible without doing some wild maneuvers: GNOME Javascript allows you to access DBus, and you can write code that moves a window ande expose that method over DBus. I&rsquo;m not the first to consider this, as there are a few published extensions that already do this, such as <a href="https://extensions.gnome.org/extension/5592/focused-window-d-bus/">Focused Window D-Bus</a>. GNOME has a DBus method for executing javascript (org.gnome.Shell.Eval), but it&rsquo;s disabled by default.</li>
+<li>KDE has a similar concept offered by GNOME, but completely incompatible. Luckily, I suppose, KDE also has a DBus method for invoking javascript and, at time of writing, it is <em>enabled</em> by default. A KDE+Wayland-specific derivative of xdotool, <a href="https://github.com/jinliu/kdotool">kdotool</a> does exactly this to provide a command-line tool which allows you to manage your windows.</li>
+<li>Outside of KDE and GNOME, you might find luck with some third-party Wayland protocol extensions. If your compositor is based on <a href="https://github.com/swaywm/wlroots">wlroots</a>, it&rsquo;ll likely be usable with <a href="https://git.sr.ht/~brocellous/wlrctl">wlrctl</a>, a command line tool similar to xdotool and wmctrl. Wlrctl only works if your compositor supports specific, non-default wayland protocols, such as <a href="https://wayland.app/protocols/wlr-foreign-toplevel-management-unstable-v1">wlr-foreign-toplevel-management</a>.</li>
+</ul>
+<p>I&rsquo;m not alone in finding it very slow on the path to Wayland. Synergy only delivered <a href="https://symless.com/synergy/download/release-notes/9">experimental support for Wayland</a> a year ago, 8 years after Fedora first defaulted to Wayland.</p>
+<p>The fragmentation is upsetting for me, as the xdotool maintainer, because I <em>want</em> to make this work but am at a loss for how to proceed with all the fragmentation. I don&rsquo;t mind what the protocol is, but I sure would love to have <em>any</em> protocol that does what I need. Is it worth it to continue?</p>
+
+    </article>
+
+    
+
+
+
+    <ul class="pager article-pager">
+      <li class="pager-newer pager-noitem">&lt; Newer</li>
+      <li class="pager-older">
+        <a href="/blog/in-which-lastpass-gifts-us-a-sisyphean-task/" data-toggle="tooltip" data-placement="top" title="In which LastPass gifts us a Sisyphean task">Older &gt;</a>
+      </li>
+    </ul>
+  </div>
+
+
+<div class="site-footer">
+  <div class="copyright">&copy; Copyright 2006-2022 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
+  <ul class="site-footer-items">
+    <li class="site-footer-item-about"><a href="/about/" title="About">About</a></li>
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a> and <a href="https://github.com/taikii/whiteplain">Whiteplain</a>
+  </div>
+</div>
+
+
+</body>
+</html>

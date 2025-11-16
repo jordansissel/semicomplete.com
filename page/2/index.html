@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://semicomplete.com/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.108.0">
+  <meta name="generator" content="Hugo 0.142.0">
   <link href="/index.xml" rel="alternate" type="application/rss+xml" title="semicomplete" />
   <link href="/index.xml" rel="feed" type="application/rss+xml" title="semicomplete" />
 
@@ -42,6 +42,37 @@
   <div class="main" role="main">
     <section class="list home-list">
       <article class="article">
+        <a href="/projects/keynav/" class="article-titles">
+          <h2 class="article-title"> keynav  -  retire your mouse. 
+</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>14 October, 2010</time></li>
+          <li class="article-meta-categories">
+            <a href="/categories/projects/">
+              <i class="fas fa-folder"></i>
+              projects
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          <p>Keynav is a piece of an on-going experiment to
+make pointer-driven interfaces easier and faster for users to operate. It
+lets you move the pointer quickly to most points on the screen with only a
+few key strokes.</p>
+<p>Note that I said pointer, not mouse. The mouse simply drives the pointer.
+We can drive the pointer with other devices too. keynav turns your keyboard
+into an fast pointer mover.</p>
+<h1 id="what-does-it-do">What does it do?</h1>
+<p>You select a piece of the screen. The screen is initially wholely selected.
+One move will cut that region by half. A move is a direction: up, down,
+left, and right.</p>
+        </div>
+        <div class="article-readmore"><a href="/projects/keynav/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
+      <article class="article">
         <a href="/blog/geekery/debugging-java-performance/" class="article-titles">
           <h2 class="article-title">Debugging java threads with top(1) and jstack.
 </h2>
@@ -69,11 +100,17 @@
           </li>
         </ul>
         <div class="article-content">
-          At work, we&rsquo;re testing some new real-time bidding on ADX and are working through some performance issues.
-Our server is jetty + our code, and we&rsquo;re seeing performance problems at relatively low QPS.
-The first profiling attempt used YJP, but when it was attached to our server, the system load went up quickly and looked like this:
-load average: 2671.04, 1653.95, 771.93
-Not good; the load average while running with the profiler attached jumps to a number roughly equal to the number of application threads (3000 jetty threads).
+          <p>At work, we&rsquo;re testing some new real-time bidding on ADX and are working
+through some performance issues.</p>
+<p>Our server is jetty + our code, and we&rsquo;re seeing performance problems at
+relatively low QPS.</p>
+<p>The first profiling attempt used <a href="http://www.yourkit.com/index.jsp">YJP</a>, but when it was attached to
+our server, the system load went up quickly and looked like this:</p>
+<p><code>load average: 2671.04, 1653.95, 771.93</code></p>
+<p>Not good; the load average while running with the profiler attached jumps to a
+number roughly equal to the number of application threads (3000 jetty threads).
+Possible PEBCAK here, but needless to say we couldn&rsquo;t use YJP for any
+meaningful profiling.</p>
         </div>
         <div class="article-readmore"><a href="/blog/geekery/debugging-java-performance/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -124,9 +161,16 @@ Not good; the load average while running with the profiler attached jumps to a n
           </li>
         </ul>
         <div class="article-content">
-          At work today, I started investigating the latency differences for similar requests between HTTP and HTTPS. Historically, I was running with the assumption that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes are more CPU intensive. I didn&rsquo;t really think about the network consequences of SSL until today.
-It&rsquo;s all in the handshake.
-TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 1.
+          <p>At work today, I started investigating the latency differences for similar
+requests between HTTP and HTTPS. Historically, I was running with the assumption
+that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes
+are more CPU intensive. I didn&rsquo;t really think about the network consequences of
+SSL until today.</p>
+<p>It&rsquo;s all in the handshake.</p>
+<p><a href="http://www.google.com/search?q=tcp+handshake">TCP handshake</a> is a
+3-packet event. The client sends 2 packets, the server sends 1. Best case,
+you&rsquo;re looking at one round-trip for establishing your connection. We can show
+this empirically by comparing ping and tcp connect times:</p>
         </div>
         <div class="article-readmore"><a href="/blog/geekery/ssl-latency/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -147,10 +191,19 @@ TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 
           </li>
         </ul>
         <div class="article-content">
-          What is fex? Fex is a powerful field extraction tool. Fex provides a very concise language for tokenizeing strings and extracting fields.
-The basic usage model is that you provide a series of delimiter and field selection pairs. Tokens can be any character, while field selections have a specific syntax.
-Download Releases are available on GitHub.
-Sometimes simpler than cut and awk cut(1) from GNU coreutils (on Linux) does not support negative offsets, so you cannot ask cut to only show you the Nth field from the end.
+          <h1 id="what-is-fex">What is fex?</h1>
+<p>Fex is a powerful field extraction tool. Fex provides a very concise
+language for tokenizeing strings and extracting fields.</p>
+<p>The basic usage model is that you provide a series of delimiter and field
+selection pairs. Tokens can be any character, while field selections have a
+specific syntax.</p>
+<h1 id="download">Download</h1>
+<p>Releases are available on <a href="https://github.com/jordansissel/fex/releases">GitHub</a>.</p>
+<h1 id="sometimes-simpler-than-cut-and-awk">Sometimes simpler than cut and awk</h1>
+<p>cut(1) from GNU coreutils (on Linux) does not support negative offsets, so
+you cannot ask cut to only show you the Nth field from the end.
+Additionally, to cut by multiple fields, you end up having to write
+<code>cut ... | cut ... | cut  ...</code></p>
         </div>
         <div class="article-readmore"><a href="/projects/fex/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -207,8 +260,14 @@ Sometimes simpler than cut and awk cut(1) from GNU coreutils (on Linux) does not
           </li>
         </ul>
         <div class="article-content">
-          For various projects I&rsquo;m doing right now, I need an easy way to automatically run code in an X server that may not necessarily be the active display. This code may even run on servers in production that don&rsquo;t have video cards or monitors attached.
-For some history on this, check out this post on xvfb and firefox. You can solve the problem in that post by simply launching firefox with the tool below, and your X server will exit when firefox exits.
+          <p>For various projects I&rsquo;m doing right now, I need an easy way to automatically
+run code in an X server that may not necessarily be the active display. This code
+may even run on servers in production that don&rsquo;t have video cards or monitors
+attached.</p>
+<p>For some history on this, check out <a
+href="/blog/geekery/xvfb-firefox.html">this post on xvfb and firefox</a>. You
+can solve the problem in that post by simply launching firefox with the tool
+below, and your X server will exit when firefox exits.</p>
         </div>
         <div class="article-readmore"><a href="/blog/geekery/headless-wrapper-for-ephemeral-xservers/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -229,9 +288,14 @@ For some history on this, check out this post on xvfb and firefox. You can solve
           </li>
         </ul>
         <div class="article-content">
-          Preface This article will cover how to setup dns with dynamic updates aswell as configuring your dhcp server to push updates to it aswell.
-I assume you already know how to setup plain old dns aswell as plain old dhcp. This is not an introduction to either of those. I used BIND 9 and ISC DHCPD v3 for this article.
-If there&rsquo;s anything this article doesn&rsquo;t cover with respect to what you are looking for, leave a comment and I&rsquo;ll do what I can.
+          <h1 id="preface">Preface</h1>
+<p>This article will cover how to setup dns with dynamic updates aswell as
+configuring your dhcp server to push updates to it aswell.</p>
+<p>I assume you already know how to setup plain old dns aswell as plain old
+dhcp. This is not an introduction to either of those. I used BIND 9 and
+ISC DHCPD v3 for this article.</p>
+<p>If there&rsquo;s anything this article doesn&rsquo;t cover with respect to what you
+are looking for, leave a comment and I&rsquo;ll do what I can.</p>
         </div>
         <div class="article-readmore"><a href="/articles/dynamic-dns-with-dhcp/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -276,9 +340,14 @@ If there&rsquo;s anything this article doesn&rsquo;t cover with respect to what 
           </li>
         </ul>
         <div class="article-content">
-          Resig has a bunch of unit tests he does to make sure jQuery works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&rsquo;s automate this.
-Update (May 2010): See this post for more details on automating xserver startup without having to worry about display numbers (:1, :2, etc).
-Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&rsquo;ve got a simple way to run Firefox without a visible display.
+          <p><a href="http://www.ejohn.org">Resig</a> has a bunch of unit tests he does to make sure <a href="http://www.jquery.com">jQuery</a> works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&rsquo;s automate this.</p>
+<h2 id="update-may-2010">Update (May 2010):</h2>
+<p>See
+<a href="/blog/geekery/headless-wrapper-for-ephemeral-xservers.html">this
+post</a> for more details on automating xserver startup without having to worry
+about display numbers (:1, :2, etc).</p>
+<hr>
+<p>Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&rsquo;ve got a simple way to run Firefox without a visible display.</p>
         </div>
         <div class="article-readmore"><a href="/blog/geekery/xvfb-firefox/">Read more...</a></div>
         <div class="article-floatclear"></div>

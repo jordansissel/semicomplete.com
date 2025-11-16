@@ -1,26 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>java on semicomplete</title>
+    <title>Java on semicomplete</title>
     <link>https://semicomplete.com/tags/java/</link>
-    <description>Recent content in java on semicomplete</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Java on semicomplete</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Mon, 21 Jun 2010 19:24:23 -0700</lastBuildDate><atom:link href="https://semicomplete.com/tags/java/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>&amp;copy; Copyright 2006-2022 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
+    <lastBuildDate>Mon, 21 Jun 2010 19:24:23 -0700</lastBuildDate>
+    <atom:link href="https://semicomplete.com/tags/java/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Debugging java threads with top(1) and jstack.
 </title>
       <link>https://semicomplete.com/blog/geekery/debugging-java-performance/</link>
       <pubDate>Mon, 21 Jun 2010 19:24:23 -0700</pubDate>
-      
       <guid>https://semicomplete.com/blog/geekery/debugging-java-performance/</guid>
-      <description>At work, we&amp;rsquo;re testing some new real-time bidding on ADX and are working through some performance issues.
-Our server is jetty + our code, and we&amp;rsquo;re seeing performance problems at relatively low QPS.
-The first profiling attempt used YJP, but when it was attached to our server, the system load went up quickly and looked like this:
-load average: 2671.04, 1653.95, 771.93
-Not good; the load average while running with the profiler attached jumps to a number roughly equal to the number of application threads (3000 jetty threads).</description>
+      <description>&lt;p&gt;At work, we&amp;rsquo;re testing some new real-time bidding on ADX and are working&#xA;through some performance issues.&lt;/p&gt;&#xA;&lt;p&gt;Our server is jetty + our code, and we&amp;rsquo;re seeing performance problems at&#xA;relatively low QPS.&lt;/p&gt;&#xA;&lt;p&gt;The first profiling attempt used &lt;a href=&#34;http://www.yourkit.com/index.jsp&#34;&gt;YJP&lt;/a&gt;, but when it was attached to&#xA;our server, the system load went up quickly and looked like this:&lt;/p&gt;&#xA;&lt;p&gt;&lt;code&gt;load average: 2671.04, 1653.95, 771.93&lt;/code&gt;&lt;/p&gt;&#xA;&lt;p&gt;Not good; the load average while running with the profiler attached jumps to a&#xA;number roughly equal to the number of application threads (3000 jetty threads).&#xA;Possible PEBCAK here, but needless to say we couldn&amp;rsquo;t use YJP for any&#xA;meaningful profiling.&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

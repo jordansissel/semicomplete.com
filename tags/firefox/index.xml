@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>firefox on semicomplete</title>
+    <title>Firefox on semicomplete</title>
     <link>https://semicomplete.com/tags/firefox/</link>
-    <description>Recent content in firefox on semicomplete</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Firefox on semicomplete</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Sat, 08 Apr 2006 03:53:00 -0700</lastBuildDate><atom:link href="https://semicomplete.com/tags/firefox/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>&amp;copy; Copyright 2006-2022 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
+    <lastBuildDate>Sat, 08 Apr 2006 03:53:00 -0700</lastBuildDate>
+    <atom:link href="https://semicomplete.com/tags/firefox/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Xvfb &#43; Firefox
 </title>
       <link>https://semicomplete.com/blog/geekery/xvfb-firefox/</link>
       <pubDate>Sat, 08 Apr 2006 03:53:00 -0700</pubDate>
-      
       <guid>https://semicomplete.com/blog/geekery/xvfb-firefox/</guid>
-      <description>Resig has a bunch of unit tests he does to make sure jQuery works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&amp;rsquo;s automate this.
-Update (May 2010): See this post for more details on automating xserver startup without having to worry about display numbers (:1, :2, etc).
-Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&amp;rsquo;ve got a simple way to run Firefox without a visible display.</description>
+      <description>&lt;p&gt;&lt;a href=&#34;http://www.ejohn.org&#34;&gt;Resig&lt;/a&gt; has a bunch of unit tests he does to make sure &lt;a href=&#34;http://www.jquery.com&#34;&gt;jQuery&lt;/a&gt; works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&amp;rsquo;s automate this.&lt;/p&gt;&#xA;&lt;h2 id=&#34;update-may-2010&#34;&gt;Update (May 2010):&lt;/h2&gt;&#xA;&lt;p&gt;See&#xA;&lt;a href=&#34;https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers.html&#34;&gt;this&#xA;post&lt;/a&gt; for more details on automating xserver startup without having to worry&#xA;about display numbers (:1, :2, etc).&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&amp;rsquo;ve got a simple way to run Firefox without a visible display.&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

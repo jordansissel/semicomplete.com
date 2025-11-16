@@ -9,19 +9,35 @@
  - semicomplete" />
   <meta name="twitter:title" content="SSL handshake latency and HTTPS optimizations.
  - semicomplete" />
-  <meta name="description" content="At work today, I started investigating the latency differences for similar requests between HTTP and HTTPS. Historically, I was running with the assumption that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes are more CPU intensive. I didn&rsquo;t really think about the network consequences of SSL until today.
+  <meta name="description" content="At work today, I started investigating the latency differences for similar
+requests between HTTP and HTTPS. Historically, I was running with the assumption
+that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes
+are more CPU intensive. I didn&rsquo;t really think about the network consequences of
+SSL until today.
 It&rsquo;s all in the handshake.
-TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 1.">
-  <meta property="og:description" content="At work today, I started investigating the latency differences for similar requests between HTTP and HTTPS. Historically, I was running with the assumption that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes are more CPU intensive. I didn&rsquo;t really think about the network consequences of SSL until today.
+TCP handshake is a
+3-packet event. The client sends 2 packets, the server sends 1. Best case,
+you&rsquo;re looking at one round-trip for establishing your connection. We can show
+this empirically by comparing ping and tcp connect times:">
+  <meta property="og:description" content="At work today, I started investigating the latency differences for similar
+requests between HTTP and HTTPS. Historically, I was running with the assumption
+that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes
+are more CPU intensive. I didn&rsquo;t really think about the network consequences of
+SSL until today.
 It&rsquo;s all in the handshake.
-TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 1.">
-  <meta name="twitter:description" content="At work today, I started investigating the latency differences for similar requests between HTTP and HTTPS. Historically, I was running with the assumption that higher latency on HTTPS (SSL) traffic …">
+TCP handshake is a
+3-packet event. The client sends 2 packets, the server sends 1. Best case,
+you&rsquo;re looking at one round-trip for establishing your connection. We can show
+this empirically by comparing ping and tcp connect times:">
+  <meta name="twitter:description" content="At work today, I started investigating the latency differences for similar
+requests between HTTP and HTTPS. Historically, I was running with the assumption
+that higher latency on HTTPS (SSL) traffic …">
   <meta name="author" content="Jordan Sissel"/>
   <meta property="og:site_name" content="semicomplete" />
   <meta property="og:url" content="https://semicomplete.com/blog/geekery/ssl-latency/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.105.0">
+  <meta name="generator" content="Hugo 0.142.0">
 
   <link rel="stylesheet" href="/css/style.css" media="all" />
   <link rel="stylesheet" href="/css/syntax.css" media="all" />
@@ -256,6 +272,7 @@ in the long run by letting you have better choices of datacenter locations.</p>
     
 
 
+
     <ul class="pager article-pager">
       <li class="pager-newer">
           <a href="/blog/geekery/debugging-java-performance/" data-toggle="tooltip" data-placement="top" title="Debugging java threads with top(1) and jstack.
@@ -270,7 +287,7 @@ in the long run by letting you have better choices of datacenter locations.</p>
 
 
 <div class="site-footer">
-  <div class="copyright">&copy; Copyright 2006-2019 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
+  <div class="copyright">&copy; Copyright 2006-2022 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
   <ul class="site-footer-items">
     <li class="site-footer-item-about"><a href="/about/" title="About">About</a></li>
   </ul>

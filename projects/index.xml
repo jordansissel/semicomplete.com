@@ -4,46 +4,34 @@
     <title>Projects on semicomplete</title>
     <link>https://semicomplete.com/projects/</link>
     <description>Recent content in Projects on semicomplete</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Fri, 24 Apr 2015 21:46:35 -0700</lastBuildDate><atom:link href="https://semicomplete.com/projects/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>&amp;copy; Copyright 2006-2022 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
+    <lastBuildDate>Fri, 24 Apr 2015 21:46:35 -0700</lastBuildDate>
+    <atom:link href="https://semicomplete.com/projects/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title> xdotool  -  fake keyboard/mouse input, window management, and more 
 </title>
       <link>https://semicomplete.com/projects/xdotool/</link>
       <pubDate>Fri, 24 Apr 2015 21:46:35 -0700</pubDate>
-      
       <guid>https://semicomplete.com/projects/xdotool/</guid>
-      <description>What is xdotool? This tool lets you simulate keyboard input and mouse activity, move and resize windows, etc. It does this using X11&amp;rsquo;s XTEST extension and other Xlib functions.
-Additionally, you can search for windows and move, resize, hide, and modify window properties like the title. If your window manager supports it, you can use xdotool to switch desktops, move windows between desktops, and change the number of desktops.
-Mailing List The xdotool users mailing list is: xdotool-users@googlegroups.</description>
+      <description>&lt;h1 id=&#34;what-is-xdotool&#34;&gt;What is xdotool?&lt;/h1&gt;&#xA;&lt;p&gt;This tool lets you simulate keyboard input and mouse activity, move and&#xA;resize windows, etc. It does this using X11&amp;rsquo;s XTEST extension and other&#xA;Xlib functions.&lt;/p&gt;&#xA;&lt;p&gt;Additionally, you can search for windows and move, resize, hide, and modify&#xA;window properties like the title. If your window manager supports it, you&#xA;can use xdotool to switch desktops, move windows between desktops, and&#xA;change the number of&#xA;desktops.&lt;/p&gt;&#xA;&lt;h1 id=&#34;mailing-list&#34;&gt;Mailing List&lt;/h1&gt;&#xA;&lt;p&gt;The xdotool users mailing list is: &lt;a href=&#34;mailto:xdotool-users@googlegroups.com&#34;&gt;&lt;a href=&#34;mailto:xdotool-users@googlegroups.com&#34;&gt;xdotool-users@googlegroups.com&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title> keynav  -  retire your mouse. 
 </title>
       <link>https://semicomplete.com/projects/keynav/</link>
       <pubDate>Thu, 14 Oct 2010 23:49:21 -0700</pubDate>
-      
       <guid>https://semicomplete.com/projects/keynav/</guid>
-      <description>Keynav is a piece of an on-going experiment to make pointer-driven interfaces easier and faster for users to operate. It lets you move the pointer quickly to most points on the screen with only a few key strokes.
-Note that I said pointer, not mouse. The mouse simply drives the pointer. We can drive the pointer with other devices too. keynav turns your keyboard into an fast pointer mover.
-What does it do?</description>
+      <description>&lt;p&gt;Keynav is a piece of an on-going experiment to&#xA;make pointer-driven interfaces easier and faster for users to operate. It&#xA;lets you move the pointer quickly to most points on the screen with only a&#xA;few key strokes.&lt;/p&gt;&#xA;&lt;p&gt;Note that I said pointer, not mouse. The mouse simply drives the pointer.&#xA;We can drive the pointer with other devices too. keynav turns your keyboard&#xA;into an fast pointer mover.&lt;/p&gt;&#xA;&lt;h1 id=&#34;what-does-it-do&#34;&gt;What does it do?&lt;/h1&gt;&#xA;&lt;p&gt;You select a piece of the screen. The screen is initially wholely selected.&#xA;One move will cut that region by half. A move is a direction: up, down,&#xA;left, and right.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title> fex  -  flexible token-field extraction 
 </title>
       <link>https://semicomplete.com/projects/fex/</link>
       <pubDate>Wed, 19 May 2010 00:13:15 -0700</pubDate>
-      
       <guid>https://semicomplete.com/projects/fex/</guid>
-      <description>What is fex? Fex is a powerful field extraction tool. Fex provides a very concise language for tokenizeing strings and extracting fields.
-The basic usage model is that you provide a series of delimiter and field selection pairs. Tokens can be any character, while field selections have a specific syntax.
-Download Releases are available on GitHub.
-Sometimes simpler than cut and awk cut(1) from GNU coreutils (on Linux) does not support negative offsets, so you cannot ask cut to only show you the Nth field from the end.</description>
+      <description>&lt;h1 id=&#34;what-is-fex&#34;&gt;What is fex?&lt;/h1&gt;&#xA;&lt;p&gt;Fex is a powerful field extraction tool. Fex provides a very concise&#xA;language for tokenizeing strings and extracting fields.&lt;/p&gt;&#xA;&lt;p&gt;The basic usage model is that you provide a series of delimiter and field&#xA;selection pairs. Tokens can be any character, while field selections have a&#xA;specific syntax.&lt;/p&gt;&#xA;&lt;h1 id=&#34;download&#34;&gt;Download&lt;/h1&gt;&#xA;&lt;p&gt;Releases are available on &lt;a href=&#34;https://github.com/jordansissel/fex/releases&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;h1 id=&#34;sometimes-simpler-than-cut-and-awk&#34;&gt;Sometimes simpler than cut and awk&lt;/h1&gt;&#xA;&lt;p&gt;cut(1) from GNU coreutils (on Linux) does not support negative offsets, so&#xA;you cannot ask cut to only show you the Nth field from the end.&#xA;Additionally, to cut by multiple fields, you end up having to write&#xA;&lt;code&gt;cut ... | cut ... | cut  ...&lt;/code&gt;&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

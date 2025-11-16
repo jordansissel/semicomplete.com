@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>nodes on semicomplete</title>
+    <title>Nodes on semicomplete</title>
     <link>https://semicomplete.com/tags/nodes/</link>
-    <description>Recent content in nodes on semicomplete</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Nodes on semicomplete</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Sat, 27 Nov 2010 01:14:37 -0800</lastBuildDate><atom:link href="https://semicomplete.com/tags/nodes/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>&amp;copy; Copyright 2006-2022 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
+    <lastBuildDate>Sat, 27 Nov 2010 01:14:37 -0800</lastBuildDate>
+    <atom:link href="https://semicomplete.com/tags/nodes/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Puppet &#34;pure fact-driven&#34; nodeless configuration
 </title>
       <link>https://semicomplete.com/blog/geekery/puppet-nodeless-configuration/</link>
       <pubDate>Sat, 27 Nov 2010 01:14:37 -0800</pubDate>
-      
       <guid>https://semicomplete.com/blog/geekery/puppet-nodeless-configuration/</guid>
-      <description>Truth should guide your configuration management tools.
-Truth in this case is: what machines you have, properties of those machines, roles for those machines, etc. For example &amp;ldquo;foo-1.a.example.com is a webserver&amp;rdquo; is a piece of truth. Where and how you store truth is up to you and out of scope for this post.
-My goal is to have truth steer everything about my infrastructure. Roles, jobs, and even long-term one-offs get put into the truth source (like a machine role, etc).</description>
+      <description>&lt;p&gt;Truth should guide your configuration management tools.&lt;/p&gt;&#xA;&lt;p&gt;Truth in this case is: what machines you have, properties of those machines,&#xA;roles for those machines, etc. For example &amp;ldquo;foo-1.a.example.com is a webserver&amp;rdquo;&#xA;is a piece of truth. Where and how you store truth is up to you and out of&#xA;scope for this post.&lt;/p&gt;&#xA;&lt;p&gt;My goal is to have truth steer everything about my infrastructure. Roles, jobs,&#xA;and even long-term one-offs get put into the truth source (like a machine role,&#xA;etc). That way, if the machine with a one-off dies, I can just add that&#xA;machine role to another system and puppet will configure it - no pain and no&#xA;fire to fight.&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

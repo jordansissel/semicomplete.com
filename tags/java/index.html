@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <title>java - semicomplete</title>
-  <meta property="og:title" content="java - semicomplete" />
-  <meta name="twitter:title" content="java - semicomplete" />
+  <title>Java - semicomplete</title>
+  <meta property="og:title" content="Java - semicomplete" />
+  <meta name="twitter:title" content="Java - semicomplete" />
   <meta name="author" content="Jordan Sissel"/>
   <meta property="og:site_name" content="semicomplete" />
   <meta property="og:url" content="https://semicomplete.com/tags/java/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.105.0">
+  <meta name="generator" content="Hugo 0.142.0">
   <link href="/tags/java/index.xml" rel="alternate" type="application/rss+xml" title="semicomplete" />
   <link href="/tags/java/index.xml" rel="feed" type="application/rss+xml" title="semicomplete" />
 
@@ -69,11 +69,17 @@
           </li>
         </ul>
         <div class="article-content">
-          At work, we&rsquo;re testing some new real-time bidding on ADX and are working through some performance issues.
-Our server is jetty + our code, and we&rsquo;re seeing performance problems at relatively low QPS.
-The first profiling attempt used YJP, but when it was attached to our server, the system load went up quickly and looked like this:
-load average: 2671.04, 1653.95, 771.93
-Not good; the load average while running with the profiler attached jumps to a number roughly equal to the number of application threads (3000 jetty threads).
+          <p>At work, we&rsquo;re testing some new real-time bidding on ADX and are working
+through some performance issues.</p>
+<p>Our server is jetty + our code, and we&rsquo;re seeing performance problems at
+relatively low QPS.</p>
+<p>The first profiling attempt used <a href="http://www.yourkit.com/index.jsp">YJP</a>, but when it was attached to
+our server, the system load went up quickly and looked like this:</p>
+<p><code>load average: 2671.04, 1653.95, 771.93</code></p>
+<p>Not good; the load average while running with the profiler attached jumps to a
+number roughly equal to the number of application threads (3000 jetty threads).
+Possible PEBCAK here, but needless to say we couldn&rsquo;t use YJP for any
+meaningful profiling.</p>
         </div>
         <div class="article-readmore"><a href="/blog/geekery/debugging-java-performance/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -85,7 +91,7 @@ Not good; the load average while running with the profiler attached jumps to a n
 
 
 <div class="site-footer">
-  <div class="copyright">&copy; Copyright 2006-2019 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
+  <div class="copyright">&copy; Copyright 2006-2022 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
   <ul class="site-footer-items">
     <li class="site-footer-item-rsslink">
       <a href="/tags/java/index.xml" type="application/rss+xml" target="_blank" title="RSS">

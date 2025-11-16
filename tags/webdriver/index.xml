@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>webdriver on semicomplete</title>
+    <title>Webdriver on semicomplete</title>
     <link>https://semicomplete.com/tags/webdriver/</link>
-    <description>Recent content in webdriver on semicomplete</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Webdriver on semicomplete</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Tue, 11 May 2010 01:59:47 -0700</lastBuildDate><atom:link href="https://semicomplete.com/tags/webdriver/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>&amp;copy; Copyright 2006-2022 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
+    <lastBuildDate>Tue, 11 May 2010 01:59:47 -0700</lastBuildDate>
+    <atom:link href="https://semicomplete.com/tags/webdriver/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Headless wrapper for ephemeral X servers
 </title>
       <link>https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers/</link>
       <pubDate>Tue, 11 May 2010 01:59:47 -0700</pubDate>
-      
       <guid>https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers/</guid>
-      <description>For various projects I&amp;rsquo;m doing right now, I need an easy way to automatically run code in an X server that may not necessarily be the active display. This code may even run on servers in production that don&amp;rsquo;t have video cards or monitors attached.
-For some history on this, check out this post on xvfb and firefox. You can solve the problem in that post by simply launching firefox with the tool below, and your X server will exit when firefox exits.</description>
+      <description>&lt;p&gt;For various projects I&amp;rsquo;m doing right now, I need an easy way to automatically&#xA;run code in an X server that may not necessarily be the active display. This code&#xA;may even run on servers in production that don&amp;rsquo;t have video cards or monitors&#xA;attached.&lt;/p&gt;&#xA;&lt;p&gt;For some history on this, check out &lt;a&#xA;href=&#34;https://semicomplete.com/blog/geekery/xvfb-firefox.html&#34;&gt;this post on xvfb and firefox&lt;/a&gt;. You&#xA;can solve the problem in that post by simply launching firefox with the tool&#xA;below, and your X server will exit when firefox exits.&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

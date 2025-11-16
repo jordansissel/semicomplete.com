@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>esphome on semicomplete</title>
+    <title>Esphome on semicomplete</title>
     <link>https://semicomplete.com/tags/esphome/</link>
-    <description>Recent content in esphome on semicomplete</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Esphome on semicomplete</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Mon, 03 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://semicomplete.com/tags/esphome/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>&amp;copy; Copyright 2006-2022 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
+    <lastBuildDate>Mon, 03 May 2021 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://semicomplete.com/tags/esphome/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Genie GPS1200IC automation with ESP8266</title>
       <link>https://semicomplete.com/blog/geekery/genie-gps1200ic-home-assistant/</link>
       <pubDate>Mon, 03 May 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://semicomplete.com/blog/geekery/genie-gps1200ic-home-assistant/</guid>
-      <description>My garage has two doors. I&amp;rsquo;d like to be able to say &amp;ldquo;Open the garage door&amp;rdquo; to Siri.
-To get there, I&amp;rsquo;m going to try using Home Assistant and ESPHome. First, though, I need to know how to tell the garage door to operate.
-Both door openers are Genie GPS1200IC. Based on some brief research, these appear to have been made between 1996-2000.
-Hack a remote? My first attempt was to buy a remote and hook a microcontroller to it.</description>
+      <description>&lt;p&gt;My garage has two doors. I&amp;rsquo;d like to be able to say &amp;ldquo;Open the garage door&amp;rdquo; to Siri.&lt;/p&gt;&#xA;&lt;p&gt;To get there, I&amp;rsquo;m going to try using Home Assistant and ESPHome.&#xA;First, though, I need to know how to tell the garage door to operate.&lt;/p&gt;&#xA;&lt;p&gt;Both door openers are Genie GPS1200IC. Based on some brief research, these appear to have been made between 1996-2000.&lt;/p&gt;&#xA;&lt;h2 id=&#34;hack-a-remote&#34;&gt;Hack a remote?&lt;/h2&gt;&#xA;&lt;p&gt;My first attempt was to buy a remote and hook a microcontroller to it.&#xA;I bought a Genie GITR-3 remote. This remote has 3 buttons.&#xA;The plan was to wire an ESP8266 to the buttons of this remote.&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

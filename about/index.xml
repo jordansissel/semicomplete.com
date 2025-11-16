@@ -4,8 +4,9 @@
     <title>semicomplete</title>
     <link>https://semicomplete.com/about/</link>
     <description>Recent content on semicomplete</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright><atom:link href="https://semicomplete.com/about/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>&amp;copy; Copyright 2006-2022 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
+    <atom:link href="https://semicomplete.com/about/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

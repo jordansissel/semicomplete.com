@@ -1,73 +1,53 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>old on semicomplete</title>
+    <title>Old on semicomplete</title>
     <link>https://semicomplete.com/categories/old/</link>
-    <description>Recent content in old on semicomplete</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Old on semicomplete</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Sat, 27 Nov 2010 01:14:37 -0800</lastBuildDate><atom:link href="https://semicomplete.com/categories/old/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>&amp;copy; Copyright 2006-2022 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
+    <lastBuildDate>Sat, 27 Nov 2010 01:14:37 -0800</lastBuildDate>
+    <atom:link href="https://semicomplete.com/categories/old/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Puppet &#34;pure fact-driven&#34; nodeless configuration
 </title>
       <link>https://semicomplete.com/blog/geekery/puppet-nodeless-configuration/</link>
       <pubDate>Sat, 27 Nov 2010 01:14:37 -0800</pubDate>
-      
       <guid>https://semicomplete.com/blog/geekery/puppet-nodeless-configuration/</guid>
-      <description>Truth should guide your configuration management tools.
-Truth in this case is: what machines you have, properties of those machines, roles for those machines, etc. For example &amp;ldquo;foo-1.a.example.com is a webserver&amp;rdquo; is a piece of truth. Where and how you store truth is up to you and out of scope for this post.
-My goal is to have truth steer everything about my infrastructure. Roles, jobs, and even long-term one-offs get put into the truth source (like a machine role, etc).</description>
+      <description>&lt;p&gt;Truth should guide your configuration management tools.&lt;/p&gt;&#xA;&lt;p&gt;Truth in this case is: what machines you have, properties of those machines,&#xA;roles for those machines, etc. For example &amp;ldquo;foo-1.a.example.com is a webserver&amp;rdquo;&#xA;is a piece of truth. Where and how you store truth is up to you and out of&#xA;scope for this post.&lt;/p&gt;&#xA;&lt;p&gt;My goal is to have truth steer everything about my infrastructure. Roles, jobs,&#xA;and even long-term one-offs get put into the truth source (like a machine role,&#xA;etc). That way, if the machine with a one-off dies, I can just add that&#xA;machine role to another system and puppet will configure it - no pain and no&#xA;fire to fight.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Debugging java threads with top(1) and jstack.
 </title>
       <link>https://semicomplete.com/blog/geekery/debugging-java-performance/</link>
       <pubDate>Mon, 21 Jun 2010 19:24:23 -0700</pubDate>
-      
       <guid>https://semicomplete.com/blog/geekery/debugging-java-performance/</guid>
-      <description>At work, we&amp;rsquo;re testing some new real-time bidding on ADX and are working through some performance issues.
-Our server is jetty + our code, and we&amp;rsquo;re seeing performance problems at relatively low QPS.
-The first profiling attempt used YJP, but when it was attached to our server, the system load went up quickly and looked like this:
-load average: 2671.04, 1653.95, 771.93
-Not good; the load average while running with the profiler attached jumps to a number roughly equal to the number of application threads (3000 jetty threads).</description>
+      <description>&lt;p&gt;At work, we&amp;rsquo;re testing some new real-time bidding on ADX and are working&#xA;through some performance issues.&lt;/p&gt;&#xA;&lt;p&gt;Our server is jetty + our code, and we&amp;rsquo;re seeing performance problems at&#xA;relatively low QPS.&lt;/p&gt;&#xA;&lt;p&gt;The first profiling attempt used &lt;a href=&#34;http://www.yourkit.com/index.jsp&#34;&gt;YJP&lt;/a&gt;, but when it was attached to&#xA;our server, the system load went up quickly and looked like this:&lt;/p&gt;&#xA;&lt;p&gt;&lt;code&gt;load average: 2671.04, 1653.95, 771.93&lt;/code&gt;&lt;/p&gt;&#xA;&lt;p&gt;Not good; the load average while running with the profiler attached jumps to a&#xA;number roughly equal to the number of application threads (3000 jetty threads).&#xA;Possible PEBCAK here, but needless to say we couldn&amp;rsquo;t use YJP for any&#xA;meaningful profiling.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>SSL handshake latency and HTTPS optimizations.
 </title>
       <link>https://semicomplete.com/blog/geekery/ssl-latency/</link>
       <pubDate>Fri, 04 Jun 2010 02:33:15 -0700</pubDate>
-      
       <guid>https://semicomplete.com/blog/geekery/ssl-latency/</guid>
-      <description>At work today, I started investigating the latency differences for similar requests between HTTP and HTTPS. Historically, I was running with the assumption that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes are more CPU intensive. I didn&amp;rsquo;t really think about the network consequences of SSL until today.
-It&amp;rsquo;s all in the handshake.
-TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 1.</description>
+      <description>&lt;p&gt;At work today, I started investigating the latency differences for similar&#xA;requests between HTTP and HTTPS. Historically, I was running with the assumption&#xA;that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes&#xA;are more CPU intensive. I didn&amp;rsquo;t really think about the network consequences of&#xA;SSL until today.&lt;/p&gt;&#xA;&lt;p&gt;It&amp;rsquo;s all in the handshake.&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;http://www.google.com/search?q=tcp+handshake&#34;&gt;TCP handshake&lt;/a&gt; is a&#xA;3-packet event. The client sends 2 packets, the server sends 1. Best case,&#xA;you&amp;rsquo;re looking at one round-trip for establishing your connection. We can show&#xA;this empirically by comparing ping and tcp connect times:&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Headless wrapper for ephemeral X servers
 </title>
       <link>https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers/</link>
       <pubDate>Tue, 11 May 2010 01:59:47 -0700</pubDate>
-      
       <guid>https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers/</guid>
-      <description>For various projects I&amp;rsquo;m doing right now, I need an easy way to automatically run code in an X server that may not necessarily be the active display. This code may even run on servers in production that don&amp;rsquo;t have video cards or monitors attached.
-For some history on this, check out this post on xvfb and firefox. You can solve the problem in that post by simply launching firefox with the tool below, and your X server will exit when firefox exits.</description>
+      <description>&lt;p&gt;For various projects I&amp;rsquo;m doing right now, I need an easy way to automatically&#xA;run code in an X server that may not necessarily be the active display. This code&#xA;may even run on servers in production that don&amp;rsquo;t have video cards or monitors&#xA;attached.&lt;/p&gt;&#xA;&lt;p&gt;For some history on this, check out &lt;a&#xA;href=&#34;https://semicomplete.com/blog/geekery/xvfb-firefox.html&#34;&gt;this post on xvfb and firefox&lt;/a&gt;. You&#xA;can solve the problem in that post by simply launching firefox with the tool&#xA;below, and your X server will exit when firefox exits.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Xvfb &#43; Firefox
 </title>
       <link>https://semicomplete.com/blog/geekery/xvfb-firefox/</link>
       <pubDate>Sat, 08 Apr 2006 03:53:00 -0700</pubDate>
-      
       <guid>https://semicomplete.com/blog/geekery/xvfb-firefox/</guid>
-      <description>Resig has a bunch of unit tests he does to make sure jQuery works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&amp;rsquo;s automate this.
-Update (May 2010): See this post for more details on automating xserver startup without having to worry about display numbers (:1, :2, etc).
-Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&amp;rsquo;ve got a simple way to run Firefox without a visible display.</description>
+      <description>&lt;p&gt;&lt;a href=&#34;http://www.ejohn.org&#34;&gt;Resig&lt;/a&gt; has a bunch of unit tests he does to make sure &lt;a href=&#34;http://www.jquery.com&#34;&gt;jQuery&lt;/a&gt; works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&amp;rsquo;s automate this.&lt;/p&gt;&#xA;&lt;h2 id=&#34;update-may-2010&#34;&gt;Update (May 2010):&lt;/h2&gt;&#xA;&lt;p&gt;See&#xA;&lt;a href=&#34;https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers.html&#34;&gt;this&#xA;post&lt;/a&gt; for more details on automating xserver startup without having to worry&#xA;about display numbers (:1, :2, etc).&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&amp;rsquo;ve got a simple way to run Firefox without a visible display.&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

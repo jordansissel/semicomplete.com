@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://semicomplete.com/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.108.0">
+  <meta name="generator" content="Hugo 0.142.0">
   <link href="/index.xml" rel="alternate" type="application/rss+xml" title="semicomplete" />
   <link href="/index.xml" rel="feed" type="application/rss+xml" title="semicomplete" />
 
@@ -42,6 +42,21 @@
   <div class="main" role="main">
     <section class="list home-list">
       <article class="article">
+        <a href="/blog/xdotool-and-exploring-wayland-fragmentation/" class="article-titles">
+          <h2 class="article-title">Exploring the Fragmentation of Wayland, an xdotool adventure</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>15 November, 2025</time></li>
+        </ul>
+        <div class="article-content">
+          <p>In 2007, I was spending a my summer experimeting with UI automation. In June 207, I <a href="https://github.com/jordansissel/xdotool/commit/ccae4e3b75551608dde6ba3b9e2aa0264f7a4ac5">started xdotool</a> by splitting it from another project, called <code>navmacro</code> at the time. The goal was modest - write some scripts that execute common keyboard, mouse, and window management tasks.</p>
+<p>The first commit had only a few basic commands - basic mouse and keyboard actions, plus a few window management actions like movement, focus, and searching. Xdotool sprouted new features as time rolled on. Today, the project is 18 years old, and still going!</p>
+        </div>
+        <div class="article-readmore"><a href="/blog/xdotool-and-exploring-wayland-fragmentation/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
+      <article class="article">
         <a href="/blog/in-which-lastpass-gifts-us-a-sisyphean-task/" class="article-titles">
           <h2 class="article-title">In which LastPass gifts us a Sisyphean task</h2>
           
@@ -50,11 +65,13 @@
           <li class="article-meta-date"><time>4 February, 2023</time></li>
         </ul>
         <div class="article-content">
-          With recent news of LastPass having a significant security breach and also handling the public response poorly, there&rsquo;s been calls to ditch LastPass.
-From LastPass&rsquo; blog post:
-The threat actor was also able to copy a backup of customer vault data from the encrypted storage container
-This is encouragement to migrate. Bitwarden and 1Password seem like reasonable alternatives, at least for now, until fate comes for them as well.
-Because the LastPass breach creates a threat that customer password vaults were copied, it means that any migration isn&rsquo;t complete without changing passwords.
+          <p>With recent news of LastPass having a <a href="https://techcrunch.com/2022/12/22/lastpass-customer-password-vaults-stolen/">significant security breach and also handling the public response poorly</a>, there&rsquo;s been <a href="https://www.wired.com/story/lastpass-breach-vaults-password-managers/">calls to ditch LastPass</a>.</p>
+<p>From LastPass&rsquo; <a href="https://blog.lastpass.com/2022/12/notice-of-recent-security-incident/">blog post</a>:</p>
+<blockquote>
+<p>The threat actor was also able to copy a backup of customer vault data from the encrypted storage container</p>
+</blockquote>
+<p>This is encouragement to migrate. Bitwarden and 1Password seem like reasonable alternatives, at least for now, until fate comes for them as well.</p>
+<p>Because the LastPass breach creates a threat that customer password vaults were copied, it means that any migration isn&rsquo;t complete without changing passwords.</p>
         </div>
         <div class="article-readmore"><a href="/blog/in-which-lastpass-gifts-us-a-sisyphean-task/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -68,8 +85,8 @@ Because the LastPass breach creates a threat that customer password vaults were 
           <li class="article-meta-date"><time>9 December, 2022</time></li>
         </ul>
         <div class="article-content">
-          We have some Sonos speakers at home, and I&rsquo;d like my kids to be able to choose music when/where they like. The iOS Sonos app is somewhat labyrinthian, so I think, can I make a simple version of this? I figured a simple-ish web interface with buttons for their favorite albums and playlists. Could be fun?
-I&rsquo;ve been doing light web development since the late 90s, and I love learning new stuff, so I&rsquo;ll pick something newer to use.
+          <p>We have some Sonos speakers at home, and I&rsquo;d like my kids to be able to choose music when/where they like. The iOS Sonos app is somewhat labyrinthian, so I think, can I make a simple version of this? I figured a simple-ish web interface with buttons for their favorite albums and playlists. Could be fun?</p>
+<p>I&rsquo;ve been doing light web development since the late 90s, and I love learning new stuff, so I&rsquo;ll pick something newer to use. With my eager eyes set on a goal to make a silly web app, I began reading through the <a href="https://ionicframework.com/docs/vue/your-first-app">Ionic+Vue tutorial</a>. Then I got very delayed by a small side quest. Hello! With ADHD, side quests are my entire life. :)</p>
         </div>
         <div class="article-readmore"><a href="/blog/instead-of-npm-install-global/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -95,8 +112,9 @@ I&rsquo;ve been doing light web development since the late 90s, and I love learn
           </li>
         </ul>
         <div class="article-content">
-          Time for release! It&rsquo;s an exciting time. Or, it should be. I want to do a release of fpm! However, there&rsquo;s some preparation I need to do before I can publish.
-I need to make sure the changelog file is updated and accurate, and that means I need to know all of the changes made since the previous release. I don&rsquo;t mean the code changes, though. I mean what behaviors were changed?
+          <h1 id="time-for-release">Time for release!</h1>
+<p>It&rsquo;s an exciting time. Or, it should be. I want to do a release of fpm! However, there&rsquo;s some preparation I need to do before I can publish.</p>
+<p>I need to make sure the changelog file is updated and accurate, and that means I need to know all of the changes made since the previous release. I don&rsquo;t mean the code changes, though. I mean what behaviors were changed? Who contributed to the change? Is a given change related to one or more open issues?</p>
         </div>
         <div class="article-readmore"><a href="/blog/geekery/finding-changes-since-last-release/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -146,11 +164,14 @@ I need to make sure the changelog file is updated and accurate, and that means I
           </li>
         </ul>
         <div class="article-content">
-          [ This post is a work in progress as I work towards solutions ]
-I received an email from Flickr on May 9.
-Subject: Your Flickr account is in violation of our free account limits.
-You have more than 50 non-public photos on your free account.
-They gave me 8 days to resolve it &ndash; with the threat of deleting photos. It&rsquo;s been a long time since I&rsquo;ve used Flickr, but I don&rsquo;t want to lose the content I had uploaded.
+          <p>[ This post is a work in progress as I work towards solutions ]</p>
+<p>I received an email from Flickr on May 9.</p>
+<blockquote>
+<p>Subject: Your Flickr account is in violation of our free account limits.</p>
+<p>You have more than 50 non-public photos on your free account.</p>
+</blockquote>
+<p>They gave me 8 days to resolve it &ndash; with the threat of deleting photos.
+It&rsquo;s been a long time since I&rsquo;ve used Flickr, but I don&rsquo;t want to lose the content I had uploaded.</p>
         </div>
         <div class="article-readmore"><a href="/blog/migrating-flickr-to-smugmug/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -182,10 +203,14 @@ They gave me 8 days to resolve it &ndash; with the threat of deleting photos. It
           </li>
         </ul>
         <div class="article-content">
-          My garage has two doors. I&rsquo;d like to be able to say &ldquo;Open the garage door&rdquo; to Siri.
-To get there, I&rsquo;m going to try using Home Assistant and ESPHome. First, though, I need to know how to tell the garage door to operate.
-Both door openers are Genie GPS1200IC. Based on some brief research, these appear to have been made between 1996-2000.
-Hack a remote? My first attempt was to buy a remote and hook a microcontroller to it.
+          <p>My garage has two doors. I&rsquo;d like to be able to say &ldquo;Open the garage door&rdquo; to Siri.</p>
+<p>To get there, I&rsquo;m going to try using Home Assistant and ESPHome.
+First, though, I need to know how to tell the garage door to operate.</p>
+<p>Both door openers are Genie GPS1200IC. Based on some brief research, these appear to have been made between 1996-2000.</p>
+<h2 id="hack-a-remote">Hack a remote?</h2>
+<p>My first attempt was to buy a remote and hook a microcontroller to it.
+I bought a Genie GITR-3 remote. This remote has 3 buttons.
+The plan was to wire an ESP8266 to the buttons of this remote.</p>
         </div>
         <div class="article-readmore"><a href="/blog/geekery/genie-gps1200ic-home-assistant/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -199,8 +224,8 @@ Hack a remote? My first attempt was to buy a remote and hook a microcontroller t
           <li class="article-meta-date"><time>14 April, 2018</time></li>
         </ul>
         <div class="article-content">
-          I built a little digital Rube-Goldberg device for my office. When I turn my desk power switch on, a little microcontroller brings my workstation and stereo online.
-My desk has a keyboard and monitor, but no computer. The computer lives in the closet a few feet away. Also in this closet is my stereo which drives audio to for the office. This makes my desk cleaner and quieter, but makes it hard to hit the power buttons.
+          <p>I built a little digital Rube-Goldberg device for my office. When I turn my desk power switch on, a little microcontroller brings my workstation and stereo online.</p>
+<p>My desk has a keyboard and monitor, but no computer. The computer lives in the closet a few feet away. Also in this closet is my stereo which drives audio to for the office. This makes my desk cleaner and quieter, but makes it hard to hit the power buttons.</p>
         </div>
         <div class="article-readmore"><a href="/blog/home-office-automation/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -221,9 +246,17 @@ My desk has a keyboard and monitor, but no computer. The computer lives in the c
           </li>
         </ul>
         <div class="article-content">
-          What is xdotool? This tool lets you simulate keyboard input and mouse activity, move and resize windows, etc. It does this using X11&rsquo;s XTEST extension and other Xlib functions.
-Additionally, you can search for windows and move, resize, hide, and modify window properties like the title. If your window manager supports it, you can use xdotool to switch desktops, move windows between desktops, and change the number of desktops.
-Mailing List The xdotool users mailing list is: xdotool-users@googlegroups.
+          <h1 id="what-is-xdotool">What is xdotool?</h1>
+<p>This tool lets you simulate keyboard input and mouse activity, move and
+resize windows, etc. It does this using X11&rsquo;s XTEST extension and other
+Xlib functions.</p>
+<p>Additionally, you can search for windows and move, resize, hide, and modify
+window properties like the title. If your window manager supports it, you
+can use xdotool to switch desktops, move windows between desktops, and
+change the number of
+desktops.</p>
+<h1 id="mailing-list">Mailing List</h1>
+<p>The xdotool users mailing list is: <a href="mailto:xdotool-users@googlegroups.com"><a href="mailto:xdotool-users@googlegroups.com">xdotool-users@googlegroups.com</a></a></p>
         </div>
         <div class="article-readmore"><a href="/projects/xdotool/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -243,8 +276,13 @@ Mailing List The xdotool users mailing list is: xdotool-users@googlegroups.
           </li>
         </ul>
         <div class="article-content">
-          I spent a while today thinking about nerdy stuff - logstash, etc. I want to grow logstash in terms of performance, use case, deployment instances, happy users, and community.
-While musing about on my mental roadmap of logstash, I found most things boil down to costs and returns on investment, even with open source software. Money, time, energy, and patience are all costs. Just because something doesn&rsquo;t cost any money doesn&rsquo;t mean it won&rsquo;t consume any time or energy.
+          <p>I spent a while today thinking about nerdy stuff - logstash, etc. I want to
+grow logstash in terms of performance, use case, deployment instances, happy
+users, and community.</p>
+<p>While musing about on my mental roadmap of logstash, I found most things boil
+down to costs and returns on investment, even with open source software.
+Money, time, energy, and patience are all costs. Just because something
+doesn&rsquo;t cost any money doesn&rsquo;t mean it won&rsquo;t consume any time or energy.</p>
         </div>
         <div class="article-readmore"><a href="/blog/growing-logstash-value/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -295,34 +333,18 @@ While musing about on my mental roadmap of logstash, I found most things boil do
           </li>
         </ul>
         <div class="article-content">
-          Truth should guide your configuration management tools.
-Truth in this case is: what machines you have, properties of those machines, roles for those machines, etc. For example &ldquo;foo-1.a.example.com is a webserver&rdquo; is a piece of truth. Where and how you store truth is up to you and out of scope for this post.
-My goal is to have truth steer everything about my infrastructure. Roles, jobs, and even long-term one-offs get put into the truth source (like a machine role, etc).
+          <p>Truth should guide your configuration management tools.</p>
+<p>Truth in this case is: what machines you have, properties of those machines,
+roles for those machines, etc. For example &ldquo;foo-1.a.example.com is a webserver&rdquo;
+is a piece of truth. Where and how you store truth is up to you and out of
+scope for this post.</p>
+<p>My goal is to have truth steer everything about my infrastructure. Roles, jobs,
+and even long-term one-offs get put into the truth source (like a machine role,
+etc). That way, if the machine with a one-off dies, I can just add that
+machine role to another system and puppet will configure it - no pain and no
+fire to fight.</p>
         </div>
         <div class="article-readmore"><a href="/blog/geekery/puppet-nodeless-configuration/">Read more...</a></div>
-        <div class="article-floatclear"></div>
-      </article>
-      <article class="article">
-        <a href="/projects/keynav/" class="article-titles">
-          <h2 class="article-title"> keynav  -  retire your mouse. 
-</h2>
-          
-        </a>
-        <ul class="article-meta">
-          <li class="article-meta-date"><time>14 October, 2010</time></li>
-          <li class="article-meta-categories">
-            <a href="/categories/projects/">
-              <i class="fas fa-folder"></i>
-              projects
-            </a>&nbsp;
-          </li>
-        </ul>
-        <div class="article-content">
-          Keynav is a piece of an on-going experiment to make pointer-driven interfaces easier and faster for users to operate. It lets you move the pointer quickly to most points on the screen with only a few key strokes.
-Note that I said pointer, not mouse. The mouse simply drives the pointer. We can drive the pointer with other devices too. keynav turns your keyboard into an fast pointer mover.
-What does it do?
-        </div>
-        <div class="article-readmore"><a href="/projects/keynav/">Read more...</a></div>
         <div class="article-floatclear"></div>
       </article>
     </section>

@@ -9,22 +9,42 @@
  - semicomplete" />
   <meta name="twitter:title" content=" fex  -  flexible token-field extraction 
  - semicomplete" />
-  <meta name="description" content="What is fex? Fex is a powerful field extraction tool. Fex provides a very concise language for tokenizeing strings and extracting fields.
-The basic usage model is that you provide a series of delimiter and field selection pairs. Tokens can be any character, while field selections have a specific syntax.
-Download Releases are available on GitHub.
-Sometimes simpler than cut and awk cut(1) from GNU coreutils (on Linux) does not support negative offsets, so you cannot ask cut to only show you the Nth field from the end.">
-  <meta property="og:description" content="What is fex? Fex is a powerful field extraction tool. Fex provides a very concise language for tokenizeing strings and extracting fields.
-The basic usage model is that you provide a series of delimiter and field selection pairs. Tokens can be any character, while field selections have a specific syntax.
-Download Releases are available on GitHub.
-Sometimes simpler than cut and awk cut(1) from GNU coreutils (on Linux) does not support negative offsets, so you cannot ask cut to only show you the Nth field from the end.">
-  <meta name="twitter:description" content="What is fex? Fex is a powerful field extraction tool. Fex provides a very concise language for tokenizeing strings and extracting fields.
+  <meta name="description" content="What is fex?
+Fex is a powerful field extraction tool. Fex provides a very concise
+language for tokenizeing strings and extracting fields.
+The basic usage model is that you provide a series of delimiter and field
+selection pairs. Tokens can be any character, while field selections have a
+specific syntax.
+Download
+Releases are available on GitHub.
+Sometimes simpler than cut and awk
+cut(1) from GNU coreutils (on Linux) does not support negative offsets, so
+you cannot ask cut to only show you the Nth field from the end.
+Additionally, to cut by multiple fields, you end up having to write
+cut ... | cut ... | cut  ...">
+  <meta property="og:description" content="What is fex?
+Fex is a powerful field extraction tool. Fex provides a very concise
+language for tokenizeing strings and extracting fields.
+The basic usage model is that you provide a series of delimiter and field
+selection pairs. Tokens can be any character, while field selections have a
+specific syntax.
+Download
+Releases are available on GitHub.
+Sometimes simpler than cut and awk
+cut(1) from GNU coreutils (on Linux) does not support negative offsets, so
+you cannot ask cut to only show you the Nth field from the end.
+Additionally, to cut by multiple fields, you end up having to write
+cut ... | cut ... | cut  ...">
+  <meta name="twitter:description" content="What is fex?
+Fex is a powerful field extraction tool. Fex provides a very concise
+language for tokenizeing strings and extracting fields.
 The basic usage model is that you provide a series of …">
   <meta name="author" content="Jordan Sissel"/>
   <meta property="og:site_name" content="semicomplete" />
   <meta property="og:url" content="https://semicomplete.com/projects/fex/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.105.0">
+  <meta name="generator" content="Hugo 0.142.0">
 
   <link rel="stylesheet" href="/css/style.css" media="all" />
   <link rel="stylesheet" href="/css/syntax.css" media="all" />
@@ -136,66 +156,66 @@ split by spaces on output (though I am open to changing this).</p>
 <h2 id="simple-splitting">Simple splitting</h2>
 <p>With input text: <code>/usr/local/bin/firefox</code></p>
 <table>
-<thead>
-<tr>
-<th>Command</th>
-<th>Result</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>fex /1</code></td>
-<td>&ldquo;usr&rdquo;</td>
-</tr>
-<tr>
-<td><code>fex /{2:3}</code></td>
-<td>&ldquo;local/bin&rdquo;</td>
-</tr>
-<tr>
-<td><code>fex /{1,-1}</code></td>
-<td>&ldquo;usr/firefox&rdquo;</td>
-</tr>
-<tr>
-<td><code>fex /-1</code></td>
-<td>&ldquo;firefox&rdquo;</td>
-</tr>
-<tr>
-<td><code>fex /{:}</code></td>
-<td>&ldquo;/usr/local/bin/firefox/</td>
-</tr>
-<tr>
-<td><code>fex /0</code></td>
-<td>&ldquo;/usr/local/bin/firefox/</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Result</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>fex /1</code></td>
+          <td>&ldquo;usr&rdquo;</td>
+      </tr>
+      <tr>
+          <td><code>fex /{2:3}</code></td>
+          <td>&ldquo;local/bin&rdquo;</td>
+      </tr>
+      <tr>
+          <td><code>fex /{1,-1}</code></td>
+          <td>&ldquo;usr/firefox&rdquo;</td>
+      </tr>
+      <tr>
+          <td><code>fex /-1</code></td>
+          <td>&ldquo;firefox&rdquo;</td>
+      </tr>
+      <tr>
+          <td><code>fex /{:}</code></td>
+          <td>&ldquo;/usr/local/bin/firefox/</td>
+      </tr>
+      <tr>
+          <td><code>fex /0</code></td>
+          <td>&ldquo;/usr/local/bin/firefox/</td>
+      </tr>
+  </tbody>
 </table>
 <h2 id="greedy-vs-nongreedy-splitting">Greedy vs nongreedy splitting</h2>
 <p>Input text: <code>a:b::c:::d</code></p>
 <table>
-<thead>
-<tr>
-<th>Command</th>
-<th>Result</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>fex :{1:3}</code></td>
-<td>&ldquo;a:b:c&rdquo;</td>
-</tr>
-<tr>
-<td><code>fex :{?1:3}</code></td>
-<td>&ldquo;a:b:&rdquo;</td>
-</tr>
-<tr>
-<td><code>fex :{3}</code></td>
-<td>&ldquo;c&rdquo;</td>
-</tr>
-<tr>
-<td><code>fex :{?3}</code></td>
-<td>&quot;&rdquo; (empty result)</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Result</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>fex :{1:3}</code></td>
+          <td>&ldquo;a:b:c&rdquo;</td>
+      </tr>
+      <tr>
+          <td><code>fex :{?1:3}</code></td>
+          <td>&ldquo;a:b:&rdquo;</td>
+      </tr>
+      <tr>
+          <td><code>fex :{3}</code></td>
+          <td>&ldquo;c&rdquo;</td>
+      </tr>
+      <tr>
+          <td><code>fex :{?3}</code></td>
+          <td>&quot;&rdquo; (empty result)</td>
+      </tr>
+  </tbody>
 </table>
 <h1 id="real-world-uses">Real world uses</h1>
 <h2 id="parse-ip-and-url-from-apache-logs">Parse IP and URL from apache logs</h2>
@@ -259,6 +279,7 @@ bin:/bin
     
 
 
+
     <ul class="pager article-pager">
       <li class="pager-newer">
           <a href="/projects/keynav/" data-toggle="tooltip" data-placement="top" title=" keynav  -  retire your mouse. 
@@ -270,7 +291,7 @@ bin:/bin
 
 
 <div class="site-footer">
-  <div class="copyright">&copy; Copyright 2006-2019 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
+  <div class="copyright">&copy; Copyright 2006-2022 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
   <ul class="site-footer-items">
     <li class="site-footer-item-about"><a href="/about/" title="About">About</a></li>
   </ul>

@@ -4,197 +4,138 @@
     <title>semicomplete</title>
     <link>https://semicomplete.com/</link>
     <description>Recent content on semicomplete</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-us</language>
     <copyright>&amp;copy; Copyright 2006-2022 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Sat, 04 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://semicomplete.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 15 Nov 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://semicomplete.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Exploring the Fragmentation of Wayland, an xdotool adventure</title>
+      <link>https://semicomplete.com/blog/xdotool-and-exploring-wayland-fragmentation/</link>
+      <pubDate>Sat, 15 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>https://semicomplete.com/blog/xdotool-and-exploring-wayland-fragmentation/</guid>
+      <description>&lt;p&gt;In 2007, I was spending a my summer experimeting with UI automation. In June 207, I &lt;a href=&#34;https://github.com/jordansissel/xdotool/commit/ccae4e3b75551608dde6ba3b9e2aa0264f7a4ac5&#34;&gt;started xdotool&lt;/a&gt; by splitting it from another project, called &lt;code&gt;navmacro&lt;/code&gt; at the time. The goal was modest - write some scripts that execute common keyboard, mouse, and window management tasks.&lt;/p&gt;&#xA;&lt;p&gt;The first commit had only a few basic commands - basic mouse and keyboard actions, plus a few window management actions like movement, focus, and searching. Xdotool sprouted new features as time rolled on. Today, the project is 18 years old, and still going!&lt;/p&gt;</description>
+    </item>
     <item>
       <title>In which LastPass gifts us a Sisyphean task</title>
       <link>https://semicomplete.com/blog/in-which-lastpass-gifts-us-a-sisyphean-task/</link>
       <pubDate>Sat, 04 Feb 2023 00:00:00 +0000</pubDate>
-      
       <guid>https://semicomplete.com/blog/in-which-lastpass-gifts-us-a-sisyphean-task/</guid>
-      <description>With recent news of LastPass having a significant security breach and also handling the public response poorly, there&amp;rsquo;s been calls to ditch LastPass.
-From LastPass&amp;rsquo; blog post:
-The threat actor was also able to copy a backup of customer vault data from the encrypted storage container
-This is encouragement to migrate. Bitwarden and 1Password seem like reasonable alternatives, at least for now, until fate comes for them as well.
-Because the LastPass breach creates a threat that customer password vaults were copied, it means that any migration isn&amp;rsquo;t complete without changing passwords.</description>
+      <description>&lt;p&gt;With recent news of LastPass having a &lt;a href=&#34;https://techcrunch.com/2022/12/22/lastpass-customer-password-vaults-stolen/&#34;&gt;significant security breach and also handling the public response poorly&lt;/a&gt;, there&amp;rsquo;s been &lt;a href=&#34;https://www.wired.com/story/lastpass-breach-vaults-password-managers/&#34;&gt;calls to ditch LastPass&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;From LastPass&amp;rsquo; &lt;a href=&#34;https://blog.lastpass.com/2022/12/notice-of-recent-security-incident/&#34;&gt;blog post&lt;/a&gt;:&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;The threat actor was also able to copy a backup of customer vault data from the encrypted storage container&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;This is encouragement to migrate. Bitwarden and 1Password seem like reasonable alternatives, at least for now, until fate comes for them as well.&lt;/p&gt;&#xA;&lt;p&gt;Because the LastPass breach creates a threat that customer password vaults were copied, it means that any migration isn&amp;rsquo;t complete without changing passwords.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Instead of `npm install -g`...</title>
       <link>https://semicomplete.com/blog/instead-of-npm-install-global/</link>
       <pubDate>Fri, 09 Dec 2022 00:00:00 +0000</pubDate>
-      
       <guid>https://semicomplete.com/blog/instead-of-npm-install-global/</guid>
-      <description>We have some Sonos speakers at home, and I&amp;rsquo;d like my kids to be able to choose music when/where they like. The iOS Sonos app is somewhat labyrinthian, so I think, can I make a simple version of this? I figured a simple-ish web interface with buttons for their favorite albums and playlists. Could be fun?
-I&amp;rsquo;ve been doing light web development since the late 90s, and I love learning new stuff, so I&amp;rsquo;ll pick something newer to use.</description>
+      <description>&lt;p&gt;We have some Sonos speakers at home, and I&amp;rsquo;d like my kids to be able to choose music when/where they like. The iOS Sonos app is somewhat labyrinthian, so I think, can I make a simple version of this? I figured a simple-ish web interface with buttons for their favorite albums and playlists. Could be fun?&lt;/p&gt;&#xA;&lt;p&gt;I&amp;rsquo;ve been doing light web development since the late 90s, and I love learning new stuff, so I&amp;rsquo;ll pick something newer to use. With my eager eyes set on a goal to make a silly web app, I began reading through the &lt;a href=&#34;https://ionicframework.com/docs/vue/your-first-app&#34;&gt;Ionic+Vue tutorial&lt;/a&gt;. Then I got very delayed by a small side quest. Hello! With ADHD, side quests are my entire life. :)&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>GitHub: Finding changes since last release</title>
       <link>https://semicomplete.com/blog/geekery/finding-changes-since-last-release/</link>
       <pubDate>Wed, 09 Nov 2022 21:00:00 -0700</pubDate>
-      
       <guid>https://semicomplete.com/blog/geekery/finding-changes-since-last-release/</guid>
-      <description>Time for release! It&amp;rsquo;s an exciting time. Or, it should be. I want to do a release of fpm! However, there&amp;rsquo;s some preparation I need to do before I can publish.
-I need to make sure the changelog file is updated and accurate, and that means I need to know all of the changes made since the previous release. I don&amp;rsquo;t mean the code changes, though. I mean what behaviors were changed?</description>
+      <description>&lt;h1 id=&#34;time-for-release&#34;&gt;Time for release!&lt;/h1&gt;&#xA;&lt;p&gt;It&amp;rsquo;s an exciting time. Or, it should be. I want to do a release of fpm! However, there&amp;rsquo;s some preparation I need to do before I can publish.&lt;/p&gt;&#xA;&lt;p&gt;I need to make sure the changelog file is updated and accurate, and that means I need to know all of the changes made since the previous release. I don&amp;rsquo;t mean the code changes, though. I mean what behaviors were changed? Who contributed to the change? Is a given change related to one or more open issues?&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Moving from Flickr to SmugMug</title>
       <link>https://semicomplete.com/blog/migrating-flickr-to-smugmug/</link>
       <pubDate>Tue, 10 May 2022 22:55:00 -0700</pubDate>
-      
       <guid>https://semicomplete.com/blog/migrating-flickr-to-smugmug/</guid>
-      <description>[ This post is a work in progress as I work towards solutions ]
-I received an email from Flickr on May 9.
-Subject: Your Flickr account is in violation of our free account limits.
-You have more than 50 non-public photos on your free account.
-They gave me 8 days to resolve it &amp;ndash; with the threat of deleting photos. It&amp;rsquo;s been a long time since I&amp;rsquo;ve used Flickr, but I don&amp;rsquo;t want to lose the content I had uploaded.</description>
+      <description>&lt;p&gt;[ This post is a work in progress as I work towards solutions ]&lt;/p&gt;&#xA;&lt;p&gt;I received an email from Flickr on May 9.&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Subject: Your Flickr account is in violation of our free account limits.&lt;/p&gt;&#xA;&lt;p&gt;You have more than 50 non-public photos on your free account.&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;They gave me 8 days to resolve it &amp;ndash; with the threat of deleting photos.&#xA;It&amp;rsquo;s been a long time since I&amp;rsquo;ve used Flickr, but I don&amp;rsquo;t want to lose the content I had uploaded.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Genie GPS1200IC automation with ESP8266</title>
       <link>https://semicomplete.com/blog/geekery/genie-gps1200ic-home-assistant/</link>
       <pubDate>Mon, 03 May 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://semicomplete.com/blog/geekery/genie-gps1200ic-home-assistant/</guid>
-      <description>My garage has two doors. I&amp;rsquo;d like to be able to say &amp;ldquo;Open the garage door&amp;rdquo; to Siri.
-To get there, I&amp;rsquo;m going to try using Home Assistant and ESPHome. First, though, I need to know how to tell the garage door to operate.
-Both door openers are Genie GPS1200IC. Based on some brief research, these appear to have been made between 1996-2000.
-Hack a remote? My first attempt was to buy a remote and hook a microcontroller to it.</description>
+      <description>&lt;p&gt;My garage has two doors. I&amp;rsquo;d like to be able to say &amp;ldquo;Open the garage door&amp;rdquo; to Siri.&lt;/p&gt;&#xA;&lt;p&gt;To get there, I&amp;rsquo;m going to try using Home Assistant and ESPHome.&#xA;First, though, I need to know how to tell the garage door to operate.&lt;/p&gt;&#xA;&lt;p&gt;Both door openers are Genie GPS1200IC. Based on some brief research, these appear to have been made between 1996-2000.&lt;/p&gt;&#xA;&lt;h2 id=&#34;hack-a-remote&#34;&gt;Hack a remote?&lt;/h2&gt;&#xA;&lt;p&gt;My first attempt was to buy a remote and hook a microcontroller to it.&#xA;I bought a Genie GITR-3 remote. This remote has 3 buttons.&#xA;The plan was to wire an ESP8266 to the buttons of this remote.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Home Office Automation</title>
       <link>https://semicomplete.com/blog/home-office-automation/</link>
       <pubDate>Sat, 14 Apr 2018 08:58:56 -0700</pubDate>
-      
       <guid>https://semicomplete.com/blog/home-office-automation/</guid>
-      <description>I built a little digital Rube-Goldberg device for my office. When I turn my desk power switch on, a little microcontroller brings my workstation and stereo online.
-My desk has a keyboard and monitor, but no computer. The computer lives in the closet a few feet away. Also in this closet is my stereo which drives audio to for the office. This makes my desk cleaner and quieter, but makes it hard to hit the power buttons.</description>
+      <description>&lt;p&gt;I built a little digital Rube-Goldberg device for my office. When I turn my desk power switch on, a little microcontroller brings my workstation and stereo online.&lt;/p&gt;&#xA;&lt;p&gt;My desk has a keyboard and monitor, but no computer. The computer lives in the closet a few feet away. Also in this closet is my stereo which drives audio to for the office. This makes my desk cleaner and quieter, but makes it hard to hit the power buttons.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title> xdotool  -  fake keyboard/mouse input, window management, and more 
 </title>
       <link>https://semicomplete.com/projects/xdotool/</link>
       <pubDate>Fri, 24 Apr 2015 21:46:35 -0700</pubDate>
-      
       <guid>https://semicomplete.com/projects/xdotool/</guid>
-      <description>What is xdotool? This tool lets you simulate keyboard input and mouse activity, move and resize windows, etc. It does this using X11&amp;rsquo;s XTEST extension and other Xlib functions.
-Additionally, you can search for windows and move, resize, hide, and modify window properties like the title. If your window manager supports it, you can use xdotool to switch desktops, move windows between desktops, and change the number of desktops.
-Mailing List The xdotool users mailing list is: xdotool-users@googlegroups.</description>
+      <description>&lt;h1 id=&#34;what-is-xdotool&#34;&gt;What is xdotool?&lt;/h1&gt;&#xA;&lt;p&gt;This tool lets you simulate keyboard input and mouse activity, move and&#xA;resize windows, etc. It does this using X11&amp;rsquo;s XTEST extension and other&#xA;Xlib functions.&lt;/p&gt;&#xA;&lt;p&gt;Additionally, you can search for windows and move, resize, hide, and modify&#xA;window properties like the title. If your window manager supports it, you&#xA;can use xdotool to switch desktops, move windows between desktops, and&#xA;change the number of&#xA;desktops.&lt;/p&gt;&#xA;&lt;h1 id=&#34;mailing-list&#34;&gt;Mailing List&lt;/h1&gt;&#xA;&lt;p&gt;The xdotool users mailing list is: &lt;a href=&#34;mailto:xdotool-users@googlegroups.com&#34;&gt;&lt;a href=&#34;mailto:xdotool-users@googlegroups.com&#34;&gt;xdotool-users@googlegroups.com&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Growing logstash&#39;s value</title>
       <link>https://semicomplete.com/blog/growing-logstash-value/</link>
       <pubDate>Sun, 29 Jul 2012 23:00:08 -0700</pubDate>
-      
       <guid>https://semicomplete.com/blog/growing-logstash-value/</guid>
-      <description>I spent a while today thinking about nerdy stuff - logstash, etc. I want to grow logstash in terms of performance, use case, deployment instances, happy users, and community.
-While musing about on my mental roadmap of logstash, I found most things boil down to costs and returns on investment, even with open source software. Money, time, energy, and patience are all costs. Just because something doesn&amp;rsquo;t cost any money doesn&amp;rsquo;t mean it won&amp;rsquo;t consume any time or energy.</description>
+      <description>&lt;p&gt;I spent a while today thinking about nerdy stuff - logstash, etc. I want to&#xA;grow logstash in terms of performance, use case, deployment instances, happy&#xA;users, and community.&lt;/p&gt;&#xA;&lt;p&gt;While musing about on my mental roadmap of logstash, I found most things boil&#xA;down to costs and returns on investment, even with open source software.&#xA;Money, time, energy, and patience are all costs. Just because something&#xA;doesn&amp;rsquo;t cost any money doesn&amp;rsquo;t mean it won&amp;rsquo;t consume any time or energy.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Puppet &#34;pure fact-driven&#34; nodeless configuration
 </title>
       <link>https://semicomplete.com/blog/geekery/puppet-nodeless-configuration/</link>
       <pubDate>Sat, 27 Nov 2010 01:14:37 -0800</pubDate>
-      
       <guid>https://semicomplete.com/blog/geekery/puppet-nodeless-configuration/</guid>
-      <description>Truth should guide your configuration management tools.
-Truth in this case is: what machines you have, properties of those machines, roles for those machines, etc. For example &amp;ldquo;foo-1.a.example.com is a webserver&amp;rdquo; is a piece of truth. Where and how you store truth is up to you and out of scope for this post.
-My goal is to have truth steer everything about my infrastructure. Roles, jobs, and even long-term one-offs get put into the truth source (like a machine role, etc).</description>
+      <description>&lt;p&gt;Truth should guide your configuration management tools.&lt;/p&gt;&#xA;&lt;p&gt;Truth in this case is: what machines you have, properties of those machines,&#xA;roles for those machines, etc. For example &amp;ldquo;foo-1.a.example.com is a webserver&amp;rdquo;&#xA;is a piece of truth. Where and how you store truth is up to you and out of&#xA;scope for this post.&lt;/p&gt;&#xA;&lt;p&gt;My goal is to have truth steer everything about my infrastructure. Roles, jobs,&#xA;and even long-term one-offs get put into the truth source (like a machine role,&#xA;etc). That way, if the machine with a one-off dies, I can just add that&#xA;machine role to another system and puppet will configure it - no pain and no&#xA;fire to fight.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title> keynav  -  retire your mouse. 
 </title>
       <link>https://semicomplete.com/projects/keynav/</link>
       <pubDate>Thu, 14 Oct 2010 23:49:21 -0700</pubDate>
-      
       <guid>https://semicomplete.com/projects/keynav/</guid>
-      <description>Keynav is a piece of an on-going experiment to make pointer-driven interfaces easier and faster for users to operate. It lets you move the pointer quickly to most points on the screen with only a few key strokes.
-Note that I said pointer, not mouse. The mouse simply drives the pointer. We can drive the pointer with other devices too. keynav turns your keyboard into an fast pointer mover.
-What does it do?</description>
+      <description>&lt;p&gt;Keynav is a piece of an on-going experiment to&#xA;make pointer-driven interfaces easier and faster for users to operate. It&#xA;lets you move the pointer quickly to most points on the screen with only a&#xA;few key strokes.&lt;/p&gt;&#xA;&lt;p&gt;Note that I said pointer, not mouse. The mouse simply drives the pointer.&#xA;We can drive the pointer with other devices too. keynav turns your keyboard&#xA;into an fast pointer mover.&lt;/p&gt;&#xA;&lt;h1 id=&#34;what-does-it-do&#34;&gt;What does it do?&lt;/h1&gt;&#xA;&lt;p&gt;You select a piece of the screen. The screen is initially wholely selected.&#xA;One move will cut that region by half. A move is a direction: up, down,&#xA;left, and right.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Debugging java threads with top(1) and jstack.
 </title>
       <link>https://semicomplete.com/blog/geekery/debugging-java-performance/</link>
       <pubDate>Mon, 21 Jun 2010 19:24:23 -0700</pubDate>
-      
       <guid>https://semicomplete.com/blog/geekery/debugging-java-performance/</guid>
-      <description>At work, we&amp;rsquo;re testing some new real-time bidding on ADX and are working through some performance issues.
-Our server is jetty + our code, and we&amp;rsquo;re seeing performance problems at relatively low QPS.
-The first profiling attempt used YJP, but when it was attached to our server, the system load went up quickly and looked like this:
-load average: 2671.04, 1653.95, 771.93
-Not good; the load average while running with the profiler attached jumps to a number roughly equal to the number of application threads (3000 jetty threads).</description>
+      <description>&lt;p&gt;At work, we&amp;rsquo;re testing some new real-time bidding on ADX and are working&#xA;through some performance issues.&lt;/p&gt;&#xA;&lt;p&gt;Our server is jetty + our code, and we&amp;rsquo;re seeing performance problems at&#xA;relatively low QPS.&lt;/p&gt;&#xA;&lt;p&gt;The first profiling attempt used &lt;a href=&#34;http://www.yourkit.com/index.jsp&#34;&gt;YJP&lt;/a&gt;, but when it was attached to&#xA;our server, the system load went up quickly and looked like this:&lt;/p&gt;&#xA;&lt;p&gt;&lt;code&gt;load average: 2671.04, 1653.95, 771.93&lt;/code&gt;&lt;/p&gt;&#xA;&lt;p&gt;Not good; the load average while running with the profiler attached jumps to a&#xA;number roughly equal to the number of application threads (3000 jetty threads).&#xA;Possible PEBCAK here, but needless to say we couldn&amp;rsquo;t use YJP for any&#xA;meaningful profiling.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>SSL handshake latency and HTTPS optimizations.
 </title>
       <link>https://semicomplete.com/blog/geekery/ssl-latency/</link>
       <pubDate>Fri, 04 Jun 2010 02:33:15 -0700</pubDate>
-      
       <guid>https://semicomplete.com/blog/geekery/ssl-latency/</guid>
-      <description>At work today, I started investigating the latency differences for similar requests between HTTP and HTTPS. Historically, I was running with the assumption that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes are more CPU intensive. I didn&amp;rsquo;t really think about the network consequences of SSL until today.
-It&amp;rsquo;s all in the handshake.
-TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 1.</description>
+      <description>&lt;p&gt;At work today, I started investigating the latency differences for similar&#xA;requests between HTTP and HTTPS. Historically, I was running with the assumption&#xA;that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes&#xA;are more CPU intensive. I didn&amp;rsquo;t really think about the network consequences of&#xA;SSL until today.&lt;/p&gt;&#xA;&lt;p&gt;It&amp;rsquo;s all in the handshake.&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;http://www.google.com/search?q=tcp+handshake&#34;&gt;TCP handshake&lt;/a&gt; is a&#xA;3-packet event. The client sends 2 packets, the server sends 1. Best case,&#xA;you&amp;rsquo;re looking at one round-trip for establishing your connection. We can show&#xA;this empirically by comparing ping and tcp connect times:&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title> fex  -  flexible token-field extraction 
 </title>
       <link>https://semicomplete.com/projects/fex/</link>
       <pubDate>Wed, 19 May 2010 00:13:15 -0700</pubDate>
-      
       <guid>https://semicomplete.com/projects/fex/</guid>
-      <description>What is fex? Fex is a powerful field extraction tool. Fex provides a very concise language for tokenizeing strings and extracting fields.
-The basic usage model is that you provide a series of delimiter and field selection pairs. Tokens can be any character, while field selections have a specific syntax.
-Download Releases are available on GitHub.
-Sometimes simpler than cut and awk cut(1) from GNU coreutils (on Linux) does not support negative offsets, so you cannot ask cut to only show you the Nth field from the end.</description>
+      <description>&lt;h1 id=&#34;what-is-fex&#34;&gt;What is fex?&lt;/h1&gt;&#xA;&lt;p&gt;Fex is a powerful field extraction tool. Fex provides a very concise&#xA;language for tokenizeing strings and extracting fields.&lt;/p&gt;&#xA;&lt;p&gt;The basic usage model is that you provide a series of delimiter and field&#xA;selection pairs. Tokens can be any character, while field selections have a&#xA;specific syntax.&lt;/p&gt;&#xA;&lt;h1 id=&#34;download&#34;&gt;Download&lt;/h1&gt;&#xA;&lt;p&gt;Releases are available on &lt;a href=&#34;https://github.com/jordansissel/fex/releases&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;h1 id=&#34;sometimes-simpler-than-cut-and-awk&#34;&gt;Sometimes simpler than cut and awk&lt;/h1&gt;&#xA;&lt;p&gt;cut(1) from GNU coreutils (on Linux) does not support negative offsets, so&#xA;you cannot ask cut to only show you the Nth field from the end.&#xA;Additionally, to cut by multiple fields, you end up having to write&#xA;&lt;code&gt;cut ... | cut ... | cut  ...&lt;/code&gt;&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Headless wrapper for ephemeral X servers
 </title>
       <link>https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers/</link>
       <pubDate>Tue, 11 May 2010 01:59:47 -0700</pubDate>
-      
       <guid>https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers/</guid>
-      <description>For various projects I&amp;rsquo;m doing right now, I need an easy way to automatically run code in an X server that may not necessarily be the active display. This code may even run on servers in production that don&amp;rsquo;t have video cards or monitors attached.
-For some history on this, check out this post on xvfb and firefox. You can solve the problem in that post by simply launching firefox with the tool below, and your X server will exit when firefox exits.</description>
+      <description>&lt;p&gt;For various projects I&amp;rsquo;m doing right now, I need an easy way to automatically&#xA;run code in an X server that may not necessarily be the active display. This code&#xA;may even run on servers in production that don&amp;rsquo;t have video cards or monitors&#xA;attached.&lt;/p&gt;&#xA;&lt;p&gt;For some history on this, check out &lt;a&#xA;href=&#34;https://semicomplete.com/blog/geekery/xvfb-firefox.html&#34;&gt;this post on xvfb and firefox&lt;/a&gt;. You&#xA;can solve the problem in that post by simply launching firefox with the tool&#xA;below, and your X server will exit when firefox exits.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Dynamic DNS and DHCP - Easy to do, and you&#39;ll thank yourself later
 </title>
       <link>https://semicomplete.com/articles/dynamic-dns-with-dhcp/</link>
       <pubDate>Mon, 17 Apr 2006 02:42:39 -0700</pubDate>
-      
       <guid>https://semicomplete.com/articles/dynamic-dns-with-dhcp/</guid>
-      <description>Preface This article will cover how to setup dns with dynamic updates aswell as configuring your dhcp server to push updates to it aswell.
-I assume you already know how to setup plain old dns aswell as plain old dhcp. This is not an introduction to either of those. I used BIND 9 and ISC DHCPD v3 for this article.
-If there&amp;rsquo;s anything this article doesn&amp;rsquo;t cover with respect to what you are looking for, leave a comment and I&amp;rsquo;ll do what I can.</description>
+      <description>&lt;h1 id=&#34;preface&#34;&gt;Preface&lt;/h1&gt;&#xA;&lt;p&gt;This article will cover how to setup dns with dynamic updates aswell as&#xA;configuring your dhcp server to push updates to it aswell.&lt;/p&gt;&#xA;&lt;p&gt;I assume you already know how to setup plain old dns aswell as plain old&#xA;dhcp. This is not an introduction to either of those. I used BIND 9 and&#xA;ISC DHCPD v3 for this article.&lt;/p&gt;&#xA;&lt;p&gt;If there&amp;rsquo;s anything this article doesn&amp;rsquo;t cover with respect to what you&#xA;are looking for, leave a comment and I&amp;rsquo;ll do what I can.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Xvfb &#43; Firefox
 </title>
       <link>https://semicomplete.com/blog/geekery/xvfb-firefox/</link>
       <pubDate>Sat, 08 Apr 2006 03:53:00 -0700</pubDate>
-      
       <guid>https://semicomplete.com/blog/geekery/xvfb-firefox/</guid>
-      <description>Resig has a bunch of unit tests he does to make sure jQuery works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&amp;rsquo;s automate this.
-Update (May 2010): See this post for more details on automating xserver startup without having to worry about display numbers (:1, :2, etc).
-Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&amp;rsquo;ve got a simple way to run Firefox without a visible display.</description>
+      <description>&lt;p&gt;&lt;a href=&#34;http://www.ejohn.org&#34;&gt;Resig&lt;/a&gt; has a bunch of unit tests he does to make sure &lt;a href=&#34;http://www.jquery.com&#34;&gt;jQuery&lt;/a&gt; works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&amp;rsquo;s automate this.&lt;/p&gt;&#xA;&lt;h2 id=&#34;update-may-2010&#34;&gt;Update (May 2010):&lt;/h2&gt;&#xA;&lt;p&gt;See&#xA;&lt;a href=&#34;https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers.html&#34;&gt;this&#xA;post&lt;/a&gt; for more details on automating xserver startup without having to worry&#xA;about display numbers (:1, :2, etc).&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&amp;rsquo;ve got a simple way to run Firefox without a visible display.&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

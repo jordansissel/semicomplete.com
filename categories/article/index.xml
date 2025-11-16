@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>article on semicomplete</title>
+    <title>Article on semicomplete</title>
     <link>https://semicomplete.com/categories/article/</link>
-    <description>Recent content in article on semicomplete</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Article on semicomplete</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Mon, 17 Apr 2006 02:42:39 -0700</lastBuildDate><atom:link href="https://semicomplete.com/categories/article/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>&amp;copy; Copyright 2006-2022 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
+    <lastBuildDate>Mon, 17 Apr 2006 02:42:39 -0700</lastBuildDate>
+    <atom:link href="https://semicomplete.com/categories/article/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Dynamic DNS and DHCP - Easy to do, and you&#39;ll thank yourself later
 </title>
       <link>https://semicomplete.com/articles/dynamic-dns-with-dhcp/</link>
       <pubDate>Mon, 17 Apr 2006 02:42:39 -0700</pubDate>
-      
       <guid>https://semicomplete.com/articles/dynamic-dns-with-dhcp/</guid>
-      <description>Preface This article will cover how to setup dns with dynamic updates aswell as configuring your dhcp server to push updates to it aswell.
-I assume you already know how to setup plain old dns aswell as plain old dhcp. This is not an introduction to either of those. I used BIND 9 and ISC DHCPD v3 for this article.
-If there&amp;rsquo;s anything this article doesn&amp;rsquo;t cover with respect to what you are looking for, leave a comment and I&amp;rsquo;ll do what I can.</description>
+      <description>&lt;h1 id=&#34;preface&#34;&gt;Preface&lt;/h1&gt;&#xA;&lt;p&gt;This article will cover how to setup dns with dynamic updates aswell as&#xA;configuring your dhcp server to push updates to it aswell.&lt;/p&gt;&#xA;&lt;p&gt;I assume you already know how to setup plain old dns aswell as plain old&#xA;dhcp. This is not an introduction to either of those. I used BIND 9 and&#xA;ISC DHCPD v3 for this article.&lt;/p&gt;&#xA;&lt;p&gt;If there&amp;rsquo;s anything this article doesn&amp;rsquo;t cover with respect to what you&#xA;are looking for, leave a comment and I&amp;rsquo;ll do what I can.&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

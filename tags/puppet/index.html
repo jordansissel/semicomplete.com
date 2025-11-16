@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <title>puppet - semicomplete</title>
-  <meta property="og:title" content="puppet - semicomplete" />
-  <meta name="twitter:title" content="puppet - semicomplete" />
+  <title>Puppet - semicomplete</title>
+  <meta property="og:title" content="Puppet - semicomplete" />
+  <meta name="twitter:title" content="Puppet - semicomplete" />
   <meta name="author" content="Jordan Sissel"/>
   <meta property="og:site_name" content="semicomplete" />
   <meta property="og:url" content="https://semicomplete.com/tags/puppet/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.105.0">
+  <meta name="generator" content="Hugo 0.142.0">
   <link href="/tags/puppet/index.xml" rel="alternate" type="application/rss+xml" title="semicomplete" />
   <link href="/tags/puppet/index.xml" rel="feed" type="application/rss+xml" title="semicomplete" />
 
@@ -87,9 +87,16 @@
           </li>
         </ul>
         <div class="article-content">
-          Truth should guide your configuration management tools.
-Truth in this case is: what machines you have, properties of those machines, roles for those machines, etc. For example &ldquo;foo-1.a.example.com is a webserver&rdquo; is a piece of truth. Where and how you store truth is up to you and out of scope for this post.
-My goal is to have truth steer everything about my infrastructure. Roles, jobs, and even long-term one-offs get put into the truth source (like a machine role, etc).
+          <p>Truth should guide your configuration management tools.</p>
+<p>Truth in this case is: what machines you have, properties of those machines,
+roles for those machines, etc. For example &ldquo;foo-1.a.example.com is a webserver&rdquo;
+is a piece of truth. Where and how you store truth is up to you and out of
+scope for this post.</p>
+<p>My goal is to have truth steer everything about my infrastructure. Roles, jobs,
+and even long-term one-offs get put into the truth source (like a machine role,
+etc). That way, if the machine with a one-off dies, I can just add that
+machine role to another system and puppet will configure it - no pain and no
+fire to fight.</p>
         </div>
         <div class="article-readmore"><a href="/blog/geekery/puppet-nodeless-configuration/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -101,7 +108,7 @@ My goal is to have truth steer everything about my infrastructure. Roles, jobs, 
 
 
 <div class="site-footer">
-  <div class="copyright">&copy; Copyright 2006-2019 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
+  <div class="copyright">&copy; Copyright 2006-2022 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
   <ul class="site-footer-items">
     <li class="site-footer-item-rsslink">
       <a href="/tags/puppet/index.xml" type="application/rss+xml" target="_blank" title="RSS">

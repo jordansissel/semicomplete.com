@@ -1,36 +1,29 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>web on semicomplete</title>
+    <title>Web on semicomplete</title>
     <link>https://semicomplete.com/tags/web/</link>
-    <description>Recent content in web on semicomplete</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Web on semicomplete</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <copyright>&amp;copy; Copyright 2006-2019 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Fri, 04 Jun 2010 02:33:15 -0700</lastBuildDate><atom:link href="https://semicomplete.com/tags/web/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>&amp;copy; Copyright 2006-2022 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
+    <lastBuildDate>Fri, 04 Jun 2010 02:33:15 -0700</lastBuildDate>
+    <atom:link href="https://semicomplete.com/tags/web/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>SSL handshake latency and HTTPS optimizations.
 </title>
       <link>https://semicomplete.com/blog/geekery/ssl-latency/</link>
       <pubDate>Fri, 04 Jun 2010 02:33:15 -0700</pubDate>
-      
       <guid>https://semicomplete.com/blog/geekery/ssl-latency/</guid>
-      <description>At work today, I started investigating the latency differences for similar requests between HTTP and HTTPS. Historically, I was running with the assumption that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes are more CPU intensive. I didn&amp;rsquo;t really think about the network consequences of SSL until today.
-It&amp;rsquo;s all in the handshake.
-TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 1.</description>
+      <description>&lt;p&gt;At work today, I started investigating the latency differences for similar&#xA;requests between HTTP and HTTPS. Historically, I was running with the assumption&#xA;that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes&#xA;are more CPU intensive. I didn&amp;rsquo;t really think about the network consequences of&#xA;SSL until today.&lt;/p&gt;&#xA;&lt;p&gt;It&amp;rsquo;s all in the handshake.&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;http://www.google.com/search?q=tcp+handshake&#34;&gt;TCP handshake&lt;/a&gt; is a&#xA;3-packet event. The client sends 2 packets, the server sends 1. Best case,&#xA;you&amp;rsquo;re looking at one round-trip for establishing your connection. We can show&#xA;this empirically by comparing ping and tcp connect times:&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Xvfb &#43; Firefox
 </title>
       <link>https://semicomplete.com/blog/geekery/xvfb-firefox/</link>
       <pubDate>Sat, 08 Apr 2006 03:53:00 -0700</pubDate>
-      
       <guid>https://semicomplete.com/blog/geekery/xvfb-firefox/</guid>
-      <description>Resig has a bunch of unit tests he does to make sure jQuery works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&amp;rsquo;s automate this.
-Update (May 2010): See this post for more details on automating xserver startup without having to worry about display numbers (:1, :2, etc).
-Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&amp;rsquo;ve got a simple way to run Firefox without a visible display.</description>
+      <description>&lt;p&gt;&lt;a href=&#34;http://www.ejohn.org&#34;&gt;Resig&lt;/a&gt; has a bunch of unit tests he does to make sure &lt;a href=&#34;http://www.jquery.com&#34;&gt;jQuery&lt;/a&gt; works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&amp;rsquo;s automate this.&lt;/p&gt;&#xA;&lt;h2 id=&#34;update-may-2010&#34;&gt;Update (May 2010):&lt;/h2&gt;&#xA;&lt;p&gt;See&#xA;&lt;a href=&#34;https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers.html&#34;&gt;this&#xA;post&lt;/a&gt; for more details on automating xserver startup without having to worry&#xA;about display numbers (:1, :2, etc).&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&amp;rsquo;ve got a simple way to run Firefox without a visible display.&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

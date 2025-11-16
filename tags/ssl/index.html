@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <title>ssl - semicomplete</title>
-  <meta property="og:title" content="ssl - semicomplete" />
-  <meta name="twitter:title" content="ssl - semicomplete" />
+  <title>Ssl - semicomplete</title>
+  <meta property="og:title" content="Ssl - semicomplete" />
+  <meta name="twitter:title" content="Ssl - semicomplete" />
   <meta name="author" content="Jordan Sissel"/>
   <meta property="og:site_name" content="semicomplete" />
   <meta property="og:url" content="https://semicomplete.com/tags/ssl/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.105.0">
+  <meta name="generator" content="Hugo 0.142.0">
   <link href="/tags/ssl/index.xml" rel="alternate" type="application/rss+xml" title="semicomplete" />
   <link href="/tags/ssl/index.xml" rel="feed" type="application/rss+xml" title="semicomplete" />
 
@@ -87,9 +87,16 @@
           </li>
         </ul>
         <div class="article-content">
-          At work today, I started investigating the latency differences for similar requests between HTTP and HTTPS. Historically, I was running with the assumption that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes are more CPU intensive. I didn&rsquo;t really think about the network consequences of SSL until today.
-It&rsquo;s all in the handshake.
-TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 1.
+          <p>At work today, I started investigating the latency differences for similar
+requests between HTTP and HTTPS. Historically, I was running with the assumption
+that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes
+are more CPU intensive. I didn&rsquo;t really think about the network consequences of
+SSL until today.</p>
+<p>It&rsquo;s all in the handshake.</p>
+<p><a href="http://www.google.com/search?q=tcp+handshake">TCP handshake</a> is a
+3-packet event. The client sends 2 packets, the server sends 1. Best case,
+you&rsquo;re looking at one round-trip for establishing your connection. We can show
+this empirically by comparing ping and tcp connect times:</p>
         </div>
         <div class="article-readmore"><a href="/blog/geekery/ssl-latency/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -101,7 +108,7 @@ TCP handshake is a 3-packet event. The client sends 2 packets, the server sends 
 
 
 <div class="site-footer">
-  <div class="copyright">&copy; Copyright 2006-2019 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
+  <div class="copyright">&copy; Copyright 2006-2022 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a></div>
   <ul class="site-footer-items">
     <li class="site-footer-item-rsslink">
       <a href="/tags/ssl/index.xml" type="application/rss+xml" target="_blank" title="RSS">

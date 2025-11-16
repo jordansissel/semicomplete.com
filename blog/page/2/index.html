@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://semicomplete.com/blog/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.108.0">
+  <meta name="generator" content="Hugo 0.142.0">
   <link href="/blog/index.xml" rel="alternate" type="application/rss+xml" title="semicomplete" />
   <link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="semicomplete" />
 
@@ -44,6 +44,66 @@
   </div>
   <div class="main" role="main">
     <section class="list section-list">
+      <article class="article">
+        <a href="/blog/geekery/ssl-latency/" class="article-titles">
+          <h2 class="article-title">SSL handshake latency and HTTPS optimizations.
+</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>4 June, 2010</time></li>
+          <li class="article-meta-categories">
+            <a href="/categories/old/">
+              <i class="fas fa-folder"></i>
+              old
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/ssl/">
+              <i class="fas fa-tag"></i>
+              ssl
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/latency/">
+              <i class="fas fa-tag"></i>
+              latency
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/web/">
+              <i class="fas fa-tag"></i>
+              web
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/performance/">
+              <i class="fas fa-tag"></i>
+              performance
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/latency/">
+              <i class="fas fa-tag"></i>
+              latency
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          <p>At work today, I started investigating the latency differences for similar
+requests between HTTP and HTTPS. Historically, I was running with the assumption
+that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes
+are more CPU intensive. I didn&rsquo;t really think about the network consequences of
+SSL until today.</p>
+<p>It&rsquo;s all in the handshake.</p>
+<p><a href="http://www.google.com/search?q=tcp+handshake">TCP handshake</a> is a
+3-packet event. The client sends 2 packets, the server sends 1. Best case,
+you&rsquo;re looking at one round-trip for establishing your connection. We can show
+this empirically by comparing ping and tcp connect times:</p>
+        </div>
+        <div class="article-readmore"><a href="/blog/geekery/ssl-latency/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
       <article class="article">
         <a href="/blog/geekery/headless-wrapper-for-ephemeral-xservers/" class="article-titles">
           <h2 class="article-title">Headless wrapper for ephemeral X servers
@@ -96,8 +156,14 @@
           </li>
         </ul>
         <div class="article-content">
-          For various projects I&rsquo;m doing right now, I need an easy way to automatically run code in an X server that may not necessarily be the active display. This code may even run on servers in production that don&rsquo;t have video cards or monitors attached.
-For some history on this, check out this post on xvfb and firefox. You can solve the problem in that post by simply launching firefox with the tool below, and your X server will exit when firefox exits.
+          <p>For various projects I&rsquo;m doing right now, I need an easy way to automatically
+run code in an X server that may not necessarily be the active display. This code
+may even run on servers in production that don&rsquo;t have video cards or monitors
+attached.</p>
+<p>For some history on this, check out <a
+href="/blog/geekery/xvfb-firefox.html">this post on xvfb and firefox</a>. You
+can solve the problem in that post by simply launching firefox with the tool
+below, and your X server will exit when firefox exits.</p>
         </div>
         <div class="article-readmore"><a href="/blog/geekery/headless-wrapper-for-ephemeral-xservers/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -142,9 +208,14 @@ For some history on this, check out this post on xvfb and firefox. You can solve
           </li>
         </ul>
         <div class="article-content">
-          Resig has a bunch of unit tests he does to make sure jQuery works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&rsquo;s automate this.
-Update (May 2010): See this post for more details on automating xserver startup without having to worry about display numbers (:1, :2, etc).
-Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&rsquo;ve got a simple way to run Firefox without a visible display.
+          <p><a href="http://www.ejohn.org">Resig</a> has a bunch of unit tests he does to make sure <a href="http://www.jquery.com">jQuery</a> works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&rsquo;s automate this.</p>
+<h2 id="update-may-2010">Update (May 2010):</h2>
+<p>See
+<a href="/blog/geekery/headless-wrapper-for-ephemeral-xservers.html">this
+post</a> for more details on automating xserver startup without having to worry
+about display numbers (:1, :2, etc).</p>
+<hr>
+<p>Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&rsquo;ve got a simple way to run Firefox without a visible display.</p>
         </div>
         <div class="article-readmore"><a href="/blog/geekery/xvfb-firefox/">Read more...</a></div>
         <div class="article-floatclear"></div>
