@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://semicomplete.com/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.142.0">
+  <meta name="generator" content="Hugo 0.156.0">
   <link href="/index.xml" rel="alternate" type="application/rss+xml" title="semicomplete" />
   <link href="/index.xml" rel="feed" type="application/rss+xml" title="semicomplete" />
 
@@ -41,6 +41,25 @@
 
   <div class="main" role="main">
     <section class="list home-list">
+      <article class="article">
+        <a href="/blog/qemu-debian-13-boot-loop/" class="article-titles">
+          <h2 class="article-title">Debian 13 boot loop on qemu</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>3 May, 2026</time></li>
+        </ul>
+        <div class="article-content">
+          <p>Everything was going nicely until Debian 13 was stuck in a boot loop. Qemu repeated the following, endlessly blinking in my terminal:</p>
+<pre tabindex="0"><code>Booting `Debian GNU/Linux&#39;
+
+Loading Linux 6.12.85+deb13-amd64 ...
+</code></pre><p>Why?</p>
+<p>I&rsquo;m developing a tool to help me build desktop VM images to help me debug weird issues specific to certain Linux distributions. For this project, I&rsquo;m starting with  each linux distro&rsquo;s cloud image and booting it in a virtual machine using qemu-kvm.</p>
+        </div>
+        <div class="article-readmore"><a href="/blog/qemu-debian-13-boot-loop/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
       <article class="article">
         <a href="/blog/xdotool-and-exploring-wayland-fragmentation/" class="article-titles">
           <h2 class="article-title">Exploring the Fragmentation of Wayland, an xdotool adventure</h2>
@@ -285,66 +304,6 @@ Money, time, energy, and patience are all costs. Just because something
 doesn&rsquo;t cost any money doesn&rsquo;t mean it won&rsquo;t consume any time or energy.</p>
         </div>
         <div class="article-readmore"><a href="/blog/growing-logstash-value/">Read more...</a></div>
-        <div class="article-floatclear"></div>
-      </article>
-      <article class="article">
-        <a href="/blog/geekery/puppet-nodeless-configuration/" class="article-titles">
-          <h2 class="article-title">Puppet &#34;pure fact-driven&#34; nodeless configuration
-</h2>
-          
-        </a>
-        <ul class="article-meta">
-          <li class="article-meta-date"><time>27 November, 2010</time></li>
-          <li class="article-meta-categories">
-            <a href="/categories/old/">
-              <i class="fas fa-folder"></i>
-              old
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/puppet/">
-              <i class="fas fa-tag"></i>
-              puppet
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/nodeless/">
-              <i class="fas fa-tag"></i>
-              nodeless
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/nodes/">
-              <i class="fas fa-tag"></i>
-              nodes
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/classifier/">
-              <i class="fas fa-tag"></i>
-              classifier
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="/tags/truth/">
-              <i class="fas fa-tag"></i>
-              truth
-            </a>&nbsp;
-          </li>
-        </ul>
-        <div class="article-content">
-          <p>Truth should guide your configuration management tools.</p>
-<p>Truth in this case is: what machines you have, properties of those machines,
-roles for those machines, etc. For example &ldquo;foo-1.a.example.com is a webserver&rdquo;
-is a piece of truth. Where and how you store truth is up to you and out of
-scope for this post.</p>
-<p>My goal is to have truth steer everything about my infrastructure. Roles, jobs,
-and even long-term one-offs get put into the truth source (like a machine role,
-etc). That way, if the machine with a one-off dies, I can just add that
-machine role to another system and puppet will configure it - no pain and no
-fire to fight.</p>
-        </div>
-        <div class="article-readmore"><a href="/blog/geekery/puppet-nodeless-configuration/">Read more...</a></div>
         <div class="article-floatclear"></div>
       </article>
     </section>

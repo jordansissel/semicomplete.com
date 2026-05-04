@@ -17,7 +17,7 @@ My desk has a keyboard and monitor, …">
   <meta property="og:url" content="https://semicomplete.com/blog/home-office-automation/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.142.0">
+  <meta name="generator" content="Hugo 0.156.0">
 
   <link rel="stylesheet" href="/css/style.css" media="all" />
   <link rel="stylesheet" href="/css/syntax.css" media="all" />
@@ -87,7 +87,7 @@ My desk has a keyboard and monitor, …">
 <p>I wasn&rsquo;t able to find any IPMI libraries for Arduino nor Mongoose OS. Further, I couldn&rsquo;t find any Denon AVR control libraries, either.</p>
 <h1 id="networking-with-denon-avr">Networking with Denon AVR</h1>
 <p>Wireshark showed me that the iPhone Denon app uses SSDP (HTTP over UDP) to discover a local Denon AVR. Fortunately, the Mongoose OS HTTP API just works over UDP multicast! I don&rsquo;t know if this is intended, but I am thankful it works :)</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>mgos_connect_http(<span style="color:#e6db74">&#34;udp://239.255.255.250:1900&#34;</span>, ssdpCallback, <span style="color:#66d9ef">this</span>);
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>mgos_connect_http(<span style="color:#e6db74">&#34;udp://239.255.255.250:1900&#34;</span>, ssdpCallback, <span style="color:#66d9ef">this</span>);
 </span></span></code></pre></div><p>Once discovered, we can use normal HTTP (over TCP) to talk to the Denon AVR. There&rsquo;s an HTTP endpoint that accepts the same commands as described in the Denon AVR control protocol:</p>
 <pre tabindex="0"><code>http://&lt;address&gt;:80/goform/formiPhoneAppDirect.xml?&lt;command&gt;
 </code></pre><p>I had 3 commands I wanted to run: power on (PWON), set input to my workstation (SIGAME), and set volume to 50 (MV50).</p>

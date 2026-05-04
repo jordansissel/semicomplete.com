@@ -7,8 +7,15 @@
     <generator>Hugo</generator>
     <language>en-us</language>
     <copyright>&amp;copy; Copyright 2006-2022 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Sat, 15 Nov 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 03 May 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://semicomplete.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Debian 13 boot loop on qemu</title>
+      <link>https://semicomplete.com/blog/qemu-debian-13-boot-loop/</link>
+      <pubDate>Sun, 03 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://semicomplete.com/blog/qemu-debian-13-boot-loop/</guid>
+      <description>&lt;p&gt;Everything was going nicely until Debian 13 was stuck in a boot loop. Qemu repeated the following, endlessly blinking in my terminal:&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Booting `Debian GNU/Linux&amp;#39;&#xA;&#xA;Loading Linux 6.12.85+deb13-amd64 ...&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Why?&lt;/p&gt;&#xA;&lt;p&gt;I&amp;rsquo;m developing a tool to help me build desktop VM images to help me debug weird issues specific to certain Linux distributions. For this project, I&amp;rsquo;m starting with  each linux distro&amp;rsquo;s cloud image and booting it in a virtual machine using qemu-kvm.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Exploring the Fragmentation of Wayland, an xdotool adventure</title>
       <link>https://semicomplete.com/blog/xdotool-and-exploring-wayland-fragmentation/</link>
