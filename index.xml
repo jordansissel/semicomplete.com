@@ -1,148 +1,169 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>semicomplete</title>
-    <link>https://semicomplete.com/</link>
-    <description>Recent content on semicomplete</description>
-    <generator>Hugo</generator>
-    <language>en-us</language>
-    <copyright>&amp;copy; Copyright 2006-2022 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Sun, 03 May 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://semicomplete.com/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Debian 13 boot loop on qemu</title>
-      <link>https://semicomplete.com/blog/qemu-debian-13-boot-loop/</link>
-      <pubDate>Sun, 03 May 2026 00:00:00 +0000</pubDate>
-      <guid>https://semicomplete.com/blog/qemu-debian-13-boot-loop/</guid>
-      <description>&lt;p&gt;Everything was going nicely until Debian 13 was stuck in a boot loop. Qemu repeated the following, endlessly blinking in my terminal:&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Booting `Debian GNU/Linux&amp;#39;&#xA;&#xA;Loading Linux 6.12.85+deb13-amd64 ...&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Why?&lt;/p&gt;&#xA;&lt;p&gt;I&amp;rsquo;m developing a tool to help me build desktop VM images to help me debug weird issues specific to certain Linux distributions. For this project, I&amp;rsquo;m starting with  each linux distro&amp;rsquo;s cloud image and booting it in a virtual machine using qemu-kvm.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Exploring the Fragmentation of Wayland, an xdotool adventure</title>
-      <link>https://semicomplete.com/blog/xdotool-and-exploring-wayland-fragmentation/</link>
-      <pubDate>Sat, 15 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>https://semicomplete.com/blog/xdotool-and-exploring-wayland-fragmentation/</guid>
-      <description>&lt;p&gt;In 2007, I was spending a my norther-hemisphere summer experimenting with UI automation. Born of those efforts, xdotool came into being when &lt;a href=&#34;https://github.com/jordansissel/xdotool/commit/ccae4e3b75551608dde6ba3b9e2aa0264f7a4ac5&#34;&gt;I separated it from another project&lt;/a&gt;. The goal was modest - write some scripts that execute common keyboard, mouse, and window management tasks.&lt;/p&gt;&#xA;&lt;p&gt;The first commit had only a few basic commands - basic mouse and keyboard actions, plus a few window management actions like movement, focus, and searching. Xdotool sprouted new features as time rolled on. Today, the project is 18 years old, and still going!&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>In which LastPass gifts us a Sisyphean task</title>
-      <link>https://semicomplete.com/blog/in-which-lastpass-gifts-us-a-sisyphean-task/</link>
-      <pubDate>Sat, 04 Feb 2023 00:00:00 +0000</pubDate>
-      <guid>https://semicomplete.com/blog/in-which-lastpass-gifts-us-a-sisyphean-task/</guid>
-      <description>&lt;p&gt;With recent news of LastPass having a &lt;a href=&#34;https://techcrunch.com/2022/12/22/lastpass-customer-password-vaults-stolen/&#34;&gt;significant security breach and also handling the public response poorly&lt;/a&gt;, there&amp;rsquo;s been &lt;a href=&#34;https://www.wired.com/story/lastpass-breach-vaults-password-managers/&#34;&gt;calls to ditch LastPass&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;From LastPass&amp;rsquo; &lt;a href=&#34;https://blog.lastpass.com/2022/12/notice-of-recent-security-incident/&#34;&gt;blog post&lt;/a&gt;:&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;The threat actor was also able to copy a backup of customer vault data from the encrypted storage container&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;This is encouragement to migrate. Bitwarden and 1Password seem like reasonable alternatives, at least for now, until fate comes for them as well.&lt;/p&gt;&#xA;&lt;p&gt;Because the LastPass breach creates a threat that customer password vaults were copied, it means that any migration isn&amp;rsquo;t complete without changing passwords.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Instead of `npm install -g`...</title>
-      <link>https://semicomplete.com/blog/instead-of-npm-install-global/</link>
-      <pubDate>Fri, 09 Dec 2022 00:00:00 +0000</pubDate>
-      <guid>https://semicomplete.com/blog/instead-of-npm-install-global/</guid>
-      <description>&lt;p&gt;We have some Sonos speakers at home, and I&amp;rsquo;d like my kids to be able to choose music when/where they like. The iOS Sonos app is somewhat labyrinthian, so I think, can I make a simple version of this? I figured a simple-ish web interface with buttons for their favorite albums and playlists. Could be fun?&lt;/p&gt;&#xA;&lt;p&gt;I&amp;rsquo;ve been doing light web development since the late 90s, and I love learning new stuff, so I&amp;rsquo;ll pick something newer to use. With my eager eyes set on a goal to make a silly web app, I began reading through the &lt;a href=&#34;https://ionicframework.com/docs/vue/your-first-app&#34;&gt;Ionic+Vue tutorial&lt;/a&gt;. Then I got very delayed by a small side quest. Hello! With ADHD, side quests are my entire life. :)&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>GitHub: Finding changes since last release</title>
-      <link>https://semicomplete.com/blog/geekery/finding-changes-since-last-release/</link>
-      <pubDate>Wed, 09 Nov 2022 21:00:00 -0700</pubDate>
-      <guid>https://semicomplete.com/blog/geekery/finding-changes-since-last-release/</guid>
-      <description>&lt;h1 id=&#34;time-for-release&#34;&gt;Time for release!&lt;/h1&gt;&#xA;&lt;p&gt;It&amp;rsquo;s an exciting time. Or, it should be. I want to do a release of fpm! However, there&amp;rsquo;s some preparation I need to do before I can publish.&lt;/p&gt;&#xA;&lt;p&gt;I need to make sure the changelog file is updated and accurate, and that means I need to know all of the changes made since the previous release. I don&amp;rsquo;t mean the code changes, though. I mean what behaviors were changed? Who contributed to the change? Is a given change related to one or more open issues?&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Moving from Flickr to SmugMug</title>
-      <link>https://semicomplete.com/blog/migrating-flickr-to-smugmug/</link>
-      <pubDate>Tue, 10 May 2022 22:55:00 -0700</pubDate>
-      <guid>https://semicomplete.com/blog/migrating-flickr-to-smugmug/</guid>
-      <description>&lt;p&gt;[ This post is a work in progress as I work towards solutions ]&lt;/p&gt;&#xA;&lt;p&gt;I received an email from Flickr on May 9.&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Subject: Your Flickr account is in violation of our free account limits.&lt;/p&gt;&#xA;&lt;p&gt;You have more than 50 non-public photos on your free account.&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;They gave me 8 days to resolve it &amp;ndash; with the threat of deleting photos.&#xA;It&amp;rsquo;s been a long time since I&amp;rsquo;ve used Flickr, but I don&amp;rsquo;t want to lose the content I had uploaded.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Genie GPS1200IC automation with ESP8266</title>
-      <link>https://semicomplete.com/blog/geekery/genie-gps1200ic-home-assistant/</link>
-      <pubDate>Mon, 03 May 2021 00:00:00 +0000</pubDate>
-      <guid>https://semicomplete.com/blog/geekery/genie-gps1200ic-home-assistant/</guid>
-      <description>&lt;p&gt;My garage has two doors. I&amp;rsquo;d like to be able to say &amp;ldquo;Open the garage door&amp;rdquo; to Siri.&lt;/p&gt;&#xA;&lt;p&gt;To get there, I&amp;rsquo;m going to try using Home Assistant and ESPHome.&#xA;First, though, I need to know how to tell the garage door to operate.&lt;/p&gt;&#xA;&lt;p&gt;Both door openers are Genie GPS1200IC. Based on some brief research, these appear to have been made between 1996-2000.&lt;/p&gt;&#xA;&lt;h2 id=&#34;hack-a-remote&#34;&gt;Hack a remote?&lt;/h2&gt;&#xA;&lt;p&gt;My first attempt was to buy a remote and hook a microcontroller to it.&#xA;I bought a Genie GITR-3 remote. This remote has 3 buttons.&#xA;The plan was to wire an ESP8266 to the buttons of this remote.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Home Office Automation</title>
-      <link>https://semicomplete.com/blog/home-office-automation/</link>
-      <pubDate>Sat, 14 Apr 2018 08:58:56 -0700</pubDate>
-      <guid>https://semicomplete.com/blog/home-office-automation/</guid>
-      <description>&lt;p&gt;I built a little digital Rube-Goldberg device for my office. When I turn my desk power switch on, a little microcontroller brings my workstation and stereo online.&lt;/p&gt;&#xA;&lt;p&gt;My desk has a keyboard and monitor, but no computer. The computer lives in the closet a few feet away. Also in this closet is my stereo which drives audio to for the office. This makes my desk cleaner and quieter, but makes it hard to hit the power buttons.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title> xdotool  -  fake keyboard/mouse input, window management, and more 
+	<channel>
+		<title>semicomplete</title>
+		<link>https://semicomplete.com/</link>
+		<description>Recent content on semicomplete</description>
+		<generator>Hugo</generator>
+		<language>en-us</language>
+		
+		
+		
+			<copyright>&amp;copy; Copyright 2006-2022 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
+		
+		
+			<lastBuildDate>Fri, 13 Nov 2026 15:00:00 -0800</lastBuildDate>
+		
+			<atom:link href="https://semicomplete.com/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>systemd journal forwarding</title>
+				<link>https://semicomplete.com/blog/systemd-forwarding/</link>
+				<pubDate>Fri, 13 Nov 2026 15:00:00 -0800</pubDate>
+				<guid>https://semicomplete.com/blog/systemd-forwarding/</guid>
+				<description>&lt;p&gt;I&amp;rsquo;ve been working on software to make it faster to do local system reimaging. In order to make it easier to troubleshoot problems, I wanted to have local logs forwarded to another system.&lt;/p&gt;&#xA;&lt;p&gt;As I am currently relying on cloud-init images, most of the system logs are already going to systemd&amp;rsquo;s journal, but how can I forward the journal to a remote system? Systemd already provides a tool, &lt;code&gt;systemd-journal-upload&lt;/code&gt;. However, Fedora pushes this program into a separate package and also does not include it in their Cloud images.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Debian 13 boot loop on qemu</title>
+				<link>https://semicomplete.com/blog/qemu-debian-13-boot-loop/</link>
+				<pubDate>Sun, 03 May 2026 00:00:00 +0000</pubDate>
+				<guid>https://semicomplete.com/blog/qemu-debian-13-boot-loop/</guid>
+				<description>&lt;p&gt;Everything was going nicely until Debian 13 was stuck in a boot loop. Qemu repeated the following, endlessly blinking in my terminal:&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Booting `Debian GNU/Linux&amp;#39;&#xA;&#xA;Loading Linux 6.12.85+deb13-amd64 ...&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Why?&lt;/p&gt;&#xA;&lt;p&gt;I&amp;rsquo;m developing a tool to help me build desktop VM images to help me debug weird issues specific to certain Linux distributions. For this project, I&amp;rsquo;m starting with  each linux distro&amp;rsquo;s cloud image and booting it in a virtual machine using qemu-kvm.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Exploring the Fragmentation of Wayland, an xdotool adventure</title>
+				<link>https://semicomplete.com/blog/xdotool-and-exploring-wayland-fragmentation/</link>
+				<pubDate>Sat, 15 Nov 2025 00:00:00 +0000</pubDate>
+				<guid>https://semicomplete.com/blog/xdotool-and-exploring-wayland-fragmentation/</guid>
+				<description>&lt;p&gt;In 2007, I was spending a my norther-hemisphere summer experimenting with UI automation. Born of those efforts, xdotool came into being when &lt;a href=&#34;https://github.com/jordansissel/xdotool/commit/ccae4e3b75551608dde6ba3b9e2aa0264f7a4ac5&#34;&gt;I separated it from another project&lt;/a&gt;. The goal was modest - write some scripts that execute common keyboard, mouse, and window management tasks.&lt;/p&gt;&#xA;&lt;p&gt;The first commit had only a few basic commands - basic mouse and keyboard actions, plus a few window management actions like movement, focus, and searching. Xdotool sprouted new features as time rolled on. Today, the project is 18 years old, and still going!&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>In which LastPass gifts us a Sisyphean task</title>
+				<link>https://semicomplete.com/blog/in-which-lastpass-gifts-us-a-sisyphean-task/</link>
+				<pubDate>Sat, 04 Feb 2023 00:00:00 +0000</pubDate>
+				<guid>https://semicomplete.com/blog/in-which-lastpass-gifts-us-a-sisyphean-task/</guid>
+				<description>&lt;p&gt;With recent news of LastPass having a &lt;a href=&#34;https://techcrunch.com/2022/12/22/lastpass-customer-password-vaults-stolen/&#34;&gt;significant security breach and also handling the public response poorly&lt;/a&gt;, there&amp;rsquo;s been &lt;a href=&#34;https://www.wired.com/story/lastpass-breach-vaults-password-managers/&#34;&gt;calls to ditch LastPass&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;From LastPass&amp;rsquo; &lt;a href=&#34;https://blog.lastpass.com/2022/12/notice-of-recent-security-incident/&#34;&gt;blog post&lt;/a&gt;:&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;The threat actor was also able to copy a backup of customer vault data from the encrypted storage container&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;This is encouragement to migrate. Bitwarden and 1Password seem like reasonable alternatives, at least for now, until fate comes for them as well.&lt;/p&gt;&#xA;&lt;p&gt;Because the LastPass breach creates a threat that customer password vaults were copied, it means that any migration isn&amp;rsquo;t complete without changing passwords.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Instead of `npm install -g`...</title>
+				<link>https://semicomplete.com/blog/instead-of-npm-install-global/</link>
+				<pubDate>Fri, 09 Dec 2022 00:00:00 +0000</pubDate>
+				<guid>https://semicomplete.com/blog/instead-of-npm-install-global/</guid>
+				<description>&lt;p&gt;We have some Sonos speakers at home, and I&amp;rsquo;d like my kids to be able to choose music when/where they like. The iOS Sonos app is somewhat labyrinthian, so I think, can I make a simple version of this? I figured a simple-ish web interface with buttons for their favorite albums and playlists. Could be fun?&lt;/p&gt;&#xA;&lt;p&gt;I&amp;rsquo;ve been doing light web development since the late 90s, and I love learning new stuff, so I&amp;rsquo;ll pick something newer to use. With my eager eyes set on a goal to make a silly web app, I began reading through the &lt;a href=&#34;https://ionicframework.com/docs/vue/your-first-app&#34;&gt;Ionic+Vue tutorial&lt;/a&gt;. Then I got very delayed by a small side quest. Hello! With ADHD, side quests are my entire life. :)&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>GitHub: Finding changes since last release</title>
+				<link>https://semicomplete.com/blog/geekery/finding-changes-since-last-release/</link>
+				<pubDate>Wed, 09 Nov 2022 21:00:00 -0700</pubDate>
+				<guid>https://semicomplete.com/blog/geekery/finding-changes-since-last-release/</guid>
+				<description>&lt;h1 id=&#34;time-for-release&#34;&gt;Time for release!&lt;/h1&gt;&#xA;&lt;p&gt;It&amp;rsquo;s an exciting time. Or, it should be. I want to do a release of fpm! However, there&amp;rsquo;s some preparation I need to do before I can publish.&lt;/p&gt;&#xA;&lt;p&gt;I need to make sure the changelog file is updated and accurate, and that means I need to know all of the changes made since the previous release. I don&amp;rsquo;t mean the code changes, though. I mean what behaviors were changed? Who contributed to the change? Is a given change related to one or more open issues?&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Moving from Flickr to SmugMug</title>
+				<link>https://semicomplete.com/blog/migrating-flickr-to-smugmug/</link>
+				<pubDate>Tue, 10 May 2022 22:55:00 -0700</pubDate>
+				<guid>https://semicomplete.com/blog/migrating-flickr-to-smugmug/</guid>
+				<description>&lt;p&gt;[ This post is a work in progress as I work towards solutions ]&lt;/p&gt;&#xA;&lt;p&gt;I received an email from Flickr on May 9.&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Subject: Your Flickr account is in violation of our free account limits.&lt;/p&gt;&#xA;&lt;p&gt;You have more than 50 non-public photos on your free account.&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;They gave me 8 days to resolve it &amp;ndash; with the threat of deleting photos.&#xA;It&amp;rsquo;s been a long time since I&amp;rsquo;ve used Flickr, but I don&amp;rsquo;t want to lose the content I had uploaded.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Genie GPS1200IC automation with ESP8266</title>
+				<link>https://semicomplete.com/blog/geekery/genie-gps1200ic-home-assistant/</link>
+				<pubDate>Mon, 03 May 2021 00:00:00 +0000</pubDate>
+				<guid>https://semicomplete.com/blog/geekery/genie-gps1200ic-home-assistant/</guid>
+				<description>&lt;p&gt;My garage has two doors. I&amp;rsquo;d like to be able to say &amp;ldquo;Open the garage door&amp;rdquo; to Siri.&lt;/p&gt;&#xA;&lt;p&gt;To get there, I&amp;rsquo;m going to try using Home Assistant and ESPHome.&#xA;First, though, I need to know how to tell the garage door to operate.&lt;/p&gt;&#xA;&lt;p&gt;Both door openers are Genie GPS1200IC. Based on some brief research, these appear to have been made between 1996-2000.&lt;/p&gt;&#xA;&lt;h2 id=&#34;hack-a-remote&#34;&gt;Hack a remote?&lt;/h2&gt;&#xA;&lt;p&gt;My first attempt was to buy a remote and hook a microcontroller to it.&#xA;I bought a Genie GITR-3 remote. This remote has 3 buttons.&#xA;The plan was to wire an ESP8266 to the buttons of this remote.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Home Office Automation</title>
+				<link>https://semicomplete.com/blog/home-office-automation/</link>
+				<pubDate>Sat, 14 Apr 2018 08:58:56 -0700</pubDate>
+				<guid>https://semicomplete.com/blog/home-office-automation/</guid>
+				<description>&lt;p&gt;I built a little digital Rube-Goldberg device for my office. When I turn my desk power switch on, a little microcontroller brings my workstation and stereo online.&lt;/p&gt;&#xA;&lt;p&gt;My desk has a keyboard and monitor, but no computer. The computer lives in the closet a few feet away. Also in this closet is my stereo which drives audio to for the office. This makes my desk cleaner and quieter, but makes it hard to hit the power buttons.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title> xdotool  -  fake keyboard/mouse input, window management, and more 
 </title>
-      <link>https://semicomplete.com/projects/xdotool/</link>
-      <pubDate>Fri, 24 Apr 2015 21:46:35 -0700</pubDate>
-      <guid>https://semicomplete.com/projects/xdotool/</guid>
-      <description>&lt;h1 id=&#34;what-is-xdotool&#34;&gt;What is xdotool?&lt;/h1&gt;&#xA;&lt;p&gt;This tool lets you simulate keyboard input and mouse activity, move and&#xA;resize windows, etc. It does this using X11&amp;rsquo;s XTEST extension and other&#xA;Xlib functions.&lt;/p&gt;&#xA;&lt;p&gt;Additionally, you can search for windows and move, resize, hide, and modify&#xA;window properties like the title. If your window manager supports it, you&#xA;can use xdotool to switch desktops, move windows between desktops, and&#xA;change the number of&#xA;desktops.&lt;/p&gt;&#xA;&lt;h1 id=&#34;mailing-list&#34;&gt;Mailing List&lt;/h1&gt;&#xA;&lt;p&gt;The xdotool users mailing list is: &lt;a href=&#34;mailto:xdotool-users@googlegroups.com&#34;&gt;&lt;a href=&#34;mailto:xdotool-users@googlegroups.com&#34;&gt;xdotool-users@googlegroups.com&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Growing logstash&#39;s value</title>
-      <link>https://semicomplete.com/blog/growing-logstash-value/</link>
-      <pubDate>Sun, 29 Jul 2012 23:00:08 -0700</pubDate>
-      <guid>https://semicomplete.com/blog/growing-logstash-value/</guid>
-      <description>&lt;p&gt;I spent a while today thinking about nerdy stuff - logstash, etc. I want to&#xA;grow logstash in terms of performance, use case, deployment instances, happy&#xA;users, and community.&lt;/p&gt;&#xA;&lt;p&gt;While musing about on my mental roadmap of logstash, I found most things boil&#xA;down to costs and returns on investment, even with open source software.&#xA;Money, time, energy, and patience are all costs. Just because something&#xA;doesn&amp;rsquo;t cost any money doesn&amp;rsquo;t mean it won&amp;rsquo;t consume any time or energy.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Puppet &#34;pure fact-driven&#34; nodeless configuration
+				<link>https://semicomplete.com/projects/xdotool/</link>
+				<pubDate>Fri, 24 Apr 2015 21:46:35 -0700</pubDate>
+				<guid>https://semicomplete.com/projects/xdotool/</guid>
+				<description>&lt;h1 id=&#34;what-is-xdotool&#34;&gt;What is xdotool?&lt;/h1&gt;&#xA;&lt;p&gt;This tool lets you simulate keyboard input and mouse activity, move and&#xA;resize windows, etc. It does this using X11&amp;rsquo;s XTEST extension and other&#xA;Xlib functions.&lt;/p&gt;&#xA;&lt;p&gt;Additionally, you can search for windows and move, resize, hide, and modify&#xA;window properties like the title. If your window manager supports it, you&#xA;can use xdotool to switch desktops, move windows between desktops, and&#xA;change the number of&#xA;desktops.&lt;/p&gt;&#xA;&lt;h1 id=&#34;mailing-list&#34;&gt;Mailing List&lt;/h1&gt;&#xA;&lt;p&gt;The xdotool users mailing list is: &lt;a href=&#34;mailto:xdotool-users@googlegroups.com&#34;&gt;&lt;a href=&#34;mailto:xdotool-users@googlegroups.com&#34;&gt;xdotool-users@googlegroups.com&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Growing logstash&#39;s value</title>
+				<link>https://semicomplete.com/blog/growing-logstash-value/</link>
+				<pubDate>Sun, 29 Jul 2012 23:00:08 -0700</pubDate>
+				<guid>https://semicomplete.com/blog/growing-logstash-value/</guid>
+				<description>&lt;p&gt;I spent a while today thinking about nerdy stuff - logstash, etc. I want to&#xA;grow logstash in terms of performance, use case, deployment instances, happy&#xA;users, and community.&lt;/p&gt;&#xA;&lt;p&gt;While musing about on my mental roadmap of logstash, I found most things boil&#xA;down to costs and returns on investment, even with open source software.&#xA;Money, time, energy, and patience are all costs. Just because something&#xA;doesn&amp;rsquo;t cost any money doesn&amp;rsquo;t mean it won&amp;rsquo;t consume any time or energy.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Puppet &#34;pure fact-driven&#34; nodeless configuration
 </title>
-      <link>https://semicomplete.com/blog/geekery/puppet-nodeless-configuration/</link>
-      <pubDate>Sat, 27 Nov 2010 01:14:37 -0800</pubDate>
-      <guid>https://semicomplete.com/blog/geekery/puppet-nodeless-configuration/</guid>
-      <description>&lt;p&gt;Truth should guide your configuration management tools.&lt;/p&gt;&#xA;&lt;p&gt;Truth in this case is: what machines you have, properties of those machines,&#xA;roles for those machines, etc. For example &amp;ldquo;foo-1.a.example.com is a webserver&amp;rdquo;&#xA;is a piece of truth. Where and how you store truth is up to you and out of&#xA;scope for this post.&lt;/p&gt;&#xA;&lt;p&gt;My goal is to have truth steer everything about my infrastructure. Roles, jobs,&#xA;and even long-term one-offs get put into the truth source (like a machine role,&#xA;etc). That way, if the machine with a one-off dies, I can just add that&#xA;machine role to another system and puppet will configure it - no pain and no&#xA;fire to fight.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title> keynav  -  retire your mouse. 
+				<link>https://semicomplete.com/blog/geekery/puppet-nodeless-configuration/</link>
+				<pubDate>Sat, 27 Nov 2010 01:14:37 -0800</pubDate>
+				<guid>https://semicomplete.com/blog/geekery/puppet-nodeless-configuration/</guid>
+				<description>&lt;p&gt;Truth should guide your configuration management tools.&lt;/p&gt;&#xA;&lt;p&gt;Truth in this case is: what machines you have, properties of those machines,&#xA;roles for those machines, etc. For example &amp;ldquo;foo-1.a.example.com is a webserver&amp;rdquo;&#xA;is a piece of truth. Where and how you store truth is up to you and out of&#xA;scope for this post.&lt;/p&gt;&#xA;&lt;p&gt;My goal is to have truth steer everything about my infrastructure. Roles, jobs,&#xA;and even long-term one-offs get put into the truth source (like a machine role,&#xA;etc). That way, if the machine with a one-off dies, I can just add that&#xA;machine role to another system and puppet will configure it - no pain and no&#xA;fire to fight.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title> keynav  -  retire your mouse. 
 </title>
-      <link>https://semicomplete.com/projects/keynav/</link>
-      <pubDate>Thu, 14 Oct 2010 23:49:21 -0700</pubDate>
-      <guid>https://semicomplete.com/projects/keynav/</guid>
-      <description>&lt;p&gt;Keynav is a piece of an on-going experiment to&#xA;make pointer-driven interfaces easier and faster for users to operate. It&#xA;lets you move the pointer quickly to most points on the screen with only a&#xA;few key strokes.&lt;/p&gt;&#xA;&lt;p&gt;Note that I said pointer, not mouse. The mouse simply drives the pointer.&#xA;We can drive the pointer with other devices too. keynav turns your keyboard&#xA;into an fast pointer mover.&lt;/p&gt;&#xA;&lt;h1 id=&#34;what-does-it-do&#34;&gt;What does it do?&lt;/h1&gt;&#xA;&lt;p&gt;You select a piece of the screen. The screen is initially wholely selected.&#xA;One move will cut that region by half. A move is a direction: up, down,&#xA;left, and right.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Debugging java threads with top(1) and jstack.
+				<link>https://semicomplete.com/projects/keynav/</link>
+				<pubDate>Thu, 14 Oct 2010 23:49:21 -0700</pubDate>
+				<guid>https://semicomplete.com/projects/keynav/</guid>
+				<description>&lt;p&gt;Keynav is a piece of an on-going experiment to&#xA;make pointer-driven interfaces easier and faster for users to operate. It&#xA;lets you move the pointer quickly to most points on the screen with only a&#xA;few key strokes.&lt;/p&gt;&#xA;&lt;p&gt;Note that I said pointer, not mouse. The mouse simply drives the pointer.&#xA;We can drive the pointer with other devices too. keynav turns your keyboard&#xA;into an fast pointer mover.&lt;/p&gt;&#xA;&lt;h1 id=&#34;what-does-it-do&#34;&gt;What does it do?&lt;/h1&gt;&#xA;&lt;p&gt;You select a piece of the screen. The screen is initially wholely selected.&#xA;One move will cut that region by half. A move is a direction: up, down,&#xA;left, and right.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Debugging java threads with top(1) and jstack.
 </title>
-      <link>https://semicomplete.com/blog/geekery/debugging-java-performance/</link>
-      <pubDate>Mon, 21 Jun 2010 19:24:23 -0700</pubDate>
-      <guid>https://semicomplete.com/blog/geekery/debugging-java-performance/</guid>
-      <description>&lt;p&gt;At work, we&amp;rsquo;re testing some new real-time bidding on ADX and are working&#xA;through some performance issues.&lt;/p&gt;&#xA;&lt;p&gt;Our server is jetty + our code, and we&amp;rsquo;re seeing performance problems at&#xA;relatively low QPS.&lt;/p&gt;&#xA;&lt;p&gt;The first profiling attempt used &lt;a href=&#34;http://www.yourkit.com/index.jsp&#34;&gt;YJP&lt;/a&gt;, but when it was attached to&#xA;our server, the system load went up quickly and looked like this:&lt;/p&gt;&#xA;&lt;p&gt;&lt;code&gt;load average: 2671.04, 1653.95, 771.93&lt;/code&gt;&lt;/p&gt;&#xA;&lt;p&gt;Not good; the load average while running with the profiler attached jumps to a&#xA;number roughly equal to the number of application threads (3000 jetty threads).&#xA;Possible PEBCAK here, but needless to say we couldn&amp;rsquo;t use YJP for any&#xA;meaningful profiling.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>SSL handshake latency and HTTPS optimizations.
+				<link>https://semicomplete.com/blog/geekery/debugging-java-performance/</link>
+				<pubDate>Mon, 21 Jun 2010 19:24:23 -0700</pubDate>
+				<guid>https://semicomplete.com/blog/geekery/debugging-java-performance/</guid>
+				<description>&lt;p&gt;At work, we&amp;rsquo;re testing some new real-time bidding on ADX and are working&#xA;through some performance issues.&lt;/p&gt;&#xA;&lt;p&gt;Our server is jetty + our code, and we&amp;rsquo;re seeing performance problems at&#xA;relatively low QPS.&lt;/p&gt;&#xA;&lt;p&gt;The first profiling attempt used &lt;a href=&#34;http://www.yourkit.com/index.jsp&#34;&gt;YJP&lt;/a&gt;, but when it was attached to&#xA;our server, the system load went up quickly and looked like this:&lt;/p&gt;&#xA;&lt;p&gt;&lt;code&gt;load average: 2671.04, 1653.95, 771.93&lt;/code&gt;&lt;/p&gt;&#xA;&lt;p&gt;Not good; the load average while running with the profiler attached jumps to a&#xA;number roughly equal to the number of application threads (3000 jetty threads).&#xA;Possible PEBCAK here, but needless to say we couldn&amp;rsquo;t use YJP for any&#xA;meaningful profiling.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>SSL handshake latency and HTTPS optimizations.
 </title>
-      <link>https://semicomplete.com/blog/geekery/ssl-latency/</link>
-      <pubDate>Fri, 04 Jun 2010 02:33:15 -0700</pubDate>
-      <guid>https://semicomplete.com/blog/geekery/ssl-latency/</guid>
-      <description>&lt;p&gt;At work today, I started investigating the latency differences for similar&#xA;requests between HTTP and HTTPS. Historically, I was running with the assumption&#xA;that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes&#xA;are more CPU intensive. I didn&amp;rsquo;t really think about the network consequences of&#xA;SSL until today.&lt;/p&gt;&#xA;&lt;p&gt;It&amp;rsquo;s all in the handshake.&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;http://www.google.com/search?q=tcp+handshake&#34;&gt;TCP handshake&lt;/a&gt; is a&#xA;3-packet event. The client sends 2 packets, the server sends 1. Best case,&#xA;you&amp;rsquo;re looking at one round-trip for establishing your connection. We can show&#xA;this empirically by comparing ping and tcp connect times:&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title> fex  -  flexible token-field extraction 
+				<link>https://semicomplete.com/blog/geekery/ssl-latency/</link>
+				<pubDate>Fri, 04 Jun 2010 02:33:15 -0700</pubDate>
+				<guid>https://semicomplete.com/blog/geekery/ssl-latency/</guid>
+				<description>&lt;p&gt;At work today, I started investigating the latency differences for similar&#xA;requests between HTTP and HTTPS. Historically, I was running with the assumption&#xA;that higher latency on HTTPS (SSL) traffic was to be expected since SSL handshakes&#xA;are more CPU intensive. I didn&amp;rsquo;t really think about the network consequences of&#xA;SSL until today.&lt;/p&gt;&#xA;&lt;p&gt;It&amp;rsquo;s all in the handshake.&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;http://www.google.com/search?q=tcp+handshake&#34;&gt;TCP handshake&lt;/a&gt; is a&#xA;3-packet event. The client sends 2 packets, the server sends 1. Best case,&#xA;you&amp;rsquo;re looking at one round-trip for establishing your connection. We can show&#xA;this empirically by comparing ping and tcp connect times:&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title> fex  -  flexible token-field extraction 
 </title>
-      <link>https://semicomplete.com/projects/fex/</link>
-      <pubDate>Wed, 19 May 2010 00:13:15 -0700</pubDate>
-      <guid>https://semicomplete.com/projects/fex/</guid>
-      <description>&lt;h1 id=&#34;what-is-fex&#34;&gt;What is fex?&lt;/h1&gt;&#xA;&lt;p&gt;Fex is a powerful field extraction tool. Fex provides a very concise&#xA;language for tokenizeing strings and extracting fields.&lt;/p&gt;&#xA;&lt;p&gt;The basic usage model is that you provide a series of delimiter and field&#xA;selection pairs. Tokens can be any character, while field selections have a&#xA;specific syntax.&lt;/p&gt;&#xA;&lt;h1 id=&#34;download&#34;&gt;Download&lt;/h1&gt;&#xA;&lt;p&gt;Releases are available on &lt;a href=&#34;https://github.com/jordansissel/fex/releases&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;h1 id=&#34;sometimes-simpler-than-cut-and-awk&#34;&gt;Sometimes simpler than cut and awk&lt;/h1&gt;&#xA;&lt;p&gt;cut(1) from GNU coreutils (on Linux) does not support negative offsets, so&#xA;you cannot ask cut to only show you the Nth field from the end.&#xA;Additionally, to cut by multiple fields, you end up having to write&#xA;&lt;code&gt;cut ... | cut ... | cut  ...&lt;/code&gt;&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Headless wrapper for ephemeral X servers
+				<link>https://semicomplete.com/projects/fex/</link>
+				<pubDate>Wed, 19 May 2010 00:13:15 -0700</pubDate>
+				<guid>https://semicomplete.com/projects/fex/</guid>
+				<description>&lt;h1 id=&#34;what-is-fex&#34;&gt;What is fex?&lt;/h1&gt;&#xA;&lt;p&gt;Fex is a powerful field extraction tool. Fex provides a very concise&#xA;language for tokenizeing strings and extracting fields.&lt;/p&gt;&#xA;&lt;p&gt;The basic usage model is that you provide a series of delimiter and field&#xA;selection pairs. Tokens can be any character, while field selections have a&#xA;specific syntax.&lt;/p&gt;&#xA;&lt;h1 id=&#34;download&#34;&gt;Download&lt;/h1&gt;&#xA;&lt;p&gt;Releases are available on &lt;a href=&#34;https://github.com/jordansissel/fex/releases&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;h1 id=&#34;sometimes-simpler-than-cut-and-awk&#34;&gt;Sometimes simpler than cut and awk&lt;/h1&gt;&#xA;&lt;p&gt;cut(1) from GNU coreutils (on Linux) does not support negative offsets, so&#xA;you cannot ask cut to only show you the Nth field from the end.&#xA;Additionally, to cut by multiple fields, you end up having to write&#xA;&lt;code&gt;cut ... | cut ... | cut  ...&lt;/code&gt;&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Headless wrapper for ephemeral X servers
 </title>
-      <link>https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers/</link>
-      <pubDate>Tue, 11 May 2010 01:59:47 -0700</pubDate>
-      <guid>https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers/</guid>
-      <description>&lt;p&gt;For various projects I&amp;rsquo;m doing right now, I need an easy way to automatically&#xA;run code in an X server that may not necessarily be the active display. This code&#xA;may even run on servers in production that don&amp;rsquo;t have video cards or monitors&#xA;attached.&lt;/p&gt;&#xA;&lt;p&gt;For some history on this, check out &lt;a&#xA;href=&#34;https://semicomplete.com/blog/geekery/xvfb-firefox.html&#34;&gt;this post on xvfb and firefox&lt;/a&gt;. You&#xA;can solve the problem in that post by simply launching firefox with the tool&#xA;below, and your X server will exit when firefox exits.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Dynamic DNS and DHCP - Easy to do, and you&#39;ll thank yourself later
+				<link>https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers/</link>
+				<pubDate>Tue, 11 May 2010 01:59:47 -0700</pubDate>
+				<guid>https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers/</guid>
+				<description>&lt;p&gt;For various projects I&amp;rsquo;m doing right now, I need an easy way to automatically&#xA;run code in an X server that may not necessarily be the active display. This code&#xA;may even run on servers in production that don&amp;rsquo;t have video cards or monitors&#xA;attached.&lt;/p&gt;&#xA;&lt;p&gt;For some history on this, check out &lt;a&#xA;href=&#34;https://semicomplete.com/blog/geekery/xvfb-firefox.html&#34;&gt;this post on xvfb and firefox&lt;/a&gt;. You&#xA;can solve the problem in that post by simply launching firefox with the tool&#xA;below, and your X server will exit when firefox exits.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>newpsm framework - A new mouse driver framework for FreeBSD 7.x
 </title>
-      <link>https://semicomplete.com/articles/dynamic-dns-with-dhcp/</link>
-      <pubDate>Mon, 17 Apr 2006 02:42:39 -0700</pubDate>
-      <guid>https://semicomplete.com/articles/dynamic-dns-with-dhcp/</guid>
-      <description>&lt;h1 id=&#34;preface&#34;&gt;Preface&lt;/h1&gt;&#xA;&lt;p&gt;This article will cover how to setup dns with dynamic updates aswell as&#xA;configuring your dhcp server to push updates to it aswell.&lt;/p&gt;&#xA;&lt;p&gt;I assume you already know how to setup plain old dns aswell as plain old&#xA;dhcp. This is not an introduction to either of those. I used BIND 9 and&#xA;ISC DHCPD v3 for this article.&lt;/p&gt;&#xA;&lt;p&gt;If there&amp;rsquo;s anything this article doesn&amp;rsquo;t cover with respect to what you&#xA;are looking for, leave a comment and I&amp;rsquo;ll do what I can.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Xvfb &#43; Firefox
+				<link>https://semicomplete.com/projects/newpsm/</link>
+				<pubDate>Sun, 31 Dec 2006 21:35:41 -0800</pubDate>
+				<guid>https://semicomplete.com/projects/newpsm/</guid>
+				<description>Download this patch: &lt;a href=&#34;http://www.semicomplete.com/projects/newpsm/patch-CURRENT-Apr.13.06.newmoused+newpsm&#34;&gt;patch-CURRENT-Apr.13.06.newpsm+newpsm&lt;/a&gt;&lt;p&gt;&lt;/p&gt;&#xA;&#x9;&#x9;&#x9;Apply the patch (You need /usr/src checked out already):&#xA;&#x9;&#x9;&#x9;&lt;pre&gt;patch -p0 &amp;lt; patch-CURRENT-Apr.13.06.newmoused+newpsm&lt;/pre&gt;&#xA;&#xA;&#x9;&#x9;&#x9;Rebuild world with &#39;-DNEWMOUSE&#39; and recompile your kernel with &#39;device&#xA;&#x9;&#x9;&#x9;newpsm&#39; and &lt;b&gt;NOT&lt;/b&gt; &#39;device psm&#39;&#xA;&#xA;&#x9;&#x9;&#x9;&lt;pre&gt;make buildworld -DNEWMOUSE&lt;/pre&gt;&#xA;&lt;pre&gt;make installworld -DNEWMOUSE&lt;/pre&gt;&#xA;&#xA;&#x9;&#x9;&#x9;Reboot, and you should be good to go. If you have a ps/2 mouse plugged in, you should see:&#xA;&#xA;&#x9;&#x9;&#x9;&lt;pre&gt;psm0: &amp;lt;(new) PS/2 Mouse&amp;gt; irq 12 on atkbdc0&lt;/pre&gt;&#xA;&#xA;&#x9;&#x9;&#x9;The keyword there is &lt;b&gt;(new)&lt;/b&gt;.&#xA;&#xA;&#x9;&#x9;&#x9;&lt;p&gt;&lt;/p&gt;&#xA;&#xA;&#x9;&#x9;&#x9;Assuming everything is OK, you can now try the newmoused. The default&#xA;&#x9;&#x9;&#x9;device is /dev/psm0. The default driver option is to try all modules&#xA;&#x9;&#x9;&#x9;and pick the first one that succeeds.&#xA;&#xA;&#x9;&#x9;&#x9;&lt;dl&gt;&#xA;&lt;dt&gt;For non-synaptics ps/2 mice: &lt;/dt&gt;&#xA;&lt;dd&gt;Run: &#34;moused&#34;&lt;br&gt; The default mouse device is /dev/psm0&lt;/dd&gt;&#xA;&lt;dt&gt;For synaptics ps/2 mice: &lt;/dt&gt;&#xA;&lt;dd&gt;Run: &#34;moused -m synaptics&#34; &lt;br&gt; This will force moused to try the synaptics module&lt;/dd&gt;&#xA;&lt;dt&gt;For USB mice: &lt;/dt&gt;&#xA;&lt;dd&gt;Run: &#34;moused -d /dev/ums0&#34;&lt;/dd&gt;&#xA;&lt;dt&gt;For mse(4) mice: &lt;/dt&gt;&#xA;&lt;dd&gt;Run: &#34;moused -d /dev/mse0&#34;&lt;/dd&gt;&#xA;&lt;/dl&gt;&#xA;&lt;h4&gt;&lt;a name=&#34;id2244955&#34;&gt;Usage&lt;/a&gt;&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt; -f : run in foreground &lt;/li&gt;&#xA;&lt;li&gt; -3 :  Emulate 3 button &lt;/li&gt;&#xA;&lt;li&gt; -E XXX : emulate 3 button timeout &lt;/li&gt;&#xA;&lt;li&gt; -V :  Virtual scrolling &lt;/li&gt;&#xA;&lt;li&gt; -U XXX : virtual scrolling threshold &lt;/li&gt;&#xA;&lt;li&gt; -a X[,Y] : acceleration with x and y (optional) multiplier &lt;/li&gt;&#xA;&lt;li&gt; -d dev : specify mouse device &lt;/li&gt;&#xA;&lt;li&gt; -m module : specify module name &lt;/li&gt;&#xA;&lt;li&gt; -v : increase verbosity (default 0, -ddd means 3) &lt;/li&gt;&#xA;&lt;li&gt; -h : usage &lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h4&gt;&lt;a name=&#34;id2245001&#34;&gt;Configuration File&lt;/a&gt;&lt;/h4&gt;&#xA;&#x9;&#x9;&#x9;&#x9;You can now configure mice via a config file. Format is the same as&#xA;&#x9;&#x9;&#x9;&#x9;a termcap file.  Read &lt;a href=&#34;http://www.semicomplete.com/projects/newpsm/framework.html&#34;&gt;&#xA;&#x9;&#x9;&#x9;&#x9;this page &lt;/a&gt; for specific information about the configuration&#xA;&#x9;&#x9;&#x9;&#x9;file. The config file location is &#34;/etc/moused.conf&#34;&#xA;&#x9;&#x9;&#x9;&lt;h4&gt;&lt;a name=&#34;id2245016&#34;&gt;Progress&lt;/a&gt;&lt;/h4&gt;&#xA;&#x9;&#x9;&#x9;You can check on what I&#39;ve done through p4web:&#xA;&#x9;&#x9;&#x9;&lt;a href=&#34;http://perforce.freebsd.org/depotTreeBrowser.cgi?FSPC=//depot/user/jls/newmoused&amp;amp;HIDEDEL=NO&#34;&gt;&#xA;&#x9;&#x9;&#x9;View my p4 depot on perforce.freebsd.org&#xA;&#x9;&#x9;&#x9;&lt;/a&gt;&lt;ul&gt;&#xA;&lt;li&gt;newpsm driver stubbed out and written. (may be scrapped)&lt;/li&gt;&#xA;&lt;li&gt;&lt;strike&gt;the old psm driver needs to be split. It has a part called psmcpnp that needs to become it&#39;s own separate driver.&lt;/strike&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;strike&gt; Add per-driver configuration &lt;/strike&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h4&gt;&lt;a name=&#34;id2245115&#34;&gt;Roadmap&lt;/a&gt;&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt; new moused module-happy framework &lt;/li&gt;&#xA;&lt;li&gt; strip psm(4) of protocol knowledge &lt;/li&gt;&#xA;&lt;li&gt; 3 basic drivers: synaptics, geneirc ps/2, and sysmouse &lt;/li&gt;&#xA;&lt;li&gt; Have progress committed to -CURRENT and co-exist with existing moused and psm &lt;/li&gt;&#xA;&lt;li&gt; Profit &lt;/li&gt;&#xA;&lt;li&gt; Kill existing moused and psm &lt;/li&gt;&#xA;&lt;li&gt; Kill ums in favor of uhid-userland driver&lt;/li&gt;&#xA;&lt;li&gt; Naptime &lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h4&gt;&lt;a name=&#34;id2245154&#34;&gt;Uncompleted Tasks (Todo)&lt;/a&gt;&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt; Deal with ums(4) - kill it and move it to userland? &lt;/li&gt;&#xA;&lt;li&gt; start newpsm(4) - include extremely basic functionality: probing, attaching, detaching, open, read, etc (might be scrapped) &lt;/li&gt;&#xA;&lt;li&gt; Provide module(s?) for mice handled by old psm(4) &lt;/li&gt;&#xA;&lt;li&gt; Add uhid joystick module? &lt;/li&gt;&#xA;&lt;li&gt; Remove Giant from psm(4) &lt;/li&gt;&#xA;&lt;li&gt; Conform to style(9) &lt;/li&gt;&#xA;&lt;li&gt; Port up lots of serial mice drivers from the old moused(8) &lt;/li&gt;&#xA;&lt;li&gt; Nap time &lt;/li&gt;&#xA;&lt;li&gt; PS/2 and usb test/probe application &lt;/li&gt;&#xA;&lt;li&gt; Bluetooth support &lt;/li&gt;&#xA;&lt;li&gt; Driver example code &lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h4&gt;&lt;a name=&#34;id2245202&#34;&gt;Completed Tasks (To... done?!)&lt;/a&gt;&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt; Driver-writing documentation &lt;/li&gt;&#xA;&lt;li&gt; start moused(8) manpage - basic commandline options (-p, etc) and reading from newpsm.&lt;/li&gt;&#xA;&lt;li&gt;moused - configuration via config files &lt;/li&gt;&#xA;&lt;li&gt;moused - write a synaptics module &lt;/li&gt;&#xA;&lt;li&gt;moused - write a ps/2 generic pass-through plugin&lt;/li&gt;&#xA;&lt;li&gt;moused - write some basic filters (emulate 3 button, etc) &lt;/li&gt;&#xA;&lt;li&gt;moused - write a ums (sysymouse?) module &lt;/li&gt;&#xA;&lt;li&gt;moused - write a plugin interface for loadable userland mouse drivers.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h4&gt;&lt;a name=&#34;id2245241&#34;&gt;Ideas?&lt;/a&gt;&lt;/h4&gt;&#xA;&#x9;&#x9;&#x9;newpsm(4) will only provide a more-or-less raw interface with a&#xA;&#x9;&#x9;&#x9;connected ps/2 mouse. I don&#39;t know right now whether or not the X ps/2&#xA;&#x9;&#x9;&#x9;mouse driver will still work, but we&#39;ll see. If it doesn&#39;t, I&#39;ll look&#xA;&#x9;&#x9;&#x9;into having newpsm provide a generic ps/2 interface X will understand&#xA;&#x9;&#x9;&#x9;with an ioctl that lets you switch between generic ps/2 and raw.&#xA;&#x9;&#x9;&#x9;&lt;p&gt;&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Dynamic DNS and DHCP - Easy to do, and you&#39;ll thank yourself later
 </title>
-      <link>https://semicomplete.com/blog/geekery/xvfb-firefox/</link>
-      <pubDate>Sat, 08 Apr 2006 03:53:00 -0700</pubDate>
-      <guid>https://semicomplete.com/blog/geekery/xvfb-firefox/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;http://www.ejohn.org&#34;&gt;Resig&lt;/a&gt; has a bunch of unit tests he does to make sure &lt;a href=&#34;http://www.jquery.com&#34;&gt;jQuery&lt;/a&gt; works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&amp;rsquo;s automate this.&lt;/p&gt;&#xA;&lt;h2 id=&#34;update-may-2010&#34;&gt;Update (May 2010):&lt;/h2&gt;&#xA;&lt;p&gt;See&#xA;&lt;a href=&#34;https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers.html&#34;&gt;this&#xA;post&lt;/a&gt; for more details on automating xserver startup without having to worry&#xA;about display numbers (:1, :2, etc).&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&amp;rsquo;ve got a simple way to run Firefox without a visible display.&lt;/p&gt;</description>
-    </item>
-  </channel>
+				<link>https://semicomplete.com/articles/dynamic-dns-with-dhcp/</link>
+				<pubDate>Mon, 17 Apr 2006 02:42:39 -0700</pubDate>
+				<guid>https://semicomplete.com/articles/dynamic-dns-with-dhcp/</guid>
+				<description>&lt;h1 id=&#34;preface&#34;&gt;Preface&lt;/h1&gt;&#xA;&lt;p&gt;This article will cover how to setup dns with dynamic updates aswell as&#xA;configuring your dhcp server to push updates to it aswell.&lt;/p&gt;&#xA;&lt;p&gt;I assume you already know how to setup plain old dns aswell as plain old&#xA;dhcp. This is not an introduction to either of those. I used BIND 9 and&#xA;ISC DHCPD v3 for this article.&lt;/p&gt;&#xA;&lt;p&gt;If there&amp;rsquo;s anything this article doesn&amp;rsquo;t cover with respect to what you&#xA;are looking for, leave a comment and I&amp;rsquo;ll do what I can.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Xvfb &#43; Firefox
+</title>
+				<link>https://semicomplete.com/blog/geekery/xvfb-firefox/</link>
+				<pubDate>Sat, 08 Apr 2006 03:53:00 -0700</pubDate>
+				<guid>https://semicomplete.com/blog/geekery/xvfb-firefox/</guid>
+				<description>&lt;p&gt;&lt;a href=&#34;http://www.ejohn.org&#34;&gt;Resig&lt;/a&gt; has a bunch of unit tests he does to make sure &lt;a href=&#34;http://www.jquery.com&#34;&gt;jQuery&lt;/a&gt; works properly on whatever browser. Manually running and checking unit test results is annoying and time consuming. Let&amp;rsquo;s automate this.&lt;/p&gt;&#xA;&lt;h2 id=&#34;update-may-2010&#34;&gt;Update (May 2010):&lt;/h2&gt;&#xA;&lt;p&gt;See&#xA;&lt;a href=&#34;https://semicomplete.com/blog/geekery/headless-wrapper-for-ephemeral-xservers.html&#34;&gt;this&#xA;post&lt;/a&gt; for more details on automating xserver startup without having to worry&#xA;about display numbers (:1, :2, etc).&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;Combine something simple like Firefox and Xvfb (X Virtual Frame Buffer), and you&amp;rsquo;ve got a simple way to run Firefox without a visible display.&lt;/p&gt;</description>
+			</item>
+	</channel>
 </rss>

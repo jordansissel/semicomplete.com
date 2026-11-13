@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Systemd on semicomplete</title>
+		<link>https://semicomplete.com/tags/systemd/</link>
+		<description>Recent content in Systemd on semicomplete</description>
+		<generator>Hugo</generator>
+		<language>en-us</language>
+		
+		
+		
+			<copyright>&amp;copy; Copyright 2006-2022 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
+		
+		
+			<lastBuildDate>Fri, 13 Nov 2026 15:00:00 -0800</lastBuildDate>
+		
+			<atom:link href="https://semicomplete.com/tags/systemd/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>systemd journal forwarding</title>
+				<link>https://semicomplete.com/blog/systemd-forwarding/</link>
+				<pubDate>Fri, 13 Nov 2026 15:00:00 -0800</pubDate>
+				<guid>https://semicomplete.com/blog/systemd-forwarding/</guid>
+				<description>&lt;p&gt;I&amp;rsquo;ve been working on software to make it faster to do local system reimaging. In order to make it easier to troubleshoot problems, I wanted to have local logs forwarded to another system.&lt;/p&gt;&#xA;&lt;p&gt;As I am currently relying on cloud-init images, most of the system logs are already going to systemd&amp;rsquo;s journal, but how can I forward the journal to a remote system? Systemd already provides a tool, &lt;code&gt;systemd-journal-upload&lt;/code&gt;. However, Fedora pushes this program into a separate package and also does not include it in their Cloud images.&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

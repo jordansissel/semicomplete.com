@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://semicomplete.com/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.156.0">
+  <meta name="generator" content="Hugo 0.162.1">
   <link href="/index.xml" rel="alternate" type="application/rss+xml" title="semicomplete" />
   <link href="/index.xml" rel="feed" type="application/rss+xml" title="semicomplete" />
 
@@ -41,6 +41,33 @@
 
   <div class="main" role="main">
     <section class="list home-list">
+      <article class="article">
+        <a href="/blog/systemd-forwarding/" class="article-titles">
+          <h2 class="article-title">systemd journal forwarding</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>13 November, 2026</time></li>
+          <li class="article-meta-tags">
+            <a href="/tags/systemd/">
+              <i class="fas fa-tag"></i>
+              systemd
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="/tags/journald/">
+              <i class="fas fa-tag"></i>
+              journald
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          <p>I&rsquo;ve been working on software to make it faster to do local system reimaging. In order to make it easier to troubleshoot problems, I wanted to have local logs forwarded to another system.</p>
+<p>As I am currently relying on cloud-init images, most of the system logs are already going to systemd&rsquo;s journal, but how can I forward the journal to a remote system? Systemd already provides a tool, <code>systemd-journal-upload</code>. However, Fedora pushes this program into a separate package and also does not include it in their Cloud images.</p>
+        </div>
+        <div class="article-readmore"><a href="/blog/systemd-forwarding/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
       <article class="article">
         <a href="/blog/qemu-debian-13-boot-loop/" class="article-titles">
           <h2 class="article-title">Debian 13 boot loop on qemu</h2>
@@ -280,54 +307,28 @@ desktops.</p>
         <div class="article-readmore"><a href="/projects/xdotool/">Read more...</a></div>
         <div class="article-floatclear"></div>
       </article>
-      <article class="article">
-        <a href="/blog/growing-logstash-value/" class="article-titles">
-          <h2 class="article-title">Growing logstash&#39;s value</h2>
-          
-        </a>
-        <ul class="article-meta">
-          <li class="article-meta-date"><time>29 July, 2012</time></li>
-          <li class="article-meta-tags">
-            <a href="/tags/logstash/">
-              <i class="fas fa-tag"></i>
-              logstash
-            </a>&nbsp;
-          </li>
-        </ul>
-        <div class="article-content">
-          <p>I spent a while today thinking about nerdy stuff - logstash, etc. I want to
-grow logstash in terms of performance, use case, deployment instances, happy
-users, and community.</p>
-<p>While musing about on my mental roadmap of logstash, I found most things boil
-down to costs and returns on investment, even with open source software.
-Money, time, energy, and patience are all costs. Just because something
-doesn&rsquo;t cost any money doesn&rsquo;t mean it won&rsquo;t consume any time or energy.</p>
-        </div>
-        <div class="article-readmore"><a href="/blog/growing-logstash-value/">Read more...</a></div>
-        <div class="article-floatclear"></div>
-      </article>
     </section>
     
-    <ul class="pagination pagination-default">
-      <li class="page-item disabled">
-        <a aria-disabled="true" aria-label="First" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&laquo;&laquo;</span></a>
-      </li>
-      <li class="page-item disabled">
-        <a aria-disabled="true" aria-label="Previous" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&laquo;</span></a>
-      </li>
-      <li class="page-item active">
-        <a aria-current="page" aria-label="Page 1" class="page-link" role="button">1</a>
-      </li>
-      <li class="page-item">
-        <a href="/page/2/" aria-label="Page 2" class="page-link" role="button">2</a>
-      </li>
-      <li class="page-item">
-        <a href="/page/2/" aria-label="Next" class="page-link" role="button"><span aria-hidden="true">&raquo;</span></a>
-      </li>
-      <li class="page-item">
-        <a href="/page/2/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
-      </li>
-    </ul>
+		<ul class="pagination pagination-default">
+			<li class="page-item disabled">
+				<a aria-disabled="true" aria-label="First" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&laquo;&laquo;</span></a>
+			</li>
+		<li class="page-item disabled">
+			<a aria-disabled="true" aria-label="Previous" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&laquo;</span></a>
+		</li>
+			<li class="page-item active">
+				<a aria-current="page" aria-label="Page 1" class="page-link" role="button">1</a>
+			</li>
+			<li class="page-item">
+				<a href="/page/2/" aria-label="Page 2" class="page-link" role="button">2</a>
+			</li>
+		<li class="page-item">
+			<a href="/page/2/" aria-label="Next" class="page-link" role="button"><span aria-hidden="true">&raquo;</span></a>
+		</li>
+			<li class="page-item">
+				<a href="/page/2/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
+			</li>
+		</ul>
   </div>
 
 

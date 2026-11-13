@@ -1,55 +1,61 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Categories on semicomplete</title>
-    <link>https://semicomplete.com/categories/</link>
-    <description>Recent content in Categories on semicomplete</description>
-    <generator>Hugo</generator>
-    <language>en-us</language>
-    <copyright>&amp;copy; Copyright 2006-2022 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
-    <lastBuildDate>Tue, 10 May 2022 22:55:00 -0700</lastBuildDate>
-    <atom:link href="https://semicomplete.com/categories/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Hacks</title>
-      <link>https://semicomplete.com/categories/hacks/</link>
-      <pubDate>Tue, 10 May 2022 22:55:00 -0700</pubDate>
-      <guid>https://semicomplete.com/categories/hacks/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Photography</title>
-      <link>https://semicomplete.com/categories/photography/</link>
-      <pubDate>Tue, 10 May 2022 22:55:00 -0700</pubDate>
-      <guid>https://semicomplete.com/categories/photography/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Home Automation</title>
-      <link>https://semicomplete.com/categories/home-automation/</link>
-      <pubDate>Mon, 03 May 2021 00:00:00 +0000</pubDate>
-      <guid>https://semicomplete.com/categories/home-automation/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Projects</title>
-      <link>https://semicomplete.com/categories/projects/</link>
-      <pubDate>Fri, 24 Apr 2015 21:46:35 -0700</pubDate>
-      <guid>https://semicomplete.com/categories/projects/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Old</title>
-      <link>https://semicomplete.com/categories/old/</link>
-      <pubDate>Sat, 27 Nov 2010 01:14:37 -0800</pubDate>
-      <guid>https://semicomplete.com/categories/old/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Article</title>
-      <link>https://semicomplete.com/categories/article/</link>
-      <pubDate>Mon, 17 Apr 2006 02:42:39 -0700</pubDate>
-      <guid>https://semicomplete.com/categories/article/</guid>
-      <description></description>
-    </item>
-  </channel>
+	<channel>
+		<title>Categories on semicomplete</title>
+		<link>https://semicomplete.com/categories/</link>
+		<description>Recent content in Categories on semicomplete</description>
+		<generator>Hugo</generator>
+		<language>en-us</language>
+		
+		
+		
+			<copyright>&amp;copy; Copyright 2006-2022 Jordan Sissel - Content licensed as &lt;a href=&#39;https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode&#39;&gt;CC BY-NC-SA&lt;/a&gt;</copyright>
+		
+		
+			<lastBuildDate>Tue, 10 May 2022 22:55:00 -0700</lastBuildDate>
+		
+			<atom:link href="https://semicomplete.com/categories/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Hacks</title>
+				<link>https://semicomplete.com/categories/hacks/</link>
+				<pubDate>Tue, 10 May 2022 22:55:00 -0700</pubDate>
+				<guid>https://semicomplete.com/categories/hacks/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Photography</title>
+				<link>https://semicomplete.com/categories/photography/</link>
+				<pubDate>Tue, 10 May 2022 22:55:00 -0700</pubDate>
+				<guid>https://semicomplete.com/categories/photography/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Home Automation</title>
+				<link>https://semicomplete.com/categories/home-automation/</link>
+				<pubDate>Mon, 03 May 2021 00:00:00 +0000</pubDate>
+				<guid>https://semicomplete.com/categories/home-automation/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Projects</title>
+				<link>https://semicomplete.com/categories/projects/</link>
+				<pubDate>Fri, 24 Apr 2015 21:46:35 -0700</pubDate>
+				<guid>https://semicomplete.com/categories/projects/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Old</title>
+				<link>https://semicomplete.com/categories/old/</link>
+				<pubDate>Sat, 27 Nov 2010 01:14:37 -0800</pubDate>
+				<guid>https://semicomplete.com/categories/old/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Article</title>
+				<link>https://semicomplete.com/categories/article/</link>
+				<pubDate>Mon, 17 Apr 2006 02:42:39 -0700</pubDate>
+				<guid>https://semicomplete.com/categories/article/</guid>
+				<description></description>
+			</item>
+	</channel>
 </rss>

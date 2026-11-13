@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://semicomplete.com/categories/projects/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.142.0">
+  <meta name="generator" content="Hugo 0.162.1">
   <link href="/categories/projects/index.xml" rel="alternate" type="application/rss+xml" title="semicomplete" />
   <link href="/categories/projects/index.xml" rel="feed" type="application/rss+xml" title="semicomplete" />
 
@@ -134,6 +134,128 @@ Additionally, to cut by multiple fields, you end up having to write
 <code>cut ... | cut ... | cut  ...</code></p>
         </div>
         <div class="article-readmore"><a href="/projects/fex/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
+      <article class="article">
+        <a href="/projects/newpsm/" class="article-titles">
+          <h2 class="article-title">newpsm framework - A new mouse driver framework for FreeBSD 7.x
+</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>31 December, 2006</time></li>
+          <li class="article-meta-categories">
+            <a href="/categories/projects/">
+              <i class="fas fa-folder"></i>
+              projects
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          Download this patch: <a href="http://www.semicomplete.com/projects/newpsm/patch-CURRENT-Apr.13.06.newmoused+newpsm">patch-CURRENT-Apr.13.06.newpsm+newpsm</a><p></p>
+			Apply the patch (You need /usr/src checked out already):
+			<pre>patch -p0 &lt; patch-CURRENT-Apr.13.06.newmoused+newpsm</pre>
+
+			Rebuild world with '-DNEWMOUSE' and recompile your kernel with 'device
+			newpsm' and <b>NOT</b> 'device psm'
+
+			<pre>make buildworld -DNEWMOUSE</pre>
+<pre>make installworld -DNEWMOUSE</pre>
+
+			Reboot, and you should be good to go. If you have a ps/2 mouse plugged in, you should see:
+
+			<pre>psm0: &lt;(new) PS/2 Mouse&gt; irq 12 on atkbdc0</pre>
+
+			The keyword there is <b>(new)</b>.
+
+			<p></p>
+
+			Assuming everything is OK, you can now try the newmoused. The default
+			device is /dev/psm0. The default driver option is to try all modules
+			and pick the first one that succeeds.
+
+			<dl>
+<dt>For non-synaptics ps/2 mice: </dt>
+<dd>Run: "moused"<br> The default mouse device is /dev/psm0</dd>
+<dt>For synaptics ps/2 mice: </dt>
+<dd>Run: "moused -m synaptics" <br> This will force moused to try the synaptics module</dd>
+<dt>For USB mice: </dt>
+<dd>Run: "moused -d /dev/ums0"</dd>
+<dt>For mse(4) mice: </dt>
+<dd>Run: "moused -d /dev/mse0"</dd>
+</dl>
+<h4><a name="id2244955">Usage</a></h4>
+<ul>
+<li> -f : run in foreground </li>
+<li> -3 :  Emulate 3 button </li>
+<li> -E XXX : emulate 3 button timeout </li>
+<li> -V :  Virtual scrolling </li>
+<li> -U XXX : virtual scrolling threshold </li>
+<li> -a X[,Y] : acceleration with x and y (optional) multiplier </li>
+<li> -d dev : specify mouse device </li>
+<li> -m module : specify module name </li>
+<li> -v : increase verbosity (default 0, -ddd means 3) </li>
+<li> -h : usage </li>
+</ul>
+<h4><a name="id2245001">Configuration File</a></h4>
+				You can now configure mice via a config file. Format is the same as
+				a termcap file.  Read <a href="http://www.semicomplete.com/projects/newpsm/framework.html">
+				this page </a> for specific information about the configuration
+				file. The config file location is "/etc/moused.conf"
+			<h4><a name="id2245016">Progress</a></h4>
+			You can check on what I've done through p4web:
+			<a href="http://perforce.freebsd.org/depotTreeBrowser.cgi?FSPC=//depot/user/jls/newmoused&amp;HIDEDEL=NO">
+			View my p4 depot on perforce.freebsd.org
+			</a><ul>
+<li>newpsm driver stubbed out and written. (may be scrapped)</li>
+<li><strike>the old psm driver needs to be split. It has a part called psmcpnp that needs to become it's own separate driver.</strike></li>
+<li><strike> Add per-driver configuration </strike></li>
+</ul>
+<h4><a name="id2245115">Roadmap</a></h4>
+<ul>
+<li> new moused module-happy framework </li>
+<li> strip psm(4) of protocol knowledge </li>
+<li> 3 basic drivers: synaptics, geneirc ps/2, and sysmouse </li>
+<li> Have progress committed to -CURRENT and co-exist with existing moused and psm </li>
+<li> Profit </li>
+<li> Kill existing moused and psm </li>
+<li> Kill ums in favor of uhid-userland driver</li>
+<li> Naptime </li>
+</ul>
+<h4><a name="id2245154">Uncompleted Tasks (Todo)</a></h4>
+<ul>
+<li> Deal with ums(4) - kill it and move it to userland? </li>
+<li> start newpsm(4) - include extremely basic functionality: probing, attaching, detaching, open, read, etc (might be scrapped) </li>
+<li> Provide module(s?) for mice handled by old psm(4) </li>
+<li> Add uhid joystick module? </li>
+<li> Remove Giant from psm(4) </li>
+<li> Conform to style(9) </li>
+<li> Port up lots of serial mice drivers from the old moused(8) </li>
+<li> Nap time </li>
+<li> PS/2 and usb test/probe application </li>
+<li> Bluetooth support </li>
+<li> Driver example code </li>
+</ul>
+<h4><a name="id2245202">Completed Tasks (To... done?!)</a></h4>
+<ul>
+<li> Driver-writing documentation </li>
+<li> start moused(8) manpage - basic commandline options (-p, etc) and reading from newpsm.</li>
+<li>moused - configuration via config files </li>
+<li>moused - write a synaptics module </li>
+<li>moused - write a ps/2 generic pass-through plugin</li>
+<li>moused - write some basic filters (emulate 3 button, etc) </li>
+<li>moused - write a ums (sysymouse?) module </li>
+<li>moused - write a plugin interface for loadable userland mouse drivers.</li>
+</ul>
+<h4><a name="id2245241">Ideas?</a></h4>
+			newpsm(4) will only provide a more-or-less raw interface with a
+			connected ps/2 mouse. I don't know right now whether or not the X ps/2
+			mouse driver will still work, but we'll see. If it doesn't, I'll look
+			into having newpsm provide a generic ps/2 interface X will understand
+			with an ioctl that lets you switch between generic ps/2 and raw.
+			<p></p>
+        </div>
+        <div class="article-readmore"><a href="/projects/newpsm/">Read more...</a></div>
         <div class="article-floatclear"></div>
       </article>
     </section>

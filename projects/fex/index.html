@@ -44,7 +44,7 @@ The basic usage model is that you provide a series of …">
   <meta property="og:url" content="https://semicomplete.com/projects/fex/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.142.0">
+  <meta name="generator" content="Hugo 0.162.1">
 
   <link rel="stylesheet" href="/css/style.css" media="all" />
   <link rel="stylesheet" href="/css/syntax.css" media="all" />
@@ -156,66 +156,66 @@ split by spaces on output (though I am open to changing this).</p>
 <h2 id="simple-splitting">Simple splitting</h2>
 <p>With input text: <code>/usr/local/bin/firefox</code></p>
 <table>
-  <thead>
-      <tr>
-          <th>Command</th>
-          <th>Result</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><code>fex /1</code></td>
-          <td>&ldquo;usr&rdquo;</td>
-      </tr>
-      <tr>
-          <td><code>fex /{2:3}</code></td>
-          <td>&ldquo;local/bin&rdquo;</td>
-      </tr>
-      <tr>
-          <td><code>fex /{1,-1}</code></td>
-          <td>&ldquo;usr/firefox&rdquo;</td>
-      </tr>
-      <tr>
-          <td><code>fex /-1</code></td>
-          <td>&ldquo;firefox&rdquo;</td>
-      </tr>
-      <tr>
-          <td><code>fex /{:}</code></td>
-          <td>&ldquo;/usr/local/bin/firefox/</td>
-      </tr>
-      <tr>
-          <td><code>fex /0</code></td>
-          <td>&ldquo;/usr/local/bin/firefox/</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>Command</th>
+					<th>Result</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>fex /1</code></td>
+					<td>&ldquo;usr&rdquo;</td>
+			</tr>
+			<tr>
+					<td><code>fex /{2:3}</code></td>
+					<td>&ldquo;local/bin&rdquo;</td>
+			</tr>
+			<tr>
+					<td><code>fex /{1,-1}</code></td>
+					<td>&ldquo;usr/firefox&rdquo;</td>
+			</tr>
+			<tr>
+					<td><code>fex /-1</code></td>
+					<td>&ldquo;firefox&rdquo;</td>
+			</tr>
+			<tr>
+					<td><code>fex /{:}</code></td>
+					<td>&ldquo;/usr/local/bin/firefox/</td>
+			</tr>
+			<tr>
+					<td><code>fex /0</code></td>
+					<td>&ldquo;/usr/local/bin/firefox/</td>
+			</tr>
+	</tbody>
 </table>
 <h2 id="greedy-vs-nongreedy-splitting">Greedy vs nongreedy splitting</h2>
 <p>Input text: <code>a:b::c:::d</code></p>
 <table>
-  <thead>
-      <tr>
-          <th>Command</th>
-          <th>Result</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><code>fex :{1:3}</code></td>
-          <td>&ldquo;a:b:c&rdquo;</td>
-      </tr>
-      <tr>
-          <td><code>fex :{?1:3}</code></td>
-          <td>&ldquo;a:b:&rdquo;</td>
-      </tr>
-      <tr>
-          <td><code>fex :{3}</code></td>
-          <td>&ldquo;c&rdquo;</td>
-      </tr>
-      <tr>
-          <td><code>fex :{?3}</code></td>
-          <td>&quot;&rdquo; (empty result)</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>Command</th>
+					<th>Result</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>fex :{1:3}</code></td>
+					<td>&ldquo;a:b:c&rdquo;</td>
+			</tr>
+			<tr>
+					<td><code>fex :{?1:3}</code></td>
+					<td>&ldquo;a:b:&rdquo;</td>
+			</tr>
+			<tr>
+					<td><code>fex :{3}</code></td>
+					<td>&ldquo;c&rdquo;</td>
+			</tr>
+			<tr>
+					<td><code>fex :{?3}</code></td>
+					<td>&quot;&rdquo; (empty result)</td>
+			</tr>
+	</tbody>
 </table>
 <h1 id="real-world-uses">Real world uses</h1>
 <h2 id="parse-ip-and-url-from-apache-logs">Parse IP and URL from apache logs</h2>
@@ -285,7 +285,10 @@ bin:/bin
           <a href="/projects/keynav/" data-toggle="tooltip" data-placement="top" title=" keynav  -  retire your mouse. 
 ">&lt; Newer</a>
       </li>
-      <li class="pager-older pager-noitem">Older &gt;</li>
+      <li class="pager-older">
+        <a href="/projects/newpsm/" data-toggle="tooltip" data-placement="top" title="newpsm framework - A new mouse driver framework for FreeBSD 7.x
+">Older &gt;</a>
+      </li>
     </ul>
   </div>
 
