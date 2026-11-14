@@ -7,6 +7,14 @@
 </head>
 <body>
 		<header>
+			<nav>
+				<h1><a href="{{ "/" | relURL }}">{{ .Site.Title }}</a></h1>
+				<ul class="navigation">
+					{{- range .Site.Menus.main }}
+					<li class="navigation-{{ .Identifier }}"><a href="{{ .URL | safeURL }}" title="{{ .Name }}">{{ .Name }}</a></li>
+					{{- end }}
+				</ul>
+			</nav>
 		</header>
 		<main> {{ block "main" . }}{{ end }} </main>
 		<footer>
