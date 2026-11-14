@@ -26,6 +26,7 @@ body {
 	padding: 16pt;
 	color: var(--theme-text);
 	background-color: var(--theme-bg);
+	line-height: 1.3;
 }
 
 a, h1, h2, h3 {
