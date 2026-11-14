@@ -1,0 +1,26 @@
+{{- define "main" }}
+<section class="list">
+{{- $paginator := .Paginator }}
+{{- range $paginator.Pages }}
+	<article>
+		<h1 class="article-title">
+			<a href="{{ .Permalink | relURL }}" class="title">
+				{{ .Title }}
+			</a>
+		</h1>
+
+		<section class="content">
+			{{- if .Truncated }}
+				{{ .Summary }}
+			{{- else }}
+				{{ .Content }}
+			{{- end }}
+		</section>
+
+		<footer>
+			<a href="{{ .Permalink | relURL }}" rel="canonical">Read more...</a>
+		</footer>
+	</article>	
+{{- end }}
+</section>
+{{- end }}

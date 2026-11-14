@@ -1,0 +1,48 @@
+{{ define "main" }}
+	<article class="article">
+	<h1>{{ .Title }}</h1>
+		<hr>
+
+		<ul class="article-meta">
+			<li class="article-meta-date"><time>{{ .Date.Format (default "January 2, 2006" $.Site.Params.dateFormat) }}</time></li>
+			{{- if .Params.categories }}
+			{{- range .Params.categories }}
+			<li class="article-meta-categories">
+				<a href="{{ "/" | relURL }}categories/{{ . | urlize }}/">
+					<i class="fas fa-folder"></i>
+					{{ . }}
+				</a>&nbsp;
+			</li>
+			{{- end }}
+			{{- end }}
+			{{- if .Params.tags }}
+			{{- range .Params.tags }}
+			<li class="article-meta-tags">
+				<a href="{{ "/" | relURL }}tags/{{ . | urlize }}/">
+					<i class="fas fa-tag"></i>
+					{{ . }}
+				</a>&nbsp;
+			</li>
+			{{- end }}
+			{{- end }}
+		</ul>
+		{{ .Content }}
+	</article>
+
+	<ul class="pager article-pager">
+		{{- if .NextInSection }}
+		<li class="pager-newer">
+				<a href="{{ .NextInSection.Permalink | relURL }}" data-toggle="tooltip" data-placement="top" title="{{ .NextInSection.Title }}">&lt; Newer</a>
+		</li>
+		{{- else }}
+		<li class="pager-newer pager-noitem">&lt; Newer</li>
+		{{- end }}
+		{{- if .PrevInSection }}
+		<li class="pager-older">
+			<a href="{{ .PrevInSection.Permalink | relURL }}" data-toggle="tooltip" data-placement="top" title="{{ .PrevInSection.Title }}">Older &gt;</a>
+		</li>
+		{{- else }}
+		<li class="pager-older pager-noitem">Older &gt;</li>
+		{{- end }}
+	</ul>
+{{ end }}

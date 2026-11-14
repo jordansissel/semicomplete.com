@@ -1,0 +1,63 @@
+@font-face {
+	font-family: "Atkinson Hyperlegible Next";
+	src: url("/AtkinsonHyperlegibleNextVF-Variable.woff2") format("woff2");
+	font-weight: normal;
+	font-style: normal;
+}
+
+:root {
+  /*--light-primary: hsl(40deg, 50%, 50%);*/
+  --light-primary: hsl(240deg, 50%, 50%);
+
+  --light-text: hsl(from var(--light-primary) h s 5);
+  --light-accent: hsl(from var(--light-primary) calc(h + 40) calc(s) calc(l));
+  --light-background: hsl(from var(--light-primary) h s 95);
+
+	--theme-text: var(--light-text);
+	--theme-text-accent: var(--light-accent);
+	--theme-bg: var(--light-background);
+}
+
+body {
+	max-width: 64rem;
+	margin-left: auto;
+	margin-right: auto;
+	font-family: "Atkinson Hyperlegible Next", "Arial", sans-serif;
+	padding: 16pt;
+	color: var(--theme-text);
+	background-color: var(--theme-bg);
+}
+
+a, h1, h2, h3 {
+	color: var(--theme-text-accent);
+}
+
+/* Override chroma highlight styles */
+.chroma, pre {
+	background-color: hsla(from var(--light-background) h s 100% / 35%);
+	border: 1pt solid hsla(from brown h s l / 20%);
+	border-radius: 6pt / 12pt;
+	box-shadow: hsla(from var(--light-background) h 50% / 10%) 4pt 4pt;
+	margin-left: 16pt;
+	margin-right: 16pt;
+}
+
+/* All pages */
+pre {
+	padding: 16px;
+	overflow: hidden;
+	white-space: pre-wrap;
+}
+
+/* List view */
+main > .list > article > h1 { font-size: 150%; }
+
+/* The snippet of the article in a list */
+main > .list > article > section.content h1 { font-size: 130%; }
+main > .list > article > section.content h2 { font-size: 120%; }
+main > .list > article > section.content h3 { font-size: 110%; }
+main > .list > article > section.content h4 { font-size: 105%; }
+main > .list > article > section.content h5 { font-size: 105%; }
+main > .list > article > section.content h6 { font-size: 105%; }
+
+/* Single Page */
