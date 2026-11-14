@@ -8,6 +8,7 @@
 				{{ .Title }}
 			</a>
 		</h1>
+		<time>{{ .Date.Format (default "January 2, 2006" $.Site.Params.dateFormat) }}</time>
 
 		<section class="content">
 			{{- if .Truncated }}

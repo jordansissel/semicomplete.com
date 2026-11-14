@@ -1,10 +1,9 @@
 {{ define "main" }}
-	<article class="article">
-	<h1>{{ .Title }}</h1>
-		<hr>
+	<article>
+		<h1>{{ .Title }}</h1>
+		<ul class="metadata">
+			<time>{{ .Date.Format (default "January 2, 2006" $.Site.Params.dateFormat) }}</time>
 
-		<ul class="article-meta">
-			<li class="article-meta-date"><time>{{ .Date.Format (default "January 2, 2006" $.Site.Params.dateFormat) }}</time></li>
 			{{- if .Params.categories }}
 			{{- range .Params.categories }}
 			<li class="article-meta-categories">
@@ -26,6 +25,8 @@
 			{{- end }}
 			{{- end }}
 		</ul>
+
+		<hr>
 		{{ .Content }}
 	</article>
 

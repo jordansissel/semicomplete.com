@@ -21,13 +21,20 @@
 
 body {
 	max-width: 56rem;
+	margin: 8pt;
 	margin-left: auto;
 	margin-right: auto;
 	font-family: "Atkinson Hyperlegible Next", "Arial", sans-serif;
-	padding: 16pt;
 	color: var(--theme-text);
 	background-color: var(--theme-bg);
 	line-height: 1.3;
+}
+
+body > header > hr {
+	margin: 0;
+	margin-bottom: 16pt;
+	border: 0;
+	border-top: 1px solid hsla(from var(--theme-text) h s l / 70%);
 }
 
 body > header nav {
@@ -38,6 +45,8 @@ body > header nav {
 
 body > header nav a {
 	text-decoration: none;
+	font-size: 120%;
+	padding-left: 16pt;
 }
 
 body > header nav > ul {
@@ -52,15 +61,6 @@ body > header nav > ul > li {
 
 a, h1, h2, h3 {
 	color: var(--theme-text-accent);
-}
-
-hr {
-	border: 0;
-	border-top: 1px solid hsla(from var(--theme-text-accent) h s l / 30%);
-	margin: 0;
-	margin-left: 32pt;
-	margin-right: 32pt;
-	padding: 0;
 }
 
 /* Override chroma highlight styles */
@@ -81,7 +81,13 @@ pre {
 }
 
 /* List view */
-main > .list > article > h1 { font-size: 150%; }
+main > .list > article > h1 {
+	font-size: 150%; 
+	margin: 0;
+}
+main > .list > article {
+	margin-bottom: 1rem;
+}
 
 /* The snippet of the article in a list */
 main > .list > article > section.content h1 { font-size: 130%; }
@@ -103,5 +109,14 @@ main > article > ul.metadata {
 }
 main > article > ul.metadata > li { 
 	display: inline;
+}
+
+main > article > hr {
+	border: 0;
+	border-top: 1px solid hsla(from var(--theme-text-accent) h s l / 30%);
+	margin: 0;
+	margin-left: 32pt;
+	margin-right: 32pt;
+	padding: 0;
 }
 
