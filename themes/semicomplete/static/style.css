@@ -18,8 +18,9 @@
 	--theme-bg: var(--light-background);
 }
 
+
 body {
-	max-width: 64rem;
+	max-width: 56rem;
 	margin-left: auto;
 	margin-right: auto;
 	font-family: "Atkinson Hyperlegible Next", "Arial", sans-serif;
@@ -29,8 +30,37 @@ body {
 	line-height: 1.3;
 }
 
+body > header nav {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	align-items: baseline;
+}
+
+body > header nav a {
+	text-decoration: none;
+}
+
+body > header nav > ul {
+	margin: 0;
+	list-style: none;
+	justify-self: end;
+}
+
+body > header nav > ul > li {
+	display: inline;
+}
+
 a, h1, h2, h3 {
 	color: var(--theme-text-accent);
+}
+
+hr {
+	border: 0;
+	border-top: 1px solid hsla(from var(--theme-text-accent) h s l / 30%);
+	margin: 0;
+	margin-left: 32pt;
+	margin-right: 32pt;
+	padding: 0;
 }
 
 /* Override chroma highlight styles */
@@ -62,3 +92,16 @@ main > .list > article > section.content h5 { font-size: 105%; }
 main > .list > article > section.content h6 { font-size: 105%; }
 
 /* Single Page */
+main > article > h1 {
+	margin: 0;
+}
+
+main > article > ul.metadata { 
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+main > article > ul.metadata > li { 
+	display: inline;
+}
+
