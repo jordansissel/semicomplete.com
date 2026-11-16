@@ -50,4 +50,6 @@ copyright = "&copy; Copyright 2006-2022 Jordan Sissel - Content licensed as <a h
 
 [markup.goldmark.renderer]
   unsafe = true
-  
+
+[markup.highlight]
+  noClasses = false
