@@ -10,8 +10,8 @@
   --light-primary: hsl(240deg, 50%, 50%);
 
   --light-text: hsl(from var(--light-primary) h s 5);
-  --light-accent: hsl(from var(--light-primary) calc(h + 40) calc(s) calc(l));
-  --light-background: hsl(from var(--light-primary) h s 95);
+  --light-accent: hsl(from var(--light-primary) h calc(s) calc(l));
+  --light-background: hsl(from var(--light-primary) calc(h + 120) s 95);
 
 	--theme-text: var(--light-text);
 	--theme-text-accent: var(--light-accent);
