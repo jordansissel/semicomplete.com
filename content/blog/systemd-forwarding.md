@@ -21,7 +21,7 @@ Journalctl offers an output format called `export` which emits the same format t
 `systemd-journal-upload` is not available, so I found a simple workaround: pipe `journalctl` to `curl`. Some caveats: systemd-journal-remote rejects requests with incorrect `Content-Type`. Exporting a local systemd journal to a remote receiver, then, can be done like this:
 
 ```shell
-journalctl --boot --lines=all -fo export | curl -v -T - -H "Content-Type: application/vnd.fdo.journal" -X POST http://REMOTE_HOST/upload'
+journalctl --boot --lines=all -fo export | curl -v -T - -H "Content-Type: application/vnd.fdo.journal" -X POST http://REMOTE_HOST/upload
 ```
 
 Notably, for journalctl:
