@@ -1,13 +1,16 @@
 baseURL = "https://semicomplete.com/"
-languageCode = "en-us"
+locale = "en-us"
 title = "semicomplete"
-theme = "whiteplain"
+theme = "semicomplete"
 
-copyright = "&copy; Copyright 2006-2022 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a>"
+copyright = "&copy; Copyright 2006-2026 Jordan Sissel - Content licensed as <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'>CC BY-NC-SA</a>"
 
 [taxonomies]
   category = "categories"
   tag = "tags"
+
+[security]
+  allowContent = ["text/html", "text/markdown"]
 
 [params]
   showShareIcons = false
@@ -51,5 +54,8 @@ copyright = "&copy; Copyright 2006-2022 Jordan Sissel - Content licensed as <a h
 [markup.goldmark.renderer]
   unsafe = true
 
+[markup.goldmark.parser.attribute]
+  block = true
+
 [markup.highlight]
-  noClasses = false
+	noClasses = false
